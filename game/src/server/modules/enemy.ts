@@ -1,6 +1,16 @@
 import Maid from "@rbxts/maid";
 import { RunService } from "@rbxts/services";
 
+export interface EnemyModel extends Model {
+	humanoidRootPart: BasePart & {
+		rootAttachment: Attachment;
+	};
+}
+
+export interface PathWaypoint extends BasePart {
+	waypointAttachment: Attachment;
+}
+
 export class Enemy {
 	private model: EnemyModel;
 	private rootAttachment: Attachment;

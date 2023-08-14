@@ -3,17 +3,13 @@ interface ServerStorage extends Instance {
 		enemies: Folder & {
 			foo: Folder & {
 				models: Folder & {
-					foo: EnemyModel;
+					foo: Model & {
+						humanoidRootPart: BasePart & {
+							rootAttachment: Attachment;
+						};
+					};
 				};
 			};
 		};
 	};
-}
-
-interface Workspace extends Instance {
-	gameMap: GameMap;
-}
-
-interface GameMap extends Model {
-	path: Folder;
 }
