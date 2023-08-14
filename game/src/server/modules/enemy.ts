@@ -1,8 +1,6 @@
 import Maid from "@rbxts/maid";
 import { RunService } from "@rbxts/services";
 
-print("a");
-
 export class Enemy {
 	private model: EnemyModel;
 	private rootAttachment: Attachment;
@@ -36,17 +34,22 @@ export class Enemy {
 		this.maid.GiveTask(this.model);
 
 		this.snapToPathWaypoint(this.path[0]);
-		this.progressThroughPath(0);
+		this.progressThroughPath();
+
+		task.wait(4);
+
+		this.destroy();
 	}
 
 	snapToPathWaypoint(pathWaypoint: PathWaypoint) {
-		const attachmentOffset = this.rootAttachment.Position;
+		const rootAttachmentOffset = this.rootAttachment.Position; // relative to root part
 
 		const waypointAttachment = pathWaypoint.waypointAttachment;
-		const waypointWorldCFrame = waypointAttachment.WorldCFrame;
-		const waypointWorldCFrameWithOffset = waypointWorldCFrame.sub(attachmentOffset);
+		const waypointAttachmentWorldCFrame = waypointAttachment.WorldCFrame;
+		const waypointAttachmentWorldCFrameWithRootAttachmentOffset =
+			waypointAttachmentWorldCFrame.sub(rootAttachmentOffset);
 
-		this.model.PivotTo(waypointWorldCFrameWithOffset);
+		this.model.PivotTo(waypointAttachmentWorldCFrameWithRootAttachmentOffset);
 	}
 
 	setTargetPathWaypoint(pathWaypoint: PathWaypoint) {
@@ -54,42 +57,43 @@ export class Enemy {
 		this.alignOrientation.Attachment1 = pathWaypoint.waypointAttachment;
 	}
 
-	moveToPathWaypointUntilTouching(pathWaypoint: PathWaypoint): Promise<undefined> {
+	async moveToPathWaypointUntilTouching(pathWaypoint: PathWaypoint) {
 		this.setTargetPathWaypoint(pathWaypoint);
 
-		const waypointPromise = new Promise<undefined>((resolve, reject, onCancel) => {
-			const waypointHandle = RunService.Heartbeat.Connect(() => {
-				const touchingNextWaypoint = this.isTouchingPathWaypoint(pathWaypoint);
-				if (!touchingNextWaypoint) return;
+		const checkTouchingPathWaypoint = () => {
+			const touchingPathWaypoint = this.isTouchingPathWaypoint(pathWaypoint);
+			return touchingPathWaypoint;
+		};
 
-				resolve(undefined);
-				waypointHandle.Disconnect();
-			});
-
-			onCancel(() => {
-				waypointHandle.Disconnect();
-			});
-		});
+		let touchingPathWaypoint = false;
+		let cancelTouchingPathWaypointCheck = false;
 
 		this.maid.GiveTask(() => {
-			waypointPromise.cancel();
+			cancelTouchingPathWaypointCheck = true;
 		});
 
-		return waypointPromise;
-	}
-
-	progressThroughPath(pathWaypointIndex: number) {
-		const pathWaypoint = this.path[pathWaypointIndex];
-		if (!pathWaypoint) {
-			this.destroy();
-			return;
+		while (!touchingPathWaypoint && !cancelTouchingPathWaypointCheck) {
+			touchingPathWaypoint = checkTouchingPathWaypoint();
+			RunService.Heartbeat.Wait();
 		}
 
-		this.moveToPathWaypointUntilTouching(pathWaypoint)
-			.then(() => {
-				this.progressThroughPath(pathWaypointIndex + 1);
-			})
-			.catch(warn);
+		return;
+	}
+
+	async progressThroughPath() {
+		let cancelPathProgress = false;
+
+		this.maid.GiveTask(() => {
+			cancelPathProgress = true;
+		});
+
+		for (const pathWaypoint of this.path) {
+			if (cancelPathProgress) return;
+
+			await this.moveToPathWaypointUntilTouching(pathWaypoint);
+		}
+
+		this.destroy(); // when reaching the end of the path
 	}
 
 	getDistanceToPathWaypoint(pathWaypoint: PathWaypoint) {

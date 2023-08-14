@@ -16,13 +16,14 @@ export class EnemyService implements OnStart {
 
 		const fooTemplate = ServerStorage.assets.enemies.foo.models.foo;
 
-		for (;;) {
-			const fooModel = fooTemplate.Clone();
-			fooModel.Parent = Workspace;
+		const fooModel = fooTemplate.Clone();
+		fooModel.Parent = Workspace;
 
-			const foo = new Enemy(fooModel, path);
+		const foo = new Enemy(fooModel, path);
 
-			task.wait(1);
-		}
+		// for (;;) {
+
+		// 	task.wait(1);
+		// }
 	}
 }
