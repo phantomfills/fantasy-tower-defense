@@ -45,10 +45,6 @@ export class Enemy {
 
 		this.snapToPathWaypoint(this.path[0]);
 		this.progressThroughPath();
-
-		task.wait(4);
-
-		this.destroy();
 	}
 
 	snapToPathWaypoint(pathWaypoint: PathWaypoint) {
