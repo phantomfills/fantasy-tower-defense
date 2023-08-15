@@ -6,6 +6,12 @@
 	],
 	"tree": {
 		"$className": "DataModel",
+		"MaterialService": {
+			"$className": "MaterialService",
+			"$properties": {
+				"Use2022Materials": true
+			}
+		},
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
 			"TS": {
@@ -43,6 +49,9 @@
 			"$className": "Workspace",
 			"$properties": {
 				"FilteringEnabled": true
+			},
+			"map": {
+				"$path": "assets/map.rbxm"
 			}
 		},
 		"HttpService": {
@@ -56,6 +65,29 @@
 			"$properties": {
 				"RespectFilteringEnabled": true
 			}
+		},
+		"ServerStorage": {
+			"$className": "ServerStorage",
+			"assets": {
+				"$className": "Folder",
+				"terrain": {
+					"$path": "assets/terrain.rbxm"
+				}
+			}
+		},
+		"Lighting": {
+			"$className": "Lighting",
+			"$properties": {
+				"Ambient": [0.27, 0.27, 0.27],
+				"Brightness": 3,
+				"GlobalShadows": true,
+				"OutdoorAmbient": [0.27, 0.27, 0.27],
+				"TimeOfDay": "12:00:00",
+				"ShadowSoftness": 0.2,
+				"Technology": "ShadowMap",
+				"GeographicLatitude": 0
+			},
+			"$path": "assets/lighting"
 		}
 	}
 }
