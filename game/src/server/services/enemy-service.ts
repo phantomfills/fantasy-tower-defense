@@ -1,6 +1,6 @@
 import { Service, OnStart } from "@flamework/core";
 import { ServerStorage, Workspace } from "@rbxts/services";
-import { Enemy } from "server/modules/enemy";
+import { Ninja } from "../modules/ninja";
 import { PathWaypoint } from "server/modules/enemy";
 
 const getChildrenAs = <T>(instance: Instance) => {
@@ -15,15 +15,8 @@ export class EnemyService implements OnStart {
 			return previous.Name < current.Name;
 		});
 
-		const fooTemplate = ServerStorage.assets.enemies.foo.models.foo;
-
-		task.wait(4);
-
 		for (;;) {
-			const fooModel = fooTemplate.Clone();
-			fooModel.Parent = Workspace;
-
-			const foo = new Enemy(fooModel, path);
+			const ninja = new Ninja(path);
 
 			task.wait(1);
 		}

@@ -6,12 +6,6 @@
 	],
 	"tree": {
 		"$className": "DataModel",
-		"MaterialService": {
-			"$className": "MaterialService",
-			"$properties": {
-				"Use2022Materials": true
-			}
-		},
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
 			"TS": {
@@ -50,8 +44,14 @@
 			"$properties": {
 				"FilteringEnabled": true
 			},
-			"map": {
+			"gameMap": {
 				"$path": "assets/map.rbxm"
+			},
+			"Terrain": {
+				"$path": "assets/terrain.rbxm",
+				"$properties": {
+					"Decoration": true
+				}
 			}
 		},
 		"HttpService": {
@@ -70,8 +70,29 @@
 			"$className": "ServerStorage",
 			"assets": {
 				"$className": "Folder",
-				"terrain": {
-					"$path": "assets/terrain.rbxm"
+				"enemies": {
+					"$className": "Folder",
+					"foo": {
+						"$className": "Folder",
+						"models": {
+							"$className": "Folder",
+							"foo": {
+								"$path": "assets/foo.rbxm"
+							}
+						}
+					}
+				},
+				"towers": {
+					"$className": "Folder",
+					"archer": {
+						"$className": "Folder",
+						"models": {
+							"$className": "Folder",
+							"archer": {
+								"$path": "assets/foo.rbxm"
+							}
+						}
+					}
 				}
 			}
 		},

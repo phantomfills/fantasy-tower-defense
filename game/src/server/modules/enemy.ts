@@ -7,12 +7,22 @@ export interface EnemyModel extends Model {
 	};
 }
 
+export interface GenericEnemyStats {
+	health: number;
+	maxHealth: number;
+	speed: number;
+	animationId: number;
+}
+
 export interface PathWaypoint extends BasePart {
 	waypointAttachment: Attachment;
 }
 
-export class Enemy {
+export class Enemy<T extends GenericEnemyStats> {
 	private model: EnemyModel;
+	private rootPart: BasePart & {
+		rootAttachment: Attachment;
+	};
 	private rootAttachment: Attachment;
 
 	private alignPosition: AlignPosition;
@@ -20,17 +30,20 @@ export class Enemy {
 
 	private path: PathWaypoint[];
 
+	private stats: T;
+
 	private maid: Maid;
 
-	constructor(model: EnemyModel, path: PathWaypoint[]) {
+	constructor(model: EnemyModel, path: PathWaypoint[], stats: T) {
 		this.model = model;
-		this.rootAttachment = this.model.humanoidRootPart.rootAttachment;
+		this.rootPart = this.model.humanoidRootPart;
+		this.rootAttachment = this.rootPart.rootAttachment;
 
 		this.path = path;
 
 		this.alignPosition = new Instance("AlignPosition");
 		this.alignPosition.MaxForce = math.huge;
-		this.alignPosition.MaxVelocity = 20;
+		this.alignPosition.MaxVelocity = stats.speed;
 		this.alignPosition.Responsiveness = 200;
 		this.alignPosition.Attachment0 = this.rootAttachment;
 		this.alignPosition.Parent = this.rootAttachment;
@@ -40,11 +53,25 @@ export class Enemy {
 		this.alignOrientation.Attachment0 = this.rootAttachment;
 		this.alignOrientation.Parent = this.rootAttachment;
 
+		this.stats = stats;
+
 		this.maid = new Maid();
 		this.maid.GiveTask(this.model);
 
 		this.snapToPathWaypoint(this.path[0]);
 		this.progressThroughPath();
+	}
+
+	takeDamage(damage: number) {
+		this.stats.health -= damage;
+	}
+
+	getHealth(): number {
+		return this.stats.health;
+	}
+
+	getMaxHealth(): number {
+		return this.stats.maxHealth;
 	}
 
 	snapToPathWaypoint(pathWaypoint: PathWaypoint) {
