@@ -1,5 +1,6 @@
 import Maid from "@rbxts/maid";
-import { RunService } from "@rbxts/services";
+import Signal from "@rbxts/signal";
+import { RunService, HttpService } from "@rbxts/services";
 
 export interface EnemyModel extends Model {
 	humanoidRootPart: BasePart & {
@@ -18,6 +19,8 @@ export interface PathWaypoint extends BasePart {
 	waypointAttachment: Attachment;
 }
 
+export type GenericEnemy = Enemy<GenericEnemyStats>;
+
 export class Enemy<T extends GenericEnemyStats> {
 	private model: EnemyModel;
 	private rootPart: BasePart & {
@@ -32,7 +35,11 @@ export class Enemy<T extends GenericEnemyStats> {
 
 	private stats: T;
 
+	readonly onDeath: Signal;
+
 	private maid: Maid;
+
+	readonly id: string;
 
 	constructor(model: EnemyModel, path: PathWaypoint[], stats: T) {
 		this.model = model;
@@ -55,7 +62,16 @@ export class Enemy<T extends GenericEnemyStats> {
 
 		this.stats = stats;
 
+		this.onDeath = new Signal();
+
 		this.maid = new Maid();
+
+		this.id = HttpService.GenerateGUID();
+
+		this.maid.GiveTask(() => {
+			this.onDeath.Fire();
+			this.onDeath.Destroy();
+		});
 		this.maid.GiveTask(this.model);
 
 		this.snapToPathWaypoint(this.path[0]);

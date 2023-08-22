@@ -1,7 +1,7 @@
 import { Service, OnStart } from "@flamework/core";
-import { ServerStorage, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 import { Ninja } from "../modules/ninja";
-import { PathWaypoint } from "server/modules/enemy";
+import { Enemy, GenericEnemy, PathWaypoint } from "server/modules/enemy";
 
 const getChildrenAs = <T>(instance: Instance) => {
 	return instance.GetChildren() as T[];
@@ -9,16 +9,29 @@ const getChildrenAs = <T>(instance: Instance) => {
 
 @Service({})
 export class EnemyService implements OnStart {
+	private enemies: GenericEnemy[];
+
+	constructor() {
+		this.enemies = [];
+	}
+
 	onStart() {
 		const path = getChildrenAs<PathWaypoint>(Workspace.gameMap.path);
 		path.sort((previous, current) => {
 			return previous.Name < current.Name;
 		});
 
-		for (;;) {
-			const ninja = new Ninja(path);
+		const ninja = new Ninja(path);
+		this.addEnemy(ninja);
+	}
 
-			task.wait(1);
-		}
+	addEnemy(enemy: GenericEnemy) {
+		this.enemies.push(enemy);
+
+		enemy.onDeath.Connect(() => {
+			this.enemies = this.enemies.filter((currentEnemy) => {
+				return enemy.id !== currentEnemy.id;
+			});
+		});
 	}
 }

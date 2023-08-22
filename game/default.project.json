@@ -89,7 +89,7 @@
 						"models": {
 							"$className": "Folder",
 							"archer": {
-								"$path": "assets/foo.rbxm"
+								"$path": "assets/archer.rbxm"
 							}
 						}
 					}
