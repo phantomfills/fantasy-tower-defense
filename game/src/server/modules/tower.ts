@@ -1,4 +1,7 @@
+import { TowerService } from "server/services/tower-service";
 import { Enemy, GenericEnemyStats } from "./enemy";
+import { RunService } from "@rbxts/services";
+import Maid from "@rbxts/maid";
 
 export interface TowerModel extends Model {
 	humanoidRootPart: BasePart & {
@@ -13,6 +16,8 @@ export interface GenericTowerStats {
 	cframe: CFrame;
 }
 
+export type GenericTower = Tower<GenericTowerStats>;
+
 export class Tower<T extends GenericTowerStats> {
 	private model: TowerModel;
 	private rootPart: BasePart & {
@@ -22,7 +27,9 @@ export class Tower<T extends GenericTowerStats> {
 
 	private stats: T;
 
-	constructor(model: TowerModel, stats: T) {
+	private maid: Maid;
+
+	constructor(model: TowerModel, stats: T, private towerService: TowerService) {
 		this.model = model;
 		this.rootPart = this.model.humanoidRootPart;
 		this.rootAttachment = this.rootPart.rootAttachment;
@@ -30,9 +37,30 @@ export class Tower<T extends GenericTowerStats> {
 		this.model.PivotTo(stats.cframe);
 
 		this.stats = stats;
+
+		this.maid = new Maid();
+		this.maid.GiveTask(this.model);
+
+		this.initiate();
+	}
+
+	initiate() {
+		this.maid.GiveTask(
+			RunService.Heartbeat.Connect(() => {
+				print("hi, from tower!");
+			}),
+		);
+
+		task.wait(4);
+
+		this.destroy();
 	}
 
 	dealDamage<T extends GenericEnemyStats>(enemy: Enemy<T>, damage: number) {
 		enemy.takeDamage(damage);
+	}
+
+	destroy() {
+		this.maid.Destroy();
 	}
 }

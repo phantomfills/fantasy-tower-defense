@@ -8,6 +8,15 @@ export class LevelService implements OnStart {
 
 	onStart() {
 		this.enemyService.initiate();
-		this.towerService.initiate();
+
+		const getEnemies = () => {
+			return this.getEnemies();
+		};
+
+		this.towerService.initiate(getEnemies);
+	}
+
+	getEnemies() {
+		return this.enemyService.getEnemies();
 	}
 }

@@ -15,16 +15,6 @@ export class EnemyService {
 		this.enemies = [];
 	}
 
-	initiate() {
-		const path = getChildrenAs<PathWaypoint>(Workspace.gameMap.path);
-		path.sort((previous, current) => {
-			return previous.Name < current.Name;
-		});
-
-		const ninja = new Ninja(path);
-		this.addEnemy(ninja);
-	}
-
 	addEnemy(enemy: GenericEnemy) {
 		this.enemies.push(enemy);
 
@@ -33,5 +23,19 @@ export class EnemyService {
 				return enemy.id !== currentEnemy.id;
 			});
 		});
+	}
+
+	getEnemies() {
+		return this.enemies;
+	}
+
+	initiate() {
+		const path = getChildrenAs<PathWaypoint>(Workspace.gameMap.path);
+		path.sort((previous, current) => {
+			return previous.Name < current.Name;
+		});
+
+		const ninja = new Ninja(path);
+		this.addEnemy(ninja);
 	}
 }
