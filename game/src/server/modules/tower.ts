@@ -49,9 +49,7 @@ export class Tower<T extends GenericTowerStats> {
 			const target = this.towerService.getClosestTarget(this);
 			if (!target) continue;
 
-			print(`${target.getId()} taking damage...`);
-
-			target.takeDamage(this.stats.damage);
+			this.dealDamage(target, this.getStat("damage"));
 		}
 	}
 
