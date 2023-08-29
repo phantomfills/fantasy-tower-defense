@@ -1,7 +1,8 @@
 import { TowerService } from "server/services/tower-service";
-import { Enemy, GenericEnemyStats } from "./enemy";
+import { Enemy, GenericEnemy, GenericEnemyStats } from "./enemy";
 import { RunService } from "@rbxts/services";
 import Maid from "@rbxts/maid";
+import { Signal } from "@rbxts/beacon";
 
 export interface TowerModel extends Model {
 	humanoidRootPart: BasePart & {
@@ -18,11 +19,17 @@ export interface GenericTowerStats {
 
 export type GenericTower = Tower<GenericTowerStats>;
 
+export type DamageDealtInfo = {
+	damage: number;
+};
+
 export class Tower<T extends GenericTowerStats> {
 	private rootPart: BasePart & {
 		rootAttachment: Attachment;
 	};
 	private rootAttachment: Attachment;
+
+	readonly dealDamage: Signal<[tower: GenericTower, info: DamageDealtInfo]>;
 
 	private maid: Maid;
 
@@ -32,8 +39,11 @@ export class Tower<T extends GenericTowerStats> {
 
 		this.model.PivotTo(stats.cframe);
 
+		this.dealDamage = new Signal();
+
 		this.maid = new Maid();
 		this.maid.GiveTask(this.model);
+		this.maid.GiveTask(this.dealDamage);
 
 		this.start();
 	}
@@ -46,16 +56,15 @@ export class Tower<T extends GenericTowerStats> {
 		for (;;) {
 			task.wait(this.stats.firerate);
 
-			const target = this.towerService.getClosestTarget(this);
-			if (!target.exists) continue;
-
-			this.dealDamage(target.value, this.getStat("damage"));
+			this.dealDamage.Fire(this, {
+				damage: this.getStat("damage"),
+			});
 		}
 	}
 
-	private dealDamage<T extends GenericEnemyStats>(enemy: Enemy<T>, damage: number) {
-		enemy.takeDamage(damage);
-	}
+	// private dealDamage<T extends GenericEnemyStats>(enemy: Enemy<T>, damage: number) {
+	// 	enemy.takeDamage(damage);
+	// }
 
 	private destroy() {
 		this.maid.Destroy();
