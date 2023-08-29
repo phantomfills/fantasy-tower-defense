@@ -25,7 +25,7 @@ export class Tower<T extends GenericTowerStats> {
 	};
 	private rootAttachment: Attachment;
 
-	private stats: T;
+	private readonly stats: T;
 
 	private maid: Maid;
 
@@ -41,26 +41,29 @@ export class Tower<T extends GenericTowerStats> {
 		this.maid = new Maid();
 		this.maid.GiveTask(this.model);
 
-		this.initiate();
+		this.start();
 	}
 
-	initiate() {
-		this.maid.GiveTask(
-			RunService.Heartbeat.Connect(() => {
-				print("hi, from tower!");
-			}),
-		);
-
-		task.wait(4);
-
-		this.destroy();
+	getStat<T extends keyof GenericTowerStats>(stat: T): GenericTowerStats[T] {
+		return this.stats[stat];
 	}
 
-	dealDamage<T extends GenericEnemyStats>(enemy: Enemy<T>, damage: number) {
+	private async start() {
+		for (;;) {
+			task.wait(1);
+
+			const target = this.towerService.getClosestTarget(this);
+			if (!target) continue;
+
+			print(target.id);
+		}
+	}
+
+	private dealDamage<T extends GenericEnemyStats>(enemy: Enemy<T>, damage: number) {
 		enemy.takeDamage(damage);
 	}
 
-	destroy() {
+	private destroy() {
 		this.maid.Destroy();
 	}
 }

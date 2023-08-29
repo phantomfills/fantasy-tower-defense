@@ -39,6 +39,8 @@ export class Enemy<T extends GenericEnemyStats> {
 
 	private maid: Maid;
 
+	private cframe: CFrame;
+
 	readonly id: string;
 
 	constructor(model: EnemyModel, path: PathWaypoint[], stats: T) {
@@ -59,6 +61,8 @@ export class Enemy<T extends GenericEnemyStats> {
 		this.alignOrientation.RigidityEnabled = true;
 		this.alignOrientation.Attachment0 = this.rootAttachment;
 		this.alignOrientation.Parent = this.rootAttachment;
+
+		this.cframe = this.rootAttachment.WorldCFrame;
 
 		this.stats = stats;
 
@@ -106,6 +110,10 @@ export class Enemy<T extends GenericEnemyStats> {
 		this.alignOrientation.Attachment1 = pathWaypoint.waypointAttachment;
 	}
 
+	getCFrame() {
+		return this.cframe;
+	}
+
 	async moveToPathWaypointUntilTouching(pathWaypoint: PathWaypoint) {
 		this.setTargetPathWaypoint(pathWaypoint);
 
@@ -122,6 +130,8 @@ export class Enemy<T extends GenericEnemyStats> {
 		});
 
 		while (!touchingPathWaypoint && !cancelTouchingPathWaypointCheck) {
+			this.cframe = this.rootAttachment.WorldCFrame;
+
 			touchingPathWaypoint = checkTouchingPathWaypoint();
 			RunService.Heartbeat.Wait();
 		}

@@ -6,6 +6,14 @@
 	],
 	"tree": {
 		"$className": "DataModel",
+		"MaterialService": {
+			"$className": "MaterialService",
+			"$properties": {
+				"Use2022MaterialsXml": {
+					"Bool": true
+				}
+			}
+		},
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
 			"TS": {
