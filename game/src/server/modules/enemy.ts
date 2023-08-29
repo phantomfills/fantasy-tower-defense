@@ -41,7 +41,7 @@ export class Enemy<T extends GenericEnemyStats> {
 
 	private cframe: CFrame;
 
-	readonly id: string;
+	private readonly id: string;
 
 	constructor(model: EnemyModel, path: PathWaypoint[], stats: T) {
 		this.model = model;
@@ -83,18 +83,22 @@ export class Enemy<T extends GenericEnemyStats> {
 	}
 
 	takeDamage(damage: number) {
+		print(`Taking damage... (${damage})`);
+
 		this.stats.health -= damage;
+
+		if (this.stats.health <= 0) this.destroy();
 	}
 
-	getHealth(): number {
+	private getHealth(): number {
 		return this.stats.health;
 	}
 
-	getMaxHealth(): number {
+	private getMaxHealth(): number {
 		return this.stats.maxHealth;
 	}
 
-	snapToPathWaypoint(pathWaypoint: PathWaypoint) {
+	private snapToPathWaypoint(pathWaypoint: PathWaypoint) {
 		const rootAttachmentOffset = this.rootAttachment.Position; // relative to root part
 
 		const waypointAttachment = pathWaypoint.waypointAttachment;
@@ -105,7 +109,7 @@ export class Enemy<T extends GenericEnemyStats> {
 		this.model.PivotTo(waypointAttachmentWorldCFrameWithRootAttachmentOffset);
 	}
 
-	setTargetPathWaypoint(pathWaypoint: PathWaypoint) {
+	private setTargetPathWaypoint(pathWaypoint: PathWaypoint) {
 		this.alignPosition.Attachment1 = pathWaypoint.waypointAttachment;
 		this.alignOrientation.Attachment1 = pathWaypoint.waypointAttachment;
 	}
@@ -114,7 +118,11 @@ export class Enemy<T extends GenericEnemyStats> {
 		return this.cframe;
 	}
 
-	async moveToPathWaypointUntilTouching(pathWaypoint: PathWaypoint) {
+	getId() {
+		return this.id;
+	}
+
+	private async moveToPathWaypointUntilTouching(pathWaypoint: PathWaypoint) {
 		this.setTargetPathWaypoint(pathWaypoint);
 
 		const checkTouchingPathWaypoint = () => {
@@ -139,7 +147,7 @@ export class Enemy<T extends GenericEnemyStats> {
 		return;
 	}
 
-	async progressThroughPath() {
+	private async progressThroughPath() {
 		let cancelPathProgress = false;
 
 		this.maid.GiveTask(() => {
@@ -155,17 +163,17 @@ export class Enemy<T extends GenericEnemyStats> {
 		this.destroy(); // when reaching the end of the path
 	}
 
-	getDistanceToPathWaypoint(pathWaypoint: PathWaypoint) {
+	private getDistanceToPathWaypoint(pathWaypoint: PathWaypoint) {
 		const waypointAttachment = pathWaypoint.waypointAttachment;
 		return this.rootAttachment.WorldPosition.sub(waypointAttachment.WorldPosition).Magnitude;
 	}
 
-	isTouchingPathWaypoint(pathWaypoint: PathWaypoint) {
+	private isTouchingPathWaypoint(pathWaypoint: PathWaypoint) {
 		const distance = this.getDistanceToPathWaypoint(pathWaypoint);
 		return distance <= 0.1;
 	}
 
-	destroy() {
+	private destroy() {
 		this.maid.Destroy();
 	}
 }

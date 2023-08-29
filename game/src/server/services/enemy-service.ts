@@ -20,7 +20,7 @@ export class EnemyService implements OnStart {
 
 		enemy.onDeath.Connect(() => {
 			this.enemies = this.enemies.filter((currentEnemy) => {
-				return enemy.id !== currentEnemy.id;
+				return enemy.getId() !== currentEnemy.getId();
 			});
 		});
 	}

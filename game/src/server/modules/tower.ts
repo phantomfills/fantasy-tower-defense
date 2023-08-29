@@ -19,24 +19,18 @@ export interface GenericTowerStats {
 export type GenericTower = Tower<GenericTowerStats>;
 
 export class Tower<T extends GenericTowerStats> {
-	private model: TowerModel;
 	private rootPart: BasePart & {
 		rootAttachment: Attachment;
 	};
 	private rootAttachment: Attachment;
 
-	private readonly stats: T;
-
 	private maid: Maid;
 
-	constructor(model: TowerModel, stats: T, private towerService: TowerService) {
-		this.model = model;
+	constructor(private model: TowerModel, private readonly stats: T, private towerService: TowerService) {
 		this.rootPart = this.model.humanoidRootPart;
 		this.rootAttachment = this.rootPart.rootAttachment;
 
 		this.model.PivotTo(stats.cframe);
-
-		this.stats = stats;
 
 		this.maid = new Maid();
 		this.maid.GiveTask(this.model);
@@ -50,12 +44,14 @@ export class Tower<T extends GenericTowerStats> {
 
 	private async start() {
 		for (;;) {
-			task.wait(1);
+			task.wait(this.stats.firerate);
 
 			const target = this.towerService.getClosestTarget(this);
 			if (!target) continue;
 
-			print(target.id);
+			print(`${target.getId()} taking damage...`);
+
+			target.takeDamage(this.stats.damage);
 		}
 	}
 

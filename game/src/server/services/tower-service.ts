@@ -49,7 +49,7 @@ export class TowerService implements OnStart {
 		const archer = new Tower<GenericTowerStats>(
 			archerModel,
 			{
-				damage: 1,
+				damage: 10,
 				firerate: 1,
 				range: 1,
 				cframe: towerCFrame,
