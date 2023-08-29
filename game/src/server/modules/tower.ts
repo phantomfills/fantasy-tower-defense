@@ -47,9 +47,9 @@ export class Tower<T extends GenericTowerStats> {
 			task.wait(this.stats.firerate);
 
 			const target = this.towerService.getClosestTarget(this);
-			if (!target) continue;
+			if (!target.exists) continue;
 
-			this.dealDamage(target, this.getStat("damage"));
+			this.dealDamage(target.value, this.getStat("damage"));
 		}
 	}
 

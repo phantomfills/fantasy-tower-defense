@@ -4,6 +4,15 @@ import { Workspace, ServerStorage } from "@rbxts/services";
 import { EnemyService } from "./enemy-service";
 import { GenericEnemy } from "server/modules/enemy";
 
+type Possible<Value> =
+	| {
+			exists: true;
+			value: Value;
+	  }
+	| {
+			exists: false;
+	  };
+
 @Service({})
 export class TowerService implements OnStart {
 	private towers: GenericTower[];
@@ -20,11 +29,16 @@ export class TowerService implements OnStart {
 		return this.towers;
 	}
 
-	getClosestTarget(tower: GenericTower): GenericEnemy | undefined {
+	getClosestTarget(tower: GenericTower): Possible<GenericEnemy> {
 		const cframe = tower.getStat("cframe");
 		const position = cframe.Position;
 
 		const enemies = this.enemyService.getEnemies();
+		if (enemies.isEmpty())
+			return {
+				exists: false,
+			};
+
 		enemies.sort((last, current) => {
 			const lastPosition = last.getCFrame().Position;
 			const distanceToLast = position.sub(lastPosition).Magnitude;
@@ -35,7 +49,10 @@ export class TowerService implements OnStart {
 			return distanceToLast < distanceToCurrent;
 		});
 
-		return enemies[0];
+		return {
+			exists: true,
+			value: enemies[0],
+		};
 	}
 
 	onStart() {
