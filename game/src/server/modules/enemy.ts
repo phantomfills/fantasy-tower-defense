@@ -83,8 +83,6 @@ export class Enemy<T extends GenericEnemyStats> {
 	}
 
 	takeDamage(damage: number) {
-		print(`Taking damage... (${damage})`);
-
 		this.stats.health -= damage;
 
 		if (this.stats.health <= 0) this.destroy();
