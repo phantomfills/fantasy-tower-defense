@@ -2,15 +2,7 @@ import Roact, { useState } from "@rbxts/roact";
 import Maid from "@rbxts/maid";
 import { useUnmountEffect } from "@rbxts/pretty-react-hooks";
 import { UserInputService } from "@rbxts/services";
-
-type Possible<T> =
-	| {
-			exists: true;
-			value: T;
-	  }
-	| {
-			exists: false;
-	  };
+import { Possible } from "shared/modules/possible-type";
 
 interface HotbarSlotProps {
 	slotNumber: number;

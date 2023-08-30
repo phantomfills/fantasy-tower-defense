@@ -3,15 +3,7 @@ import { TowerService } from "./tower-service";
 import { EnemyService } from "./enemy-service";
 import { GenericEnemy } from "server/modules/enemy";
 import { GenericTower } from "server/modules/tower";
-
-export type Possible<Value> =
-	| {
-			exists: true;
-			value: Value;
-	  }
-	| {
-			exists: false;
-	  };
+import { Possible } from "shared/modules/possible-type";
 
 @Service({})
 export class LevelService implements OnStart {

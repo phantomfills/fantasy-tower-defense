@@ -28,32 +28,6 @@ export class TowerService implements OnStart {
 		return this.towers;
 	}
 
-	// getClosestTarget(tower: GenericTower): Possible<GenericEnemy> {
-	// 	const cframe = tower.getStat("cframe");
-	// 	const position = cframe.Position;
-
-	// 	const enemies = this.enemyService.getEnemies();
-	// 	if (enemies.isEmpty())
-	// 		return {
-	// 			exists: false,
-	// 		};
-
-	// 	enemies.sort((last, current) => {
-	// 		const lastPosition = last.getCFrame().Position;
-	// 		const distanceToLast = position.sub(lastPosition).Magnitude;
-
-	// 		const currentPosition = current.getCFrame().Position;
-	// 		const distanceToCurrent = position.sub(currentPosition).Magnitude;
-
-	// 		return distanceToLast < distanceToCurrent;
-	// 	});
-
-	// 	return {
-	// 		exists: true,
-	// 		value: enemies[0],
-	// 	};
-	// }
-
 	onStart() {
 		const towerCFrame = new CFrame(11, 4, -13);
 
