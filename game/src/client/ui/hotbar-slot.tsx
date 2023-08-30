@@ -1,8 +1,9 @@
-import Roact, { useState } from "@rbxts/roact";
+import Roact, { useEffect, useState } from "@rbxts/roact";
 import Maid from "@rbxts/maid";
-import { useUnmountEffect } from "@rbxts/pretty-react-hooks";
+import { useMotor, useUnmountEffect, useBindingListener, Spring, lerp, lerpBinding } from "@rbxts/pretty-react-hooks";
 import { UserInputService } from "@rbxts/services";
 import { Possible } from "shared/modules/possible-type";
+import { CashLabel } from "./cash-label";
 
 interface HotbarSlotProps {
 	slotNumber: number;
@@ -37,8 +38,19 @@ const getKeyCodeFromSlotNumber = (slotNumber: number): Possible<Enum.KeyCode> =>
 export const HotbarSlot = (props: HotbarSlotProps) => {
 	const { slotNumber } = props;
 
-	const [hovering, updateHovering] = useState(false);
+	const [hovering, setHovering] = useState(false);
+	const [transition, setTransition] = useMotor(0);
+
 	const maid = new Maid();
+
+	useEffect(() => {
+		setTransition(
+			new Spring(hovering ? 1 : 0, {
+				dampingRatio: 0.9,
+				frequency: 5,
+			}),
+		);
+	}, [hovering]);
 
 	useUnmountEffect(() => {
 		maid.Destroy();
@@ -52,7 +64,7 @@ export const HotbarSlot = (props: HotbarSlotProps) => {
 			if (!keyCode.exists) return;
 			if (keyCode.value !== input.KeyCode) return;
 
-			updateHovering(true);
+			setHovering(true);
 		}),
 	);
 
@@ -62,28 +74,28 @@ export const HotbarSlot = (props: HotbarSlotProps) => {
 			if (!keyCode.exists) return;
 			if (keyCode.value !== input.KeyCode) return;
 
-			updateHovering(false);
+			setHovering(false);
 		}),
 	);
 
 	return (
 		<textbutton
-			BackgroundColor3={Color3.fromRGB(32, 32, 32)}
+			BackgroundColor3={lerpBinding(transition, Color3.fromRGB(25, 25, 25), Color3.fromRGB(60, 60, 60))}
 			BackgroundTransparency={0.12}
 			Text=""
 			AutoButtonColor={false}
 			Event={{
 				MouseEnter: () => {
-					updateHovering(true);
+					setHovering(true);
 				},
 				MouseLeave: () => {
-					updateHovering(false);
+					setHovering(false);
 				},
 				MouseButton1Down: () => {
-					updateHovering(false);
+					setHovering(false);
 				},
 				MouseButton1Up: () => {
-					updateHovering(true);
+					setHovering(true);
 				},
 			}}
 		>
@@ -102,8 +114,9 @@ export const HotbarSlot = (props: HotbarSlotProps) => {
 				Text={tostring(slotNumber)}
 				Font={Enum.Font.GothamBold}
 			>
-				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={1} />
+				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={3} />
 			</textlabel>
+			<CashLabel position={new UDim2(0, 0, 0.7, 0)} size={new UDim2(1, 0, 0.3, 0)} value={2000} />
 		</textbutton>
 	);
 };

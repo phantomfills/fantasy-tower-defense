@@ -8,7 +8,7 @@ interface HotbarSlotsProps {
 export const HotbarSlots = (props: HotbarSlotsProps) => {
 	const slotItems = new Array<Roact.Element>();
 	for (let i = 0; i < props.slots; i++) {
-		slotItems.push(<HotbarSlot slotNumber={i + 1} />);
+		slotItems.push(<HotbarSlot key={i} slotNumber={i + 1} />);
 	}
 
 	return <>{...slotItems}</>;

@@ -35,6 +35,7 @@
     "@rbxts/react-roblox": "^0.1.2",
     "@rbxts/roact": "npm:@rbxts/react-ts@^1.0.1",
     "@rbxts/roact-hooked": "^2.6.1",
+    "@rbxts/roact-hooks": "^0.4.1-ts.3",
     "@rbxts/roact-spring": "^2.0.0",
     "@rbxts/signal": "^1.1.1",
     "io-serve": "^1.1.2"
