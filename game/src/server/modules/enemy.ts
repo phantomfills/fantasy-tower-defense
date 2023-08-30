@@ -78,6 +78,8 @@ export class Enemy<T extends GenericEnemyStats> {
 		});
 		this.maid.GiveTask(this.model);
 
+		this.model.humanoidRootPart.SetNetworkOwner(undefined);
+
 		this.snapToPathWaypoint(this.path[0]);
 		this.progressThroughPath();
 	}
