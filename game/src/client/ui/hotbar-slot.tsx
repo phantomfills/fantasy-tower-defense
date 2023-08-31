@@ -7,6 +7,7 @@ import { CashLabel } from "./cash-label";
 
 interface HotbarSlotProps {
 	slotNumber: number;
+	imageId: number;
 	children?: ReadonlyArray<Roact.Element>;
 }
 
@@ -37,7 +38,7 @@ const getKeyCodeFromSlotNumber = (slotNumber: number): Possible<Enum.KeyCode> =>
 };
 
 export const HotbarSlot = (props: HotbarSlotProps) => {
-	const { slotNumber, children } = props;
+	const { slotNumber, imageId, children } = props;
 
 	const [hovering, setHovering] = useState(false);
 	const [transition, setTransition] = useMotor(0);
@@ -101,7 +102,8 @@ export const HotbarSlot = (props: HotbarSlotProps) => {
 			}}
 		>
 			{children}
-			<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Width} AspectRatio={1} />
+			<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={`rbxassetid://${imageId}`} />
+			<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Height} AspectRatio={1} />
 			<uicorner CornerRadius={new UDim(0.5, 0)} />
 			<uistroke
 				Color={hovering ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(80, 80, 80)}

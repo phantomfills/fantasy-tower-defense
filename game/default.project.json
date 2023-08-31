@@ -34,6 +34,42 @@
 					}
 				}
 			},
+			"assets": {
+				"$className": "Folder",
+				"enemies": {
+					"$className": "Folder",
+					"foo": {
+						"$className": "Folder",
+						"models": {
+							"$className": "Folder",
+							"foo": {
+								"$path": "assets/foo.rbxm"
+							}
+						}
+					}
+				},
+				"towers": {
+					"$className": "Folder",
+					"archer": {
+						"$className": "Folder",
+						"models": {
+							"$className": "Folder",
+							"archer": {
+								"$path": "assets/archer.rbxm"
+							}
+						},
+						"images": {
+							"$className": "Folder",
+							"placement": {
+								"$className": "NumberValue",
+								"$properties": {
+									"Value": 139656808
+								}
+							}
+						}
+					}
+				}
+			},
 			"TS": {
 				"$path": "out/shared"
 			}
@@ -75,34 +111,7 @@
 			}
 		},
 		"ServerStorage": {
-			"$className": "ServerStorage",
-			"assets": {
-				"$className": "Folder",
-				"enemies": {
-					"$className": "Folder",
-					"foo": {
-						"$className": "Folder",
-						"models": {
-							"$className": "Folder",
-							"foo": {
-								"$path": "assets/foo.rbxm"
-							}
-						}
-					}
-				},
-				"towers": {
-					"$className": "Folder",
-					"archer": {
-						"$className": "Folder",
-						"models": {
-							"$className": "Folder",
-							"archer": {
-								"$path": "assets/archer.rbxm"
-							}
-						}
-					}
-				}
-			}
+			"$className": "ServerStorage"
 		},
 		"Lighting": {
 			"$className": "Lighting",

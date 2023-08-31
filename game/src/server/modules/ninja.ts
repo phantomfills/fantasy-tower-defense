@@ -1,9 +1,9 @@
 import { Enemy, GenericEnemyStats, PathWaypoint } from "./enemy";
-import { ServerStorage, Workspace } from "@rbxts/services";
+import { ReplicatedStorage, Workspace } from "@rbxts/services";
 
 export class Ninja extends Enemy<GenericEnemyStats> {
 	constructor(path: PathWaypoint[]) {
-		const fooTemplate = ServerStorage.assets.enemies.foo.models.foo;
+		const fooTemplate = ReplicatedStorage.assets.enemies.foo.models.foo;
 
 		const fooModel = fooTemplate.Clone();
 		fooModel.Parent = Workspace;

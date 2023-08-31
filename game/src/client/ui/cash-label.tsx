@@ -18,7 +18,7 @@ export const CashLabel = (props: CashLabelProps) => {
 				Image={"rbxassetid://1022613008"}
 				ZIndex={2}
 			>
-				<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Width} AspectRatio={1} />
+				<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Height} AspectRatio={1} />
 			</imagelabel>
 			<textlabel
 				Size={new UDim2(0.7, 0, 1, 0)}
