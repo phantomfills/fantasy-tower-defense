@@ -18,6 +18,7 @@ export const HotbarFrame = (props: HotbarProps) => {
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 				FillDirection={Enum.FillDirection.Horizontal}
+				Padding={new UDim(0, 10)}
 			/>
 			<frame key={1} BackgroundTransparency={1} Size={new UDim2(0.1 * towers.size(), 0, 1, 0)}>
 				<uigridlayout
@@ -31,7 +32,7 @@ export const HotbarFrame = (props: HotbarProps) => {
 			</frame>
 			<CashLabel
 				key={2}
-				value={20000}
+				value={3500}
 				size={new UDim2(0.1, 0, 0.3, 0)}
 				textXAlignment={Enum.TextXAlignment.Left}
 			/>

@@ -1,49 +1,19 @@
 import Roact, { useEffect, useState } from "@rbxts/roact";
-import Maid from "@rbxts/maid";
-import { useMotor, useUnmountEffect, useBindingListener, Spring, lerp, lerpBinding } from "@rbxts/pretty-react-hooks";
-import { UserInputService } from "@rbxts/services";
-import { Possible } from "shared/modules/possible-type";
+import { useMotor, Spring, lerpBinding } from "@rbxts/pretty-react-hooks";
 import { CashLabel } from "./cash-label";
 
 interface HotbarSlotProps {
 	slotNumber: number;
+	callback: () => void;
 	imageId: number;
 	children?: ReadonlyArray<Roact.Element>;
 }
 
-const slotNumberToKeyCode = [
-	Enum.KeyCode.One,
-	Enum.KeyCode.Two,
-	Enum.KeyCode.Three,
-	Enum.KeyCode.Four,
-	Enum.KeyCode.Five,
-	Enum.KeyCode.Six,
-	Enum.KeyCode.Seven,
-	Enum.KeyCode.Eight,
-	Enum.KeyCode.Nine,
-	Enum.KeyCode.Zero,
-] as const;
-
-const getKeyCodeFromSlotNumber = (slotNumber: number): Possible<Enum.KeyCode> => {
-	const keyCode = slotNumberToKeyCode[slotNumber];
-	if (!keyCode)
-		return {
-			exists: false,
-		};
-
-	return {
-		exists: true,
-		value: keyCode,
-	};
-};
-
 export const HotbarSlot = (props: HotbarSlotProps) => {
-	const { slotNumber, imageId, children } = props;
+	const { slotNumber, imageId, children, callback } = props;
 
 	const [hovering, setHovering] = useState(false);
 	const [transition, setTransition] = useMotor(0);
-
-	const maid = new Maid();
 
 	useEffect(() => {
 		setTransition(
@@ -53,32 +23,6 @@ export const HotbarSlot = (props: HotbarSlotProps) => {
 			}),
 		);
 	}, [hovering]);
-
-	useUnmountEffect(() => {
-		maid.Destroy();
-	});
-
-	const keyCode = getKeyCodeFromSlotNumber(slotNumber - 1);
-
-	maid.GiveTask(
-		UserInputService.InputBegan.Connect((input, processed) => {
-			if (processed) return;
-			if (!keyCode.exists) return;
-			if (keyCode.value !== input.KeyCode) return;
-
-			setHovering(true);
-		}),
-	);
-
-	maid.GiveTask(
-		UserInputService.InputEnded.Connect((input, processed) => {
-			if (processed) return;
-			if (!keyCode.exists) return;
-			if (keyCode.value !== input.KeyCode) return;
-
-			setHovering(false);
-		}),
-	);
 
 	return (
 		<textbutton
@@ -94,6 +38,7 @@ export const HotbarSlot = (props: HotbarSlotProps) => {
 					setHovering(false);
 				},
 				MouseButton1Down: () => {
+					callback();
 					setHovering(false);
 				},
 				MouseButton1Up: () => {

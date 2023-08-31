@@ -8,18 +8,9 @@ export = (target: Frame): (() => void) => {
 			towers={[
 				{
 					placementImageId: 139656808,
-				},
-				{
-					placementImageId: 139656808,
-				},
-				{
-					placementImageId: 139656808,
-				},
-				{
-					placementImageId: 139656808,
-				},
-				{
-					placementImageId: 139656808,
+					callback: () => {
+						print("hello, world!");
+					},
 				},
 			]}
 		/>

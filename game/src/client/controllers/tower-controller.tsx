@@ -25,18 +25,12 @@ export class TowerController implements OnStart {
 				towers={[
 					{
 						placementImageId: placementImage.Value,
+						callback: () => {
+							print("Hello, world!");
+						},
 					},
 				]}
 			/>,
 		);
-
-		/**
-		 * What will a Hotbar component with Archer tower look like?
-		 * <Hotbar towers={
-		 *	archer: {
-				placementImageId: PLACEMENT_IMAGE_ID
-		 }
-		 * } />
-		 */
 	}
 }

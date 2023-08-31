@@ -3,6 +3,7 @@ import { HotbarFrame } from "./hotbar-frame";
 
 export interface HotbarTower {
 	placementImageId: number;
+	callback: () => void;
 }
 
 export type HotbarTowers = HotbarTower[];
