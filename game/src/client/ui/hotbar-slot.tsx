@@ -105,7 +105,7 @@ export const HotbarSlot = (props: HotbarSlotProps) => {
 			<uicorner CornerRadius={new UDim(0.5, 0)} />
 			<uistroke
 				Color={hovering ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(80, 80, 80)}
-				Thickness={1}
+				Thickness={2}
 				ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
 			/>
 			<textlabel
@@ -116,7 +116,7 @@ export const HotbarSlot = (props: HotbarSlotProps) => {
 				Text={tostring(slotNumber)}
 				Font={Enum.Font.GothamBold}
 			>
-				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={3} />
+				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={2} />
 			</textlabel>
 			<CashLabel position={new UDim2(0, 0, 0.7, 0)} size={new UDim2(1, 0, 0.3, 0)} value={2000} />
 		</textbutton>

@@ -31,7 +31,7 @@ export const CashLabel = (props: CashLabelProps) => {
 				TextXAlignment={textXAlignment}
 				ZIndex={1}
 			>
-				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={3} />
+				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={2} />
 			</textlabel>
 		</frame>
 	);
