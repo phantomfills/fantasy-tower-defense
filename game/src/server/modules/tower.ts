@@ -27,15 +27,13 @@ export class Tower<T extends GenericTowerStats> {
 	private rootPart: BasePart & {
 		rootAttachment: Attachment;
 	};
-	private rootAttachment: Attachment;
 
 	readonly dealDamage: Signal<[tower: GenericTower, info: DamageDealtInfo]>;
 
 	private maid: Maid;
 
-	constructor(private model: TowerModel, private readonly stats: T, private towerService: TowerService) {
+	constructor(private model: TowerModel, private readonly stats: T) {
 		this.rootPart = this.model.humanoidRootPart;
-		this.rootAttachment = this.rootPart.rootAttachment;
 
 		this.model.PivotTo(stats.cframe);
 
@@ -61,10 +59,6 @@ export class Tower<T extends GenericTowerStats> {
 			});
 		}
 	}
-
-	// private dealDamage<T extends GenericEnemyStats>(enemy: Enemy<T>, damage: number) {
-	// 	enemy.takeDamage(damage);
-	// }
 
 	private destroy() {
 		this.maid.Destroy();

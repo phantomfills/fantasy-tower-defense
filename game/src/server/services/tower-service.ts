@@ -33,16 +33,12 @@ export class TowerService implements OnStart {
 		const archerTemplate = ServerStorage.assets.towers.archer.models.archer;
 		const archerModel = archerTemplate.Clone();
 		archerModel.Parent = Workspace;
-		const archer = new Tower<GenericTowerStats>(
-			archerModel,
-			{
-				damage: 10,
-				firerate: 1,
-				range: 1,
-				cframe: towerCFrame,
-			},
-			this,
-		);
+		const archer = new Tower<GenericTowerStats>(archerModel, {
+			damage: 10,
+			firerate: 1,
+			range: 1,
+			cframe: towerCFrame,
+		});
 		this.addTower(archer);
 	}
 }
