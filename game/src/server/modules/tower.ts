@@ -50,6 +50,18 @@ export class Tower<T extends GenericTowerStats> {
 		return this.stats[stat];
 	}
 
+	pointTowardsEnemy(enemy: GenericEnemy) {
+		const towerCFrame = this.getStat("cframe");
+		const enemyCFrame = enemy.getCFrame();
+
+		const towerPosition = towerCFrame.Position;
+		const enemyPosition = enemyCFrame.Position;
+
+		const enemyPositionWithTowerY = new Vector3(enemyPosition.X, towerPosition.Y, enemyPosition.Z);
+
+		this.model.PivotTo(new CFrame(towerPosition, enemyPositionWithTowerY));
+	}
+
 	private async start() {
 		for (;;) {
 			task.wait(this.stats.firerate);

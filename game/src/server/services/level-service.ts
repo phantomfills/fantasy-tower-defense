@@ -17,6 +17,7 @@ export class LevelService implements OnStart {
 			if (!closestEnemyToTower.exists) return;
 
 			closestEnemyToTower.value.takeDamage(info.damage);
+			tower.pointTowardsEnemy(closestEnemyToTower.value);
 		});
 	}
 
