@@ -30,12 +30,9 @@ export class TowerService implements OnStart {
 
 	onStart() {
 		const towerCFrame = new CFrame(11, 4, -13);
-
 		const archerTemplate = ServerStorage.assets.towers.archer.models.archer;
-
 		const archerModel = archerTemplate.Clone();
 		archerModel.Parent = Workspace;
-
 		const archer = new Tower<GenericTowerStats>(
 			archerModel,
 			{
@@ -46,7 +43,6 @@ export class TowerService implements OnStart {
 			},
 			this,
 		);
-
 		this.addTower(archer);
 	}
 }

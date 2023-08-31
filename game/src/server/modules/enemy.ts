@@ -28,10 +28,7 @@ export class Enemy<T extends GenericEnemyStats> {
 	};
 	private rootAttachment: Attachment;
 
-	private alignPosition: AlignPosition;
-	private alignOrientation: AlignOrientation;
-
-	private path: PathWaypoint[];
+	private readonly path: PathWaypoint[];
 
 	private stats: T;
 
@@ -40,6 +37,7 @@ export class Enemy<T extends GenericEnemyStats> {
 	private maid: Maid;
 
 	private cframe: CFrame;
+	private rotation: CFrame;
 
 	private readonly id: string;
 
@@ -50,19 +48,8 @@ export class Enemy<T extends GenericEnemyStats> {
 
 		this.path = path;
 
-		this.alignPosition = new Instance("AlignPosition");
-		this.alignPosition.MaxForce = math.huge;
-		this.alignPosition.MaxVelocity = stats.speed;
-		this.alignPosition.Responsiveness = 200;
-		this.alignPosition.Attachment0 = this.rootAttachment;
-		this.alignPosition.Parent = this.rootAttachment;
-
-		this.alignOrientation = new Instance("AlignOrientation");
-		this.alignOrientation.RigidityEnabled = true;
-		this.alignOrientation.Attachment0 = this.rootAttachment;
-		this.alignOrientation.Parent = this.rootAttachment;
-
 		this.cframe = this.rootAttachment.WorldCFrame;
+		this.rotation = this.rootAttachment.WorldCFrame.Rotation;
 
 		this.stats = stats;
 
@@ -98,20 +85,15 @@ export class Enemy<T extends GenericEnemyStats> {
 		return this.stats.maxHealth;
 	}
 
-	private snapToPathWaypoint(pathWaypoint: PathWaypoint) {
-		const rootAttachmentOffset = this.rootAttachment.Position; // relative to root part
+	private snapToCFrame(cframe: CFrame) {
+		const rootAttachmentOffset = this.rootAttachment.Position;
 
-		const waypointAttachment = pathWaypoint.waypointAttachment;
-		const waypointAttachmentWorldCFrame = waypointAttachment.WorldCFrame;
-		const waypointAttachmentWorldCFrameWithRootAttachmentOffset =
-			waypointAttachmentWorldCFrame.sub(rootAttachmentOffset);
-
-		this.model.PivotTo(waypointAttachmentWorldCFrameWithRootAttachmentOffset);
+		const cframeWithRootAttachmentOffset = cframe.sub(rootAttachmentOffset);
+		this.model.PivotTo(cframeWithRootAttachmentOffset);
 	}
 
-	private setTargetPathWaypoint(pathWaypoint: PathWaypoint) {
-		this.alignPosition.Attachment1 = pathWaypoint.waypointAttachment;
-		this.alignOrientation.Attachment1 = pathWaypoint.waypointAttachment;
+	private snapToPathWaypoint(pathWaypoint: PathWaypoint) {
+		this.snapToCFrame(pathWaypoint.waypointAttachment.WorldCFrame);
 	}
 
 	getCFrame() {
@@ -122,25 +104,35 @@ export class Enemy<T extends GenericEnemyStats> {
 		return this.id;
 	}
 
-	private async moveToPathWaypointUntilTouching(pathWaypoint: PathWaypoint) {
-		this.setTargetPathWaypoint(pathWaypoint);
+	private async moveToPathWaypointUntilTouching(previousPathWaypoint: PathWaypoint, nextPathWaypoint: PathWaypoint) {
+		const previousPosition = previousPathWaypoint.waypointAttachment.WorldPosition;
+		const nextPosition = nextPathWaypoint.waypointAttachment.WorldPosition;
 
-		const checkTouchingPathWaypoint = () => {
-			const touchingPathWaypoint = this.isTouchingPathWaypoint(pathWaypoint);
-			return touchingPathWaypoint;
-		};
+		const dist = previousPosition.sub(nextPosition).Magnitude;
+
+		const totalTime = dist / this.stats.speed;
+
+		const startTime = DateTime.now().UnixTimestampMillis / 1000;
 
 		let touchingPathWaypoint = false;
 		let cancelTouchingPathWaypointCheck = false;
-
 		this.maid.GiveTask(() => {
 			cancelTouchingPathWaypointCheck = true;
 		});
 
-		while (!touchingPathWaypoint && !cancelTouchingPathWaypointCheck) {
-			this.cframe = this.rootAttachment.WorldCFrame;
+		this.rotation = nextPathWaypoint.waypointAttachment.WorldCFrame.Rotation;
 
-			touchingPathWaypoint = checkTouchingPathWaypoint();
+		while (!touchingPathWaypoint && !cancelTouchingPathWaypointCheck) {
+			const now = DateTime.now().UnixTimestampMillis / 1000;
+			const elapsedTime = now - startTime;
+			const adjustedLerpAlpha = math.min(elapsedTime / totalTime, 1);
+			const lerpedPosition = previousPosition.Lerp(nextPosition, adjustedLerpAlpha);
+
+			this.cframe = new CFrame(lerpedPosition).mul(this.rotation);
+			this.snapToCFrame(this.cframe);
+
+			touchingPathWaypoint = adjustedLerpAlpha === 1;
+
 			RunService.Heartbeat.Wait();
 		}
 
@@ -154,10 +146,16 @@ export class Enemy<T extends GenericEnemyStats> {
 			cancelPathProgress = true;
 		});
 
-		for (const pathWaypoint of this.path) {
+		let pathWaypointIndex = 0;
+		while (this.path[pathWaypointIndex + 1]) {
 			if (cancelPathProgress) return;
 
-			await this.moveToPathWaypointUntilTouching(pathWaypoint);
+			const pathWaypoint = this.path[pathWaypointIndex];
+			const nextPathWaypoint = this.path[pathWaypointIndex + 1];
+
+			await this.moveToPathWaypointUntilTouching(pathWaypoint, nextPathWaypoint);
+
+			pathWaypointIndex += 1;
 		}
 
 		this.destroy(); // when reaching the end of the path
