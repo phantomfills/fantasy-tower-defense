@@ -3,12 +3,7 @@ import { Enemy, GenericEnemy, GenericEnemyStats } from "./enemy";
 import { RunService } from "@rbxts/services";
 import Maid from "@rbxts/maid";
 import { Signal } from "@rbxts/beacon";
-
-export interface TowerModel extends Model {
-	humanoidRootPart: BasePart & {
-		rootAttachment: Attachment;
-	};
-}
+import { TowerModel } from "shared/modules/tower-model-type";
 
 export interface GenericTowerStats {
 	damage: number;

@@ -1,6 +1,7 @@
 import Maid from "@rbxts/maid";
 import Signal from "@rbxts/signal";
 import { RunService, HttpService } from "@rbxts/services";
+import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 
 export interface EnemyModel extends Model {
 	humanoidRootPart: BasePart & {
@@ -86,10 +87,7 @@ export class Enemy<T extends GenericEnemyStats> {
 	}
 
 	private snapToCFrame(cframe: CFrame) {
-		const rootAttachmentOffset = this.rootAttachment.Position;
-
-		const cframeWithRootAttachmentOffset = cframe.sub(rootAttachmentOffset);
-		this.model.PivotTo(cframeWithRootAttachmentOffset);
+		snapToCFrameWithAttachmentOffset(this.model, this.rootAttachment, cframe);
 	}
 
 	private snapToPathWaypoint(pathWaypoint: PathWaypoint) {
