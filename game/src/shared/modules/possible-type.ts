@@ -7,13 +7,14 @@ export type Possible<T> =
 			exists: false;
 	  };
 
-export const optionalToPossible = <T>(value: T): Possible<T> => {
-	if (value === undefined)
+export const optionalToPossible = <T>(value: T | undefined): Possible<T> => {
+	const valueAsType = value as T;
+	if (valueAsType === undefined)
 		return {
 			exists: false,
 		};
 	return {
 		exists: true,
-		value: value,
+		value: valueAsType,
 	};
 };

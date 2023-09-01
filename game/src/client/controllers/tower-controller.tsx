@@ -5,7 +5,7 @@ import { Players } from "@rbxts/services";
 import { Hotbar } from "client/ui/hotbar";
 import { ReplicatedStorage, Workspace, RunService, UserInputService } from "@rbxts/services";
 import { TowerModel } from "shared/modules/tower-model-type";
-import { Possible } from "shared/modules/possible-type";
+import { Possible, optionalToPossible } from "shared/modules/possible-type";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
@@ -95,17 +95,15 @@ export class TowerController implements OnStart {
 
 		const mousePosition = UserInputService.GetMouseLocation();
 		const mouseRay = camera.ViewportPointToRay(mousePosition.X, mousePosition.Y);
-		const raycastResult = Workspace.Raycast(
-			mouseRay.Origin,
-			mouseRay.Direction.mul(TOWER_PLACEMENT_DISTANCE),
-			raycastParams,
+		const raycastResult = optionalToPossible<RaycastResult>(
+			Workspace.Raycast(mouseRay.Origin, mouseRay.Direction.mul(TOWER_PLACEMENT_DISTANCE), raycastParams),
 		);
-		if (!raycastResult) return;
+		if (!raycastResult.exists) return;
 
 		snapToCFrameWithAttachmentOffset(
 			tower,
 			tower.humanoidRootPart.rootAttachment,
-			new CFrame(raycastResult.Position),
+			new CFrame(raycastResult.value.Position),
 		);
 	}
 }
