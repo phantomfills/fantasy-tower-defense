@@ -22,10 +22,6 @@ export class TowerService implements OnStart {
 		});
 	}
 
-	private getTowers() {
-		return this.towers;
-	}
-
 	onStart() {
 		const towerCFrame = new CFrame(11, 4, -13);
 		const archerTemplate = ReplicatedStorage.assets.towers.archer.models.archer;

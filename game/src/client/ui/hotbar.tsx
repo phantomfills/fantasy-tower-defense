@@ -6,10 +6,8 @@ export interface HotbarTower {
 	callback: () => void;
 }
 
-export type HotbarTowers = HotbarTower[];
-
 export interface HotbarProps {
-	towers: HotbarTowers;
+	towers: HotbarTower[];
 }
 
 export const Hotbar = (props: HotbarProps) => {
