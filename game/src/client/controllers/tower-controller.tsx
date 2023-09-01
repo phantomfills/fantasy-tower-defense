@@ -4,8 +4,8 @@ import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
 import { Hotbar } from "client/ui/hotbar";
 import { ReplicatedStorage, Workspace, RunService, UserInputService } from "@rbxts/services";
-import { TowerModel } from "shared/modules/tower-model-type";
-import { Possible, optionalToPossible } from "shared/modules/possible-type";
+import { TowerModel } from "shared/modules/tower-model";
+import { Possible, possible } from "shared/modules/possible";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
@@ -95,7 +95,7 @@ export class TowerController implements OnStart {
 
 		const mousePosition = UserInputService.GetMouseLocation();
 		const mouseRay = camera.ViewportPointToRay(mousePosition.X, mousePosition.Y);
-		const raycastResult = optionalToPossible<RaycastResult>(
+		const raycastResult = possible<RaycastResult>(
 			Workspace.Raycast(mouseRay.Origin, mouseRay.Direction.mul(TOWER_PLACEMENT_DISTANCE), raycastParams),
 		);
 		if (!raycastResult.exists) return;

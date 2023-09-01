@@ -3,7 +3,7 @@ import { Enemy, GenericEnemy, GenericEnemyStats } from "./enemy";
 import { RunService } from "@rbxts/services";
 import Maid from "@rbxts/maid";
 import { Signal } from "@rbxts/beacon";
-import { TowerModel } from "shared/modules/tower-model-type";
+import { TowerModel } from "shared/modules/tower-model";
 
 export interface GenericTowerStats {
 	damage: number;
