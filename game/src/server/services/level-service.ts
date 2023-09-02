@@ -8,7 +8,7 @@ export class LevelService implements OnStart {
 
 	onStart() {
 		this.towerService.dealDamageFromTower.Connect((tower, info) => {
-			this.enemyService.dealDamageToClosestEnemy(tower, info);
+			this.enemyService.dealDamageToClosestEnemyInRange(tower, info);
 		});
 	}
 }

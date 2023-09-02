@@ -27,24 +27,31 @@ export class EnemyService implements OnStart {
 		});
 	}
 
-	dealDamageToClosestEnemy(tower: GenericTower, info: DamageDealtInfo) {
-		const closestEnemyToTower = this.getClosestEnemyToTower(tower);
+	dealDamageToClosestEnemyInRange(tower: GenericTower, info: DamageDealtInfo) {
+		const closestEnemyToTower = this.getClosestEnemyToTowerInRange(tower);
 		if (!closestEnemyToTower.exists) return;
 
 		closestEnemyToTower.value.takeDamage(info.damage);
 		tower.pointTowardsEnemy(closestEnemyToTower.value);
 	}
 
-	private getClosestEnemyToTower(tower: GenericTower): Possible<GenericEnemy> {
+	private getClosestEnemyToTowerInRange(tower: GenericTower): Possible<GenericEnemy> {
 		const cframe = tower.getStat("cframe");
 		const position = cframe.Position;
 
-		if (this.enemies.isEmpty())
+		const enemies = this.enemies.filter((enemy) => {
+			const cframe = enemy.getCFrame();
+			const position = cframe.Position;
+
+			return tower.getPositionInRange(position);
+		});
+
+		if (enemies.isEmpty())
 			return {
 				exists: false,
 			};
 
-		this.enemies.sort((last, current) => {
+		const enemiesSortedByDistanceFromTower = enemies.sort((last, current) => {
 			const lastPosition = last.getCFrame().Position;
 			const distanceToLast = position.sub(lastPosition).Magnitude;
 
@@ -56,7 +63,7 @@ export class EnemyService implements OnStart {
 
 		return {
 			exists: true,
-			value: this.enemies[0],
+			value: enemiesSortedByDistanceFromTower[0],
 		};
 	}
 
