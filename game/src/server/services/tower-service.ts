@@ -3,7 +3,6 @@ import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Archer } from "server/modules/archer";
 import { Signal } from "@rbxts/beacon";
 import { Events } from "server/network";
-import { TowerType } from "shared/modules/tower-type";
 
 const assertCannotReach = (x: never) => {
 	error("Cannot reach this place in the code");
@@ -31,7 +30,7 @@ export class TowerService implements OnStart {
 	onStart() {
 		Events.placeTower.connect((player, towerType, cframe) => {
 			switch (towerType) {
-				case "archer": {
+				case "ARCHER": {
 					const archer = new Archer(cframe);
 					this.addTower(archer);
 

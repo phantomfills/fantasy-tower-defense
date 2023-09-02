@@ -81,7 +81,7 @@ export class TowerController implements OnStart {
 							const archerClone = archerModel.Clone();
 							archerClone.Parent = Workspace;
 
-							this.setTower(archerClone, "archer");
+							this.setTower(archerClone, "ARCHER");
 						},
 					},
 				]}
