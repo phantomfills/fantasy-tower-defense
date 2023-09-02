@@ -118,8 +118,10 @@ export class Enemy<T extends GenericEnemyStats> {
 			const adjustedLerpAlpha = math.clamp(elapsedTime / totalTime, 0, 1);
 			const lerpedPosition = previousPosition.Lerp(nextPosition, adjustedLerpAlpha);
 
-			this.cframe = new CFrame(lerpedPosition).mul(this.rotation);
-			this.snapToCFrame(this.cframe);
+			this.cframe = new CFrame(lerpedPosition);
+
+			const cframeWithRotation = this.cframe.mul(this.rotation);
+			this.snapToCFrame(cframeWithRotation);
 
 			touchingPathWaypoint = adjustedLerpAlpha === 1;
 
