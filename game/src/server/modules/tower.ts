@@ -45,9 +45,29 @@ export class Tower<T extends GenericTowerStats> {
 		const towerPosition = towerCFrame.Position;
 		const enemyPosition = enemyCFrame.Position;
 
-		const enemyPositionWithTowerY = new Vector3(enemyPosition.X, towerPosition.Y, enemyPosition.Z);
+		const enemyPositionWithTowerY = this.getPositionWithTowerY(enemyPosition);
 
 		this.snapToCFrame(new CFrame(towerPosition, enemyPositionWithTowerY));
+	}
+
+	getPositionInRange(position: Vector3) {
+		const towerCframe = this.getStat("cframe");
+		const towerPosition = towerCframe.Position;
+
+		const positionWithTowerY = this.getPositionWithTowerY(position);
+
+		const distance = towerPosition.sub(positionWithTowerY).Magnitude;
+
+		return distance < this.getStat("range");
+	}
+
+	private getPositionWithTowerY(position: Vector3) {
+		const towerCFrame = this.getStat("cframe");
+		const towerPosition = towerCFrame.Position;
+
+		const positionWithTowerY = new Vector3(position.X, towerPosition.Y, position.Z);
+
+		return positionWithTowerY;
 	}
 
 	private snapToCFrame(cframe: CFrame) {
