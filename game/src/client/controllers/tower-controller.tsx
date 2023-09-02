@@ -7,6 +7,7 @@ import { ReplicatedStorage, Workspace, RunService, UserInputService } from "@rbx
 import { TowerModel } from "shared/modules/tower-model";
 import { Possible, possible } from "shared/modules/possible";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
+import { Events } from "client/network";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -43,6 +44,8 @@ export class TowerController implements OnStart {
 		RunService.BindToRenderStep("UpdateTowerModel", Enum.RenderPriority.Camera.Value - 1, () => {
 			this.updateTowerModel();
 		});
+
+		Events.event.fire("This is the client");
 	}
 
 	private renderHotbar() {

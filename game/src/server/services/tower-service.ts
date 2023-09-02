@@ -2,6 +2,7 @@ import { OnStart, Service } from "@flamework/core";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Archer } from "server/modules/archer";
 import { Signal } from "@rbxts/beacon";
+import { Events } from "server/network";
 
 @Service({})
 export class TowerService implements OnStart {
@@ -26,5 +27,9 @@ export class TowerService implements OnStart {
 		const towerCFrame = new CFrame(11, 4, -13);
 		const archer = new Archer(towerCFrame);
 		this.addTower(archer);
+
+		Events.event.connect((player, param1) => {
+			print(param1);
+		});
 	}
 }

@@ -1,8 +1,12 @@
 import { Networking } from "@flamework/networking";
 
-interface ServerEvents {}
+interface ServerEvents {
+	event(param1: string): void;
+}
 
-interface ClientEvents {}
+interface ClientEvents {
+	event(param1: string): void;
+}
 
 interface ServerFunctions {}
 
