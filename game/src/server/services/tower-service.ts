@@ -1,6 +1,6 @@
 import { OnStart, Service } from "@flamework/core";
-import { DamageDealtInfo, GenericTower, GenericTowerStats, Tower } from "server/modules/tower";
-import { Workspace, ReplicatedStorage } from "@rbxts/services";
+import { DamageDealtInfo, GenericTower } from "server/modules/tower";
+import { Archer } from "server/modules/archer";
 import { Signal } from "@rbxts/beacon";
 
 @Service({})
@@ -24,15 +24,7 @@ export class TowerService implements OnStart {
 
 	onStart() {
 		const towerCFrame = new CFrame(11, 4, -13);
-		const archerTemplate = ReplicatedStorage.assets.towers.archer.models.archer;
-		const archerModel = archerTemplate.Clone();
-		archerModel.Parent = Workspace;
-		const archer = new Tower<GenericTowerStats>(archerModel, {
-			damage: 10,
-			firerate: 1,
-			range: 1,
-			cframe: towerCFrame,
-		});
+		const archer = new Archer(towerCFrame);
 		this.addTower(archer);
 	}
 }
