@@ -78,14 +78,6 @@ export class Enemy<T extends GenericEnemyStats> {
 		if (this.stats.health <= 0) this.destroy();
 	}
 
-	private getHealth(): number {
-		return this.stats.health;
-	}
-
-	private getMaxHealth(): number {
-		return this.stats.maxHealth;
-	}
-
 	private snapToCFrame(cframe: CFrame) {
 		snapToCFrameWithAttachmentOffset(this.model, this.rootAttachment, cframe);
 	}
@@ -123,7 +115,7 @@ export class Enemy<T extends GenericEnemyStats> {
 		while (!touchingPathWaypoint && !cancelTouchingPathWaypointCheck) {
 			const now = DateTime.now().UnixTimestampMillis / 1000;
 			const elapsedTime = now - startTime;
-			const adjustedLerpAlpha = math.min(elapsedTime / totalTime, 1);
+			const adjustedLerpAlpha = math.clamp(elapsedTime / totalTime, 0, 1);
 			const lerpedPosition = previousPosition.Lerp(nextPosition, adjustedLerpAlpha);
 
 			this.cframe = new CFrame(lerpedPosition).mul(this.rotation);
