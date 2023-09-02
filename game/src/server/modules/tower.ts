@@ -17,17 +17,11 @@ export type DamageDealtInfo = {
 };
 
 export class Tower<T extends GenericTowerStats> {
-	private rootPart: BasePart & {
-		rootAttachment: Attachment;
-	};
-
 	readonly dealDamage: Signal<[tower: GenericTower, info: DamageDealtInfo]>;
 
 	private maid: Maid;
 
 	constructor(private model: TowerModel, private readonly stats: T) {
-		this.rootPart = this.model.humanoidRootPart;
-
 		this.model.PivotTo(stats.cframe);
 
 		this.dealDamage = new Signal();
