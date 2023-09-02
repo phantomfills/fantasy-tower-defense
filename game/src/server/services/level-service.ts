@@ -1,9 +1,6 @@
 import { Service, OnStart } from "@flamework/core";
 import { TowerService } from "./tower-service";
 import { EnemyService } from "./enemy-service";
-import { GenericEnemy } from "server/modules/enemy";
-import { GenericTower } from "server/modules/tower";
-import { Possible } from "shared/modules/possible";
 
 @Service({})
 export class LevelService implements OnStart {

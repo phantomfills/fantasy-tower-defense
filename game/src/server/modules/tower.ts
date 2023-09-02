@@ -1,6 +1,4 @@
-import { TowerService } from "server/services/tower-service";
-import { Enemy, GenericEnemy, GenericEnemyStats } from "./enemy";
-import { RunService } from "@rbxts/services";
+import { GenericEnemy } from "./enemy";
 import Maid from "@rbxts/maid";
 import { Signal } from "@rbxts/beacon";
 import { TowerModel } from "shared/modules/tower-model";

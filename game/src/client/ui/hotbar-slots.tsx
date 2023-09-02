@@ -1,9 +1,9 @@
 import Roact from "@rbxts/roact";
 import { HotbarSlot } from "./hotbar-slot";
-import { HotbarTowers } from "./hotbar";
+import { HotbarTower } from "./hotbar";
 
 interface HotbarSlotsProps {
-	towers: HotbarTowers;
+	towers: HotbarTower[];
 	slotChildren?: ReadonlyArray<Roact.Element>;
 }
 

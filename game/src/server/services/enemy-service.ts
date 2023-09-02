@@ -1,7 +1,7 @@
 import { OnStart, Service } from "@flamework/core";
 import { Workspace } from "@rbxts/services";
 import { Ninja } from "../modules/ninja";
-import { Enemy, GenericEnemy, PathWaypoint } from "server/modules/enemy";
+import { GenericEnemy, PathWaypoint } from "server/modules/enemy";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Possible } from "shared/modules/possible";
 
