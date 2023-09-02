@@ -8,6 +8,7 @@ import { TowerModel } from "shared/modules/tower-model";
 import { Possible, possible } from "shared/modules/possible";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { Events } from "client/network";
+import { TowerType } from "shared/modules/tower-type";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -25,9 +26,17 @@ const camera = Workspace.Camera;
 @Controller({})
 export class TowerController implements OnStart {
 	private tower: Possible<TowerModel>;
+	private cframe: CFrame;
+	private towerType: Possible<TowerType>;
 
 	constructor() {
 		this.tower = {
+			exists: false,
+		};
+
+		this.cframe = new CFrame();
+
+		this.towerType = {
 			exists: false,
 		};
 	}
@@ -37,15 +46,25 @@ export class TowerController implements OnStart {
 
 		UserInputService.InputBegan.Connect((input, processed) => {
 			if (processed) return;
-			if (input.KeyCode !== Enum.KeyCode.Q) return;
-			this.clearTower();
+
+			switch (input.KeyCode) {
+				case Enum.KeyCode.Q: {
+					this.clearTower();
+					break;
+				}
+			}
+
+			switch (input.UserInputType) {
+				case Enum.UserInputType.MouseButton1: {
+					this.placeTower();
+					break;
+				}
+			}
 		});
 
 		RunService.BindToRenderStep("UpdateTowerModel", Enum.RenderPriority.Camera.Value - 1, () => {
 			this.updateTowerModel();
 		});
-
-		Events.event.fire("This is the client");
 	}
 
 	private renderHotbar() {
@@ -61,12 +80,21 @@ export class TowerController implements OnStart {
 						callback: () => {
 							const archerClone = archerModel.Clone();
 							archerClone.Parent = Workspace;
-							this.setTower(archerClone);
+
+							this.setTower(archerClone, "archer");
 						},
 					},
 				]}
 			/>,
 		);
+	}
+
+	private placeTower() {
+		if (!this.tower.exists) return;
+		if (!this.towerType.exists) return;
+
+		Events.placeTower(this.towerType.value, this.cframe);
+		this.clearTower();
 	}
 
 	private clearTower() {
@@ -76,14 +104,21 @@ export class TowerController implements OnStart {
 		this.tower = {
 			exists: false,
 		};
+		this.towerType = {
+			exists: false,
+		};
 	}
 
-	private setTower(towerModel: TowerModel) {
+	private setTower(towerModel: TowerModel, towerType: TowerType) {
 		this.clearTower();
 
 		this.tower = {
 			exists: true,
 			value: towerModel,
+		};
+		this.towerType = {
+			exists: true,
+			value: towerType,
 		};
 	}
 
@@ -103,10 +138,8 @@ export class TowerController implements OnStart {
 		);
 		if (!raycastResult.exists) return;
 
-		snapToCFrameWithAttachmentOffset(
-			tower,
-			tower.humanoidRootPart.rootAttachment,
-			new CFrame(raycastResult.value.Position),
-		);
+		this.cframe = new CFrame(raycastResult.value.Position);
+
+		snapToCFrameWithAttachmentOffset(tower, tower.humanoidRootPart.rootAttachment, this.cframe);
 	}
 }

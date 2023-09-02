@@ -2,6 +2,7 @@ import { GenericEnemy } from "./enemy";
 import Maid from "@rbxts/maid";
 import { Signal } from "@rbxts/beacon";
 import { TowerModel } from "shared/modules/tower-model";
+import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 
 export interface GenericTowerStats {
 	damage: number;
@@ -22,7 +23,7 @@ export class Tower<T extends GenericTowerStats> {
 	private maid: Maid;
 
 	constructor(private model: TowerModel, private readonly stats: T) {
-		this.model.PivotTo(stats.cframe);
+		this.snapToCFrame(stats.cframe);
 
 		this.dealDamage = new Signal();
 
@@ -46,7 +47,11 @@ export class Tower<T extends GenericTowerStats> {
 
 		const enemyPositionWithTowerY = new Vector3(enemyPosition.X, towerPosition.Y, enemyPosition.Z);
 
-		this.model.PivotTo(new CFrame(towerPosition, enemyPositionWithTowerY));
+		this.snapToCFrame(new CFrame(towerPosition, enemyPositionWithTowerY));
+	}
+
+	private snapToCFrame(cframe: CFrame) {
+		snapToCFrameWithAttachmentOffset(this.model, this.model.humanoidRootPart.rootAttachment, cframe);
 	}
 
 	private async start() {

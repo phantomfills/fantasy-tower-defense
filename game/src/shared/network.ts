@@ -1,11 +1,12 @@
 import { Networking } from "@flamework/networking";
+import { TowerType } from "./modules/tower-type";
 
 interface ServerEvents {
-	event(param1: string): void;
+	placeTower(towerType: TowerType, cframe: CFrame): void;
 }
 
 interface ClientEvents {
-	event(param1: string): void;
+	placeTower(towerType: TowerType, cframe: CFrame): void;
 }
 
 interface ServerFunctions {}
