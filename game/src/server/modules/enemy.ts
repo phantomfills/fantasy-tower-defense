@@ -2,6 +2,7 @@ import Maid from "@rbxts/maid";
 import Signal from "@rbxts/signal";
 import { RunService, HttpService } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
+import { Events } from "server/network";
 
 export interface GenericEnemyStats {
 	health: number;
@@ -120,6 +121,20 @@ export class Enemy<T extends GenericEnemyStats> {
 		}
 
 		this.destroy(); // when reaching the end of the path
+	}
+
+	private start() {
+		this.progressThroughPath();
+
+		let heartbeatCounter = 0;
+		RunService.Heartbeat.Connect(() => {
+			heartbeatCounter++;
+			if (heartbeatCounter % 10 !== 0) return;
+
+			Events.updateEnemy.broadcast(this.id, {
+				cframe: this.cframe,
+			});
+		});
 	}
 
 	private destroy() {

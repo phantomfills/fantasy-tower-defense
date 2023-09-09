@@ -16,6 +16,6 @@ export class ClientEnemyFactory implements CreateClientEnemy {
 			}
 		}
 
-		return new ClientEnemy(clientEnemyModel);
+		return new ClientEnemy(clientEnemyModel, id);
 	}
 }

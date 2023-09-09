@@ -10,9 +10,15 @@ export type GenericClientEnemy = ClientEnemy;
 
 export class ClientEnemy {
 	private model: EnemyModel;
+	private id: string;
 
-	constructor(model: EnemyModel) {
+	constructor(model: EnemyModel, id: string) {
+		this.id = id;
 		this.model = model;
+	}
+
+	getId(): string {
+		return this.id;
 	}
 
 	snapToCFrame(cframe: CFrame) {
