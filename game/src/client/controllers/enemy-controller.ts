@@ -1,5 +1,6 @@
 import { Controller, OnStart } from "@flamework/core";
 import { ClientEnemy } from "client/modules/client-enemy";
+import { Events } from "client/network";
 
 @Controller({})
 export class EnemyController implements OnStart {
@@ -9,5 +10,7 @@ export class EnemyController implements OnStart {
 		this.clientEnemies = [];
 	}
 
-	onStart() {}
+	onStart() {
+		Events.createEnemy.connect((enemyType, id) => {});
+	}
 }

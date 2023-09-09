@@ -6,6 +6,8 @@ export interface EnemyModel extends Model {
 	};
 }
 
+export type GenericClientEnemy = ClientEnemy;
+
 export class ClientEnemy {
 	private model: EnemyModel;
 
