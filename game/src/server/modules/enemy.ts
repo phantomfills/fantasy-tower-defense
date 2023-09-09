@@ -23,12 +23,6 @@ export interface PathWaypoint extends BasePart {
 export type GenericEnemy = Enemy<GenericEnemyStats>;
 
 export class Enemy<T extends GenericEnemyStats> {
-	private model: EnemyModel;
-	private rootPart: BasePart & {
-		rootAttachment: Attachment;
-	};
-	private rootAttachment: Attachment;
-
 	private readonly path: PathWaypoint[];
 
 	private stats: T;
@@ -42,15 +36,11 @@ export class Enemy<T extends GenericEnemyStats> {
 
 	private readonly id: string;
 
-	constructor(model: EnemyModel, path: PathWaypoint[], stats: T) {
-		this.model = model;
-		this.rootPart = this.model.humanoidRootPart;
-		this.rootAttachment = this.rootPart.rootAttachment;
-
+	constructor(path: PathWaypoint[], stats: T) {
 		this.path = path;
 
-		this.cframe = this.rootAttachment.WorldCFrame;
-		this.rotation = this.rootAttachment.WorldCFrame.Rotation;
+		this.cframe = new CFrame(path[0].waypointAttachment.Position);
+		this.rotation = path[0].waypointAttachment.WorldCFrame.Rotation;
 
 		this.stats = stats;
 
@@ -64,11 +54,7 @@ export class Enemy<T extends GenericEnemyStats> {
 			this.onDeath.Fire();
 			this.onDeath.Destroy();
 		});
-		this.maid.GiveTask(this.model);
 
-		this.model.humanoidRootPart.SetNetworkOwner(undefined);
-
-		this.snapToPathWaypoint(this.path[0]);
 		this.progressThroughPath();
 	}
 
@@ -76,14 +62,6 @@ export class Enemy<T extends GenericEnemyStats> {
 		this.stats.health -= damage;
 
 		if (this.stats.health <= 0) this.destroy();
-	}
-
-	private snapToCFrame(cframe: CFrame) {
-		snapToCFrameWithAttachmentOffset(this.model, this.rootAttachment, cframe);
-	}
-
-	private snapToPathWaypoint(pathWaypoint: PathWaypoint) {
-		this.snapToCFrame(pathWaypoint.waypointAttachment.WorldCFrame);
 	}
 
 	getCFrame() {
@@ -120,9 +98,6 @@ export class Enemy<T extends GenericEnemyStats> {
 
 			this.cframe = new CFrame(lerpedPosition);
 
-			const cframeWithRotation = this.cframe.mul(this.rotation);
-			this.snapToCFrame(cframeWithRotation);
-
 			touchingPathWaypoint = adjustedLerpAlpha === 1;
 
 			RunService.Heartbeat.Wait();
@@ -151,16 +126,6 @@ export class Enemy<T extends GenericEnemyStats> {
 		}
 
 		this.destroy(); // when reaching the end of the path
-	}
-
-	private getDistanceToPathWaypoint(pathWaypoint: PathWaypoint) {
-		const waypointAttachment = pathWaypoint.waypointAttachment;
-		return this.rootAttachment.WorldPosition.sub(waypointAttachment.WorldPosition).Magnitude;
-	}
-
-	private isTouchingPathWaypoint(pathWaypoint: PathWaypoint) {
-		const distance = this.getDistanceToPathWaypoint(pathWaypoint);
-		return distance <= 0.1;
 	}
 
 	private destroy() {
