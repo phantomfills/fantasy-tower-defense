@@ -4,11 +4,13 @@ import { EnemyType } from "./modules/enemy-type";
 
 interface ClientEnemyInfo {
 	cframe: CFrame;
+	rotation: CFrame;
 }
 
 interface SharedEvents {
 	createEnemy(enemyType: EnemyType, id: string): void;
 	updateEnemy(id: string, clientInfo: ClientEnemyInfo): void;
+	destroyEnemy(id: string): void;
 	placeTower(towerType: TowerType, cframe: CFrame): void;
 }
 

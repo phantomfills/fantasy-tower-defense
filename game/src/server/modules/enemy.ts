@@ -48,9 +48,10 @@ export class Enemy<T extends GenericEnemyStats> {
 		this.maid.GiveTask(() => {
 			this.onDeath.Fire();
 			this.onDeath.Destroy();
+			Events.destroyEnemy.broadcast(this.getId());
 		});
 
-		this.progressThroughPath();
+		this.start();
 	}
 
 	takeDamage(damage: number) {
@@ -129,10 +130,11 @@ export class Enemy<T extends GenericEnemyStats> {
 		let heartbeatCounter = 0;
 		RunService.Heartbeat.Connect(() => {
 			heartbeatCounter++;
-			if (heartbeatCounter % 10 !== 0) return;
+			if (heartbeatCounter % 5 !== 0) return;
 
 			Events.updateEnemy.broadcast(this.id, {
 				cframe: this.cframe,
+				rotation: this.rotation,
 			});
 		});
 	}

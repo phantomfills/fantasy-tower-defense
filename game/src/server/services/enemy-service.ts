@@ -76,7 +76,7 @@ export class EnemyService implements OnStart {
 		const enemyFactory = new EnemyFactory();
 
 		for (;;) {
-			task.wait(1);
+			task.wait(0.1);
 
 			const ninja = enemyFactory.createEnemy("NINJA", path);
 			this.addEnemy(ninja);

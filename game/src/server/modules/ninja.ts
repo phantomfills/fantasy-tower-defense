@@ -6,7 +6,7 @@ export class Ninja extends Enemy<GenericEnemyStats> {
 		super(path, {
 			health: 20,
 			maxHealth: 20,
-			speed: 9,
+			speed: 10,
 			animationId: 0,
 		});
 	}
