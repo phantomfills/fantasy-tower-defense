@@ -3,12 +3,6 @@ import Signal from "@rbxts/signal";
 import { RunService, HttpService } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 
-export interface EnemyModel extends Model {
-	humanoidRootPart: BasePart & {
-		rootAttachment: Attachment;
-	};
-}
-
 export interface GenericEnemyStats {
 	health: number;
 	maxHealth: number;

@@ -1,13 +1,20 @@
 import { Networking } from "@flamework/networking";
 import { TowerType } from "./modules/tower-type";
+import { EnemyType } from "./modules/enemy-type";
 
-interface ServerEvents {
+interface ClientEnemyInfo {
+	cframe: CFrame;
+}
+
+interface SharedEvents {
+	createEnemy(enemyType: EnemyType, id: string): void;
+	updateEnemy(id: string, clientInfo: ClientEnemyInfo): void;
 	placeTower(towerType: TowerType, cframe: CFrame): void;
 }
 
-interface ClientEvents {
-	placeTower(towerType: TowerType, cframe: CFrame): void;
-}
+interface ServerEvents extends SharedEvents {}
+
+interface ClientEvents extends SharedEvents {}
 
 interface ServerFunctions {}
 
