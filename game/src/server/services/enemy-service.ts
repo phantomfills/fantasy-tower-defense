@@ -4,6 +4,7 @@ import { Ninja } from "../modules/ninja";
 import { GenericEnemy, PathWaypoint } from "server/modules/enemy";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Possible } from "shared/modules/possible";
+import { EnemyFactory } from "server/modules/enemy-factory";
 
 const getChildrenAs = <T>(instance: Instance) => {
 	return instance.GetChildren() as T[];
@@ -73,10 +74,12 @@ export class EnemyService implements OnStart {
 			return previous.Name < current.Name;
 		});
 
+		const enemyFactory = new EnemyFactory();
+
 		for (;;) {
 			task.wait(1);
 
-			const ninja = new Ninja(path);
+			const ninja = enemyFactory.createEnemy("NINJA", path);
 			this.addEnemy(ninja);
 		}
 	}
