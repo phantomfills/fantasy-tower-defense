@@ -27,12 +27,15 @@ export class EnemyController implements OnStart {
 			this.addEnemy(clientEnemy);
 		});
 
-		Events.updateEnemy.connect((id, clientInfo) => {
-			const clientEnemy = this.clientEnemies.find((clientEnemy: ClientEnemy) => {
-				return clientEnemy.getId() === id;
+		Events.updateEnemies.connect((enemies) => {
+			enemies.forEach((enemy) => {
+				const clientEnemy = this.clientEnemies.find((clientEnemy: ClientEnemy) => {
+					return clientEnemy.getId() === enemy.id;
+				});
+				if (!clientEnemy) return;
+
+				clientEnemy.setTargetCFrame(enemy.cframe.mul(enemy.rotation));
 			});
-			if (!clientEnemy) return;
-			clientEnemy.setTargetCFrame(clientInfo.cframe.mul(clientInfo.rotation));
 		});
 
 		Events.destroyEnemy.connect((id) => {

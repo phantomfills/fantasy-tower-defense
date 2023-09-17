@@ -1,7 +1,6 @@
 import Maid from "@rbxts/maid";
 import Signal from "@rbxts/signal";
 import { RunService, HttpService } from "@rbxts/services";
-import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { Events } from "server/network";
 
 export interface GenericEnemyStats {
@@ -48,7 +47,6 @@ export class Enemy<T extends GenericEnemyStats> {
 		this.maid.GiveTask(() => {
 			this.onDeath.Fire();
 			this.onDeath.Destroy();
-			Events.destroyEnemy.broadcast(this.getId());
 		});
 
 		this.start();
@@ -62,6 +60,10 @@ export class Enemy<T extends GenericEnemyStats> {
 
 	getCFrame() {
 		return this.cframe;
+	}
+
+	getRotation() {
+		return this.rotation;
 	}
 
 	getId() {
@@ -126,17 +128,6 @@ export class Enemy<T extends GenericEnemyStats> {
 
 	private start() {
 		this.progressThroughPath();
-
-		let heartbeatCounter = 0;
-		RunService.Heartbeat.Connect(() => {
-			heartbeatCounter++;
-			if (heartbeatCounter % 5 !== 0) return;
-
-			Events.updateEnemy.broadcast(this.id, {
-				cframe: this.cframe,
-				rotation: this.rotation,
-			});
-		});
 	}
 
 	private destroy() {

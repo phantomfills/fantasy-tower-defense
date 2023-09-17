@@ -1,16 +1,17 @@
-import { OnStart, Service } from "@flamework/core";
+import { OnStart, OnTick, Service } from "@flamework/core";
 import { Workspace } from "@rbxts/services";
 import { GenericEnemy, PathWaypoint } from "server/modules/enemy";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Possible } from "shared/modules/possible";
 import { EnemyFactory } from "server/modules/enemy-factory";
+import { Events } from "server/network";
 
 const getChildrenAs = <T>(instance: Instance) => {
 	return instance.GetChildren() as T[];
 };
 
 @Service({})
-export class EnemyService implements OnStart {
+export class EnemyService implements OnStart, OnTick {
 	private enemies: GenericEnemy[];
 
 	constructor() {
@@ -24,6 +25,7 @@ export class EnemyService implements OnStart {
 			this.enemies = this.enemies.filter((currentEnemy) => {
 				return enemy.getId() !== currentEnemy.getId();
 			});
+			Events.destroyEnemy.broadcast(enemy.getId());
 		});
 	}
 
@@ -81,5 +83,17 @@ export class EnemyService implements OnStart {
 			const ninja = enemyFactory.createEnemy("NINJA", path);
 			this.addEnemy(ninja);
 		}
+	}
+
+	onTick() {
+		const clientEnemies = this.enemies.map((enemy) => {
+			return {
+				id: enemy.getId(),
+				cframe: enemy.getCFrame(),
+				rotation: enemy.getRotation(),
+			};
+		});
+
+		Events.updateEnemies.broadcast(clientEnemies);
 	}
 }
