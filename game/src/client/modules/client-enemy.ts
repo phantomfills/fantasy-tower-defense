@@ -1,6 +1,7 @@
 import Maid from "@rbxts/maid";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { RunService } from "@rbxts/services";
+import { Animatable } from "shared/modules/animatable";
 
 export interface EnemyModel extends Model {
 	humanoidRootPart: BasePart & {
@@ -16,7 +17,7 @@ export class ClientEnemy {
 	private targetCFrame: CFrame;
 	private maid: Maid;
 
-	constructor(model: EnemyModel, id: string) {
+	constructor(model: EnemyModel & Animatable, id: string, cframe: CFrame) {
 		this.id = id;
 		this.model = model;
 
@@ -24,6 +25,8 @@ export class ClientEnemy {
 		this.targetCFrame = new CFrame();
 
 		this.maid.GiveTask(model);
+
+		this.model.PivotTo(cframe);
 
 		this.start();
 	}
@@ -41,10 +44,11 @@ export class ClientEnemy {
 	}
 
 	start() {
-		// lerp model cframe to target cframe
 		this.maid.GiveTask(
 			RunService.Heartbeat.Connect(() => {
-				this.snapToCFrame(this.model.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(this.targetCFrame, 0.05));
+				this.snapToCFrame(
+					this.model.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(this.targetCFrame, 0.065),
+				);
 			}),
 		);
 	}

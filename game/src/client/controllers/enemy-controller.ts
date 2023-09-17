@@ -2,6 +2,7 @@ import { Controller, OnStart } from "@flamework/core";
 import { ClientEnemy } from "client/modules/client-enemy";
 import { ClientEnemyFactory } from "client/modules/client-enemy-factory";
 import { Events } from "client/network";
+import { PathWaypoint } from "shared/modules/path-waypoint";
 
 @Controller({})
 export class EnemyController implements OnStart {
@@ -20,10 +21,30 @@ export class EnemyController implements OnStart {
 		this.clientEnemies.remove(index);
 	}
 
+	constructEnemyCFrameFromClientInfo(lastWaypoint: PathWaypoint, nextWaypoint: PathWaypoint, waypointAlpha: number) {
+		const position = lastWaypoint.waypointAttachment.WorldPosition.Lerp(
+			nextWaypoint.waypointAttachment.WorldPosition,
+			waypointAlpha,
+		);
+
+		const rotationMultiplier = 10;
+		const rotationAlpha = math.min(waypointAlpha * rotationMultiplier, 1);
+		const rotation = lastWaypoint.waypointAttachment.WorldCFrame.Rotation.Lerp(
+			nextWaypoint.waypointAttachment.WorldCFrame.Rotation,
+			rotationAlpha,
+		);
+
+		return new CFrame(position).mul(rotation);
+	}
+
 	onStart() {
-		Events.createEnemy.connect((enemyType, id) => {
+		Events.createEnemy.connect((enemyType, id, pathWaypoint) => {
 			const clientEnemyFactory = new ClientEnemyFactory();
-			const clientEnemy = clientEnemyFactory.createClientEnemy(enemyType, id);
+			const clientEnemy = clientEnemyFactory.createClientEnemy(
+				enemyType,
+				id,
+				pathWaypoint.waypointAttachment.WorldCFrame,
+			);
 			this.addEnemy(clientEnemy);
 		});
 
@@ -34,7 +55,13 @@ export class EnemyController implements OnStart {
 				});
 				if (!clientEnemy) return;
 
-				clientEnemy.setTargetCFrame(enemy.cframe.mul(enemy.rotation));
+				clientEnemy.setTargetCFrame(
+					this.constructEnemyCFrameFromClientInfo(
+						enemy.lastPathWaypoint,
+						enemy.nextPathWaypoint,
+						enemy.waypointAlpha,
+					),
+				);
 			});
 		});
 

@@ -1,17 +1,13 @@
 import Maid from "@rbxts/maid";
 import Signal from "@rbxts/signal";
 import { RunService, HttpService } from "@rbxts/services";
-import { Events } from "server/network";
+import { PathWaypoint } from "shared/modules/path-waypoint";
 
 export interface GenericEnemyStats {
 	health: number;
 	maxHealth: number;
 	speed: number;
 	animationId: number;
-}
-
-export interface PathWaypoint extends BasePart {
-	waypointAttachment: Attachment;
 }
 
 export type GenericEnemy = Enemy<GenericEnemyStats>;
@@ -25,16 +21,18 @@ export class Enemy<T extends GenericEnemyStats> {
 
 	private maid: Maid;
 
-	private cframe: CFrame;
-	private rotation: CFrame;
+	private lastWaypoint: PathWaypoint;
+	private nextWaypoint: PathWaypoint;
+	private waypointAlpha: number;
 
 	private readonly id: string;
 
 	constructor(path: PathWaypoint[], stats: T) {
 		this.path = path;
 
-		this.cframe = new CFrame(path[0].waypointAttachment.Position);
-		this.rotation = path[0].waypointAttachment.WorldCFrame.Rotation;
+		this.lastWaypoint = this.path[0];
+		this.nextWaypoint = this.path[1];
+		this.waypointAlpha = 0;
 
 		this.stats = stats;
 
@@ -58,12 +56,23 @@ export class Enemy<T extends GenericEnemyStats> {
 		if (this.stats.health <= 0) this.destroy();
 	}
 
-	getCFrame() {
-		return this.cframe;
+	getLastPathWaypoint() {
+		return this.lastWaypoint;
 	}
 
-	getRotation() {
-		return this.rotation;
+	getNextPathWaypoint() {
+		return this.nextWaypoint;
+	}
+
+	getWaypointAlpha() {
+		return this.waypointAlpha;
+	}
+
+	getCFrame() {
+		return this.lastWaypoint.waypointAttachment.WorldCFrame.Lerp(
+			this.nextWaypoint.waypointAttachment.WorldCFrame,
+			this.waypointAlpha,
+		);
 	}
 
 	getId() {
@@ -86,15 +95,14 @@ export class Enemy<T extends GenericEnemyStats> {
 			cancelTouchingPathWaypointCheck = true;
 		});
 
-		this.rotation = nextPathWaypoint.waypointAttachment.WorldCFrame.Rotation;
-
 		while (!touchingPathWaypoint && !cancelTouchingPathWaypointCheck) {
 			const now = DateTime.now().UnixTimestampMillis / 1000;
 			const elapsedTime = now - startTime;
 			const adjustedLerpAlpha = math.clamp(elapsedTime / totalTime, 0, 1);
-			const lerpedPosition = previousPosition.Lerp(nextPosition, adjustedLerpAlpha);
 
-			this.cframe = new CFrame(lerpedPosition);
+			this.lastWaypoint = previousPathWaypoint;
+			this.nextWaypoint = nextPathWaypoint;
+			this.waypointAlpha = adjustedLerpAlpha;
 
 			touchingPathWaypoint = adjustedLerpAlpha === 1;
 

@@ -1,6 +1,7 @@
 import { OnStart, OnTick, Service } from "@flamework/core";
 import { Workspace } from "@rbxts/services";
-import { GenericEnemy, PathWaypoint } from "server/modules/enemy";
+import { GenericEnemy } from "server/modules/enemy";
+import { PathWaypoint } from "shared/modules/path-waypoint";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Possible } from "shared/modules/possible";
 import { EnemyFactory } from "server/modules/enemy-factory";
@@ -18,7 +19,7 @@ export class EnemyService implements OnStart, OnTick {
 
 	constructor() {
 		this.lastTimeClientEnemiesSentMilliseconds = this.getCurrentTimeInMilliseconds();
-		this.timeBetweenClientEnemiesSendMilliseconds = 100;
+		this.timeBetweenClientEnemiesSendMilliseconds = 125;
 		this.enemies = [];
 	}
 
@@ -107,8 +108,9 @@ export class EnemyService implements OnStart, OnTick {
 		const clientEnemies = this.enemies.map((enemy) => {
 			return {
 				id: enemy.getId(),
-				cframe: enemy.getCFrame(),
-				rotation: enemy.getRotation(),
+				lastPathWaypoint: enemy.getLastPathWaypoint(),
+				nextPathWaypoint: enemy.getNextPathWaypoint(),
+				waypointAlpha: enemy.getWaypointAlpha(),
 			};
 		});
 

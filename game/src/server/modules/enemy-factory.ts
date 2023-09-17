@@ -1,5 +1,6 @@
 import { EnemyType } from "shared/modules/enemy-type";
-import { GenericEnemy, PathWaypoint } from "./enemy";
+import { GenericEnemy } from "./enemy";
+import { PathWaypoint } from "shared/modules/path-waypoint";
 import { Ninja } from "./ninja";
 import { Events } from "server/network";
 
@@ -17,7 +18,7 @@ export class EnemyFactory implements CreateEnemy {
 			}
 		}
 
-		Events.createEnemy.broadcast(enemyType, enemy.getId());
+		Events.createEnemy.broadcast(enemyType, enemy.getId(), path[0]);
 		return enemy;
 	}
 }

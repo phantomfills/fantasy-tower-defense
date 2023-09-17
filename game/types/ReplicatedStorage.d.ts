@@ -1,7 +1,13 @@
 interface ReplicatedStorage extends Instance {
 	TS: Folder & {
 		modules: Folder & {
-			["possible-type"]: ModuleScript;
+			["object-values"]: ModuleScript;
+			["tower-model"]: ModuleScript;
+			["path-waypoint"]: ModuleScript;
+			possible: ModuleScript;
+			["snap-to-cframe"]: ModuleScript;
+			["tower-type"]: ModuleScript;
+			["enemy-type"]: ModuleScript;
 		};
 		components: Folder;
 		network: ModuleScript;
@@ -56,6 +62,7 @@ interface ReplicatedStorage extends Instance {
 				models: Folder & {
 					foo: Model & {
 						["Left Leg"]: MeshPart;
+						animationController: AnimationController;
 						["Right Arm"]: MeshPart;
 						["Left Arm"]: MeshPart;
 						Head: MeshPart & {
