@@ -44,7 +44,7 @@ export class ClientEnemy {
 		// lerp model cframe to target cframe
 		this.maid.GiveTask(
 			RunService.Heartbeat.Connect(() => {
-				this.snapToCFrame(this.model.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(this.targetCFrame, 0.1));
+				this.snapToCFrame(this.model.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(this.targetCFrame, 0.05));
 			}),
 		);
 	}

@@ -13,9 +13,17 @@ const getChildrenAs = <T>(instance: Instance) => {
 @Service({})
 export class EnemyService implements OnStart, OnTick {
 	private enemies: GenericEnemy[];
+	private lastTimeClientEnemiesSentMilliseconds: number;
+	private readonly timeBetweenClientEnemiesSendMilliseconds: number;
 
 	constructor() {
+		this.lastTimeClientEnemiesSentMilliseconds = this.getCurrentTimeInMilliseconds();
+		this.timeBetweenClientEnemiesSendMilliseconds = 100;
 		this.enemies = [];
+	}
+
+	private getCurrentTimeInMilliseconds() {
+		return DateTime.now().UnixTimestampMillis;
 	}
 
 	private addEnemy(enemy: GenericEnemy) {
@@ -77,6 +85,8 @@ export class EnemyService implements OnStart, OnTick {
 
 		const enemyFactory = new EnemyFactory();
 
+		task.wait(5);
+
 		for (;;) {
 			task.wait(0.1);
 
@@ -86,6 +96,14 @@ export class EnemyService implements OnStart, OnTick {
 	}
 
 	onTick() {
+		const currentTimeInMilliseconds = this.getCurrentTimeInMilliseconds();
+		if (
+			currentTimeInMilliseconds - this.lastTimeClientEnemiesSentMilliseconds <
+			this.timeBetweenClientEnemiesSendMilliseconds
+		)
+			return;
+		this.lastTimeClientEnemiesSentMilliseconds = currentTimeInMilliseconds;
+
 		const clientEnemies = this.enemies.map((enemy) => {
 			return {
 				id: enemy.getId(),
