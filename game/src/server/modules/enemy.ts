@@ -2,6 +2,7 @@ import Maid from "@rbxts/maid";
 import Signal from "@rbxts/signal";
 import { RunService, HttpService } from "@rbxts/services";
 import { PathWaypoint } from "shared/modules/path-waypoint";
+import { EnemyType } from "shared/modules/enemy-type";
 
 export interface GenericEnemyStats {
 	health: number;
@@ -27,7 +28,7 @@ export class Enemy<T extends GenericEnemyStats> {
 
 	private readonly id: string;
 
-	constructor(path: PathWaypoint[], stats: T) {
+	constructor(private readonly enemyType: EnemyType, path: PathWaypoint[], stats: T) {
 		this.path = path;
 
 		this.lastWaypoint = this.path[0];
@@ -48,6 +49,14 @@ export class Enemy<T extends GenericEnemyStats> {
 		});
 
 		this.start();
+	}
+
+	getEnemyType() {
+		return this.enemyType;
+	}
+
+	getPath() {
+		return this.path;
 	}
 
 	takeDamage(damage: number) {

@@ -1,6 +1,7 @@
 interface ReplicatedStorage extends Instance {
 	TS: Folder & {
 		modules: Folder & {
+			animatable: ModuleScript;
 			["object-values"]: ModuleScript;
 			["tower-model"]: ModuleScript;
 			["path-waypoint"]: ModuleScript;

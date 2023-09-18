@@ -26,6 +26,7 @@ export class ClientEnemy {
 
 		this.maid.GiveTask(model);
 
+		this.targetCFrame = cframe;
 		this.model.PivotTo(cframe);
 
 		this.start();

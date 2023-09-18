@@ -29,6 +29,7 @@ export class EnemyService implements OnStart, OnTick {
 
 	private addEnemy(enemy: GenericEnemy) {
 		this.enemies.push(enemy);
+		Events.createEnemy.broadcast(enemy.getEnemyType(), enemy.getId(), enemy.getPath()[0]);
 
 		enemy.onDeath.Connect(() => {
 			this.enemies = this.enemies.filter((currentEnemy) => {

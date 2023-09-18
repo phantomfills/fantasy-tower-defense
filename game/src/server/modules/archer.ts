@@ -11,7 +11,7 @@ export class Archer extends Tower<GenericTowerStats> {
 		super(archer, {
 			damage: 10,
 			firerate: 1,
-			range: 10,
+			range: 60,
 			cframe: cframe,
 		});
 	}
