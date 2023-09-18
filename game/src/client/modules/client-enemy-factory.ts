@@ -9,10 +9,10 @@ interface CreateClientEnemy {
 }
 
 export class ClientEnemyFactory implements CreateClientEnemy {
-	createClientEnemy(enemyType: EnemyType, id: string, cframe: CFrame) {
+	createClientEnemy(enemyType: EnemyType, id: string, cframe: CFrame): GenericClientEnemy {
 		switch (enemyType) {
 			case "NINJA": {
-				return new ClientNinja(cframe);
+				return new ClientNinja(id, cframe);
 			}
 		}
 	}

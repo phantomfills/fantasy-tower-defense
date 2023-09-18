@@ -1,13 +1,13 @@
 interface ReplicatedStorage extends Instance {
 	TS: Folder & {
 		modules: Folder & {
-			animatable: ModuleScript;
-			["object-values"]: ModuleScript;
+			["tower-type"]: ModuleScript;
 			["tower-model"]: ModuleScript;
+			["snap-to-cframe"]: ModuleScript;
 			["path-waypoint"]: ModuleScript;
 			possible: ModuleScript;
-			["snap-to-cframe"]: ModuleScript;
-			["tower-type"]: ModuleScript;
+			["object-values"]: ModuleScript;
+			animatable: ModuleScript;
 			["enemy-type"]: ModuleScript;
 		};
 		components: Folder;

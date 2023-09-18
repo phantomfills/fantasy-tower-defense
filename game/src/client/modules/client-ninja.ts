@@ -1,8 +1,10 @@
 import { ClientEnemy } from "./client-enemy";
-import { ReplicatedStorage } from "@rbxts/services";
+import { ReplicatedStorage, Workspace } from "@rbxts/services";
 
 export class ClientNinja extends ClientEnemy {
-	constructor(cframe: CFrame) {
-		super(ReplicatedStorage.assets.enemies.foo.models.foo, "ninja", cframe);
+	constructor(id: string, cframe: CFrame) {
+		const foo = ReplicatedStorage.assets.enemies.foo.models.foo.Clone();
+		foo.Parent = Workspace;
+		super(foo, id, cframe);
 	}
 }
