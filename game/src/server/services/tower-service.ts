@@ -6,7 +6,7 @@ import { Events } from "server/network";
 import { TowerFactory } from "server/modules/tower-factory";
 
 @Service({})
-export class TowerService implements OnStart {
+export class TowerService {
 	private towers: GenericTower[];
 	readonly dealDamageFromTower: Signal<[tower: GenericTower, info: DamageDealtInfo]>;
 
@@ -24,7 +24,7 @@ export class TowerService implements OnStart {
 		});
 	}
 
-	onStart() {
+	start() {
 		Events.placeTower.connect((player, towerType, cframe) => {
 			const towerFactory = new TowerFactory();
 

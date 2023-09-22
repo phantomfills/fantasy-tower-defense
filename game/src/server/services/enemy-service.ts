@@ -1,5 +1,4 @@
-import { OnStart, OnTick, Service } from "@flamework/core";
-import { Workspace } from "@rbxts/services";
+import { Service } from "@flamework/core";
 import { GenericEnemy } from "server/modules/enemy";
 import { PathWaypoint } from "shared/modules/path-waypoint";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
@@ -7,12 +6,8 @@ import { Possible } from "shared/modules/possible";
 import { EnemyFactory } from "server/modules/enemy-factory";
 import { Events } from "server/network";
 
-const getChildrenAs = <T>(instance: Instance) => {
-	return instance.GetChildren() as T[];
-};
-
 @Service({})
-export class EnemyService implements OnStart, OnTick {
+export class EnemyService {
 	private enemies: GenericEnemy[];
 	private lastTimeClientEnemiesSentMilliseconds: number;
 	private readonly timeBetweenClientEnemiesSendMilliseconds: number;
@@ -79,17 +74,12 @@ export class EnemyService implements OnStart, OnTick {
 		};
 	}
 
-	onStart() {
-		const path = getChildrenAs<PathWaypoint>(Workspace.gameMap.path);
-		path.sort((previous, current) => {
-			return previous.Name < current.Name;
-		});
-
+	async start(path: PathWaypoint[]) {
 		const enemyFactory = new EnemyFactory();
 
 		task.wait(5);
 
-		for (;;) {
+		for (let i = 0; i < 500; i++) {
 			task.wait(0.1);
 
 			const ninja = enemyFactory.createEnemy("NINJA", path);
@@ -97,7 +87,7 @@ export class EnemyService implements OnStart, OnTick {
 		}
 	}
 
-	onTick() {
+	tick() {
 		const currentTimeInMilliseconds = this.getCurrentTimeInMilliseconds();
 		if (
 			currentTimeInMilliseconds - this.lastTimeClientEnemiesSentMilliseconds <

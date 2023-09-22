@@ -1,14 +1,15 @@
-import { Service, OnStart } from "@flamework/core";
-import { TowerService } from "./tower-service";
-import { EnemyService } from "./enemy-service";
+import { Service, OnStart, OnTick } from "@flamework/core";
+import { MapService } from "./map-service";
 
 @Service({})
-export class LevelService implements OnStart {
-	constructor(private towerService: TowerService, private enemyService: EnemyService) {}
+export class LevelService implements OnStart, OnTick {
+	constructor(private mapService: MapService) {}
 
-	onStart() {
-		this.towerService.dealDamageFromTower.Connect((tower, info) => {
-			this.enemyService.dealDamageToClosestEnemyInRange(tower, info);
-		});
+	async onStart() {
+		await this.mapService.start();
+	}
+
+	onTick() {
+		this.mapService.tick();
 	}
 }
