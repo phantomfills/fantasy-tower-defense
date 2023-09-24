@@ -9,8 +9,6 @@ export class ClientNinja extends ClientEnemy {
 	}
 
 	start() {
-		print("Starting Ninja");
-
 		const animationController = new Instance("AnimationController");
 		animationController.Parent = this.model;
 		const animator = new Instance("Animator");

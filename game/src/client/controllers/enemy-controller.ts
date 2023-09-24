@@ -21,30 +21,20 @@ export class EnemyController implements OnStart {
 		this.clientEnemies.remove(index);
 	}
 
-	constructEnemyCFrameFromClientInfo(lastWaypoint: PathWaypoint, nextWaypoint: PathWaypoint, waypointAlpha: number) {
-		const position = lastWaypoint.waypointAttachment.WorldPosition.Lerp(
-			nextWaypoint.waypointAttachment.WorldPosition,
-			waypointAlpha,
-		);
+	constructEnemyCFrameFromClientInfo(lastCFrame: CFrame, nextCFrame: CFrame, waypointAlpha: number) {
+		const position = lastCFrame.Position.Lerp(nextCFrame.Position, waypointAlpha);
 
-		const rotationMultiplier = 10;
+		const rotationMultiplier = 3;
 		const rotationAlpha = math.min(waypointAlpha * rotationMultiplier, 1);
-		const rotation = lastWaypoint.waypointAttachment.WorldCFrame.Rotation.Lerp(
-			nextWaypoint.waypointAttachment.WorldCFrame.Rotation,
-			rotationAlpha,
-		);
+		const rotation = lastCFrame.Rotation.Lerp(nextCFrame.Rotation, rotationAlpha);
 
 		return new CFrame(position).mul(rotation);
 	}
 
 	onStart() {
-		Events.createEnemy.connect((enemyType, id, pathWaypoint) => {
+		Events.createEnemy.connect((enemyType, id, cframe) => {
 			const clientEnemyFactory = new ClientEnemyFactory();
-			const clientEnemy = clientEnemyFactory.createClientEnemy(
-				enemyType,
-				id,
-				pathWaypoint.waypointAttachment.WorldCFrame,
-			);
+			const clientEnemy = clientEnemyFactory.createClientEnemy(enemyType, id, cframe);
 			this.addEnemy(clientEnemy);
 		});
 
@@ -56,11 +46,7 @@ export class EnemyController implements OnStart {
 				if (!clientEnemy) return;
 
 				clientEnemy.setTargetCFrame(
-					this.constructEnemyCFrameFromClientInfo(
-						enemy.lastPathWaypoint,
-						enemy.nextPathWaypoint,
-						enemy.waypointAlpha,
-					),
+					this.constructEnemyCFrameFromClientInfo(enemy.lastCFrame, enemy.nextCFrame, enemy.waypointAlpha),
 				);
 			});
 		});

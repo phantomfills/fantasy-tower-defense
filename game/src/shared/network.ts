@@ -5,15 +5,15 @@ import { PathWaypoint } from "./modules/path-waypoint";
 
 interface ClientEnemyInfo {
 	id: string;
-	lastPathWaypoint: PathWaypoint;
-	nextPathWaypoint: PathWaypoint;
+	lastCFrame: CFrame;
+	nextCFrame: CFrame;
 	waypointAlpha: number;
 }
 
 type EnemyList = ClientEnemyInfo[];
 
 interface SharedEvents {
-	createEnemy(enemyType: EnemyType, id: string, startPathWaypoint: PathWaypoint): void;
+	createEnemy(enemyType: EnemyType, id: string, startCFrame: CFrame): void;
 	updateEnemies(enemies: EnemyList): void;
 	destroyEnemy(id: string): void;
 	placeTower(towerType: TowerType, cframe: CFrame): void;

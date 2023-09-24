@@ -14,7 +14,7 @@ export class EnemyService {
 
 	constructor() {
 		this.lastTimeClientEnemiesSentMilliseconds = this.getCurrentTimeInMilliseconds();
-		this.timeBetweenClientEnemiesSendMilliseconds = 125;
+		this.timeBetweenClientEnemiesSendMilliseconds = 160;
 		this.enemies = [];
 	}
 
@@ -24,7 +24,11 @@ export class EnemyService {
 
 	private addEnemy(enemy: GenericEnemy) {
 		this.enemies.push(enemy);
-		Events.createEnemy.broadcast(enemy.getEnemyType(), enemy.getId(), enemy.getPath()[0]);
+		Events.createEnemy.broadcast(
+			enemy.getEnemyType(),
+			enemy.getId(),
+			enemy.getPath()[0].waypointAttachment.WorldCFrame,
+		);
 
 		enemy.onDeath.Connect(() => {
 			this.enemies = this.enemies.filter((currentEnemy) => {
@@ -80,7 +84,7 @@ export class EnemyService {
 		task.wait(5);
 
 		for (let i = 0; i < 10000; i++) {
-			task.wait(0.3);
+			task.wait(0.01);
 
 			const ninja = enemyFactory.createEnemy("NINJA", path);
 			this.addEnemy(ninja);
@@ -99,12 +103,14 @@ export class EnemyService {
 		const clientEnemies = this.enemies.map((enemy) => {
 			return {
 				id: enemy.getId(),
-				lastPathWaypoint: enemy.getLastPathWaypoint(),
-				nextPathWaypoint: enemy.getNextPathWaypoint(),
+				lastCFrame: enemy.getLastPathWaypoint().waypointAttachment.WorldCFrame,
+				nextCFrame: enemy.getNextPathWaypoint().waypointAttachment.WorldCFrame,
 				waypointAlpha: enemy.getWaypointAlpha(),
 			};
 		});
 
 		Events.updateEnemies.broadcast(clientEnemies);
+
+		print(this.enemies.size());
 	}
 }
