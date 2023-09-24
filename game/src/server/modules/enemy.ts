@@ -19,6 +19,7 @@ export class Enemy<T extends GenericEnemyStats> {
 	private stats: T;
 
 	readonly onDeath: Signal;
+	readonly onWaypointReached: Signal;
 
 	private maid: Maid;
 
@@ -38,11 +39,13 @@ export class Enemy<T extends GenericEnemyStats> {
 		this.stats = stats;
 
 		this.onDeath = new Signal();
+		this.onWaypointReached = new Signal();
 
 		this.maid = new Maid();
 
 		this.id = HttpService.GenerateGUID();
 
+		this.maid.GiveTask(this.onWaypointReached);
 		this.maid.GiveTask(() => {
 			this.onDeath.Fire();
 			this.onDeath.Destroy();
@@ -130,6 +133,8 @@ export class Enemy<T extends GenericEnemyStats> {
 
 		let pathWaypointIndex = 0;
 		while (this.path[pathWaypointIndex + 1]) {
+			this.onWaypointReached.Fire();
+
 			if (cancelPathProgress) return;
 
 			const pathWaypoint = this.path[pathWaypointIndex];

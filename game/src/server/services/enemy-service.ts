@@ -14,7 +14,7 @@ export class EnemyService {
 
 	constructor() {
 		this.lastTimeClientEnemiesSentMilliseconds = this.getCurrentTimeInMilliseconds();
-		this.timeBetweenClientEnemiesSendMilliseconds = 160;
+		this.timeBetweenClientEnemiesSendMilliseconds = 100;
 		this.enemies = [];
 	}
 
@@ -35,6 +35,15 @@ export class EnemyService {
 				return enemy.getId() !== currentEnemy.getId();
 			});
 			Events.destroyEnemy.broadcast(enemy.getId());
+		});
+
+		enemy.onWaypointReached.Connect(() => {
+			Events.updateEnemy.broadcast({
+				id: enemy.getId(),
+				lastCFrame: enemy.getLastPathWaypoint().waypointAttachment.WorldCFrame,
+				nextCFrame: enemy.getNextPathWaypoint().waypointAttachment.WorldCFrame,
+				waypointAlpha: enemy.getWaypointAlpha(),
+			});
 		});
 	}
 
@@ -84,7 +93,7 @@ export class EnemyService {
 		task.wait(5);
 
 		for (let i = 0; i < 10000; i++) {
-			task.wait(0.01);
+			task.wait(0.05);
 
 			const ninja = enemyFactory.createEnemy("NINJA", path);
 			this.addEnemy(ninja);

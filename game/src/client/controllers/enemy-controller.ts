@@ -2,7 +2,28 @@ import { Controller, OnStart } from "@flamework/core";
 import { ClientEnemy } from "client/modules/client-enemy";
 import { ClientEnemyFactory } from "client/modules/client-enemy-factory";
 import { Events } from "client/network";
-import { PathWaypoint } from "shared/modules/path-waypoint";
+import { Workspace } from "@rbxts/services";
+import { possible } from "shared/modules/possible";
+import { ClientEnemyInfo } from "shared/network";
+
+const getPositionIsOnScreen = (position: Vector3, margin: number) => {
+	const possibleCamera = possible(Workspace.CurrentCamera);
+	if (!possibleCamera.exists) return;
+
+	const camera = possibleCamera.value;
+	const viewportX = camera.ViewportSize.X + margin;
+	const viewportY = camera.ViewportSize.Y + margin;
+	const screenPoint = camera.WorldToScreenPoint(position)[0];
+	if (
+		screenPoint.X >= -margin &&
+		screenPoint.X <= viewportX &&
+		screenPoint.Y >= -margin &&
+		screenPoint.Y <= viewportY &&
+		screenPoint.Z > -margin
+	)
+		return true;
+	return false;
+};
 
 @Controller({})
 export class EnemyController implements OnStart {
@@ -31,6 +52,35 @@ export class EnemyController implements OnStart {
 		return new CFrame(position).mul(rotation);
 	}
 
+	updateEnemy(enemyInfo: ClientEnemyInfo) {
+		const clientEnemy = this.clientEnemies.find((clientEnemy: ClientEnemy) => {
+			return clientEnemy.getId() === enemyInfo.id;
+		});
+		if (!clientEnemy) return;
+		const cframe = this.constructEnemyCFrameFromClientInfo(
+			enemyInfo.lastCFrame,
+			enemyInfo.nextCFrame,
+			enemyInfo.waypointAlpha,
+		);
+		const position = cframe.Position;
+		const onScreen = getPositionIsOnScreen(position, 100);
+		if (!onScreen) {
+			clientEnemy.setRenderedLastFrame(false);
+			return;
+		}
+
+		const renderedLastFrame = clientEnemy.getRenderedLastFrame();
+		clientEnemy.setRenderedLastFrame(true);
+
+		if (!renderedLastFrame) {
+			print("Setting");
+			clientEnemy.setCFrame(cframe);
+			return;
+		}
+
+		clientEnemy.setTargetCFrame(cframe);
+	}
+
 	onStart() {
 		Events.createEnemy.connect((enemyType, id, cframe) => {
 			const clientEnemyFactory = new ClientEnemyFactory();
@@ -38,16 +88,13 @@ export class EnemyController implements OnStart {
 			this.addEnemy(clientEnemy);
 		});
 
-		Events.updateEnemies.connect((enemies) => {
-			enemies.forEach((enemy) => {
-				const clientEnemy = this.clientEnemies.find((clientEnemy: ClientEnemy) => {
-					return clientEnemy.getId() === enemy.id;
-				});
-				if (!clientEnemy) return;
+		Events.updateEnemy.connect((enemyInfo) => {
+			this.updateEnemy(enemyInfo);
+		});
 
-				clientEnemy.setTargetCFrame(
-					this.constructEnemyCFrameFromClientInfo(enemy.lastCFrame, enemy.nextCFrame, enemy.waypointAlpha),
-				);
+		Events.updateEnemies.connect((enemies) => {
+			enemies.forEach((enemyInfo) => {
+				this.updateEnemy(enemyInfo);
 			});
 		});
 

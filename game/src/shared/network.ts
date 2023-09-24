@@ -3,7 +3,7 @@ import { TowerType } from "./modules/tower-type";
 import { EnemyType } from "./modules/enemy-type";
 import { PathWaypoint } from "./modules/path-waypoint";
 
-interface ClientEnemyInfo {
+export interface ClientEnemyInfo {
 	id: string;
 	lastCFrame: CFrame;
 	nextCFrame: CFrame;
@@ -14,6 +14,7 @@ type EnemyList = ClientEnemyInfo[];
 
 interface SharedEvents {
 	createEnemy(enemyType: EnemyType, id: string, startCFrame: CFrame): void;
+	updateEnemy(enemyInfo: ClientEnemyInfo): void;
 	updateEnemies(enemies: EnemyList): void;
 	destroyEnemy(id: string): void;
 	placeTower(towerType: TowerType, cframe: CFrame): void;

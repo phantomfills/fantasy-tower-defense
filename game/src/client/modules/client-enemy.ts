@@ -21,6 +21,8 @@ export class ClientEnemy {
 	private random: Random;
 	private positionOffset: Vector3;
 
+	private renderedLastFrame: boolean;
+
 	constructor(model: EnemyModel, id: string, cframe: CFrame) {
 		this.id = id;
 		this.model = model;
@@ -35,6 +37,8 @@ export class ClientEnemy {
 
 		this.random = new Random(math.random(2147483647));
 
+		this.renderedLastFrame = false;
+
 		const positionOffsetX = this.random.NextNumber(
 			MINIMUM_CLIENT_ENEMY_POSITION_OFFSET,
 			MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET,
@@ -48,12 +52,25 @@ export class ClientEnemy {
 		this.start();
 	}
 
+	setRenderedLastFrame(value: boolean) {
+		this.renderedLastFrame = value;
+	}
+
+	getRenderedLastFrame() {
+		return this.renderedLastFrame;
+	}
+
 	getId(): string {
 		return this.id;
 	}
 
 	snapToCFrame(cframe: CFrame) {
 		snapToCFrameWithAttachmentOffset(this.model, this.model.humanoidRootPart.rootAttachment, cframe);
+	}
+
+	setCFrame(cframe: CFrame) {
+		this.targetCFrame = cframe;
+		this.snapToCFrame(cframe);
 	}
 
 	setTargetCFrame(cframe: CFrame) {
@@ -66,7 +83,7 @@ export class ClientEnemy {
 				this.snapToCFrame(
 					this.model.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(
 						this.targetCFrame.add(this.positionOffset),
-						0.065,
+						0.15,
 					),
 				);
 			}),
