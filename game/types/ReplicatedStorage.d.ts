@@ -63,7 +63,6 @@ interface ReplicatedStorage extends Instance {
 				models: Folder & {
 					foo: Model & {
 						["Left Leg"]: MeshPart;
-						animationController: AnimationController;
 						["Right Arm"]: MeshPart;
 						["Left Arm"]: MeshPart;
 						Head: MeshPart & {
@@ -92,6 +91,15 @@ interface ReplicatedStorage extends Instance {
 		node_modules: Folder & {
 			["@flamework"]: Folder & {
 				core: Folder & {
+					node_modules: Folder & {
+						["@rbxts"]: Folder & {
+							t: Folder & {
+								lib: Folder & {
+									ts: ModuleScript;
+								};
+							};
+						};
+					};
 					out: ModuleScript & {
 						reflect: ModuleScript;
 						metadata: ModuleScript;
@@ -100,11 +108,29 @@ interface ReplicatedStorage extends Instance {
 					};
 				};
 				components: Folder & {
+					node_modules: Folder & {
+						["@rbxts"]: Folder & {
+							t: Folder & {
+								lib: Folder & {
+									ts: ModuleScript;
+								};
+							};
+						};
+					};
 					out: ModuleScript & {
 						componentTracker: ModuleScript;
 					};
 				};
 				networking: Folder & {
+					node_modules: Folder & {
+						["@rbxts"]: Folder & {
+							t: Folder & {
+								lib: Folder & {
+									ts: ModuleScript;
+								};
+							};
+						};
+					};
 					out: ModuleScript & {
 						events: Folder & {
 							createClientHandler: ModuleScript;

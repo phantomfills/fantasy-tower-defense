@@ -79,8 +79,8 @@ export class EnemyService {
 
 		task.wait(5);
 
-		for (let i = 0; i < 500; i++) {
-			task.wait(0.1);
+		for (let i = 0; i < 10000; i++) {
+			task.wait(0.3);
 
 			const ninja = enemyFactory.createEnemy("NINJA", path);
 			this.addEnemy(ninja);

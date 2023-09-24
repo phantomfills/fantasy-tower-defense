@@ -1,7 +1,6 @@
 import Maid from "@rbxts/maid";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { RunService } from "@rbxts/services";
-import { Animatable } from "shared/modules/animatable";
 
 const MINIMUM_CLIENT_ENEMY_POSITION_OFFSET = -0.3;
 const MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET = 0.3;
@@ -15,14 +14,14 @@ export interface EnemyModel extends Model {
 export type GenericClientEnemy = ClientEnemy;
 
 export class ClientEnemy {
-	private model: EnemyModel;
+	readonly model: EnemyModel;
 	private id: string;
 	private targetCFrame: CFrame;
 	private maid: Maid;
 	private random: Random;
 	private positionOffset: Vector3;
 
-	constructor(model: EnemyModel & Animatable, id: string, cframe: CFrame) {
+	constructor(model: EnemyModel, id: string, cframe: CFrame) {
 		this.id = id;
 		this.model = model;
 
