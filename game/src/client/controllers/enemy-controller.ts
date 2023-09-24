@@ -73,7 +73,6 @@ export class EnemyController implements OnStart {
 		clientEnemy.setRenderedLastFrame(true);
 
 		if (!renderedLastFrame) {
-			print("Setting");
 			clientEnemy.setCFrame(cframe);
 			return;
 		}

@@ -119,7 +119,5 @@ export class EnemyService {
 		});
 
 		Events.updateEnemies.broadcast(clientEnemies);
-
-		print(this.enemies.size());
 	}
 }
