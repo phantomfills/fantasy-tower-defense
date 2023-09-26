@@ -57,12 +57,12 @@ export class EnemyController implements OnStart {
 			return clientEnemy.getId() === enemyInfo.id;
 		});
 		if (!clientEnemy) return;
-		const cframe = this.constructEnemyCFrameFromClientInfo(
-			enemyInfo.lastCFrame,
-			enemyInfo.nextCFrame,
-			enemyInfo.waypointAlpha,
+
+		const position = new Vector3(
+			enemyInfo.position.X / 100,
+			enemyInfo.position.Y / 100,
+			enemyInfo.position.Z / 100,
 		);
-		const position = cframe.Position;
 		const onScreen = getPositionIsOnScreen(position, 100);
 		if (!onScreen) {
 			clientEnemy.setRenderedLastFrame(false);
@@ -71,6 +71,8 @@ export class EnemyController implements OnStart {
 
 		const renderedLastFrame = clientEnemy.getRenderedLastFrame();
 		clientEnemy.setRenderedLastFrame(true);
+
+		const cframe = new CFrame(position).mul(enemyInfo.rotation);
 
 		if (!renderedLastFrame) {
 			clientEnemy.setCFrame(cframe);

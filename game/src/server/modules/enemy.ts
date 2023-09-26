@@ -87,6 +87,20 @@ export class Enemy<T extends GenericEnemyStats> {
 		);
 	}
 
+	getPosition() {
+		return this.lastWaypoint.waypointAttachment.WorldPosition.Lerp(
+			this.nextWaypoint.waypointAttachment.WorldPosition,
+			this.waypointAlpha,
+		);
+	}
+
+	getCFrameRotation() {
+		return this.lastWaypoint.waypointAttachment.WorldCFrame.Rotation.Lerp(
+			this.nextWaypoint.waypointAttachment.WorldCFrame.Rotation,
+			math.min(1, this.waypointAlpha * 3),
+		);
+	}
+
 	getId() {
 		return this.id;
 	}

@@ -1,5 +1,5 @@
 import { Service } from "@flamework/core";
-import { GenericEnemy } from "server/modules/enemy";
+import { Enemy, GenericEnemy } from "server/modules/enemy";
 import { PathWaypoint } from "shared/modules/path-waypoint";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Possible } from "shared/modules/possible";
@@ -38,12 +38,8 @@ export class EnemyService {
 		});
 
 		enemy.onWaypointReached.Connect(() => {
-			Events.updateEnemy.broadcast({
-				id: enemy.getId(),
-				lastCFrame: enemy.getLastPathWaypoint().waypointAttachment.WorldCFrame,
-				nextCFrame: enemy.getNextPathWaypoint().waypointAttachment.WorldCFrame,
-				waypointAlpha: enemy.getWaypointAlpha(),
-			});
+			const clientEnemy = this.getClientEnemy(enemy);
+			Events.updateEnemy.broadcast(clientEnemy);
 		});
 	}
 
@@ -93,11 +89,23 @@ export class EnemyService {
 		task.wait(5);
 
 		for (let i = 0; i < 10000; i++) {
-			task.wait(0.05);
+			task.wait(0.5);
 
 			const ninja = enemyFactory.createEnemy("NINJA", path);
 			this.addEnemy(ninja);
 		}
+	}
+
+	private getClientEnemy(enemy: GenericEnemy) {
+		return {
+			id: enemy.getId(),
+			position: new Vector3int16(
+				enemy.getPosition().X * 100,
+				enemy.getPosition().Y * 100,
+				enemy.getPosition().Z * 100,
+			),
+			rotation: enemy.getCFrameRotation(),
+		};
 	}
 
 	tick() {
@@ -109,14 +117,7 @@ export class EnemyService {
 			return;
 		this.lastTimeClientEnemiesSentMilliseconds = currentTimeInMilliseconds;
 
-		const clientEnemies = this.enemies.map((enemy) => {
-			return {
-				id: enemy.getId(),
-				lastCFrame: enemy.getLastPathWaypoint().waypointAttachment.WorldCFrame,
-				nextCFrame: enemy.getNextPathWaypoint().waypointAttachment.WorldCFrame,
-				waypointAlpha: enemy.getWaypointAlpha(),
-			};
-		});
+		const clientEnemies = this.enemies.map((enemy) => this.getClientEnemy(enemy));
 
 		Events.updateEnemies.broadcast(clientEnemies);
 	}

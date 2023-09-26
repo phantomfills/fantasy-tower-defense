@@ -83,7 +83,7 @@ export class ClientEnemy {
 				this.snapToCFrame(
 					this.model.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(
 						this.targetCFrame.add(this.positionOffset),
-						0.15,
+						0.1,
 					),
 				);
 			}),

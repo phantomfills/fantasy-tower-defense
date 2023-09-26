@@ -5,9 +5,8 @@ import { PathWaypoint } from "./modules/path-waypoint";
 
 export interface ClientEnemyInfo {
 	id: string;
-	lastCFrame: CFrame;
-	nextCFrame: CFrame;
-	waypointAlpha: number;
+	position: Vector3int16;
+	rotation: CFrame;
 }
 
 type EnemyList = ClientEnemyInfo[];

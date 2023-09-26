@@ -1,7 +1,5 @@
 import { EnemyType } from "shared/modules/enemy-type";
-import { ClientEnemy, EnemyModel, GenericClientEnemy } from "./client-enemy";
-import { ReplicatedStorage, Workspace } from "@rbxts/services";
-import { Animatable } from "shared/modules/animatable";
+import { GenericClientEnemy } from "./client-enemy";
 import { ClientNinja } from "./client-ninja";
 
 interface CreateClientEnemy {
