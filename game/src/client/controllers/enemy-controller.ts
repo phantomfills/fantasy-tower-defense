@@ -4,11 +4,11 @@ import { ClientEnemyFactory } from "client/modules/client-enemy-factory";
 import { Events } from "client/network";
 import { Workspace } from "@rbxts/services";
 import { possible } from "shared/modules/possible";
-import { ClientEnemyInfo } from "shared/network";
+import { ClientEnemyInfo, positionPrecisionMultiplier } from "shared/network";
 
-const getPositionIsOnScreen = (position: Vector3, margin: number) => {
+const getPositionIsOnScreen = (position: Vector3, margin: number): boolean => {
 	const possibleCamera = possible(Workspace.CurrentCamera);
-	if (!possibleCamera.exists) return;
+	if (!possibleCamera.exists) return false;
 
 	const camera = possibleCamera.value;
 	const viewportX = camera.ViewportSize.X + margin;
@@ -52,34 +52,44 @@ export class EnemyController implements OnStart {
 		return new CFrame(position).mul(rotation);
 	}
 
-	updateEnemy(enemyInfo: ClientEnemyInfo) {
-		const clientEnemy = this.clientEnemies.find((clientEnemy: ClientEnemy) => {
-			return clientEnemy.getId() === enemyInfo.id;
-		});
-		if (!clientEnemy) return;
-
-		const position = new Vector3(
-			enemyInfo.position.X / 100,
-			enemyInfo.position.Y / 100,
-			enemyInfo.position.Z / 100,
+	getPositionFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
+		return new Vector3(
+			enemyInfo.position.X / positionPrecisionMultiplier,
+			enemyInfo.position.Y / positionPrecisionMultiplier,
+			enemyInfo.position.Z / positionPrecisionMultiplier,
 		);
-		const onScreen = getPositionIsOnScreen(position, 100);
-		if (!onScreen) {
-			clientEnemy.setRenderedLastFrame(false);
-			return;
-		}
+	}
 
-		const renderedLastFrame = clientEnemy.getRenderedLastFrame();
-		clientEnemy.setRenderedLastFrame(true);
+	getCFrameWithRotationFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
+		const position = this.getPositionFromEnemyInfo(enemyInfo);
+		return new CFrame(position).mul(enemyInfo.rotation);
+	}
 
-		const cframe = new CFrame(position).mul(enemyInfo.rotation);
-
-		if (!renderedLastFrame) {
-			clientEnemy.setCFrame(cframe);
-			return;
-		}
-
+	updateEnemyByAnimation(clientEnemy: ClientEnemy, enemyInfo: ClientEnemyInfo) {
+		const cframe = this.getCFrameWithRotationFromEnemyInfo(enemyInfo);
 		clientEnemy.setTargetCFrame(cframe);
+	}
+
+	updateEnemyBySnap(clientEnemy: ClientEnemy, enemyInfo: ClientEnemyInfo) {
+		const cframe = this.getCFrameWithRotationFromEnemyInfo(enemyInfo);
+		clientEnemy.setCFrame(cframe);
+	}
+
+	getClientEnemyById(id: string) {
+		return this.clientEnemies.find((clientEnemy: ClientEnemy) => {
+			return clientEnemy.getId() === id;
+		});
+	}
+
+	getEnemyOnScreenFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
+		const position = new Vector3(
+			enemyInfo.position.X / positionPrecisionMultiplier,
+			enemyInfo.position.Y / positionPrecisionMultiplier,
+			enemyInfo.position.Z / positionPrecisionMultiplier,
+		);
+
+		const onScreen = getPositionIsOnScreen(position, 100);
+		return onScreen;
 	}
 
 	onStart() {
@@ -89,14 +99,37 @@ export class EnemyController implements OnStart {
 			this.addEnemy(clientEnemy);
 		});
 
-		Events.updateEnemy.connect((enemyInfo) => {
-			this.updateEnemy(enemyInfo);
-		});
+		const updateEnemy = (enemyInfo: ClientEnemyInfo) => {
+			const possibleClientEnemy = possible(this.getClientEnemyById(enemyInfo.id));
+			if (!possibleClientEnemy.exists) return;
 
+			const clientEnemy = possibleClientEnemy.value;
+			if (!this.getEnemyOnScreenFromEnemyInfo(enemyInfo)) {
+				clientEnemy.setRenderedLastFrame(false);
+				return;
+			}
+
+			const renderedLastFrame = clientEnemy.getRenderedLastFrame();
+			if (!renderedLastFrame) {
+				this.updateEnemyBySnap(clientEnemy, enemyInfo);
+			} else {
+				this.updateEnemyByAnimation(clientEnemy, enemyInfo);
+			}
+
+			clientEnemy.setRenderedLastFrame(true);
+		};
+
+		const tryUpdateEnemy = (enemyInfo: ClientEnemyInfo) => {
+			try {
+				updateEnemy(enemyInfo);
+			} catch (error) {
+				warn(error);
+			}
+		};
+
+		Events.updateEnemy.connect(tryUpdateEnemy);
 		Events.updateEnemies.connect((enemies) => {
-			enemies.forEach((enemyInfo) => {
-				this.updateEnemy(enemyInfo);
-			});
+			enemies.forEach(tryUpdateEnemy);
 		});
 
 		Events.destroyEnemy.connect((id) => {

@@ -5,6 +5,7 @@ import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Possible } from "shared/modules/possible";
 import { EnemyFactory } from "server/modules/enemy-factory";
 import { Events } from "server/network";
+import { ClientEnemyInfo, positionPrecisionMultiplier } from "shared/network";
 
 @Service({})
 export class EnemyService {
@@ -96,13 +97,13 @@ export class EnemyService {
 		}
 	}
 
-	private getClientEnemy(enemy: GenericEnemy) {
+	private getClientEnemy(enemy: GenericEnemy): ClientEnemyInfo {
 		return {
 			id: enemy.getId(),
 			position: new Vector3int16(
-				enemy.getPosition().X * 100,
-				enemy.getPosition().Y * 100,
-				enemy.getPosition().Z * 100,
+				enemy.getPosition().X * positionPrecisionMultiplier,
+				enemy.getPosition().Y * positionPrecisionMultiplier,
+				enemy.getPosition().Z * positionPrecisionMultiplier,
 			),
 			rotation: enemy.getCFrameRotation(),
 		};

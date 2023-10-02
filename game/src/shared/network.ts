@@ -1,10 +1,19 @@
 import { Networking } from "@flamework/networking";
 import { TowerType } from "./modules/tower-type";
 import { EnemyType } from "./modules/enemy-type";
-import { PathWaypoint } from "./modules/path-waypoint";
+
+/**
+ * Used to calculate the precision of a position.
+ * Default is 50
+ * Higher is more precise
+ * Lower is less precise
+ * Position values are limited so this cannot be too large
+ */
+export const positionPrecisionMultiplier = 50;
 
 export interface ClientEnemyInfo {
 	id: string;
+	// using vector3int16 to save on payload size
 	position: Vector3int16;
 	rotation: CFrame;
 }

@@ -6,20 +6,19 @@ export class ClientNinja extends ClientEnemy {
 		const foo = ReplicatedStorage.assets.enemies.foo.models.foo.Clone();
 		foo.Parent = Workspace;
 		super(foo, id, cframe);
-
-		print("animatable");
 	}
 
 	start() {
-		print("animatable");
-
 		const animationController = new Instance("AnimationController");
 		animationController.Parent = this.model;
+
 		const animator = new Instance("Animator");
 		animator.Parent = animationController;
+
 		const walkAnimation = new Instance("Animation");
 		walkAnimation.Parent = animator;
 		walkAnimation.AnimationId = "rbxassetid://14870146765";
+
 		animator.LoadAnimation(walkAnimation).Play();
 
 		super.start();
