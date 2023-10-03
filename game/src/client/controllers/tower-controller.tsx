@@ -2,7 +2,7 @@ import { Controller, OnStart } from "@flamework/core";
 import { createRoot } from "@rbxts/react-roblox";
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
-import { Hotbar } from "client/ui/hotbar";
+import { Hotbar } from "client/legacy-ui/hotbar";
 import { ReplicatedStorage, Workspace, RunService, UserInputService } from "@rbxts/services";
 import { TowerModel } from "shared/modules/tower-model";
 import { Possible, possible } from "shared/modules/possible";
