@@ -1,10 +1,12 @@
-import { Spring, lerp, lerpBinding, useMotor } from "@rbxts/pretty-react-hooks";
+import { Spring, lerpBinding, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact, { useEffect, useState } from "@rbxts/roact";
+import { CashLabel } from "./cash-label";
 
 export interface TowerSlotProps {
 	number: number;
 	callback: () => void;
 	icon: string;
+	cost: number;
 }
 
 export const TowerSlot = (props: TowerSlotProps) => {
@@ -41,6 +43,12 @@ export const TowerSlot = (props: TowerSlotProps) => {
 				},
 			}}
 		>
+			<CashLabel
+				value={props.cost}
+				size={new UDim2(1, 0, 0.3, 0)}
+				position={new UDim2(0, 0, 0.7, 0)}
+				zIndex={3}
+			/>
 			<imagelabel
 				Image={props.icon}
 				Size={new UDim2(1, 0, 1, 0)}

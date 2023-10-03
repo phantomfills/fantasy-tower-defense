@@ -13,6 +13,7 @@ export = (target: Frame) => {
 				callback={() => {
 					print("hello, world!");
 				}}
+				cost={100}
 			/>
 		</frame>
 	);

@@ -10,9 +10,9 @@ export = (target: Frame) => {
 	const towerSlot = (
 		<TowerLoadout
 			towerSlots={[
-				{ number: 1, callback: printTowerSlotNumber(1), icon: "rbxassetid://7618319705" },
-				{ number: 2, callback: printTowerSlotNumber(2), icon: "rbxassetid://139437521" },
-				{ number: 3, callback: printTowerSlotNumber(3), icon: "rbxassetid://7165896576" },
+				{ number: 1, callback: printTowerSlotNumber(1), icon: "rbxassetid://7618319705", cost: 100 },
+				{ number: 2, callback: printTowerSlotNumber(2), icon: "rbxassetid://139437521", cost: 200 },
+				{ number: 3, callback: printTowerSlotNumber(3), icon: "rbxassetid://7165896576", cost: 300 },
 			]}
 		/>
 	);
