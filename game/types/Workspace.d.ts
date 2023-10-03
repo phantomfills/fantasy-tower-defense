@@ -1,10 +1,25 @@
 interface Workspace extends Model {
 	gameMap: Model & {
 		path: Folder & {
+			["21"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["20"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["19"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["18"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["9"]: Part & {
+				waypointAttachment: Attachment;
+			};
 			["1"]: Part & {
 				waypointAttachment: Attachment;
 			};
-			["8"]: Part & {
+			["15"]: Part & {
 				waypointAttachment: Attachment;
 			};
 			["3"]: Part & {
@@ -23,6 +38,30 @@ interface Workspace extends Model {
 				waypointAttachment: Attachment;
 			};
 			["6"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["14"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["8"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["16"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["17"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["13"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["12"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["11"]: Part & {
+				waypointAttachment: Attachment;
+			};
+			["10"]: Part & {
 				waypointAttachment: Attachment;
 			};
 		};

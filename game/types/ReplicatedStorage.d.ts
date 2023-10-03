@@ -62,24 +62,28 @@ interface ReplicatedStorage extends Instance {
 			foo: Folder & {
 				models: Folder & {
 					foo: Model & {
-						["Left Leg"]: MeshPart;
-						["Right Arm"]: MeshPart;
-						["Left Arm"]: MeshPart;
-						Head: MeshPart & {
-							face: Decal;
+						["left-arm"]: MeshPart;
+						bandana: Part & {
+							Mesh: SpecialMesh;
 						};
-						Torso: MeshPart & {
+						["left-leg"]: MeshPart;
+						head: MeshPart & {
+							["head 🡪 bandana"]: Weld;
+							["sad-face"]: Decal;
+						};
+						torso: MeshPart & {
 							["Left Shoulder"]: Motor6D;
 							["Right Shoulder"]: Motor6D;
 							Neck: Motor6D;
 							["Right Hip"]: Motor6D;
 							["Left Hip"]: Motor6D;
 						};
+						["right-leg"]: MeshPart;
 						humanoidRootPart: Part & {
 							rootAttachment: Attachment;
 							RootJoint: Motor6D;
 						};
-						["Right Leg"]: MeshPart;
+						["right-arm"]: MeshPart;
 					};
 				};
 			};
