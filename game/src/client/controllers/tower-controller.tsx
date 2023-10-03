@@ -2,13 +2,13 @@ import { Controller, OnStart } from "@flamework/core";
 import { createRoot } from "@rbxts/react-roblox";
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
-import { Hotbar } from "client/legacy-ui/hotbar";
 import { ReplicatedStorage, Workspace, RunService, UserInputService } from "@rbxts/services";
 import { TowerModel } from "shared/modules/tower-model";
 import { Possible, possible } from "shared/modules/possible";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { Events } from "client/network";
 import { TowerType } from "shared/modules/tower-type";
+import { TowerLoadout } from "client/ui/tower-loadout";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -72,19 +72,23 @@ export class TowerController implements OnStart {
 
 		const root = createRoot(playerGui);
 		root.render(
-			<Hotbar
-				towers={[
-					{
-						placementImageId: placementImage.Value,
-						callback: () => {
-							const archerClone = archerModel.Clone();
-							archerClone.Parent = Workspace;
+			<screengui ResetOnSpawn={false}>
+				<TowerLoadout
+					towerSlots={[
+						{
+							number: 1,
+							callback: () => {
+								const archerClone = archerModel.Clone();
+								archerClone.Parent = Workspace;
 
-							this.setTower(archerClone, "ARCHER");
+								this.setTower(archerClone, "ARCHER");
+							},
+							icon: `rbxassetid://${placementImage.Value}`,
+							cost: 100,
 						},
-					},
-				]}
-			/>,
+					]}
+				/>
+			</screengui>,
 		);
 	}
 
