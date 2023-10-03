@@ -19,7 +19,8 @@ export class ClientNinja extends ClientEnemy {
 		walkAnimation.Parent = animator;
 		walkAnimation.AnimationId = "rbxassetid://14870146765";
 
-		animator.LoadAnimation(walkAnimation).Play();
+		const animation = animator.LoadAnimation(walkAnimation);
+		animation.Play();
 
 		super.start();
 	}
