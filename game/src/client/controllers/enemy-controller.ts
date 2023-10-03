@@ -92,6 +92,26 @@ export class EnemyController implements OnStart {
 		return onScreen;
 	}
 
+	updateEnemy(enemyInfo: ClientEnemyInfo) {
+		const possibleClientEnemy = possible(this.getClientEnemyById(enemyInfo.id));
+		if (!possibleClientEnemy.exists) return;
+
+		const clientEnemy = possibleClientEnemy.value;
+		if (!this.getEnemyOnScreenFromEnemyInfo(enemyInfo)) {
+			clientEnemy.setRenderedLastFrame(false);
+			return;
+		}
+
+		const renderedLastFrame = clientEnemy.getRenderedLastFrame();
+		if (!renderedLastFrame) {
+			this.updateEnemyBySnap(clientEnemy, enemyInfo);
+		} else {
+			this.updateEnemyByAnimation(clientEnemy, enemyInfo);
+		}
+
+		clientEnemy.setRenderedLastFrame(true);
+	}
+
 	onStart() {
 		Events.createEnemy.connect((enemyType, id, cframe) => {
 			const clientEnemyFactory = new ClientEnemyFactory();
@@ -99,29 +119,9 @@ export class EnemyController implements OnStart {
 			this.addEnemy(clientEnemy);
 		});
 
-		const updateEnemy = (enemyInfo: ClientEnemyInfo) => {
-			const possibleClientEnemy = possible(this.getClientEnemyById(enemyInfo.id));
-			if (!possibleClientEnemy.exists) return;
-
-			const clientEnemy = possibleClientEnemy.value;
-			if (!this.getEnemyOnScreenFromEnemyInfo(enemyInfo)) {
-				clientEnemy.setRenderedLastFrame(false);
-				return;
-			}
-
-			const renderedLastFrame = clientEnemy.getRenderedLastFrame();
-			if (!renderedLastFrame) {
-				this.updateEnemyBySnap(clientEnemy, enemyInfo);
-			} else {
-				this.updateEnemyByAnimation(clientEnemy, enemyInfo);
-			}
-
-			clientEnemy.setRenderedLastFrame(true);
-		};
-
 		const tryUpdateEnemy = (enemyInfo: ClientEnemyInfo) => {
 			try {
-				updateEnemy(enemyInfo);
+				this.updateEnemy(enemyInfo);
 			} catch (error) {
 				warn(error);
 			}
