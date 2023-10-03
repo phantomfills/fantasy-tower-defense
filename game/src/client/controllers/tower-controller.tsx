@@ -26,19 +26,18 @@ const camera = Workspace.Camera;
 @Controller({})
 export class TowerController implements OnStart {
 	private tower: Possible<TowerModel>;
-	private cframe: CFrame;
 	private towerType: Possible<TowerType>;
+	private cframe: CFrame;
 
 	constructor() {
 		this.tower = {
 			exists: false,
 		};
-
-		this.cframe = new CFrame();
-
 		this.towerType = {
 			exists: false,
 		};
+
+		this.cframe = new CFrame();
 	}
 
 	onStart() {
