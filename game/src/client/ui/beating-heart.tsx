@@ -26,15 +26,15 @@ export const BeatingHeart = (props: BeatingHeartProps) => {
 	const impulse = () => {
 		setPulseTransition(
 			new Spring(1, {
-				dampingRatio: 0.1,
-				frequency: 4,
+				dampingRatio: 0.05,
+				frequency: 6,
 			}),
 		);
 
 		setTimeout(relax, 0.05);
 	};
 
-	useInterval(impulse, 1.5);
+	useInterval(impulse, 1);
 
 	return (
 		<imagelabel

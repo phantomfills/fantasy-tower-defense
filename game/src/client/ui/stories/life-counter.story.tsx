@@ -10,7 +10,7 @@ export = (target: Frame) => {
 			AnchorPoint={new Vector2(0.5, 0.5)}
 			BackgroundTransparency={1}
 		>
-			<LifeCounter lives={3} />
+			<LifeCounter lives={100} />
 		</frame>
 	);
 
