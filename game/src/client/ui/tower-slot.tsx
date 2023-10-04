@@ -13,22 +13,33 @@ export const TowerSlot = (props: TowerSlotProps) => {
 	const { number, callback } = props;
 
 	const [hovering, setHovering] = useState(false);
-	const [transition, setTransition] = useMotor(0);
+	const [clicking, setClicking] = useState(false);
+	const [buttonHoverTransition, setButtonHoverTransition] = useMotor(0);
+	const [buttonSizeTransition, setButtonSizeTransition] = useMotor(0);
 
 	useEffect(() => {
-		setTransition(
+		setButtonHoverTransition(
 			new Spring(hovering ? 1 : 0, {
 				dampingRatio: 0.6,
 				frequency: 3,
 			}),
 		);
 	}, [hovering]);
+	useEffect(() => {
+		setButtonSizeTransition(
+			new Spring(clicking ? 1 : 0, {
+				dampingRatio: 0.35,
+				frequency: 3,
+			}),
+		);
+	}, [clicking]);
 
 	return (
 		<textbutton
-			Size={new UDim2(1, 0, 1, 0)}
+			Size={lerpBinding(buttonSizeTransition, new UDim2(1, 0, 1, 0), new UDim2(0.8, 0, 0.8, 0))}
 			BackgroundColor3={Color3.fromRGB(25, 25, 25)}
-			Position={lerpBinding(transition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
+			AnchorPoint={new Vector2(0.5, 0.5)}
+			Position={lerpBinding(buttonHoverTransition, new UDim2(0.5, 0, 0.5, 0), new UDim2(0.5, 0, 0.4, 0))}
 			Text=""
 			AutoButtonColor={false}
 			Event={{
@@ -36,10 +47,15 @@ export const TowerSlot = (props: TowerSlotProps) => {
 					setHovering(true);
 				},
 				MouseLeave: () => {
+					setClicking(false);
 					setHovering(false);
 				},
-				MouseButton1Click: () => {
+				MouseButton1Down: () => {
+					setClicking(true);
 					callback();
+				},
+				MouseButton1Up: () => {
+					setClicking(false);
 				},
 			}}
 		>
@@ -54,7 +70,7 @@ export const TowerSlot = (props: TowerSlotProps) => {
 				Size={new UDim2(1, 0, 1, 0)}
 				BackgroundTransparency={1}
 				ZIndex={2}
-				Position={lerpBinding(transition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
+				Position={lerpBinding(buttonHoverTransition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
 			/>
 			<uicorner CornerRadius={new UDim(0.1, 0)} />
 			<uistroke
@@ -64,11 +80,15 @@ export const TowerSlot = (props: TowerSlotProps) => {
 			/>
 			<frame
 				Size={new UDim2(0.4, 0, 0.4, 0)}
-				BackgroundColor3={lerpBinding(transition, Color3.fromRGB(0, 120, 255), Color3.fromRGB(0, 190, 255))}
+				BackgroundColor3={lerpBinding(
+					buttonHoverTransition,
+					Color3.fromRGB(0, 120, 255),
+					Color3.fromRGB(0, 190, 255),
+				)}
 				Position={new UDim2(-0.125, 0, -0.125, 0)}
-				Rotation={lerpBinding(transition, -10, 10)}
+				Rotation={lerpBinding(buttonHoverTransition, -10, 10)}
 			>
-				<uistroke Color={Color3.fromRGB(255, 255, 255)} Thickness={lerpBinding(transition, 2, 4)} />
+				<uistroke Color={Color3.fromRGB(255, 255, 255)} Thickness={lerpBinding(buttonHoverTransition, 2, 4)} />
 				<uicorner CornerRadius={new UDim(1, 0)} />
 				<textlabel
 					TextScaled={true}
