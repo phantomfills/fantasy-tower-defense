@@ -1,3 +1,3 @@
-export = {
-	heart: `rbxassetid://14967317802`,
+export const images = {
+	heart: "rbxassetid://14967317783",
 } as const;

@@ -36,6 +36,7 @@
     "@rbxts/roact-hooked": "^2.6.1",
     "@rbxts/roact-hooks": "^0.4.1-ts.3",
     "@rbxts/roact-spring": "^2.0.0",
+    "@rbxts/set-timeout": "^1.1.2",
     "@rbxts/signal": "^1.1.1",
     "@rbxts/t": "^3.1.0",
     "eslint": "^8.50.0",
