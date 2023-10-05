@@ -5,7 +5,7 @@ import { createRoot } from "@rbxts/react-roblox";
 export = (target: Frame) => {
 	const lifeCounter = (
 		<frame
-			Size={new UDim2(0, 150, 0, 75)}
+			Size={new UDim2(0, 100, 0, 50)}
 			Position={new UDim2(0.5, 0, 0.5, 0)}
 			AnchorPoint={new Vector2(0.5, 0.5)}
 			BackgroundTransparency={1}
