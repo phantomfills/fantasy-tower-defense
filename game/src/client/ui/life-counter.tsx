@@ -18,8 +18,8 @@ export const LifeCounter = ({ lives }: LifeCounterProps) => {
 				<uiaspectratioconstraint AspectRatio={1} DominantAxis={Enum.DominantAxis.Height} />
 			</imagelabel> */}
 			<BeatingHeart
-				size={new UDim2(0.5, 0, 1, 0)}
-				beatSize={new UDim2(0.4, 0, 0.8, 0)}
+				size={new UDim2(0.4, 0, 0.8, 0)}
+				beatSize={new UDim2(0.5, 0, 1, 0)}
 				position={new UDim2(0.25, 0, 0.5, 0)}
 				anchorPoint={new Vector2(0.5, 0.5)}
 			/>
