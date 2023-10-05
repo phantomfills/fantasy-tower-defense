@@ -1,0 +1,7 @@
+name = "fantasy-td-assets"
+
+[[inputs]]
+glob = "assets/images/*.png"
+codegen = true
+codegen-path = "src/assets.lua"
+codegen-base-path = "assets"

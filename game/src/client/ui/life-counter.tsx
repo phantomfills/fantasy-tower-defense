@@ -1,5 +1,4 @@
 import Roact from "@rbxts/roact";
-import { images } from "shared/modules/images";
 import { BeatingHeart } from "./beating-heart";
 
 interface LifeCounterProps {
@@ -14,9 +13,6 @@ export const LifeCounter = ({ lives }: LifeCounterProps) => {
 			AnchorPoint={new Vector2(0.5, 0.5)}
 			BackgroundTransparency={1}
 		>
-			{/* <imagelabel Image={images.heart} Size={new UDim2(0.5, 0, 1, 0)} BackgroundTransparency={1}>
-				<uiaspectratioconstraint AspectRatio={1} DominantAxis={Enum.DominantAxis.Height} />
-			</imagelabel> */}
 			<BeatingHeart
 				size={new UDim2(0.4, 0, 0.8, 0)}
 				beatSize={new UDim2(0.5, 0, 1, 0)}

@@ -1,7 +1,7 @@
 import { Spring, lerpBinding, useInterval, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact from "@rbxts/roact";
 import { setTimeout } from "@rbxts/set-timeout";
-import { images } from "shared/modules/images";
+import images = require("assets");
 
 interface BeatingHeartProps {
 	size: UDim2;
