@@ -1,7 +1,7 @@
 import { Spring, lerpBinding, useInterval, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact from "@rbxts/roact";
 import { setTimeout } from "@rbxts/set-timeout";
-import images = require("assets");
+import { images } from "shared/assets";
 
 interface BeatingHeartProps {
 	size: UDim2;
@@ -27,7 +27,7 @@ export const BeatingHeart = (props: BeatingHeartProps) => {
 		setPulseTransition(
 			new Spring(1, {
 				dampingRatio: 0.05,
-				frequency: 6,
+				frequency: 10,
 			}),
 		);
 
@@ -37,13 +37,25 @@ export const BeatingHeart = (props: BeatingHeartProps) => {
 	useInterval(impulse, 1);
 
 	return (
-		<imagelabel
-			Image={images.heart}
-			Size={lerpBinding(pulseTransition, size, beatSize)}
-			Position={position}
-			AnchorPoint={anchorPoint || new Vector2(0.5, 0.5)}
-			BackgroundTransparency={1}
-			ImageColor3={Color3.fromRGB(255, 255, 255)}
-		/>
+		<>
+			<imagelabel
+				Image={images.heart}
+				Size={lerpBinding(pulseTransition, size, beatSize)}
+				Position={position}
+				AnchorPoint={anchorPoint || new Vector2(0.5, 0.5)}
+				BackgroundTransparency={1}
+				ImageColor3={Color3.fromRGB(255, 255, 255)}
+				ZIndex={1}
+			/>
+			<imagelabel
+				Image={images.heart_glow}
+				Size={lerpBinding(pulseTransition, size, beatSize)}
+				Position={position}
+				AnchorPoint={anchorPoint || new Vector2(0.5, 0.5)}
+				BackgroundTransparency={1}
+				ImageColor3={Color3.fromRGB(255, 255, 255)}
+				ZIndex={0}
+			/>
+		</>
 	);
 };

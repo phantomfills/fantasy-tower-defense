@@ -61,8 +61,8 @@ export const TowerSlot = (props: TowerSlotProps) => {
 		>
 			<CashLabel
 				value={props.cost}
-				size={new UDim2(1, 0, 0.3, 0)}
-				position={new UDim2(0, 0, 0.7, 0)}
+				size={new UDim2(1, 0, 0.4, 0)}
+				position={new UDim2(0, 0, 0.6, 0)}
 				zIndex={3}
 			/>
 			<imagelabel

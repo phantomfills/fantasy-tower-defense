@@ -14,13 +14,13 @@ export const CashLabel = (props: CashLabelProps) => {
 		<frame Size={size} Position={position} BackgroundTransparency={1} ZIndex={zIndex}>
 			<imagelabel
 				Image="rbxassetid://1022613008"
-				Size={new UDim2(0.35, 0, 1, 0)}
+				Size={new UDim2(0.45, 0, 1, 0)}
 				BackgroundTransparency={1}
 				ZIndex={zIndex}
 			/>
 			<textlabel
-				Size={new UDim2(0.65, 0, 1, 0)}
-				Position={new UDim2(0.35, 0, 0, 0)}
+				Size={new UDim2(0.55, 0, 1, 0)}
+				Position={new UDim2(0.45, 0, 0, 0)}
 				BackgroundTransparency={1}
 				TextColor3={Color3.fromRGB(0, 255, 148)}
 				TextScaled={true}

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "rbxtsc",
-    "watch": "rbxtsc -w"
+    "watch": "rbxtsc -w",
+    "build-rbx": "rojo build -o build.rbxl",
+    "serve-rbx": "rojo serve"
   },
   "keywords": [],
   "author": "",

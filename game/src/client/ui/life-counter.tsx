@@ -14,7 +14,7 @@ export const LifeCounter = ({ lives }: LifeCounterProps) => {
 			BackgroundTransparency={1}
 		>
 			<BeatingHeart
-				size={new UDim2(0.4, 0, 0.8, 0)}
+				size={new UDim2(0.45, 0, 0.9, 0)}
 				beatSize={new UDim2(0.5, 0, 1, 0)}
 				position={new UDim2(0.25, 0, 0.5, 0)}
 				anchorPoint={new Vector2(0.5, 0.5)}
@@ -29,7 +29,7 @@ export const LifeCounter = ({ lives }: LifeCounterProps) => {
 				TextXAlignment={Enum.TextXAlignment.Left}
 				Text={tostring(lives)}
 			>
-				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={2} />
+				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={1} />
 			</textlabel>
 		</frame>
 	);
