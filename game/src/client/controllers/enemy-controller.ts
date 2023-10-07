@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@flamework/core";
 import { ClientEnemy } from "client/modules/client-enemy";
-import { ClientEnemyFactory } from "client/modules/client-enemy-factory";
+import { createClientEnemy } from "client/modules/client-enemy-factory";
 import { Events } from "client/network";
 import { Workspace } from "@rbxts/services";
 import { possible } from "shared/modules/possible";
@@ -114,8 +114,7 @@ export class EnemyController implements OnStart {
 
 	onStart() {
 		Events.createEnemy.connect((enemyType, id, cframe) => {
-			const clientEnemyFactory = new ClientEnemyFactory();
-			const clientEnemy = clientEnemyFactory.createClientEnemy(enemyType, id, cframe);
+			const clientEnemy = createClientEnemy(enemyType, id, cframe);
 			this.addEnemy(clientEnemy);
 		});
 
