@@ -1,9 +1,9 @@
 import { Service } from "@flamework/core";
-import { Enemy, GenericEnemy } from "server/modules/enemy";
+import { GenericEnemy } from "server/modules/enemy";
 import { PathWaypoint } from "shared/modules/path-waypoint";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
 import { Possible } from "shared/modules/possible";
-import { EnemyFactory } from "server/modules/enemy-factory";
+import { createEnemy } from "server/modules/enemy-factory";
 import { Events } from "server/network";
 import { ClientEnemyInfo, positionPrecisionMultiplier } from "shared/network";
 
@@ -85,14 +85,12 @@ export class EnemyService {
 	}
 
 	async start(path: PathWaypoint[]) {
-		const enemyFactory = new EnemyFactory();
-
 		task.wait(5);
 
 		for (let i = 0; i < 10000; i++) {
 			task.wait(0.5);
 
-			const ninja = enemyFactory.createEnemy("NINJA", path);
+			const ninja = createEnemy("NINJA", path);
 			this.addEnemy(ninja);
 		}
 	}

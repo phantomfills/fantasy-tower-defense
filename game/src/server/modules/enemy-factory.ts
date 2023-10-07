@@ -3,20 +3,10 @@ import { GenericEnemy } from "./enemy";
 import { PathWaypoint } from "shared/modules/path-waypoint";
 import { Ninja } from "./ninja";
 
-interface CreateEnemy {
-	createEnemy(enemyType: EnemyType, path: PathWaypoint[]): GenericEnemy;
-}
-
-export class EnemyFactory implements CreateEnemy {
-	createEnemy(enemyType: EnemyType, path: PathWaypoint[]): GenericEnemy {
-		let enemy: GenericEnemy;
-
-		switch (enemyType) {
-			case "NINJA": {
-				enemy = new Ninja(path);
-			}
+export const createEnemy = (enemyType: EnemyType, path: PathWaypoint[]): GenericEnemy => {
+	switch (enemyType) {
+		case "NINJA": {
+			return new Ninja(path);
 		}
-
-		return enemy;
 	}
-}
+};
