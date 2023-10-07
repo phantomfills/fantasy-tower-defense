@@ -1,9 +1,8 @@
-import { OnStart, Service } from "@flamework/core";
+import { Service } from "@flamework/core";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower";
-import { Archer } from "server/modules/archer";
 import { Signal } from "@rbxts/beacon";
 import { Events } from "server/network";
-import { TowerFactory } from "server/modules/tower-factory";
+import { createTower } from "server/modules/tower-factory";
 
 @Service({})
 export class TowerService {
@@ -26,9 +25,7 @@ export class TowerService {
 
 	start() {
 		Events.placeTower.connect((player, towerType, cframe) => {
-			const towerFactory = new TowerFactory();
-
-			const tower = towerFactory.createTower(towerType, cframe);
+			const tower = createTower(towerType, cframe);
 			this.addTower(tower);
 		});
 	}
