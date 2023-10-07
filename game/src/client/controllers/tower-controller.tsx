@@ -25,15 +25,14 @@ const camera = Workspace.Camera;
 
 @Controller({})
 export class TowerController implements OnStart {
-	private tower: Possible<TowerModel>;
-	private towerType: Possible<TowerType>;
+	private tower: Possible<{
+		model: TowerModel;
+		type: TowerType;
+	}>;
 	private cframe: CFrame;
 
 	constructor() {
 		this.tower = {
-			exists: false,
-		};
-		this.towerType = {
 			exists: false,
 		};
 
@@ -93,21 +92,23 @@ export class TowerController implements OnStart {
 	}
 
 	private placeTower() {
-		if (!this.tower.exists) return;
-		if (!this.towerType.exists) return;
+		const possibleTower = this.tower;
+		if (!possibleTower.exists) return;
 
-		Events.placeTower(this.towerType.value, this.cframe);
+		const tower = possibleTower.value;
+
+		Events.placeTower(tower.type, this.cframe);
 		this.clearTower();
 	}
 
 	private clearTower() {
-		if (!this.tower.exists) return;
+		const possibleTower = this.tower;
+		if (!possibleTower.exists) return;
 
-		this.tower.value.Destroy();
+		const tower = possibleTower.value;
+
+		tower.model.Destroy();
 		this.tower = {
-			exists: false,
-		};
-		this.towerType = {
 			exists: false,
 		};
 	}
@@ -117,21 +118,23 @@ export class TowerController implements OnStart {
 
 		this.tower = {
 			exists: true,
-			value: towerModel,
-		};
-		this.towerType = {
-			exists: true,
-			value: towerType,
+			value: {
+				model: towerModel,
+				type: towerType,
+			},
 		};
 	}
 
 	private updateTowerModel() {
-		if (!this.tower.exists) return;
+		const possibleTower = this.tower;
+		if (!possibleTower.exists) return;
 
-		const tower = this.tower.value;
+		const tower = possibleTower.value;
+		const model = tower.model;
+		const rootAttachment = model.humanoidRootPart.rootAttachment;
 
 		const raycastParams = new RaycastParams();
-		raycastParams.FilterDescendantsInstances = [tower];
+		raycastParams.FilterDescendantsInstances = [model];
 		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist;
 
 		const mousePosition = UserInputService.GetMouseLocation();
@@ -143,6 +146,6 @@ export class TowerController implements OnStart {
 
 		this.cframe = new CFrame(raycastResult.value.Position);
 
-		snapToCFrameWithAttachmentOffset(tower, tower.humanoidRootPart.rootAttachment, this.cframe);
+		snapToCFrameWithAttachmentOffset(model, rootAttachment, this.cframe);
 	}
 }
