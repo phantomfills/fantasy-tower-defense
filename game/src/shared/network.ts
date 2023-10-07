@@ -3,17 +3,15 @@ import { TowerType } from "./modules/tower-type";
 import { EnemyType } from "./modules/enemy-type";
 
 /**
- * Used to calculate the precision of a position.
- * Default is 50
- * Higher is more precise
- * Lower is less precise
- * Position values are limited so this cannot be too large
+ * Stores the precision multiplier for syncing position to client
  */
 export const positionPrecisionMultiplier = 50;
 
 export interface ClientEnemyInfo {
 	id: string;
-	// using vector3int16 to save on payload size
+	/**
+	 * Vector3int16 used to decrease payload size
+	 */
 	position: Vector3int16;
 	rotation: CFrame;
 }
