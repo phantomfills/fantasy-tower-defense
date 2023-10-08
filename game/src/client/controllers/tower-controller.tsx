@@ -76,7 +76,9 @@ export class TowerController implements OnStart {
 					{
 						number: 1,
 						callback: () => {
-							this.setTower(archerModel.Clone(), "ARCHER");
+							const archer = archerModel.Clone();
+							archer.Parent = Workspace;
+							this.setTower(archer, "ARCHER");
 						},
 						cost: 100,
 						icon: `rbxassetid://${images.placement.Value}`,
