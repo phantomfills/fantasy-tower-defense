@@ -2,28 +2,10 @@ import { Controller, OnStart } from "@flamework/core";
 import { ClientEnemy } from "client/modules/client-enemy";
 import { createClientEnemy } from "client/modules/client-enemy-factory";
 import { Events } from "client/network";
-import { Workspace } from "@rbxts/services";
+import { getPositionOnScreen } from "shared/modules/position-on-screen";
 import { possible } from "shared/modules/possible";
 import { ClientEnemyInfo, positionPrecisionMultiplier } from "shared/network";
-
-const getPositionIsOnScreen = (position: Vector3, margin: number): boolean => {
-	const possibleCamera = possible(Workspace.CurrentCamera);
-	if (!possibleCamera.exists) return false;
-
-	const camera = possibleCamera.value;
-	const viewportX = camera.ViewportSize.X + margin;
-	const viewportY = camera.ViewportSize.Y + margin;
-	const screenPoint = camera.WorldToScreenPoint(position)[0];
-	if (
-		screenPoint.X >= -margin &&
-		screenPoint.X <= viewportX &&
-		screenPoint.Y >= -margin &&
-		screenPoint.Y <= viewportY &&
-		screenPoint.Z > -margin
-	)
-		return true;
-	return false;
-};
+import { getPositionOfLineAndCharacter } from "typescript";
 
 @Controller({})
 export class EnemyController implements OnStart {
@@ -88,7 +70,7 @@ export class EnemyController implements OnStart {
 			enemyInfo.position.Z / positionPrecisionMultiplier,
 		);
 
-		const onScreen = getPositionIsOnScreen(position, 100);
+		const onScreen = getPositionOnScreen(position, 100);
 		return onScreen;
 	}
 
