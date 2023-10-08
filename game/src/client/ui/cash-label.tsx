@@ -2,8 +2,8 @@ import Roact from "@rbxts/roact";
 
 export interface CashLabelProps {
 	value: number;
-	size: UDim2;
-	position: UDim2;
+	size?: UDim2;
+	position?: UDim2;
 	zIndex?: number;
 }
 
@@ -19,12 +19,12 @@ export const CashLabel = (props: CashLabelProps) => {
 				ZIndex={zIndex}
 			/>
 			<textlabel
-				Size={new UDim2(0.55, 0, 1, 0)}
-				Position={new UDim2(0.45, 0, 0, 0)}
+				Size={new UDim2(0.55, 0, 0.6, 0)}
+				Position={new UDim2(0.45, 0, 0.2, 0)}
 				BackgroundTransparency={1}
 				TextColor3={Color3.fromRGB(0, 255, 148)}
 				TextScaled={true}
-				TextXAlignment={Enum.TextXAlignment.Center}
+				TextXAlignment={Enum.TextXAlignment.Left}
 				Font={Enum.Font.GothamBold}
 				Text={tostring(value)}
 				ZIndex={zIndex}

@@ -8,8 +8,7 @@ import { Possible, possible } from "shared/modules/possible";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { Events } from "client/network";
 import { TowerType } from "shared/modules/tower-type";
-import { TowerLoadout } from "client/ui/tower-loadout";
-import { Panel } from "client/ui/panel";
+import { UserInterface } from "client/ui/user-interface";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -72,23 +71,18 @@ export class TowerController implements OnStart {
 
 		const root = createRoot(playerGui);
 		root.render(
-			<Panel>
-				<TowerLoadout
-					towerSlots={[
-						{
-							number: 1,
-							callback: () => {
-								const archerClone = archerModel.Clone();
-								archerClone.Parent = Workspace;
-
-								this.setTower(archerClone, "ARCHER");
-							},
-							icon: `rbxassetid://${placementImage.Value}`,
-							cost: 100,
+			<UserInterface
+				towers={[
+					{
+						number: 1,
+						callback: () => {
+							this.setTower(archerModel.Clone(), "ARCHER");
 						},
-					]}
-				/>
-			</Panel>,
+						cost: 100,
+						icon: `rbxassetid://${images.placement.Value}`,
+					},
+				]}
+			/>,
 		);
 	}
 

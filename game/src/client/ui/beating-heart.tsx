@@ -37,25 +37,27 @@ export const BeatingHeart = (props: BeatingHeartProps) => {
 	useInterval(impulse, 1);
 
 	return (
-		<>
+		<frame
+			BackgroundTransparency={1}
+			Size={lerpBinding(pulseTransition, size, beatSize)}
+			AnchorPoint={anchorPoint}
+			Position={position}
+		>
+			<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Height} AspectRatio={1} />
 			<imagelabel
 				Image={images.heart}
-				Size={lerpBinding(pulseTransition, size, beatSize)}
-				Position={position}
-				AnchorPoint={anchorPoint || new Vector2(0.5, 0.5)}
+				Size={new UDim2(1, 0, 1, 0)}
 				BackgroundTransparency={1}
 				ImageColor3={Color3.fromRGB(255, 255, 255)}
 				ZIndex={1}
 			/>
 			<imagelabel
 				Image={images.heart_glow}
-				Size={lerpBinding(pulseTransition, size, beatSize)}
-				Position={position}
-				AnchorPoint={anchorPoint || new Vector2(0.5, 0.5)}
+				Size={new UDim2(1, 0, 1, 0)}
 				BackgroundTransparency={1}
 				ImageColor3={Color3.fromRGB(255, 255, 255)}
 				ZIndex={0}
 			/>
-		</>
+		</frame>
 	);
 };
