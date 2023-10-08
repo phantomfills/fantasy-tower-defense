@@ -125,6 +125,31 @@ export class TowerController implements OnStart {
 		};
 	}
 
+	private getTowerPlacementRaycastResult(): Possible<RaycastResult> {
+		const possibleTower = this.tower;
+		if (!possibleTower.exists)
+			return {
+				exists: false,
+			};
+
+		const tower = possibleTower.value;
+		const model = tower.model;
+
+		const mousePosition = UserInputService.GetMouseLocation();
+		const mouseRay = camera.ViewportPointToRay(mousePosition.X, mousePosition.Y);
+
+		const origin = mouseRay.Origin;
+		const direction = mouseRay.Direction.mul(TOWER_PLACEMENT_DISTANCE);
+
+		const raycastParameters = new RaycastParams();
+		raycastParameters.FilterDescendantsInstances = [model];
+		raycastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
+
+		const raycastResult = possible<RaycastResult>(Workspace.Raycast(origin, direction, raycastParameters));
+
+		return raycastResult;
+	}
+
 	private updateTowerModel() {
 		const possibleTower = this.tower;
 		if (!possibleTower.exists) return;
@@ -133,15 +158,7 @@ export class TowerController implements OnStart {
 		const model = tower.model;
 		const rootAttachment = model.humanoidRootPart.rootAttachment;
 
-		const raycastParams = new RaycastParams();
-		raycastParams.FilterDescendantsInstances = [model];
-		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist;
-
-		const mousePosition = UserInputService.GetMouseLocation();
-		const mouseRay = camera.ViewportPointToRay(mousePosition.X, mousePosition.Y);
-		const raycastResult = possible<RaycastResult>(
-			Workspace.Raycast(mouseRay.Origin, mouseRay.Direction.mul(TOWER_PLACEMENT_DISTANCE), raycastParams),
-		);
+		const raycastResult = this.getTowerPlacementRaycastResult();
 		if (!raycastResult.exists) return;
 
 		this.cframe = new CFrame(raycastResult.value.Position);
