@@ -9,6 +9,7 @@ import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe"
 import { Events } from "client/network";
 import { TowerType } from "shared/modules/tower-type";
 import { TowerLoadout } from "client/ui/tower-loadout";
+import { Panel } from "client/ui/panel";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -71,7 +72,7 @@ export class TowerController implements OnStart {
 
 		const root = createRoot(playerGui);
 		root.render(
-			<screengui ResetOnSpawn={false}>
+			<Panel>
 				<TowerLoadout
 					towerSlots={[
 						{
@@ -87,7 +88,7 @@ export class TowerController implements OnStart {
 						},
 					]}
 				/>
-			</screengui>,
+			</Panel>,
 		);
 	}
 
@@ -158,11 +159,12 @@ export class TowerController implements OnStart {
 		const model = tower.model;
 		const rootAttachment = model.humanoidRootPart.rootAttachment;
 
-		const raycastResult = this.getTowerPlacementRaycastResult();
-		if (!raycastResult.exists) return;
+		const possibleRaycastResult = this.getTowerPlacementRaycastResult();
+		if (!possibleRaycastResult.exists) return;
 
-		this.cframe = new CFrame(raycastResult.value.Position);
+		const raycastResult = possibleRaycastResult.value;
 
+		this.cframe = new CFrame(raycastResult.Position);
 		snapToCFrameWithAttachmentOffset(model, rootAttachment, this.cframe);
 	}
 }
