@@ -4,8 +4,7 @@ import { createClientEnemy } from "client/modules/client-enemy-factory";
 import { Events } from "client/network";
 import { getPositionOnScreen } from "shared/modules/position-on-screen";
 import { possible } from "shared/modules/possible";
-import { ClientEnemyInfo, positionPrecisionMultiplier } from "shared/network";
-import { getPositionOfLineAndCharacter } from "typescript";
+import { ClientEnemyInfo, POSITION_PRECISION_MULTIPLIER } from "shared/network";
 
 @Controller({})
 export class EnemyController implements OnStart {
@@ -15,66 +14,51 @@ export class EnemyController implements OnStart {
 		this.clientEnemies = [];
 	}
 
-	addEnemy(enemy: ClientEnemy) {
+	private addEnemy(enemy: ClientEnemy) {
 		this.clientEnemies.push(enemy);
 	}
 
-	removeEnemy(enemy: ClientEnemy) {
+	private removeEnemy(enemy: ClientEnemy) {
 		const index = this.clientEnemies.indexOf(enemy);
 		this.clientEnemies.remove(index);
 	}
 
-	constructEnemyCFrameFromClientInfo(lastCFrame: CFrame, nextCFrame: CFrame, waypointAlpha: number) {
-		const position = lastCFrame.Position.Lerp(nextCFrame.Position, waypointAlpha);
-
-		const rotationMultiplier = 3;
-		const rotationAlpha = math.min(waypointAlpha * rotationMultiplier, 1);
-		const rotation = lastCFrame.Rotation.Lerp(nextCFrame.Rotation, rotationAlpha);
-
-		return new CFrame(position).mul(rotation);
-	}
-
-	getPositionFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
+	private getPositionFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
 		return new Vector3(
-			enemyInfo.position.X / positionPrecisionMultiplier,
-			enemyInfo.position.Y / positionPrecisionMultiplier,
-			enemyInfo.position.Z / positionPrecisionMultiplier,
+			enemyInfo.position.X / POSITION_PRECISION_MULTIPLIER,
+			enemyInfo.position.Y / POSITION_PRECISION_MULTIPLIER,
+			enemyInfo.position.Z / POSITION_PRECISION_MULTIPLIER,
 		);
 	}
 
-	getCFrameWithRotationFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
+	private getCFrameWithRotationFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
 		const position = this.getPositionFromEnemyInfo(enemyInfo);
 		return new CFrame(position).mul(enemyInfo.rotation);
 	}
 
-	updateEnemyByAnimation(clientEnemy: ClientEnemy, enemyInfo: ClientEnemyInfo) {
+	private updateEnemyByAnimation(clientEnemy: ClientEnemy, enemyInfo: ClientEnemyInfo) {
 		const cframe = this.getCFrameWithRotationFromEnemyInfo(enemyInfo);
 		clientEnemy.setTargetCFrame(cframe);
 	}
 
-	updateEnemyBySnap(clientEnemy: ClientEnemy, enemyInfo: ClientEnemyInfo) {
+	private updateEnemyBySnap(clientEnemy: ClientEnemy, enemyInfo: ClientEnemyInfo) {
 		const cframe = this.getCFrameWithRotationFromEnemyInfo(enemyInfo);
 		clientEnemy.setCFrame(cframe);
 	}
 
-	getClientEnemyById(id: string) {
+	private getClientEnemyById(id: string) {
 		return this.clientEnemies.find((clientEnemy: ClientEnemy) => {
 			return clientEnemy.getId() === id;
 		});
 	}
 
-	getEnemyOnScreenFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
-		const position = new Vector3(
-			enemyInfo.position.X / positionPrecisionMultiplier,
-			enemyInfo.position.Y / positionPrecisionMultiplier,
-			enemyInfo.position.Z / positionPrecisionMultiplier,
-		);
-
+	private getEnemyOnScreenFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
+		const position = this.getPositionFromEnemyInfo(enemyInfo);
 		const onScreen = getPositionOnScreen(position, 100);
 		return onScreen;
 	}
 
-	updateEnemy(enemyInfo: ClientEnemyInfo) {
+	private updateEnemy(enemyInfo: ClientEnemyInfo) {
 		const possibleClientEnemy = possible(this.getClientEnemyById(enemyInfo.id));
 		if (!possibleClientEnemy.exists) return;
 

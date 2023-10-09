@@ -1,3 +1,8 @@
+[inputs."assets/images/cash.png"]
+hash = "f4e4e191d134966890c62ce41ca1cbf8a11603019e46607b153c84164d2adcfe"
+id = 15017842957
+packable = false
+
 [inputs."assets/images/heart.png"]
 hash = "d9a29e2adce7d63f3a7ae69ee97dfa03a83d589c32f93584008eddb904cd578e"
 id = 14975106821

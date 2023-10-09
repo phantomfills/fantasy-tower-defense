@@ -20,13 +20,13 @@ export const LifeCounter = ({ lives }: LifeCounterProps) => {
 				anchorPoint={new Vector2(0.5, 0.5)}
 			/>
 			<textlabel
-				Size={new UDim2(0.55, 0, 0.6, 0)}
-				Position={new UDim2(0.45, 0, 0.2, 0)}
+				Size={new UDim2(0.55, 0, 0.8, 0)}
+				Position={new UDim2(0.45, 0, 0.1, 0)}
 				BackgroundTransparency={1}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				TextScaled={true}
 				Font={Enum.Font.GothamBold}
-				TextXAlignment={Enum.TextXAlignment.Left}
+				TextXAlignment={Enum.TextXAlignment.Center}
 				Text={tostring(lives)}
 			>
 				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={1} />

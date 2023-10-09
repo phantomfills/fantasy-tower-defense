@@ -39,9 +39,9 @@ export class TowerLoadoutController implements OnStart {
 				towers={[
 					{
 						number: 1,
-						callback: this.getTowerClickHandlerForTowerType("ARCHER"),
 						cost: 100,
 						icon: `rbxassetid://2222222222`,
+						callback: this.getTowerClickHandlerForTowerType("ARCHER"),
 					},
 				]}
 			/>,

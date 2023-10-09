@@ -5,7 +5,7 @@ import { EnemyType } from "./modules/enemy-type";
 /**
  * Stores the precision multiplier for syncing position to client
  */
-export const positionPrecisionMultiplier = 50;
+export const POSITION_PRECISION_MULTIPLIER = 50;
 
 export interface ClientEnemyInfo {
 	id: string;
