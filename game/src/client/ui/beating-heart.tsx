@@ -14,16 +14,16 @@ export function BeatingHeart(props: BeatingHeartProps) {
 	const { size, beatSize, position, anchorPoint } = props;
 	const [pulseTransition, setPulseTransition] = useMotor(0);
 
-	const relax = () => {
+	function relax() {
 		setPulseTransition(
 			new Spring(0, {
 				dampingRatio: 0.25,
 				frequency: 8,
 			}),
 		);
-	};
+	}
 
-	const impulse = () => {
+	function impulse() {
 		setPulseTransition(
 			new Spring(1, {
 				dampingRatio: 0.05,
@@ -32,7 +32,7 @@ export function BeatingHeart(props: BeatingHeartProps) {
 		);
 
 		setTimeout(relax, 0.05);
-	};
+	}
 
 	useInterval(impulse, 1);
 
