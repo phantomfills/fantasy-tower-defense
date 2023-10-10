@@ -7,7 +7,7 @@ export type Possible<T> =
 			exists: false;
 	  };
 
-export const possible = <T>(value: T | undefined): Possible<T> => {
+export function possible<T>(value: T | undefined): Possible<T> {
 	if (value === undefined)
 		return {
 			exists: false,
@@ -17,4 +17,4 @@ export const possible = <T>(value: T | undefined): Possible<T> => {
 		exists: true,
 		value: castedValue,
 	};
-};
+}

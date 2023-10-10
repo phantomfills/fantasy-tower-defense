@@ -68,18 +68,6 @@ export class Enemy<T extends GenericEnemyStats> {
 		if (this.stats.health <= 0) this.destroy();
 	}
 
-	getLastPathWaypoint() {
-		return this.lastWaypoint;
-	}
-
-	getNextPathWaypoint() {
-		return this.nextWaypoint;
-	}
-
-	getWaypointAlpha() {
-		return this.waypointAlpha;
-	}
-
 	getCFrame() {
 		return this.lastWaypoint.waypointAttachment.WorldCFrame.Lerp(
 			this.nextWaypoint.waypointAttachment.WorldCFrame,

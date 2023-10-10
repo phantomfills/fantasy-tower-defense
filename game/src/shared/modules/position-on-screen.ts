@@ -1,7 +1,7 @@
 import { Workspace } from "@rbxts/services";
 import { possible } from "./possible";
 
-export const getPositionOnScreen = (position: Vector3, margin: number): boolean => {
+export function getPositionOnScreen(position: Vector3, margin: number): boolean {
 	const possibleCamera = possible(Workspace.CurrentCamera);
 	if (!possibleCamera.exists) return false;
 
@@ -18,4 +18,4 @@ export const getPositionOnScreen = (position: Vector3, margin: number): boolean 
 	)
 		return true;
 	return false;
-};
+}
