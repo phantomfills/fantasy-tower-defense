@@ -10,7 +10,7 @@ interface BeatingHeartProps {
 	anchorPoint?: Vector2;
 }
 
-export const BeatingHeart = (props: BeatingHeartProps) => {
+export function BeatingHeart(props: BeatingHeartProps) {
 	const { size, beatSize, position, anchorPoint } = props;
 	const [pulseTransition, setPulseTransition] = useMotor(0);
 
@@ -60,4 +60,4 @@ export const BeatingHeart = (props: BeatingHeartProps) => {
 			/>
 		</frame>
 	);
-};
+}

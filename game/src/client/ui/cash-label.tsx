@@ -8,7 +8,7 @@ export interface CashLabelProps {
 	zIndex?: number;
 }
 
-export const CashLabel = (props: CashLabelProps) => {
+export function CashLabel(props: CashLabelProps) {
 	const { value, size, position, zIndex } = props;
 
 	return (
@@ -34,4 +34,4 @@ export const CashLabel = (props: CashLabelProps) => {
 			</textlabel>
 		</frame>
 	);
-};
+}

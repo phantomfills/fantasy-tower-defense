@@ -5,7 +5,7 @@ interface LifeCounterProps {
 	lives: number;
 }
 
-export const LifeCounter = ({ lives }: LifeCounterProps) => {
+export function LifeCounter({ lives }: LifeCounterProps) {
 	return (
 		<frame
 			Size={new UDim2(1, 0, 1, 0)}
@@ -33,4 +33,4 @@ export const LifeCounter = ({ lives }: LifeCounterProps) => {
 			</textlabel>
 		</frame>
 	);
-};
+}

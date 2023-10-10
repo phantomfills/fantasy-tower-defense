@@ -9,7 +9,7 @@ interface UserInterfaceProps {
 	towers: TowerSlotProps[];
 }
 
-export const UserInterface = ({ towers }: UserInterfaceProps) => {
+export function UserInterface({ towers }: UserInterfaceProps) {
 	return (
 		<Panel>
 			<TowerLoadout towerSlots={towers} />
@@ -25,4 +25,4 @@ export const UserInterface = ({ towers }: UserInterfaceProps) => {
 			</frame>
 		</Panel>
 	);
-};
+}

@@ -9,7 +9,7 @@ export interface TowerSlotProps {
 	cost: number;
 }
 
-export const TowerSlot = (props: TowerSlotProps) => {
+export function TowerSlot(props: TowerSlotProps) {
 	const { number, callback } = props;
 
 	const [hovering, setHovering] = useState(false);
@@ -102,4 +102,4 @@ export const TowerSlot = (props: TowerSlotProps) => {
 			</frame>
 		</textbutton>
 	);
-};
+}

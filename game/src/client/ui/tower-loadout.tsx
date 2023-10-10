@@ -5,7 +5,7 @@ interface TowerLoadoutProps {
 	towerSlots: TowerSlotProps[];
 }
 
-export const TowerLoadout = (props: TowerLoadoutProps) => {
+export function TowerLoadout(props: TowerLoadoutProps) {
 	return (
 		<frame Position={new UDim2(0, 0, 0.8, -5)} BackgroundTransparency={1} Size={new UDim2(1, 0, 0.2, 0)}>
 			<uigridlayout
@@ -23,4 +23,4 @@ export const TowerLoadout = (props: TowerLoadoutProps) => {
 			})}
 		</frame>
 	);
-};
+}
