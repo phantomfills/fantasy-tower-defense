@@ -3,7 +3,7 @@ import { ClientEnemy } from "client/modules/client-enemy";
 import { createClientEnemy } from "client/modules/client-enemy-factory";
 import { Events } from "client/network";
 import { getPositionOnScreen } from "shared/modules/position-on-screen";
-import { possible } from "shared/modules/possible";
+import { Possible, possible } from "shared/modules/possible";
 import { ClientEnemyInfo, POSITION_PRECISION_MULTIPLIER } from "shared/network";
 
 @Controller({})
@@ -46,12 +46,6 @@ export class EnemyController implements OnStart {
 		clientEnemy.setCFrame(cframe);
 	}
 
-	private getClientEnemyById(id: string) {
-		return this.clientEnemies.find((clientEnemy: ClientEnemy) => {
-			return clientEnemy.getId() === id;
-		});
-	}
-
 	private getEnemyOnScreenFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
 		const position = this.getPositionFromEnemyInfo(enemyInfo);
 		const onScreen = getPositionOnScreen(position, 100);
@@ -59,7 +53,7 @@ export class EnemyController implements OnStart {
 	}
 
 	private updateEnemy(enemyInfo: ClientEnemyInfo) {
-		const possibleClientEnemy = possible(this.getClientEnemyById(enemyInfo.id));
+		const possibleClientEnemy = this.getClientEnemyFromId(enemyInfo.id);
 		if (!possibleClientEnemy.exists) return;
 
 		const clientEnemy = possibleClientEnemy.value;
@@ -76,6 +70,27 @@ export class EnemyController implements OnStart {
 		}
 
 		clientEnemy.setRenderedLastFrame(true);
+	}
+
+	getClientEnemyFromId(id: string): Possible<ClientEnemy> {
+		const possibleClientEnemy = possible<ClientEnemy>(
+			this.clientEnemies.find((clientEnemy: ClientEnemy) => {
+				return clientEnemy.getId() === id;
+			}),
+		);
+
+		return possibleClientEnemy;
+	}
+
+	destroyEnemyFromId(id: string) {
+		const possibleClientEnemy = this.getClientEnemyFromId(id);
+		if (!possibleClientEnemy.exists) return;
+
+		const clientEnemy = possibleClientEnemy.value;
+		clientEnemy.destroy();
+		this.removeEnemy(clientEnemy);
+
+		Events.destroyEnemy.fire(id);
 	}
 
 	onStart() {
