@@ -13,6 +13,17 @@ export interface EnemyModel extends Model {
 
 export type GenericClientEnemy = ClientEnemy;
 
+function getRandomOffset(random: Random): number {
+	return random.NextInteger(MINIMUM_CLIENT_ENEMY_POSITION_OFFSET, MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET);
+}
+
+function getRandomPositionOffset(random: Random): LuaTuple<[number, number]> {
+	const positionOffsetX = getRandomOffset(random);
+	const positionOffsetZ = getRandomOffset(random);
+
+	return $tuple(positionOffsetX, positionOffsetZ);
+}
+
 export class ClientEnemy {
 	readonly model: EnemyModel;
 	private id: string;
@@ -37,17 +48,10 @@ export class ClientEnemy {
 
 		this.random = new Random(math.random(2147483647));
 
-		this.renderedLastFrame = false;
-
-		const positionOffsetX = this.random.NextNumber(
-			MINIMUM_CLIENT_ENEMY_POSITION_OFFSET,
-			MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET,
-		);
-		const positionOffsetZ = this.random.NextNumber(
-			MINIMUM_CLIENT_ENEMY_POSITION_OFFSET,
-			MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET,
-		);
+		const [positionOffsetX, positionOffsetZ] = getRandomPositionOffset(this.random);
 		this.positionOffset = new Vector3(positionOffsetX, 0, positionOffsetZ);
+
+		this.renderedLastFrame = false;
 
 		this.start();
 	}

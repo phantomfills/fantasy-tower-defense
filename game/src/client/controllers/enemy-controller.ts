@@ -72,7 +72,15 @@ export class EnemyController implements OnStart {
 		clientEnemy.setRenderedLastFrame(true);
 	}
 
-	getClientEnemyFromId(id: string): Possible<ClientEnemy> {
+	private tryUpdateEnemy(enemyInfo: ClientEnemyInfo) {
+		try {
+			this.updateEnemy(enemyInfo);
+		} catch (error) {
+			warn(error);
+		}
+	}
+
+	private getClientEnemyFromId(id: string): Possible<ClientEnemy> {
 		const possibleClientEnemy = possible<ClientEnemy>(
 			this.clientEnemies.find((clientEnemy: ClientEnemy) => {
 				return clientEnemy.getId() === id;
@@ -82,7 +90,7 @@ export class EnemyController implements OnStart {
 		return possibleClientEnemy;
 	}
 
-	destroyEnemyFromId(id: string) {
+	private destroyEnemyFromId(id: string) {
 		const possibleClientEnemy = this.getClientEnemyFromId(id);
 		if (!possibleClientEnemy.exists) return;
 
@@ -99,26 +107,11 @@ export class EnemyController implements OnStart {
 			this.addEnemy(clientEnemy);
 		});
 
-		const tryUpdateEnemy = (enemyInfo: ClientEnemyInfo) => {
-			try {
-				this.updateEnemy(enemyInfo);
-			} catch (error) {
-				warn(error);
-			}
-		};
-
-		Events.updateEnemy.connect(tryUpdateEnemy);
+		Events.updateEnemy.connect((enemyInfo) => this.tryUpdateEnemy(enemyInfo));
 		Events.updateEnemies.connect((enemies) => {
-			enemies.forEach(tryUpdateEnemy);
+			enemies.forEach((enemyInfo) => this.tryUpdateEnemy(enemyInfo));
 		});
 
-		Events.destroyEnemy.connect((id) => {
-			const clientEnemy = this.clientEnemies.find((clientEnemy: ClientEnemy) => {
-				return clientEnemy.getId() === id;
-			});
-			if (!clientEnemy) return;
-			clientEnemy.destroy();
-			this.removeEnemy(clientEnemy);
-		});
+		Events.destroyEnemy.connect((id) => this.destroyEnemyFromId(id));
 	}
 }

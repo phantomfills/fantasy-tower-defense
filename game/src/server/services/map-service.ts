@@ -3,9 +3,21 @@ import { CombatService } from "./combat-service";
 import { Workspace } from "@rbxts/services";
 import { PathWaypoint } from "shared/modules/path-waypoint";
 
-function checkChildrenArePathWaypoints<T extends Folder>(
-	value: T & { [k in Exclude<keyof T, keyof Folder>]: T[k] extends PathWaypoint ? T[k] : never },
+function throwIfChildrenAreNotPathWaypoints<T extends Folder>(
+	value: T & {
+		[pathWaypoint in Exclude<keyof T, keyof Folder>]: T[pathWaypoint] extends PathWaypoint
+			? T[pathWaypoint]
+			: never;
+	},
 ) {}
+
+function assertAllInstancesArePathWaypoints(value: Instance[]): value is PathWaypoint[] {
+	return value.every(assertValueIsPathWaypoint);
+}
+
+function assertValueIsPathWaypoint(value: Instance): value is PathWaypoint {
+	return value.FindFirstChild("waypointAttachment")!.IsA("Attachment");
+}
 
 @Service({})
 export class MapService {
@@ -15,8 +27,12 @@ export class MapService {
 		const gameMap = Workspace.gameMap;
 		const pathFolder = gameMap.path;
 
-		checkChildrenArePathWaypoints(pathFolder);
-		const path = pathFolder.GetChildren() as PathWaypoint[];
+		throwIfChildrenAreNotPathWaypoints(pathFolder);
+
+		const path = pathFolder.GetChildren();
+		if (!assertAllInstancesArePathWaypoints(path)) {
+			throw "Not all children are path waypoints!";
+		}
 
 		await this.combatService.start(path);
 	}
