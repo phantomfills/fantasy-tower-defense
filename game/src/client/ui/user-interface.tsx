@@ -11,7 +11,7 @@ interface UserInterfaceProps {
 
 export function UserInterface({ towers }: UserInterfaceProps) {
 	return (
-		<Panel>
+		<>
 			<TowerLoadout towerSlots={towers} />
 			<frame Size={new UDim2(0.1, 0, 1, -46)} Position={new UDim2(0.9, -10, 0, 36)} BackgroundTransparency={1}>
 				<uigridlayout
@@ -23,6 +23,6 @@ export function UserInterface({ towers }: UserInterfaceProps) {
 				<LifeCounter lives={3} />
 				<CashLabel value={100} />
 			</frame>
-		</Panel>
+		</>
 	);
 }

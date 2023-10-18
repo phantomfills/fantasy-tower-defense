@@ -7,6 +7,7 @@ import Roact from "@rbxts/roact";
 import { TowerType } from "shared/modules/tower-type";
 import { towerTypeToModelMap } from "shared/modules/tower-type-to-model";
 import { Workspace } from "@rbxts/services";
+import { Panel } from "client/ui/panel";
 
 const localPlayer = Players.LocalPlayer;
 
@@ -35,16 +36,18 @@ export class TowerLoadoutController implements OnStart {
 
 		const root = createRoot(playerGui);
 		root.render(
-			<UserInterface
-				towers={[
-					{
-						number: 1,
-						cost: 100,
-						icon: `rbxassetid://2222222222`,
-						callback: this.getTowerClickHandlerForTowerType("ARCHER"),
-					},
-				]}
-			/>,
+			<Panel>
+				<UserInterface
+					towers={[
+						{
+							number: 1,
+							cost: 100,
+							icon: `rbxassetid://2222222222`,
+							callback: this.getTowerClickHandlerForTowerType("ARCHER"),
+						},
+					]}
+				/>
+			</Panel>,
 		);
 	}
 }

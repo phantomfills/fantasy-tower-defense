@@ -2,9 +2,9 @@ import Roact from "@rbxts/roact";
 import { TowerLoadout } from "../tower-loadout";
 import { createRoot } from "@rbxts/react-roblox";
 
-const printTowerSlotNumber = (slotNumber: number) => {
+function printTowerSlotNumber(slotNumber: number) {
 	return () => print(slotNumber);
-};
+}
 
 export = (target: Frame) => {
 	const towerSlot = (
