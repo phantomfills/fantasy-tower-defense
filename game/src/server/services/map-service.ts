@@ -2,6 +2,7 @@ import { Service } from "@flamework/core";
 import { CombatService } from "./combat-service";
 import { Workspace } from "@rbxts/services";
 import { PathWaypoint } from "shared/modules/path-waypoint";
+import { possible } from "shared/modules/possible";
 
 function throwIfChildrenAreNotPathWaypoints<T extends Folder>(
 	value: T & {
@@ -15,8 +16,12 @@ function assertAllInstancesArePathWaypoints(value: Instance[]): value is PathWay
 	return value.every(assertValueIsPathWaypoint);
 }
 
-function assertValueIsPathWaypoint(value: Instance): value is PathWaypoint {
-	return value.FindFirstChild("waypointAttachment")!.IsA("Attachment");
+function assertValueIsPathWaypoint(instance: Instance): instance is PathWaypoint {
+	const possibleWaypointAttachment = possible<Instance>(instance.FindFirstChild("waypointAttachment"));
+	if (!possibleWaypointAttachment.exists) return false;
+
+	const waypointAttachment = possibleWaypointAttachment.value;
+	return classIs(waypointAttachment, "Attachment");
 }
 
 @Service({})
