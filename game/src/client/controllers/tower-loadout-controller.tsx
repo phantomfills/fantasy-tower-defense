@@ -26,6 +26,10 @@ export class TowerLoadoutController implements OnStart {
 			const towerPrefabModel = model.Clone();
 			towerPrefabModel.Parent = Workspace;
 
+			const highlight = new Instance("Highlight");
+			highlight.FillTransparency = 1;
+			highlight.Parent = towerPrefabModel;
+
 			this.towerPlacementController.setTower(towerType, towerPrefabModel);
 		};
 	}
@@ -34,9 +38,8 @@ export class TowerLoadoutController implements OnStart {
 		const playerGui = localPlayer.FindFirstChildOfClass("PlayerGui");
 		if (!playerGui) return;
 
-		const root = createRoot(playerGui);
-		root.render(
-			<Panel>
+		const panel = (
+			<Panel key="user-interface">
 				<UserInterface
 					towers={[
 						{
@@ -47,7 +50,9 @@ export class TowerLoadoutController implements OnStart {
 						},
 					]}
 				/>
-			</Panel>,
+			</Panel>
 		);
+
+		Roact.mount(panel, playerGui);
 	}
 }

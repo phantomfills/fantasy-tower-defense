@@ -1,4 +1,5 @@
-import Roact from "@rbxts/roact";
+import { Spring, lerpBinding, useMotor } from "@rbxts/pretty-react-hooks";
+import Roact, { useEffect } from "@rbxts/roact";
 import { TowerType } from "shared/modules/tower-type";
 import { towerTypeToDisplayNameMap } from "shared/modules/tower-type-to-display-name";
 
@@ -11,10 +12,27 @@ function getTowerDisplayNameFromTowerType(towerType: TowerType): string {
 }
 
 export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps) {
+	const [messageShowTransition, setMessageShowTransition] = useMotor(0);
+
 	const displayName = getTowerDisplayNameFromTowerType(towerType);
 
+	useEffect(() => {
+		setMessageShowTransition(
+			new Spring(1, {
+				dampingRatio: 0.9,
+				frequency: 3,
+			}),
+		);
+	});
+
 	return (
-		<frame Size={new UDim2(1, 0, 1, 0)} BackgroundColor3={Color3.fromRGB(0, 0, 0)} Transparency={0.5}>
+		<frame
+			Position={new UDim2(0, 5, 0, 0)}
+			Size={lerpBinding(messageShowTransition, new UDim2(1, 0, 0, 0), new UDim2(1, 0, 1, 0))}
+			BackgroundColor3={Color3.fromRGB(0, 0, 0)}
+			Transparency={0.5}
+		>
+			<uistroke Thickness={1} Color={new Color3(255, 255, 255)} />
 			<textlabel
 				Text={`Placing ${displayName}`}
 				BackgroundTransparency={1}

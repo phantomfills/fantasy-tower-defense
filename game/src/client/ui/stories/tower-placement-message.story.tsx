@@ -5,7 +5,7 @@ import { FollowMouse } from "../follow-mouse";
 
 export = (target: Frame) => {
 	const towerPlacementMessage = (
-		<FollowMouse>
+		<FollowMouse size={new UDim2(0.15, 0, 0.2, 0)}>
 			<TowerPlacementMessage towerType="ARCHER" />
 		</FollowMouse>
 	);

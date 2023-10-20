@@ -2,11 +2,18 @@ import { Controller, OnStart } from "@flamework/core";
 import { Possible, possible } from "shared/modules/possible";
 import { TowerModel } from "shared/modules/tower-model";
 import { TowerType } from "shared/modules/tower-type";
-import { UserInputService, Workspace, RunService } from "@rbxts/services";
+import { UserInputService, Workspace, RunService, Players } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { Events } from "client/network";
+import Roact from "@rbxts/roact";
+import { FollowMouse } from "client/ui/follow-mouse";
+import { TowerPlacementMessage } from "client/ui/tower-placement-message";
+import { createRoot } from "@rbxts/react-roblox";
+import Maid from "@rbxts/maid";
+import { Panel } from "client/ui/panel";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
+const LOCAL_PLAYER = Players.LocalPlayer;
 
 @Controller({})
 export class TowerPlacementController implements OnStart {
@@ -15,6 +22,7 @@ export class TowerPlacementController implements OnStart {
 		type: TowerType;
 		cframe: CFrame;
 		updatePlacementConnection: RBXScriptConnection;
+		maid: Maid;
 	}>;
 
 	constructor() {
@@ -42,6 +50,27 @@ export class TowerPlacementController implements OnStart {
 		});
 	}
 
+	private renderTowerPlacementMessage(towerType: TowerType): () => void {
+		const possiblePlayerGui = possible<PlayerGui>(LOCAL_PLAYER.FindFirstChildOfClass("PlayerGui"));
+		if (!possiblePlayerGui.exists) return () => {};
+
+		const playerGui = possiblePlayerGui.value;
+
+		const towerPlacementMessage = (
+			<Panel>
+				<FollowMouse size={new UDim2(0.15, 0, 0.2, 0)}>
+					<TowerPlacementMessage towerType={towerType} />
+				</FollowMouse>
+			</Panel>
+		);
+
+		const towerPlacementMessageTree = Roact.mount(towerPlacementMessage, playerGui);
+
+		return () => {
+			Roact.unmount(towerPlacementMessageTree);
+		};
+	}
+
 	private getTowerPlacementRaycastResultWithFilter(filterDescendantsInstances: Instance[]): Possible<RaycastResult> {
 		const camera = Workspace.CurrentCamera;
 		if (!camera)
@@ -64,7 +93,7 @@ export class TowerPlacementController implements OnStart {
 		return raycastResult;
 	}
 
-	getTowerPlacementCFrame(towerPrefabModel: TowerModel): Possible<CFrame> {
+	private getTowerPlacementCFrame(towerPrefabModel: TowerModel): Possible<CFrame> {
 		const possibleTowerPlacementRaycast = this.getTowerPlacementRaycastResultWithFilter([towerPrefabModel]);
 		if (!possibleTowerPlacementRaycast.exists)
 			return {
@@ -82,7 +111,7 @@ export class TowerPlacementController implements OnStart {
 		};
 	}
 
-	updateTowerPlacementCFrame() {
+	private updateTowerPlacementCFrame() {
 		const possibleTowerPlacement = this.towerPlacement;
 		if (!possibleTowerPlacement.exists) return;
 
@@ -114,6 +143,15 @@ export class TowerPlacementController implements OnStart {
 			this.updateTowerPlacementCFrame(),
 		);
 
+		const cleanupMethod = this.renderTowerPlacementMessage(towerType);
+
+		const maid = new Maid();
+		maid.GiveTask(() => {
+			updateTowerPlacementConnection.Disconnect();
+			towerPrefabModel.Destroy();
+			cleanupMethod();
+		});
+
 		this.towerPlacement = {
 			exists: true,
 			value: {
@@ -121,6 +159,7 @@ export class TowerPlacementController implements OnStart {
 				cframe: towerPlacementCFrame,
 				type: towerType,
 				updatePlacementConnection: updateTowerPlacementConnection,
+				maid: maid,
 			},
 		};
 	}
@@ -130,8 +169,7 @@ export class TowerPlacementController implements OnStart {
 		if (!possibleTowerPlacement.exists) return;
 
 		const towerPlacement = possibleTowerPlacement.value;
-		towerPlacement.model.Destroy();
-		towerPlacement.updatePlacementConnection.Disconnect();
+		towerPlacement.maid.Destroy();
 
 		this.towerPlacement = {
 			exists: false,

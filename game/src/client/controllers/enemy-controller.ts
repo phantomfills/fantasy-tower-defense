@@ -97,8 +97,6 @@ export class EnemyController implements OnStart {
 		const clientEnemy = possibleClientEnemy.value;
 		clientEnemy.destroy();
 		this.removeEnemy(clientEnemy);
-
-		Events.destroyEnemy.fire(id);
 	}
 
 	onStart() {
