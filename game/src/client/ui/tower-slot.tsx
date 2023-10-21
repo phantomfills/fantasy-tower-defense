@@ -1,6 +1,8 @@
 import { Spring, lerpBinding, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact, { useEffect, useState } from "@rbxts/roact";
 import { CashLabel } from "./cash-label";
+import { numberToKeyCodeMap } from "shared/modules/number-to-key-map";
+import { UserInputService } from "@rbxts/services";
 
 export interface TowerSlotProps {
 	number: number;
@@ -11,11 +13,37 @@ export interface TowerSlotProps {
 
 export function TowerSlot(props: TowerSlotProps) {
 	const { number, callback } = props;
+	const index = number - 1;
 
 	const [hovering, setHovering] = useState(false);
 	const [clicking, setClicking] = useState(false);
 	const [buttonHoverTransition, setButtonHoverTransition] = useMotor(0);
 	const [buttonSizeTransition, setButtonSizeTransition] = useMotor(0);
+
+	useEffect(() => {
+		if (!numberToKeyCodeMap[index]) return;
+		const keyCode = numberToKeyCodeMap[index];
+
+		const keyDownConnection = UserInputService.InputBegan.Connect((input, processed) => {
+			if (processed) return;
+			if (input.KeyCode !== keyCode) return;
+
+			setClicking(true);
+			callback();
+		});
+
+		const keyUpConnection = UserInputService.InputEnded.Connect((input, processed) => {
+			if (processed) return;
+			if (input.KeyCode !== keyCode) return;
+
+			setClicking(false);
+		});
+
+		return () => {
+			keyDownConnection.Disconnect();
+			keyUpConnection.Disconnect();
+		};
+	}, []);
 
 	useEffect(() => {
 		setButtonHoverTransition(
@@ -25,6 +53,7 @@ export function TowerSlot(props: TowerSlotProps) {
 			}),
 		);
 	}, [hovering]);
+
 	useEffect(() => {
 		setButtonSizeTransition(
 			new Spring(clicking ? 1 : 0, {

@@ -15,7 +15,7 @@ export function FollowMouse({ size, children }: FollowMouseProps) {
 			updatePosition(new UDim2(0, mouseLocation.X, 0, mouseLocation.Y));
 		});
 		return () => updatePositionConnection.Disconnect();
-	});
+	}, []);
 
 	return (
 		<frame Size={size} Position={position} BackgroundTransparency={1}>

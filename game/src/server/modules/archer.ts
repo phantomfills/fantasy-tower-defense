@@ -9,9 +9,9 @@ export class Archer extends Tower<GenericTowerStats> {
 		archer.Parent = Workspace;
 
 		super(archer, {
-			damage: 12,
-			firerate: 0.1,
-			range: 35,
+			damage: 10,
+			firerate: 1,
+			range: 15,
 			cframe: cframe,
 		});
 	}
