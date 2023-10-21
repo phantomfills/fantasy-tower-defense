@@ -8,8 +8,9 @@ import { TowerType } from "shared/modules/tower-type";
 import { towerTypeToModelMap } from "shared/modules/tower-type-to-model";
 import { Workspace } from "@rbxts/services";
 import { Panel } from "client/ui/panel";
+import { possible } from "shared/modules/possible";
 
-const localPlayer = Players.LocalPlayer;
+const LOCAL_PLAYER = Players.LocalPlayer;
 
 @Controller({})
 export class TowerLoadoutController implements OnStart {
@@ -35,8 +36,10 @@ export class TowerLoadoutController implements OnStart {
 	}
 
 	private renderLoadout() {
-		const playerGui = localPlayer.FindFirstChildOfClass("PlayerGui");
-		if (!playerGui) return;
+		const possiblePlayerGui = possible<PlayerGui>(LOCAL_PLAYER.FindFirstChildOfClass("PlayerGui"));
+		if (!possiblePlayerGui.exists) return;
+
+		const playerGui = possiblePlayerGui.value;
 
 		const panel = (
 			<Panel key="user-interface">
@@ -53,6 +56,7 @@ export class TowerLoadoutController implements OnStart {
 			</Panel>
 		);
 
-		Roact.mount(panel, playerGui);
+		const root = createRoot(playerGui);
+		root.render(panel);
 	}
 }

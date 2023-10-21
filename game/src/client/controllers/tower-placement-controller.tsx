@@ -5,7 +5,7 @@ import { TowerType } from "shared/modules/tower-type";
 import { UserInputService, Workspace, RunService, Players } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { Events } from "client/network";
-import Roact from "@rbxts/roact";
+import Roact, { Portal } from "@rbxts/roact";
 import { FollowMouse } from "client/ui/follow-mouse";
 import { TowerPlacementMessage } from "client/ui/tower-placement-message";
 import { createRoot } from "@rbxts/react-roblox";
@@ -57,17 +57,20 @@ export class TowerPlacementController implements OnStart {
 		const playerGui = possiblePlayerGui.value;
 
 		const towerPlacementMessage = (
-			<Panel>
-				<FollowMouse size={new UDim2(0.15, 0, 0.2, 0)}>
-					<TowerPlacementMessage towerType={towerType} />
-				</FollowMouse>
-			</Panel>
+			<Portal target={playerGui}>
+				<Panel>
+					<FollowMouse size={new UDim2(0.15, 0, 0.2, 0)}>
+						<TowerPlacementMessage towerType={towerType} />
+					</FollowMouse>
+				</Panel>
+			</Portal>
 		);
 
-		const towerPlacementMessageTree = Roact.mount(towerPlacementMessage, playerGui);
+		const root = createRoot(new Instance("Folder"));
+		root.render(towerPlacementMessage);
 
 		return () => {
-			Roact.unmount(towerPlacementMessageTree);
+			root.unmount();
 		};
 	}
 
