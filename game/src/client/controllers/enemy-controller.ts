@@ -2,7 +2,6 @@ import { Controller, OnStart } from "@flamework/core";
 import { ClientEnemy } from "client/modules/client-enemy";
 import { createClientEnemy } from "client/modules/client-enemy-factory";
 import { Events } from "client/network";
-import { getPositionOnScreen } from "shared/modules/position-on-screen";
 import { Possible, possible } from "shared/modules/possible";
 import { ClientEnemyInfo, POSITION_PRECISION_MULTIPLIER } from "shared/network";
 
@@ -41,35 +40,12 @@ export class EnemyController implements OnStart {
 		clientEnemy.setTargetCFrame(cframe);
 	}
 
-	private updateEnemyBySnap(clientEnemy: ClientEnemy, enemyInfo: ClientEnemyInfo) {
-		const cframe = this.getCFrameWithRotationFromEnemyInfo(enemyInfo);
-		clientEnemy.setCFrame(cframe);
-	}
-
-	private getEnemyOnScreenFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
-		const position = this.getPositionFromEnemyInfo(enemyInfo);
-		const onScreen = getPositionOnScreen(position, 100);
-		return onScreen;
-	}
-
 	private updateEnemy(enemyInfo: ClientEnemyInfo) {
 		const possibleClientEnemy = this.getClientEnemyFromId(enemyInfo.id);
 		if (!possibleClientEnemy.exists) return;
 
 		const clientEnemy = possibleClientEnemy.value;
-		if (!this.getEnemyOnScreenFromEnemyInfo(enemyInfo)) {
-			clientEnemy.setRenderedLastFrame(false);
-			return;
-		}
-
-		const renderedLastFrame = clientEnemy.getRenderedLastFrame();
-		if (!renderedLastFrame) {
-			this.updateEnemyBySnap(clientEnemy, enemyInfo);
-		} else {
-			this.updateEnemyByAnimation(clientEnemy, enemyInfo);
-		}
-
-		clientEnemy.setRenderedLastFrame(true);
+		this.updateEnemyByAnimation(clientEnemy, enemyInfo);
 	}
 
 	private tryUpdateEnemy(enemyInfo: ClientEnemyInfo) {
