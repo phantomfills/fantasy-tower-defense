@@ -6,7 +6,7 @@ import { UserInputService, Workspace, RunService, Players } from "@rbxts/service
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { Events } from "client/network";
 import Maid from "@rbxts/maid";
-import { rootProducer } from "client/producers/root-provider";
+import { rootProducer } from "client/providers/root-provider";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 

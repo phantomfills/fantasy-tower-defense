@@ -3,7 +3,7 @@ import { TowerPlacementController } from "./tower-placement-controller";
 import { TowerType } from "shared/modules/tower-type";
 import { towerTypeToModelMap } from "shared/modules/tower-type-to-model";
 import { Workspace } from "@rbxts/services";
-import { rootProducer } from "client/producers/root-provider";
+import { rootProducer } from "client/providers/root-provider";
 import { images } from "shared/assets";
 
 @Controller({})
