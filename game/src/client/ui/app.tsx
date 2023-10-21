@@ -6,7 +6,7 @@ import { CashLabel } from "./cash-label";
 import { FollowMouse } from "./follow-mouse";
 import { TowerPlacementMessage } from "./tower-placement-message";
 import { useSelector } from "@rbxts/react-reflex";
-import { RootProducer, getPossibleTowerPlacement, getTowers } from "client/producers/root-provider";
+import { getPossibleTowerPlacement, getTowers } from "client/producers/root-provider";
 
 export function App() {
 	const towers = useSelector(getTowers);
