@@ -10,7 +10,7 @@ import { RootProvider } from "client/ui/root-provider";
 const LOCAL_PLAYER = Players.LocalPlayer;
 
 @Controller({})
-export class AppGuiController implements OnStart {
+export class AppController implements OnStart {
 	async onStart() {
 		const possiblePlayerGui = possible<Instance>(LOCAL_PLAYER.WaitForChild("PlayerGui"));
 		if (!possiblePlayerGui.exists) return;
