@@ -32,8 +32,6 @@ export class ClientEnemy {
 	private random: Random;
 	private positionOffset: Vector3;
 
-	private renderedLastFrame: boolean;
-
 	constructor(model: EnemyModel, id: string, cframe: CFrame) {
 		this.id = id;
 		this.model = model;
@@ -51,17 +49,7 @@ export class ClientEnemy {
 		const [positionOffsetX, positionOffsetZ] = getRandomPositionOffset(this.random);
 		this.positionOffset = new Vector3(positionOffsetX, 0, positionOffsetZ);
 
-		this.renderedLastFrame = false;
-
 		this.start();
-	}
-
-	setRenderedLastFrame(value: boolean) {
-		this.renderedLastFrame = value;
-	}
-
-	getRenderedLastFrame() {
-		return this.renderedLastFrame;
 	}
 
 	getId(): string {
