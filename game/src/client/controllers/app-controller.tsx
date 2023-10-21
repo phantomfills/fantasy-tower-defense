@@ -5,6 +5,7 @@ import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
 import { App } from "client/ui/app";
 import { possible } from "shared/modules/possible";
+import { RootProvider } from "client/ui/root-provider";
 
 const LOCAL_PLAYER = Players.LocalPlayer;
 
@@ -19,7 +20,9 @@ export class AppGuiController implements OnStart {
 
 		const appElement = (
 			<StrictMode>
-				<App />
+				<RootProvider>
+					<App />
+				</RootProvider>
 			</StrictMode>
 		);
 

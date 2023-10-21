@@ -1,7 +1,3 @@
-import { ObjectValues } from "./object-values";
+export const ENEMY_TYPE = ["NINJA"] as const;
 
-export const ENEMY_TYPE = {
-	NINJA: "NINJA",
-} as const;
-
-export type EnemyType = ObjectValues<typeof ENEMY_TYPE>;
+export type EnemyType = (typeof ENEMY_TYPE)[number];

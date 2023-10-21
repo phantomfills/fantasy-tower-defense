@@ -5,12 +5,8 @@ import { TowerType } from "shared/modules/tower-type";
 import { UserInputService, Workspace, RunService, Players } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 import { Events } from "client/network";
-import Roact, { Portal } from "@rbxts/roact";
-import { FollowMouse } from "client/ui/follow-mouse";
-import { TowerPlacementMessage } from "client/ui/tower-placement-message";
-import { createRoot } from "@rbxts/react-roblox";
 import Maid from "@rbxts/maid";
-import { Panel } from "client/ui/panel";
+import { rootProducer } from "client/producers/root-provider";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 const LOCAL_PLAYER = Players.LocalPlayer;
@@ -48,30 +44,6 @@ export class TowerPlacementController implements OnStart {
 				}
 			}
 		});
-	}
-
-	private renderTowerPlacementMessage(towerType: TowerType): () => void {
-		const possiblePlayerGui = possible<PlayerGui>(LOCAL_PLAYER.FindFirstChildOfClass("PlayerGui"));
-		if (!possiblePlayerGui.exists) return () => {};
-
-		const playerGui = possiblePlayerGui.value;
-
-		const towerPlacementMessage = (
-			<Portal target={playerGui}>
-				<Panel>
-					<FollowMouse size={new UDim2(0.15, 0, 0.2, 0)}>
-						<TowerPlacementMessage towerType={towerType} />
-					</FollowMouse>
-				</Panel>
-			</Portal>
-		);
-
-		const root = createRoot(new Instance("Folder"));
-		root.render(towerPlacementMessage);
-
-		return () => {
-			root.unmount();
-		};
 	}
 
 	private getTowerPlacementRaycastResultWithFilter(filterDescendantsInstances: Instance[]): Possible<RaycastResult> {
@@ -140,19 +112,19 @@ export class TowerPlacementController implements OnStart {
 		const possibleTowerPlacementCFrame = this.getTowerPlacementCFrame(towerPrefabModel);
 		if (!possibleTowerPlacementCFrame.exists) return;
 
+		rootProducer.setTowerPlacement(towerType);
+
 		const towerPlacementCFrame = possibleTowerPlacementCFrame.value;
 
 		const updateTowerPlacementConnection = RunService.RenderStepped.Connect(() =>
 			this.updateTowerPlacementCFrame(),
 		);
 
-		const cleanupMethod = this.renderTowerPlacementMessage(towerType);
-
 		const maid = new Maid();
 		maid.GiveTask(() => {
+			rootProducer.clearTowerPlacement();
 			updateTowerPlacementConnection.Disconnect();
 			towerPrefabModel.Destroy();
-			cleanupMethod();
 		});
 
 		this.towerPlacement = {

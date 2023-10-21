@@ -1,23 +1,31 @@
 import { Controller, OnStart } from "@flamework/core";
 import { TowerPlacementController } from "./tower-placement-controller";
-import { Players } from "@rbxts/services";
-import { createRoot } from "@rbxts/react-roblox";
-import { UserInterface } from "client/ui/user-interface";
-import Roact from "@rbxts/roact";
 import { TowerType } from "shared/modules/tower-type";
 import { towerTypeToModelMap } from "shared/modules/tower-type-to-model";
 import { Workspace } from "@rbxts/services";
-import { Panel } from "client/ui/panel";
-import { possible } from "shared/modules/possible";
-
-const LOCAL_PLAYER = Players.LocalPlayer;
+import { rootProducer } from "client/producers/root-provider";
+import { images } from "shared/assets";
 
 @Controller({})
 export class TowerLoadoutController implements OnStart {
 	constructor(private towerPlacementController: TowerPlacementController) {}
 
 	onStart() {
-		this.renderLoadout();
+		rootProducer.addTower({
+			number: 1,
+			cost: 1000,
+			icon: images.cash,
+			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
+		});
+
+		task.wait(5);
+
+		rootProducer.addTower({
+			number: 1,
+			cost: 1000,
+			icon: images.cash,
+			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
+		});
 	}
 
 	private getTowerClickHandlerForTowerType(towerType: TowerType): () => void {
@@ -33,30 +41,5 @@ export class TowerLoadoutController implements OnStart {
 
 			this.towerPlacementController.setTower(towerType, towerPrefabModel);
 		};
-	}
-
-	private renderLoadout() {
-		const possiblePlayerGui = possible<PlayerGui>(LOCAL_PLAYER.FindFirstChildOfClass("PlayerGui"));
-		if (!possiblePlayerGui.exists) return;
-
-		const playerGui = possiblePlayerGui.value;
-
-		const panel = (
-			<Panel key="user-interface">
-				<UserInterface
-					towers={[
-						{
-							number: 1,
-							cost: 100,
-							icon: `rbxassetid://2222222222`,
-							callback: this.getTowerClickHandlerForTowerType("ARCHER"),
-						},
-					]}
-				/>
-			</Panel>
-		);
-
-		const root = createRoot(playerGui);
-		root.render(panel);
 	}
 }
