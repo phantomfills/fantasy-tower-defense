@@ -21,9 +21,9 @@ export class TowerLoadoutController implements OnStart {
 		task.wait(5);
 
 		rootProducer.addTower({
-			number: 1,
-			cost: 1000,
-			icon: images.cash,
+			number: 2,
+			cost: 2500,
+			icon: images.heart_glow,
 			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
 		});
 	}

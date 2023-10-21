@@ -9,7 +9,6 @@ import Maid from "@rbxts/maid";
 import { rootProducer } from "client/producers/root-provider";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
-const LOCAL_PLAYER = Players.LocalPlayer;
 
 @Controller({})
 export class TowerPlacementController implements OnStart {
