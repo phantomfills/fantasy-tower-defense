@@ -1,6 +1,6 @@
 import { Spring, lerpBinding, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact, { useEffect, useState } from "@rbxts/roact";
-import { CashLabel } from "./cash-label";
+import { CashLabel } from "../utils/cash-label";
 import { numberToKeyCodeMap } from "shared/modules/number-to-key-map";
 import { UserInputService } from "@rbxts/services";
 

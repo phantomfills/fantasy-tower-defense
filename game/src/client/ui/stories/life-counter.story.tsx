@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { LifeCounter } from "../life-counter";
+import { LifeCounter } from "../game/life-counter";
 import { createRoot } from "@rbxts/react-roblox";
 
 export = (target: Frame) => {

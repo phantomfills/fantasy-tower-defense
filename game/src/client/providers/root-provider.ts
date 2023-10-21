@@ -1,6 +1,6 @@
 import { UseProducerHook, useProducer } from "@rbxts/react-reflex";
 import { createProducer } from "@rbxts/reflex";
-import { TowerSlotProps } from "client/ui/tower-slot";
+import { TowerSlotProps } from "client/ui/towers/tower-slot";
 import { Possible } from "shared/modules/possible";
 import { TowerType } from "shared/modules/tower-type";
 

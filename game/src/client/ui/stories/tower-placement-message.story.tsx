@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
-import { TowerPlacementMessage } from "../tower-placement-message";
+import { TowerPlacementMessage } from "../towers/tower-placement-message";
 import { createRoot } from "@rbxts/react-roblox";
-import { FollowMouse } from "../follow-mouse";
+import { FollowMouse } from "../utils/follow-mouse";
 
 export = (target: Frame) => {
 	const towerPlacementMessage = (

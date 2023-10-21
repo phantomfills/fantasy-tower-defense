@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { TowerLoadout } from "../tower-loadout";
+import { TowerLoadout } from "../towers/tower-loadout";
 import { createRoot } from "@rbxts/react-roblox";
 
 function printTowerSlotNumber(slotNumber: number) {

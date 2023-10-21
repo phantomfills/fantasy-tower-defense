@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { createRoot } from "@rbxts/react-roblox";
-import { CashLabel } from "../cash-label";
+import { CashLabel } from "../utils/cash-label";
 
 export = (target: Frame) => {
 	const cashLabel = (

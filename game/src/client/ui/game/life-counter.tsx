@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { BeatingHeart } from "./beating-heart";
+import { BeatingHeart } from "../utils/beating-heart";
 
 interface LifeCounterProps {
 	lives: number;

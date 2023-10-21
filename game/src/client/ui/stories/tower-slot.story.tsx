@@ -1,7 +1,7 @@
 // write a hoarcekat story for tower-slot.tsx
 
 import Roact from "@rbxts/roact";
-import { TowerSlot } from "../tower-slot";
+import { TowerSlot } from "../towers/tower-slot";
 import { createRoot } from "@rbxts/react-roblox";
 
 export = (target: Frame) => {
