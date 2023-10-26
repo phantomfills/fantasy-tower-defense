@@ -1,5 +1,7 @@
 import Roact from "@rbxts/roact";
 import { BeatingHeart } from "../utils/beating-heart";
+import { fonts } from "../constants/fonts";
+import { Theme } from "../constants/theme";
 
 interface LifeCounterProps {
 	lives: number;
@@ -15,18 +17,18 @@ export function LifeCounter({ lives }: LifeCounterProps) {
 		>
 			<BeatingHeart
 				size={new UDim2(0.45, 0, 1, 0)}
-				beatSize={new UDim2(0.5, 0, 1, 0)}
-				position={new UDim2(0.25, 0, 0.5, 0)}
+				beatSize={new UDim2(0.55, 0, 1.22, 0)}
+				position={new UDim2(0.2, 0, 0.5, 0)}
 				anchorPoint={new Vector2(0.5, 0.5)}
 			/>
 			<textlabel
 				Size={new UDim2(0.55, 0, 0.8, 0)}
 				Position={new UDim2(0.45, 0, 0.1, 0)}
 				BackgroundTransparency={1}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
+				TextColor3={Theme.Text}
 				TextScaled={true}
-				Font={Enum.Font.GothamBold}
-				TextXAlignment={Enum.TextXAlignment.Center}
+				FontFace={fonts.inter.regular}
+				TextXAlignment={Enum.TextXAlignment.Right}
 				Text={tostring(lives)}
 			>
 				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={1} />

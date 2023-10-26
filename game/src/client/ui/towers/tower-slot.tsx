@@ -3,6 +3,8 @@ import Roact, { useEffect, useState } from "@rbxts/roact";
 import { CashLabel } from "../utils/cash-label";
 import { numberToKeyCodeMap } from "shared/modules/util/number-to-key-map";
 import { UserInputService } from "@rbxts/services";
+import { fonts } from "../constants/fonts";
+import { Theme } from "../constants/theme";
 
 export interface TowerSlotProps {
 	number: number;
@@ -66,7 +68,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 		<frame BackgroundTransparency={1}>
 			<textbutton
 				Size={lerpBinding(buttonSizeTransition, new UDim2(1, 0, 1, 0), new UDim2(0.8, 0, 0.8, 0))}
-				BackgroundColor3={Color3.fromRGB(25, 25, 25)}
+				BackgroundColor3={Theme.Base}
 				AnchorPoint={new Vector2(0.5, 0.5)}
 				Position={lerpBinding(buttonHoverTransition, new UDim2(0.5, 0, 0.5, 0), new UDim2(0.5, 0, 0.4, 0))}
 				Text=""
@@ -105,11 +107,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 				/>
 				<frame
 					Size={new UDim2(0.4, 0, 0.4, 0)}
-					BackgroundColor3={lerpBinding(
-						buttonHoverTransition,
-						Color3.fromRGB(0, 120, 255),
-						Color3.fromRGB(0, 190, 255),
-					)}
+					BackgroundColor3={lerpBinding(buttonHoverTransition, Theme.Lavender, Theme.Blue)}
 					Position={new UDim2(-0.125, 0, -0.125, 0)}
 					Rotation={lerpBinding(buttonHoverTransition, -10, 10)}
 				>
@@ -121,7 +119,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					<textlabel
 						TextScaled={true}
 						Text={tostring(number)}
-						Font={Enum.Font.GothamBold}
+						FontFace={fonts.inter.bold}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						TextXAlignment={Enum.TextXAlignment.Center}
 						BackgroundTransparency={1}

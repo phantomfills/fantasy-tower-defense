@@ -14,7 +14,7 @@ export class TowerLoadoutController implements OnStart {
 		rootProducer.addTower({
 			number: 1,
 			cost: 1000,
-			icon: images.cash,
+			icon: images.archer,
 			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
 		});
 	}

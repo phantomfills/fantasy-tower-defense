@@ -18,7 +18,7 @@ export function BeatingHeart(props: BeatingHeartProps) {
 		setPulseTransition(
 			new Spring(0, {
 				dampingRatio: 0.25,
-				frequency: 8,
+				frequency: 3,
 			}),
 		);
 	}
@@ -26,8 +26,8 @@ export function BeatingHeart(props: BeatingHeartProps) {
 	function impulse() {
 		setPulseTransition(
 			new Spring(1, {
-				dampingRatio: 0.05,
-				frequency: 10,
+				dampingRatio: 1,
+				frequency: 10.5,
 			}),
 		);
 

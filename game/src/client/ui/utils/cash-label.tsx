@@ -1,5 +1,7 @@
 import Roact from "@rbxts/roact";
 import { images } from "shared/assets";
+import { fonts } from "../constants/fonts";
+import { Theme } from "../constants/theme";
 
 export interface CashLabelProps {
 	value: number;
@@ -23,14 +25,14 @@ export function CashLabel(props: CashLabelProps) {
 				Size={new UDim2(0.55, 0, 0.8, 0)}
 				Position={new UDim2(0.45, 0, 0.1, 0)}
 				BackgroundTransparency={1}
-				TextColor3={Color3.fromRGB(0, 255, 148)}
+				TextColor3={Theme.Green}
 				TextScaled={true}
-				TextXAlignment={Enum.TextXAlignment.Center}
-				Font={Enum.Font.GothamBold}
+				TextXAlignment={Enum.TextXAlignment.Right}
+				FontFace={fonts.inter.regular}
 				Text={tostring(value)}
 				ZIndex={zIndex}
 			>
-				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={2} />
+				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={1} />
 			</textlabel>
 		</frame>
 	);

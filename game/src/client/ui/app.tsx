@@ -8,6 +8,7 @@ import { TowerPlacementMessage } from "./towers/tower-placement-message";
 import { useSelector } from "@rbxts/react-reflex";
 import { getPossibleTowerPlacement, getTowers } from "client/providers/root-provider";
 import { TowerSlot } from "./towers/tower-slot";
+import { MatchInfo } from "./game/match-info";
 
 export function App() {
 	const towers = useSelector(getTowers);
@@ -27,16 +28,10 @@ export function App() {
 				</FollowMouse>
 			)}
 
-			<frame Size={new UDim2(0.1, 0, 1, -46)} Position={new UDim2(0.9, -10, 0, 36)} BackgroundTransparency={1}>
-				<uigridlayout
-					CellSize={new UDim2(1, 0, 0.075, 0)}
-					FillDirection={Enum.FillDirection.Vertical}
-					HorizontalAlignment={Enum.HorizontalAlignment.Center}
-					VerticalAlignment={Enum.VerticalAlignment.Top}
-				/>
-				<LifeCounter lives={3} />
-				<CashLabel value={100} />
-			</frame>
+			<MatchInfo>
+				<LifeCounter lives={1000} />
+				<CashLabel value={1000} />
+			</MatchInfo>
 		</Panel>
 	);
 }

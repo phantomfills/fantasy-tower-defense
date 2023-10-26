@@ -1,5 +1,10 @@
+[inputs."assets/images/archer.png"]
+hash = "2913b90c970aac0e466a3c06570afde20bec1111279bd606eeda1f7e253d239a"
+id = 15176776753
+packable = false
+
 [inputs."assets/images/cash.png"]
-hash = "f4e4e191d134966890c62ce41ca1cbf8a11603019e46607b153c84164d2adcfe"
+hash = "9d8c8804a144d6e1fce007b0b9b3922865f18ea5e0c4e64a03250fae27f91349"
 id = 15017842957
 packable = false
 
