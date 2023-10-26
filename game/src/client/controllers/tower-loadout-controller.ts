@@ -24,7 +24,6 @@ export class TowerLoadoutController implements OnStart {
 			const model = towerTypeToModelMap[towerType];
 
 			const towerPrefabModel = model.Clone();
-			towerPrefabModel.Parent = Workspace;
 
 			const highlight = new Instance("Highlight");
 			highlight.FillTransparency = 1;

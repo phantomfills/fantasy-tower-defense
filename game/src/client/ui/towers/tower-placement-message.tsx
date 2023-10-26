@@ -28,7 +28,7 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 	return (
 		<frame
 			Position={new UDim2(0, 5, 0, 0)}
-			Size={lerpBinding(messageShowTransition, new UDim2(1, 0, 0, 0), new UDim2(1, 0, 1, 0))}
+			Size={lerpBinding(messageShowTransition, new UDim2(0, 0, 1, 0), new UDim2(1, 0, 1, 0))}
 			BackgroundColor3={Color3.fromRGB(0, 0, 0)}
 			Transparency={0.5}
 		>

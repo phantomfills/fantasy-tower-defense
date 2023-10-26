@@ -1,7 +1,7 @@
-import { GenericEnemy } from "./enemy";
 import Maid from "@rbxts/maid";
 import { Signal } from "@rbxts/beacon";
-import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
+import { TowerType } from "shared/modules/tower-type";
+import { HttpService } from "@rbxts/services";
 
 export interface GenericTowerStats {
 	damage: number;
@@ -21,13 +21,25 @@ export class Tower<T extends GenericTowerStats> {
 
 	private maid: Maid;
 
-	constructor(private readonly stats: T) {
+	private readonly id: string;
+
+	constructor(private readonly towerType: TowerType, private readonly stats: T) {
 		this.dealDamage = new Signal();
 
 		this.maid = new Maid();
 		this.maid.GiveTask(this.dealDamage);
 
+		this.id = HttpService.GenerateGUID();
+
 		this.start();
+	}
+
+	getId(): string {
+		return this.id;
+	}
+
+	getTowerType(): TowerType {
+		return this.towerType;
 	}
 
 	getStat<T extends keyof GenericTowerStats>(stat: T): GenericTowerStats[T] {

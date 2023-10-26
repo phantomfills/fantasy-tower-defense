@@ -45,29 +45,36 @@ export class EnemyService {
 	}
 
 	dealDamageToClosestEnemyInRange(tower: GenericTower, info: DamageDealtInfo) {
-		const closestEnemyToTower = this.getClosestEnemyToTowerInRange(tower);
-		if (!closestEnemyToTower.exists) return;
+		const possibleClosestEnemyToTower = this.getClosestEnemyToTowerInRange(tower);
+		if (!possibleClosestEnemyToTower.exists) return;
 
-		closestEnemyToTower.value.takeDamage(info.damage);
+		const closestEnemyToTower = possibleClosestEnemyToTower.value;
+		closestEnemyToTower.takeDamage(info.damage);
+
+		Events.towerAttack.broadcast(tower.getId(), closestEnemyToTower.getPosition());
+	}
+
+	private getEnemiesInTowerRange(tower: GenericTower): GenericEnemy[] {
+		return this.enemies.filter((enemy) => {
+			const cframe = enemy.getCFrame();
+			const position = cframe.Position;
+
+			return tower.getPositionInRange(position);
+		});
 	}
 
 	private getClosestEnemyToTowerInRange(tower: GenericTower): Possible<GenericEnemy> {
 		const cframe = tower.getStat("cframe");
 		const position = cframe.Position;
 
-		const enemies = this.enemies.filter((enemy) => {
-			const cframe = enemy.getCFrame();
-			const position = cframe.Position;
+		const enemiesInRange = this.getEnemiesInTowerRange(tower);
 
-			return tower.getPositionInRange(position);
-		});
-
-		if (enemies.isEmpty())
+		if (enemiesInRange.isEmpty())
 			return {
 				exists: false,
 			};
 
-		const enemiesSortedByDistanceFromTower = enemies.sort((last, current) => {
+		const enemiesSortedByDistanceFromTower = enemiesInRange.sort((last, current) => {
 			const lastPosition = last.getCFrame().Position;
 			const distanceToLast = position.sub(lastPosition).Magnitude;
 

@@ -111,6 +111,9 @@ export class TowerPlacementController implements OnStart {
 		const possibleTowerPlacementCFrame = this.getTowerPlacementCFrame(towerPrefabModel);
 		if (!possibleTowerPlacementCFrame.exists) return;
 
+		const towerModel = towerPrefabModel.Clone();
+		towerModel.Parent = Workspace;
+
 		rootProducer.setTowerPlacement(towerType);
 
 		const towerPlacementCFrame = possibleTowerPlacementCFrame.value;
@@ -123,13 +126,13 @@ export class TowerPlacementController implements OnStart {
 		maid.GiveTask(() => {
 			rootProducer.clearTowerPlacement();
 			updateTowerPlacementConnection.Disconnect();
-			towerPrefabModel.Destroy();
+			towerModel.Destroy();
 		});
 
 		this.towerPlacement = {
 			exists: true,
 			value: {
-				model: towerPrefabModel,
+				model: towerModel,
 				cframe: towerPlacementCFrame,
 				type: towerType,
 				updatePlacementConnection: updateTowerPlacementConnection,

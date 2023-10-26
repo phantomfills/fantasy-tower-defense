@@ -11,8 +11,6 @@ export interface EnemyModel extends Model {
 	};
 }
 
-export type GenericClientEnemy = ClientEnemy;
-
 function getRandomOffset(random: Random): number {
 	return random.NextInteger(MINIMUM_CLIENT_ENEMY_POSITION_OFFSET, MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET);
 }

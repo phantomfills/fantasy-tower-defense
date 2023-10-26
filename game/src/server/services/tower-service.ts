@@ -17,6 +17,7 @@ export class TowerService {
 
 	private addTower(tower: GenericTower) {
 		this.towers.push(tower);
+		Events.createTower.broadcast(tower.getTowerType(), tower.getId(), tower.getStat("cframe"));
 
 		tower.dealDamage.Connect((tower, info) => {
 			this.dealDamageFromTower.Fire(tower, info);

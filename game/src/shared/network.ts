@@ -3,14 +3,15 @@ import { TowerType } from "./modules/tower-type";
 import { EnemyType } from "./modules/enemy-type";
 
 /**
- * Stores the precision multiplier for syncing position to client
+ * Stores the precision multiplier for syncing enemy positions to client.
+ * Tuned to prevent integer overflow when using Vector3Int16s.
  */
 export const POSITION_PRECISION_MULTIPLIER = 50;
 
 export interface ClientEnemyInfo {
 	id: string;
 	/**
-	 * Vector3int16 used to decrease payload size
+	 * Vector3int16 used to decrease payload size.
 	 */
 	position: Vector3int16;
 	rotation: CFrame;
@@ -23,7 +24,11 @@ interface SharedEvents {
 	updateEnemy(enemyInfo: ClientEnemyInfo): void;
 	updateEnemies(enemies: EnemyList): void;
 	destroyEnemy(id: string): void;
+
 	placeTower(towerType: TowerType, cframe: CFrame): void;
+	createTower(towerType: TowerType, id: string, cframe: CFrame): void;
+	towerAttack(id: string, towardsPosition: Vector3): void;
+	destroyTower(id: string): void;
 }
 
 interface ServerEvents extends SharedEvents {}
