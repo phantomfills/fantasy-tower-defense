@@ -49,7 +49,6 @@ export class EnemyService {
 		if (!closestEnemyToTower.exists) return;
 
 		closestEnemyToTower.value.takeDamage(info.damage);
-		tower.pointTowardsEnemy(closestEnemyToTower.value);
 	}
 
 	private getClosestEnemyToTowerInRange(tower: GenericTower): Possible<GenericEnemy> {

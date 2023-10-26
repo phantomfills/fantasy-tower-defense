@@ -1,7 +1,6 @@
 import { GenericEnemy } from "./enemy";
 import Maid from "@rbxts/maid";
 import { Signal } from "@rbxts/beacon";
-import { TowerModel } from "shared/modules/tower-model";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/snap-to-cframe";
 
 export interface GenericTowerStats {
@@ -22,13 +21,10 @@ export class Tower<T extends GenericTowerStats> {
 
 	private maid: Maid;
 
-	constructor(private model: TowerModel, private readonly stats: T) {
-		this.snapToCFrame(stats.cframe);
-
+	constructor(private readonly stats: T) {
 		this.dealDamage = new Signal();
 
 		this.maid = new Maid();
-		this.maid.GiveTask(this.model);
 		this.maid.GiveTask(this.dealDamage);
 
 		this.start();
@@ -36,18 +32,6 @@ export class Tower<T extends GenericTowerStats> {
 
 	getStat<T extends keyof GenericTowerStats>(stat: T): GenericTowerStats[T] {
 		return this.stats[stat];
-	}
-
-	pointTowardsEnemy(enemy: GenericEnemy) {
-		const towerCFrame = this.getStat("cframe");
-		const enemyCFrame = enemy.getCFrame();
-
-		const towerPosition = towerCFrame.Position;
-		const enemyPosition = enemyCFrame.Position;
-
-		const enemyPositionWithTowerY = this.getPositionWithTowerY(enemyPosition);
-
-		this.snapToCFrame(new CFrame(towerPosition, enemyPositionWithTowerY));
 	}
 
 	getPositionInRange(position: Vector3) {
@@ -68,10 +52,6 @@ export class Tower<T extends GenericTowerStats> {
 		const positionWithTowerY = new Vector3(position.X, towerPosition.Y, position.Z);
 
 		return positionWithTowerY;
-	}
-
-	private snapToCFrame(cframe: CFrame) {
-		snapToCFrameWithAttachmentOffset(this.model, this.model.humanoidRootPart.rootAttachment, cframe);
 	}
 
 	private async start() {
