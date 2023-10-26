@@ -2,7 +2,7 @@ import Roact, { useBinding, useEffect } from "@rbxts/roact";
 import { RunService, UserInputService } from "@rbxts/services";
 
 interface FollowMouseProps extends Roact.PropsWithChildren {
-	size?: UDim2;
+	size: UDim2;
 	children?: Roact.Children;
 }
 
@@ -12,8 +12,9 @@ export function FollowMouse({ size, children }: FollowMouseProps) {
 	useEffect(() => {
 		const updatePositionConnection = RunService.RenderStepped.Connect(() => {
 			const mouseLocation = UserInputService.GetMouseLocation();
-			updatePosition(new UDim2(0, mouseLocation.X, 0, mouseLocation.Y));
+			updatePosition(new UDim2(0, mouseLocation.X, -size.Y.Scale, mouseLocation.Y));
 		});
+
 		return () => updatePositionConnection.Disconnect();
 	}, []);
 
