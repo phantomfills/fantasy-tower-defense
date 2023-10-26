@@ -1,9 +1,9 @@
 import { Service } from "@flamework/core";
-import { GenericEnemy } from "server/modules/enemy";
-import { PathWaypoint } from "shared/modules/path-waypoint";
-import { DamageDealtInfo, GenericTower } from "server/modules/tower";
-import { Possible } from "shared/modules/possible";
-import { createEnemy } from "server/modules/enemy-factory";
+import { GenericEnemy } from "server/modules/enemy/enemy";
+import { PathWaypoint } from "shared/modules/map/path-waypoint";
+import { DamageDealtInfo, GenericTower } from "server/modules/tower/tower";
+import { Possible } from "shared/modules/util/possible";
+import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { Events } from "server/network";
 import { ClientEnemyInfo, POSITION_PRECISION_MULTIPLIER } from "shared/network";
 

@@ -1,6 +1,6 @@
 import { Networking } from "@flamework/networking";
-import { TowerType } from "./modules/tower-type";
-import { EnemyType } from "./modules/enemy-type";
+import { TowerType } from "./modules/tower/tower-type";
+import { EnemyType } from "./modules/enemy/enemy-type";
 
 /**
  * Stores the precision multiplier for syncing enemy positions to client.

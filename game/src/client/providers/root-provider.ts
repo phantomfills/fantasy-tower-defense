@@ -1,8 +1,8 @@
 import { UseProducerHook, useProducer } from "@rbxts/react-reflex";
 import { createProducer } from "@rbxts/reflex";
 import { TowerSlotProps } from "client/ui/towers/tower-slot";
-import { Possible } from "shared/modules/possible";
-import { TowerType } from "shared/modules/tower-type";
+import { Possible } from "shared/modules/util/possible";
+import { TowerType } from "shared/modules/tower/tower-type";
 
 interface TowerPlacement {
 	towerType: TowerType;

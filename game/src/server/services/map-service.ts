@@ -1,8 +1,8 @@
 import { Service } from "@flamework/core";
 import { CombatService } from "./combat-service";
 import { Workspace } from "@rbxts/services";
-import { PathWaypoint } from "shared/modules/path-waypoint";
-import { possible } from "shared/modules/possible";
+import { PathWaypoint } from "shared/modules/map/path-waypoint";
+import { possible } from "shared/modules/util/possible";
 
 function throwIfChildrenAreNotPathWaypoints<T extends Folder>(
 	value: T & {

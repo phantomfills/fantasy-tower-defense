@@ -1,8 +1,8 @@
 import { Service } from "@flamework/core";
-import { DamageDealtInfo, GenericTower } from "server/modules/tower";
+import { DamageDealtInfo, GenericTower } from "server/modules/tower/tower";
 import { Signal } from "@rbxts/beacon";
 import { Events } from "server/network";
-import { createTower } from "server/modules/tower-factory";
+import { createTower } from "server/modules/tower/tower-factory";
 
 @Service({})
 export class TowerService {

@@ -1,7 +1,7 @@
 import { Service } from "@flamework/core";
 import { TowerService } from "./tower-service";
 import { EnemyService } from "./enemy-service";
-import { PathWaypoint } from "shared/modules/path-waypoint";
+import { PathWaypoint } from "shared/modules/map/path-waypoint";
 
 @Service({})
 export class CombatService {
