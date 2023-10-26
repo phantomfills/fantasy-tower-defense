@@ -7,6 +7,7 @@ import { FollowMouse } from "./utils/follow-mouse";
 import { TowerPlacementMessage } from "./towers/tower-placement-message";
 import { useSelector } from "@rbxts/react-reflex";
 import { getPossibleTowerPlacement, getTowers } from "client/providers/root-provider";
+import { TowerSlot } from "./towers/tower-slot";
 
 export function App() {
 	const towers = useSelector(getTowers);
@@ -14,7 +15,18 @@ export function App() {
 
 	return (
 		<Panel>
-			<TowerLoadout towerSlots={towers} />
+			<TowerLoadout>
+				{towers.map((tower) => {
+					return (
+						<TowerSlot
+							number={tower.number}
+							icon={tower.icon}
+							cost={tower.cost}
+							callback={tower.callback}
+						/>
+					);
+				})}
+			</TowerLoadout>
 
 			{possibleTowerPlacement.exists && (
 				<FollowMouse size={new UDim2(0.15, 0, 0.2, 0)}>

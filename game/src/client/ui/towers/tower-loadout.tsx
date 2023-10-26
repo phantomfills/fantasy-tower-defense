@@ -1,11 +1,11 @@
 import Roact from "@rbxts/roact";
-import { TowerSlot, TowerSlotProps } from "./tower-slot";
+import { TowerSlot } from "./tower-slot";
 
-interface TowerLoadoutProps {
-	towerSlots: TowerSlotProps[];
+interface TowerLoadoutProps extends Roact.PropsWithChildren {
+	children?: Roact.Children;
 }
 
-export function TowerLoadout(props: TowerLoadoutProps) {
+export function TowerLoadout({ children }: TowerLoadoutProps) {
 	return (
 		<frame Position={new UDim2(0, 0, 0.8, -5)} BackgroundTransparency={1} Size={new UDim2(1, 0, 0.2, 0)}>
 			<uigridlayout
@@ -13,14 +13,7 @@ export function TowerLoadout(props: TowerLoadoutProps) {
 				CellPadding={new UDim2(0.025, 0, 0, 0)}
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 			/>
-			{props.towerSlots.map((slot) => {
-				return (
-					<frame Position={new UDim2(0, 0, 0, 0)} BackgroundTransparency={1}>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<TowerSlot {...slot} />
-					</frame>
-				);
-			})}
+			{children}
 		</frame>
 	);
 }

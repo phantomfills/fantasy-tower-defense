@@ -88,6 +88,7 @@ export function TowerSlot(props: TowerSlotProps) {
 				},
 			}}
 		>
+			<uiaspectratioconstraint AspectRatio={1} DominantAxis={Enum.DominantAxis.Height} />
 			<CashLabel
 				value={props.cost}
 				size={new UDim2(1, 0, 0.4, 0)}
