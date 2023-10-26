@@ -16,16 +16,9 @@ export function App() {
 	return (
 		<Panel>
 			<TowerLoadout>
-				{towers.map((tower) => {
-					return (
-						<TowerSlot
-							number={tower.number}
-							icon={tower.icon}
-							cost={tower.cost}
-							callback={tower.callback}
-						/>
-					);
-				})}
+				{towers.map((tower) => (
+					<TowerSlot number={tower.number} icon={tower.icon} cost={tower.cost} callback={tower.callback} />
+				))}
 			</TowerLoadout>
 
 			{possibleTowerPlacement.exists && (
