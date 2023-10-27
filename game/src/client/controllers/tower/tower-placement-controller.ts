@@ -60,7 +60,7 @@ export class TowerPlacementController implements OnStart {
 
 		const raycastParameters = new RaycastParams();
 		raycastParameters.FilterDescendantsInstances = filterDescendantsInstances;
-		raycastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
+		raycastParameters.FilterType = Enum.RaycastFilterType.Exclude;
 
 		const raycastResult = possible<RaycastResult>(Workspace.Raycast(origin, direction, raycastParameters));
 
