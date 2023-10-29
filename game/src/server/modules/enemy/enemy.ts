@@ -97,11 +97,11 @@ export class Enemy<T extends GenericEnemyStats> {
 		const previousPosition = previousPathWaypoint.waypointAttachment.WorldPosition;
 		const nextPosition = nextPathWaypoint.waypointAttachment.WorldPosition;
 
-		const dist = previousPosition.sub(nextPosition).Magnitude;
+		const distance = previousPosition.sub(nextPosition).Magnitude;
 
-		const totalTime = dist / this.stats.speed;
+		const totalTimeSeconds = distance / this.stats.speed;
 
-		const startTime = DateTime.now().UnixTimestampMillis / 1000;
+		const startTimeSeconds = DateTime.now().UnixTimestampMillis / 1000;
 
 		let touchingPathWaypoint = false;
 		let cancelTouchingPathWaypointCheck = false;
@@ -110,15 +110,15 @@ export class Enemy<T extends GenericEnemyStats> {
 		});
 
 		while (!touchingPathWaypoint && !cancelTouchingPathWaypointCheck) {
-			const now = DateTime.now().UnixTimestampMillis / 1000;
-			const elapsedTime = now - startTime;
-			const adjustedLerpAlpha = math.clamp(elapsedTime / totalTime, 0, 1);
+			const currentTimeSeconds = DateTime.now().UnixTimestampMillis / 1000;
+			const elapsedTimeSeconds = startTimeSeconds - currentTimeSeconds;
+			const alphaBetweenWaypoints = math.clamp(elapsedTimeSeconds / totalTimeSeconds, 0, 1);
 
 			this.lastWaypoint = previousPathWaypoint;
 			this.nextWaypoint = nextPathWaypoint;
-			this.waypointAlpha = adjustedLerpAlpha;
+			this.waypointAlpha = alphaBetweenWaypoints;
 
-			touchingPathWaypoint = adjustedLerpAlpha === 1;
+			touchingPathWaypoint = alphaBetweenWaypoints === 1;
 
 			RunService.Heartbeat.Wait();
 		}
