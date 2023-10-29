@@ -134,7 +134,8 @@ export class Enemy<T extends GenericEnemyStats> {
 		});
 
 		let pathWaypointIndex = 0;
-		while (this.path[pathWaypointIndex + 1]) {
+		let nextPathWaypointExists = true;
+		while (nextPathWaypointExists) {
 			this.onWaypointReached.Fire();
 
 			if (cancelPathProgress) return;
@@ -145,9 +146,10 @@ export class Enemy<T extends GenericEnemyStats> {
 			await this.moveToPathWaypointUntilTouching(pathWaypoint, nextPathWaypoint);
 
 			pathWaypointIndex += 1;
+			nextPathWaypointExists = this.path[pathWaypointIndex + 1] !== undefined;
 		}
 
-		this.destroy(); // when reaching the end of the path
+		this.destroy();
 	}
 
 	private start() {
