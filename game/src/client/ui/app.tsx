@@ -16,7 +16,7 @@ export function App() {
 
 	return (
 		<Panel>
-			<TowerLoadout>
+			<TowerLoadout visible={!possibleTowerPlacement.exists}>
 				{towers.map((tower) => (
 					<TowerSlot number={tower.number} icon={tower.icon} cost={tower.cost} callback={tower.callback} />
 				))}

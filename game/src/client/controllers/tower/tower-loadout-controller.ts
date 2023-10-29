@@ -17,6 +17,15 @@ export class TowerLoadoutController implements OnStart {
 			icon: images.archer,
 			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
 		});
+
+		task.wait(5);
+
+		rootProducer.addTower({
+			number: 2,
+			cost: 1000,
+			icon: images.cash,
+			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
+		});
 	}
 
 	private getTowerClickHandlerForTowerType(towerType: TowerType): () => void {
