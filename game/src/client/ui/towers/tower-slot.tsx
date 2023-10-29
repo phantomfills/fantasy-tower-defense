@@ -6,6 +6,7 @@ import { UserInputService } from "@rbxts/services";
 import { fonts } from "../constants/fonts";
 import { Theme } from "../constants/theme";
 import { Frame } from "../utils/frame";
+import { Label } from "../utils/label";
 
 export interface TowerSlotProps {
 	number: number;
@@ -97,7 +98,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					Image={icon}
 					Size={new UDim2(1, 0, 1, 0)}
 					BackgroundTransparency={1}
-					ZIndex={2}
+					ZIndex={1}
 					Position={lerpBinding(buttonHoverTransition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
 				/>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />
@@ -106,27 +107,27 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					Thickness={1}
 					ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
 				/>
-				<frame
-					Size={new UDim2(0.4, 0, 0.4, 0)}
-					BackgroundColor3={lerpBinding(buttonHoverTransition, Theme.Lavender, Theme.Blue)}
-					Position={new UDim2(-0.125, 0, -0.125, 0)}
-					Rotation={lerpBinding(buttonHoverTransition, -10, 10)}
+				<Frame
+					size={new UDim2(0.4, 0, 0.4, 0)}
+					backgroundTransparency={0}
+					backgroundColor={lerpBinding(buttonHoverTransition, Theme.Lavender, Theme.Blue)}
+					position={new UDim2(-0.125, 0, -0.125, 0)}
+					rotation={lerpBinding(buttonHoverTransition, -10, 10)}
 				>
 					<uistroke
 						Color={Color3.fromRGB(255, 255, 255)}
 						Thickness={lerpBinding(buttonHoverTransition, 2, 4)}
 					/>
 					<uicorner CornerRadius={new UDim(1, 0)} />
-					<textlabel
-						TextScaled={true}
-						Text={tostring(number)}
-						FontFace={fonts.inter.bold}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						TextXAlignment={Enum.TextXAlignment.Center}
-						BackgroundTransparency={1}
-						Size={new UDim2(1, 0, 1, 0)}
+					<Label
+						text={tostring(number)}
+						font={fonts.inter.bold}
+						textColor={Color3.fromRGB(255, 255, 255)}
+						textAlignmentX={Enum.TextXAlignment.Center}
+						backgroundTransparency={1}
+						size={new UDim2(1, 0, 1, 0)}
 					/>
-				</frame>
+				</Frame>
 			</textbutton>
 		</Frame>
 	);

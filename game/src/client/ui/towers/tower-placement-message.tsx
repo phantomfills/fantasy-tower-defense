@@ -5,6 +5,13 @@ import { towerTypeToDisplayNameMap } from "shared/modules/tower/tower-type-to-di
 import { fonts } from "../constants/fonts";
 import { Theme } from "../constants/theme";
 import { Frame } from "../utils/frame";
+import { Label } from "../utils/label";
+
+interface TowerPlacementMessageTextProps {
+	text: string;
+	position: UDim2;
+	font: typeof fonts.inter.regular | typeof fonts.inter.bold;
+}
 
 interface TowerPlacementMessageProps {
 	towerType: TowerType;
@@ -12,6 +19,19 @@ interface TowerPlacementMessageProps {
 
 function getTowerDisplayNameFromTowerType(towerType: TowerType): string {
 	return towerTypeToDisplayNameMap[towerType];
+}
+
+function TowerPlacementMessageText({ text, position, font }: TowerPlacementMessageTextProps) {
+	return (
+		<Label
+			text={text}
+			position={position}
+			font={font}
+			size={new UDim2(0.9, 0, 0.175, 0)}
+			textAlignmentX={Enum.TextXAlignment.Left}
+			textColor={Theme.Text}
+		/>
+	);
 }
 
 export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps) {
@@ -43,55 +63,36 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 		<Frame
 			position={new UDim2(0, 5, 0, 0)}
 			size={lerpBinding(messageShowTransition, new UDim2(0, 0, 1, 0), new UDim2(1, 0, 1, 0))}
-			backgroundColor={Theme.Overlay1}
-			backgroundTransparency={0.5}
+			backgroundColor={Theme.Overlay2}
+			backgroundTransparency={0.75}
+			zIndex={4}
 		>
 			<uistroke Thickness={1} Color={new Color3(255, 255, 255)} />
-			<textlabel
-				Text={`Placing ${displayName}`}
-				BackgroundTransparency={1}
-				Position={new UDim2(0.05, 0, 0.05, 0)}
-				Size={new UDim2(0.9, 0, 0.175, 0)}
-				TextXAlignment={Enum.TextXAlignment.Left}
-				TextScaled={true}
-				TextColor3={Theme.Text}
-				FontFace={fonts.inter.bold}
+			<TowerPlacementMessageText
+				text={`Placing ${displayName}`}
+				position={new UDim2(0.05, 0, 0.05, 0)}
+				font={fonts.inter.bold}
 			/>
-			<frame
-				BorderSizePixel={0}
-				BackgroundColor3={Theme.Flamingo}
-				Size={getLerpBindingForElement(new UDim2(0.9, 0, 0.015, 0))}
-				Position={new UDim2(0.05, 0, 0.25, 0)}
+			<Frame
+				backgroundTransparency={0}
+				backgroundColor={Theme.Mauve}
+				size={getLerpBindingForElement(new UDim2(0.9, 0, 0.015, 0))}
+				position={new UDim2(0.05, 0, 0.25, 0)}
 			/>
-			<textlabel
-				Text="Hold 'R' to rotate"
-				BackgroundTransparency={1}
-				Position={new UDim2(0.05, 0, 0.325, 0)}
-				Size={new UDim2(0.9, 0, 0.175, 0)}
-				TextXAlignment={Enum.TextXAlignment.Left}
-				TextScaled={true}
-				TextColor3={Theme.Text}
-				FontFace={fonts.inter.regular}
+			<TowerPlacementMessageText
+				text="Hold 'R' to rotate"
+				position={new UDim2(0.05, 0, 0.325, 0)}
+				font={fonts.inter.regular}
 			/>
-			<textlabel
-				Text="Press 'Q' to cancel"
-				BackgroundTransparency={1}
-				Position={new UDim2(0.05, 0, 0.525, 0)}
-				Size={new UDim2(0.9, 0, 0.175, 0)}
-				TextXAlignment={Enum.TextXAlignment.Left}
-				TextScaled={true}
-				TextColor3={Theme.Text}
-				FontFace={fonts.inter.regular}
+			<TowerPlacementMessageText
+				text="Press 'Q' to cancel"
+				position={new UDim2(0.05, 0, 0.525, 0)}
+				font={fonts.inter.regular}
 			/>
-			<textlabel
-				Text="Right click to place"
-				BackgroundTransparency={1}
-				Position={new UDim2(0.05, 0, 0.725, 0)}
-				Size={new UDim2(0.9, 0, 0.175, 0)}
-				TextXAlignment={Enum.TextXAlignment.Left}
-				TextScaled={true}
-				TextColor3={Theme.Text}
-				FontFace={fonts.inter.regular}
+			<TowerPlacementMessageText
+				text="Right click to place"
+				position={new UDim2(0.05, 0, 0.725, 0)}
+				font={fonts.inter.regular}
 			/>
 			<uicorner CornerRadius={new UDim(0.05, 0)} />
 		</Frame>

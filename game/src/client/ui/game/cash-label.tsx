@@ -3,6 +3,7 @@ import { images } from "shared/assets";
 import { fonts } from "../constants/fonts";
 import { Theme } from "../constants/theme";
 import { Frame } from "../utils/frame";
+import { Label } from "../utils/label";
 
 export interface CashLabelProps {
 	value: number;
@@ -22,19 +23,17 @@ export function CashLabel(props: CashLabelProps) {
 				BackgroundTransparency={1}
 				ZIndex={zIndex}
 			/>
-			<textlabel
-				Size={new UDim2(0.55, 0, 0.8, 0)}
-				Position={new UDim2(0.45, 0, 0.1, 0)}
-				BackgroundTransparency={1}
-				TextColor3={Theme.Green}
-				TextScaled={true}
-				TextXAlignment={Enum.TextXAlignment.Right}
-				FontFace={fonts.inter.regular}
-				Text={tostring(value)}
-				ZIndex={zIndex}
+			<Label
+				size={new UDim2(0.55, 0, 0.8, 0)}
+				position={new UDim2(0.45, 0, 0.1, 0)}
+				textColor={Theme.Green}
+				textAlignmentX={Enum.TextXAlignment.Right}
+				font={fonts.inter.regular}
+				text={tostring(value)}
+				zIndex={zIndex}
 			>
 				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={1} />
-			</textlabel>
+			</Label>
 		</Frame>
 	);
 }
