@@ -2,6 +2,7 @@ import { Spring, lerpBinding, useInterval, useMotor } from "@rbxts/pretty-react-
 import Roact from "@rbxts/roact";
 import { setTimeout } from "@rbxts/set-timeout";
 import { images } from "shared/assets";
+import { Frame } from "../utils/frame";
 
 interface BeatingHeartProps {
 	size: UDim2;
@@ -37,12 +38,7 @@ export function BeatingHeart(props: BeatingHeartProps) {
 	useInterval(impulse, 1);
 
 	return (
-		<frame
-			BackgroundTransparency={1}
-			Size={lerpBinding(pulseTransition, size, beatSize)}
-			AnchorPoint={anchorPoint}
-			Position={position}
-		>
+		<Frame size={lerpBinding(pulseTransition, size, beatSize)} anchorPoint={anchorPoint} position={position}>
 			<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Height} AspectRatio={1} />
 			<imagelabel
 				Image={images.heart}
@@ -58,6 +54,6 @@ export function BeatingHeart(props: BeatingHeartProps) {
 				ImageColor3={Color3.fromRGB(255, 255, 255)}
 				ZIndex={0}
 			/>
-		</frame>
+		</Frame>
 	);
 }

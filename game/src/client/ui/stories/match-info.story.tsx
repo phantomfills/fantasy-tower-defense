@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { MatchInfo } from "../game/match-info";
 import { LifeCounter } from "../game/life-counter";
-import { CashLabel } from "../utils/cash-label";
+import { CashLabel } from "../game/cash-label";
 import { createRoot } from "@rbxts/react-roblox";
 
 export = (target: Frame) => {

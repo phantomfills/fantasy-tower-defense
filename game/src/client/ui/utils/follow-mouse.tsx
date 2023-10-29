@@ -1,5 +1,6 @@
 import Roact, { useBinding, useEffect } from "@rbxts/roact";
 import { RunService, UserInputService } from "@rbxts/services";
+import { Frame } from "./frame";
 
 interface FollowMouseProps extends Roact.PropsWithChildren {
 	size: UDim2;
@@ -19,8 +20,8 @@ export function FollowMouse({ size, children }: FollowMouseProps) {
 	}, []);
 
 	return (
-		<frame Size={size} Position={position} BackgroundTransparency={1}>
+		<Frame size={size} position={position}>
 			{children}
-		</frame>
+		</Frame>
 	);
 }

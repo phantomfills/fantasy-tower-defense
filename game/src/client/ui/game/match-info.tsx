@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { Frame } from "../utils/frame";
 
 interface MatchInfoProps {
 	children?: Roact.Children;
@@ -6,7 +7,7 @@ interface MatchInfoProps {
 
 export function MatchInfo({ children }: MatchInfoProps) {
 	return (
-		<frame Size={new UDim2(0.1, 0, 1, -46)} Position={new UDim2(0.9, -10, 0, 36)} BackgroundTransparency={1}>
+		<Frame size={new UDim2(0.1, 0, 1, -46)} position={new UDim2(0.9, -10, 0, 36)}>
 			<uigridlayout
 				CellSize={new UDim2(1, 0, 0.075, 0)}
 				FillDirection={Enum.FillDirection.Vertical}
@@ -14,6 +15,6 @@ export function MatchInfo({ children }: MatchInfoProps) {
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}
 			/>
 			{children}
-		</frame>
+		</Frame>
 	);
 }

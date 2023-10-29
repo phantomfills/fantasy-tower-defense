@@ -2,6 +2,7 @@ import Roact from "@rbxts/roact";
 import { images } from "shared/assets";
 import { fonts } from "../constants/fonts";
 import { Theme } from "../constants/theme";
+import { Frame } from "../utils/frame";
 
 export interface CashLabelProps {
 	value: number;
@@ -14,7 +15,7 @@ export function CashLabel(props: CashLabelProps) {
 	const { value, size, position, zIndex } = props;
 
 	return (
-		<frame Size={size} Position={position} BackgroundTransparency={1} ZIndex={zIndex}>
+		<Frame size={size} position={position}>
 			<imagelabel
 				Image={images.cash}
 				Size={new UDim2(0.45, 0, 1, 0)}
@@ -34,6 +35,6 @@ export function CashLabel(props: CashLabelProps) {
 			>
 				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={1} />
 			</textlabel>
-		</frame>
+		</Frame>
 	);
 }

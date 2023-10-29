@@ -4,6 +4,7 @@ import { TowerType } from "shared/modules/tower/tower-type";
 import { towerTypeToDisplayNameMap } from "shared/modules/tower/tower-type-to-display-name";
 import { fonts } from "../constants/fonts";
 import { Theme } from "../constants/theme";
+import { Frame } from "../utils/frame";
 
 interface TowerPlacementMessageProps {
 	towerType: TowerType;
@@ -39,11 +40,11 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 	}, []);
 
 	return (
-		<frame
-			Position={new UDim2(0, 5, 0, 0)}
-			Size={lerpBinding(messageShowTransition, new UDim2(0, 0, 1, 0), new UDim2(1, 0, 1, 0))}
-			BackgroundColor3={Theme.Overlay1}
-			Transparency={0.5}
+		<Frame
+			position={new UDim2(0, 5, 0, 0)}
+			size={lerpBinding(messageShowTransition, new UDim2(0, 0, 1, 0), new UDim2(1, 0, 1, 0))}
+			backgroundColor={Theme.Overlay1}
+			backgroundTransparency={0.5}
 		>
 			<uistroke Thickness={1} Color={new Color3(255, 255, 255)} />
 			<textlabel
@@ -93,6 +94,6 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 				FontFace={fonts.inter.regular}
 			/>
 			<uicorner CornerRadius={new UDim(0.05, 0)} />
-		</frame>
+		</Frame>
 	);
 }

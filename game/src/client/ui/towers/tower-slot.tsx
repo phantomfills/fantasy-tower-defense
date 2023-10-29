@@ -1,10 +1,11 @@
 import { Spring, lerpBinding, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact, { useEffect, useState } from "@rbxts/roact";
-import { CashLabel } from "../utils/cash-label";
+import { CashLabel } from "../game/cash-label";
 import { numberToKeyCodeMap } from "shared/modules/util/number-to-key-map";
 import { UserInputService } from "@rbxts/services";
 import { fonts } from "../constants/fonts";
 import { Theme } from "../constants/theme";
+import { Frame } from "../utils/frame";
 
 export interface TowerSlotProps {
 	number: number;
@@ -65,7 +66,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 	}, [clicking]);
 
 	return (
-		<frame BackgroundTransparency={1}>
+		<Frame>
 			<textbutton
 				Size={lerpBinding(buttonSizeTransition, new UDim2(1, 0, 1, 0), new UDim2(0.8, 0, 0.8, 0))}
 				BackgroundColor3={Theme.Base}
@@ -127,6 +128,6 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					/>
 				</frame>
 			</textbutton>
-		</frame>
+		</Frame>
 	);
 }

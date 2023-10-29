@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { BeatingHeart } from "../utils/beating-heart";
+import { BeatingHeart } from "./beating-heart";
 import { fonts } from "../constants/fonts";
 import { Theme } from "../constants/theme";
 
