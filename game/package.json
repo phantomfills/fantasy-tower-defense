@@ -33,6 +33,7 @@
     "@rbxts/catppuccin": "^1.0.2",
     "@rbxts/flipper": "^2.0.1",
     "@rbxts/maid": "^1.1.0",
+    "@rbxts/object-utils": "^1.0.4",
     "@rbxts/pretty-react-hooks": "^0.2.1",
     "@rbxts/react-reflex": "^0.2.0",
     "@rbxts/react-roblox": "^0.1.2",
