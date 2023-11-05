@@ -111,7 +111,7 @@ export class Enemy<T extends GenericEnemyStats> {
 
 		while (!touchingPathWaypoint && !cancelTouchingPathWaypointCheck) {
 			const currentTimeSeconds = DateTime.now().UnixTimestampMillis / 1000;
-			const elapsedTimeSeconds = startTimeSeconds - currentTimeSeconds;
+			const elapsedTimeSeconds = currentTimeSeconds - startTimeSeconds;
 			const alphaBetweenWaypoints = math.clamp(elapsedTimeSeconds / totalTimeSeconds, 0, 1);
 
 			this.lastWaypoint = previousPathWaypoint;
