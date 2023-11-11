@@ -11,4 +11,4 @@ export function createStore() {
 	return store;
 }
 
-const store = createStore();
+export const store = createStore();

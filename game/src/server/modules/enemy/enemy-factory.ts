@@ -1,12 +1,25 @@
 import { EnemyType } from "shared/modules/enemy/enemy-type";
-import { GenericEnemy } from "./enemy";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
-import { Ninja } from "./ninja";
+import { Enemy } from "server/store/enemy";
+import { getEnemyStatsFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats";
+import { HttpService } from "@rbxts/services";
 
-export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): GenericEnemy {
+export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
+	const enemyStats = getEnemyStatsFromType(enemyType);
+
+	const enemyTemplate: Enemy = {
+		cframe: new CFrame(),
+		health: enemyStats.maxHealth,
+		id: HttpService.GenerateGUID(),
+		currentWaypointIndex: 0,
+		path,
+		startTimeInMilliseconds: DateTime.now().UnixTimestampMillis,
+		type: enemyType,
+	};
+
 	switch (enemyType) {
 		case "NINJA": {
-			return new Ninja(path);
+			return enemyTemplate;
 		}
 	}
 }

@@ -1,47 +1,29 @@
 import { Service } from "@flamework/core";
-import { GenericEnemy } from "server/modules/enemy/enemy";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower/tower";
 import { Possible } from "shared/modules/util/possible";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { Events } from "server/network";
-import { ClientEnemyInfo, POSITION_PRECISION_MULTIPLIER } from "shared/network";
+import { store } from "server/store";
+import { Enemy, getClientEnemies, getEnemiesInTowerRange } from "server/store/enemy";
 
 @Service({})
 export class EnemyService {
-	private enemies: GenericEnemy[];
 	private lastTimeClientEnemiesSentMilliseconds: number;
 	private readonly timeBetweenClientEnemiesSendMilliseconds: number;
 
 	constructor() {
 		this.lastTimeClientEnemiesSentMilliseconds = this.getCurrentTimeInMilliseconds();
 		this.timeBetweenClientEnemiesSendMilliseconds = 100;
-		this.enemies = [];
 	}
 
 	private getCurrentTimeInMilliseconds() {
 		return DateTime.now().UnixTimestampMillis;
 	}
 
-	private addEnemy(enemy: GenericEnemy) {
-		this.enemies.push(enemy);
-		Events.createEnemy.broadcast(
-			enemy.getEnemyType(),
-			enemy.getId(),
-			enemy.getPath()[0].waypointAttachment.WorldCFrame,
-		);
-
-		enemy.onDeath.Connect(() => {
-			this.enemies = this.enemies.filter((currentEnemy) => {
-				return enemy.getId() !== currentEnemy.getId();
-			});
-			Events.destroyEnemy.broadcast(enemy.getId());
-		});
-
-		enemy.onWaypointReached.Connect(() => {
-			const clientEnemy = this.getClientEnemy(enemy);
-			Events.updateEnemy.broadcast(clientEnemy);
-		});
+	private addEnemy(enemy: Enemy) {
+		store.addEnemy(enemy);
+		Events.createEnemy.broadcast(enemy.type, enemy.id, enemy.path[0].waypointAttachment.WorldCFrame);
 	}
 
 	dealDamageToClosestEnemyInRange(tower: GenericTower, info: DamageDealtInfo) {
@@ -49,21 +31,17 @@ export class EnemyService {
 		if (!possibleClosestEnemyToTower.exists) return;
 
 		const closestEnemyToTower = possibleClosestEnemyToTower.value;
-		closestEnemyToTower.takeDamage(info.damage);
+		closestEnemyToTower.health -= info.damage;
 
-		Events.towerAttack.broadcast(tower.getId(), closestEnemyToTower.getPosition());
+		Events.towerAttack.broadcast(tower.getId(), closestEnemyToTower.cframe.Position);
 	}
 
-	private getEnemiesInTowerRange(tower: GenericTower): GenericEnemy[] {
-		return this.enemies.filter((enemy) => {
-			const cframe = enemy.getCFrame();
-			const position = cframe.Position;
-
-			return tower.getPositionInRange(position);
-		});
+	private getEnemiesInTowerRange(tower: GenericTower): Enemy[] {
+		const enemiesInTowerRange = store.getState(getEnemiesInTowerRange(tower));
+		return enemiesInTowerRange;
 	}
 
-	private getClosestEnemyToTowerInRange(tower: GenericTower): Possible<GenericEnemy> {
+	private getClosestEnemyToTowerInRange(tower: GenericTower): Possible<Enemy> {
 		const cframe = tower.getStat("cframe");
 		const position = cframe.Position;
 
@@ -75,10 +53,10 @@ export class EnemyService {
 			};
 
 		const enemiesSortedByDistanceFromTower = enemiesInRange.sort((last, current) => {
-			const lastPosition = last.getCFrame().Position;
+			const lastPosition = last.cframe.Position;
 			const distanceToLast = position.sub(lastPosition).Magnitude;
 
-			const currentPosition = current.getCFrame().Position;
+			const currentPosition = current.cframe.Position;
 			const distanceToCurrent = position.sub(currentPosition).Magnitude;
 
 			return distanceToLast < distanceToCurrent;
@@ -101,19 +79,9 @@ export class EnemyService {
 		}
 	}
 
-	private getClientEnemy(enemy: GenericEnemy): ClientEnemyInfo {
-		return {
-			id: enemy.getId(),
-			position: new Vector3int16(
-				enemy.getPosition().X * POSITION_PRECISION_MULTIPLIER,
-				enemy.getPosition().Y * POSITION_PRECISION_MULTIPLIER,
-				enemy.getPosition().Z * POSITION_PRECISION_MULTIPLIER,
-			),
-			rotation: enemy.getCFrameRotation(),
-		};
-	}
-
 	tick() {
+		store.enemyTick();
+
 		const currentTimeInMilliseconds = this.getCurrentTimeInMilliseconds();
 		if (
 			currentTimeInMilliseconds - this.lastTimeClientEnemiesSentMilliseconds <
@@ -122,7 +90,7 @@ export class EnemyService {
 			return;
 		this.lastTimeClientEnemiesSentMilliseconds = currentTimeInMilliseconds;
 
-		const clientEnemies = this.enemies.map((enemy) => this.getClientEnemy(enemy));
+		const clientEnemies = store.getState(getClientEnemies);
 
 		Events.updateEnemies.broadcast(clientEnemies);
 	}
