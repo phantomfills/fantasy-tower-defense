@@ -5,7 +5,7 @@ import { Possible } from "shared/modules/util/possible";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { Events } from "server/network";
 import { store } from "server/store";
-import { Enemy, getClientEnemies, getEnemiesInTowerRange } from "server/store/enemy";
+import { Enemy, getClientEnemies, getEnemies, getEnemiesInTowerRange } from "server/store/enemy";
 
 @Service({})
 export class EnemyService {
@@ -26,12 +26,12 @@ export class EnemyService {
 		Events.createEnemy.broadcast(enemy.type, enemy.id, enemy.path[0].waypointAttachment.WorldCFrame);
 	}
 
-	dealDamageToClosestEnemyInRange(tower: GenericTower, info: DamageDealtInfo) {
+	dealDamageToClosestEnemyInRange(tower: GenericTower, { damage }: DamageDealtInfo) {
 		const possibleClosestEnemyToTower = this.getClosestEnemyToTowerInRange(tower);
 		if (!possibleClosestEnemyToTower.exists) return;
 
 		const closestEnemyToTower = possibleClosestEnemyToTower.value;
-		closestEnemyToTower.health -= info.damage;
+		store.dealDamageToEnemyFromId(closestEnemyToTower.id, damage);
 
 		Events.towerAttack.broadcast(tower.getId(), closestEnemyToTower.cframe.Position);
 	}
@@ -69,6 +69,17 @@ export class EnemyService {
 	}
 
 	async start(path: PathWaypoint[]) {
+		store.subscribe(getEnemies, (current, previous) => {
+			previous.forEach((enemy) => {
+				const id = enemy.id;
+
+				const currentEnemy = current.find((currentEnemy) => currentEnemy.id === id);
+				if (!currentEnemy) {
+					Events.destroyEnemy.broadcast(id);
+				}
+			});
+		});
+
 		task.wait(5);
 
 		for (let i = 0; i < 10000; i++) {

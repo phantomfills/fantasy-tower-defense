@@ -3,6 +3,10 @@ import { Enemy } from "./enemy-slice";
 import { GenericTower } from "server/modules/tower/tower";
 import { ClientEnemyInfo, POSITION_PRECISION_MULTIPLIER } from "shared/network";
 
+export function getEnemies(state: RootState) {
+	return state.enemy;
+}
+
 export function getEnemiesInTowerRange(tower: GenericTower): (state: RootState) => Enemy[] {
 	return (state: RootState) => {
 		return state.enemy.filter((enemy) => {
