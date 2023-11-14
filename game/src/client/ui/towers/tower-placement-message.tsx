@@ -3,7 +3,6 @@ import Roact, { useEffect } from "@rbxts/roact";
 import { TowerType } from "shared/modules/tower/tower-type";
 import { towerTypeToDisplayNameMap } from "shared/modules/tower/tower-type-to-display-name";
 import { fonts } from "../constants/fonts";
-import { Theme } from "../constants/theme";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
 
@@ -29,7 +28,7 @@ function TowerPlacementMessageText({ text, position, font }: TowerPlacementMessa
 			font={font}
 			size={new UDim2(0.9, 0, 0.175, 0)}
 			textAlignmentX={Enum.TextXAlignment.Left}
-			textColor={Theme.Text}
+			textColor={new Color3(222, 222, 222)}
 		/>
 	);
 }
@@ -63,11 +62,11 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 		<Frame
 			position={new UDim2(0, 5, 0, 0)}
 			size={lerpBinding(messageShowTransition, new UDim2(0, 0, 1, 0), new UDim2(1, 0, 1, 0))}
-			backgroundColor={Theme.Overlay2}
+			backgroundColor={new Color3(0, 0, 0)}
 			backgroundTransparency={0.75}
 			zIndex={4}
 		>
-			<uistroke Thickness={1} Color={new Color3(255, 255, 255)} />
+			<uistroke Thickness={1} Color={new Color3(0.39, 0.26, 0.48)} />
 			<TowerPlacementMessageText
 				text={`Placing ${displayName}`}
 				position={new UDim2(0.05, 0, 0.05, 0)}
@@ -75,7 +74,7 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 			/>
 			<Frame
 				backgroundTransparency={0}
-				backgroundColor={Theme.Mauve}
+				backgroundColor={new Color3(0.39, 0.26, 0.48)}
 				size={getLerpBindingForElement(new UDim2(0.9, 0, 0.015, 0))}
 				position={new UDim2(0.05, 0, 0.25, 0)}
 			/>

@@ -4,7 +4,6 @@ import { CashLabel } from "../game/cash-label";
 import { numberToKeyCodeMap } from "shared/modules/util/number-to-key-map";
 import { UserInputService } from "@rbxts/services";
 import { fonts } from "../constants/fonts";
-import { Theme } from "../constants/theme";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
 
@@ -70,7 +69,8 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 		<Frame>
 			<textbutton
 				Size={lerpBinding(buttonSizeTransition, new UDim2(1, 0, 1, 0), new UDim2(0.8, 0, 0.8, 0))}
-				BackgroundColor3={Theme.Base}
+				BackgroundColor3={new Color3(0.1, 0.1, 0.1)}
+				BackgroundTransparency={0.2}
 				AnchorPoint={new Vector2(0.5, 0.5)}
 				Position={lerpBinding(buttonHoverTransition, new UDim2(0.5, 0, 0.5, 0), new UDim2(0.5, 0, 0.4, 0))}
 				Text=""
@@ -103,14 +103,18 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 				/>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />
 				<uistroke
-					Color={Color3.fromRGB(255, 255, 255)}
+					Color={new Color3(0.39, 0.26, 0.48)}
 					Thickness={1}
 					ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
 				/>
 				<Frame
 					size={new UDim2(0.4, 0, 0.4, 0)}
 					backgroundTransparency={0}
-					backgroundColor={lerpBinding(buttonHoverTransition, Theme.Lavender, Theme.Blue)}
+					backgroundColor={lerpBinding(
+						buttonHoverTransition,
+						new Color3(0.39, 0.26, 0.48),
+						new Color3(0.39, 0.26, 0.48),
+					)}
 					position={new UDim2(-0.125, 0, -0.125, 0)}
 					rotation={lerpBinding(buttonHoverTransition, -10, 10)}
 				>

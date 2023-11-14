@@ -1,9 +1,8 @@
 import Roact from "@rbxts/roact";
 import { BeatingHeart } from "./beating-heart";
 import { fonts } from "../constants/fonts";
-import { Theme } from "../constants/theme";
-import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
+import { CounterFrame } from "./counter-frame";
 
 interface LifeCounterProps {
 	lives: number;
@@ -11,7 +10,8 @@ interface LifeCounterProps {
 
 export function LifeCounter({ lives }: LifeCounterProps) {
 	return (
-		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0.5, 0, 0.5, 0)} anchorPoint={new Vector2(0.5, 0.5)}>
+		<CounterFrame>
+			<uicorner CornerRadius={new UDim(0.1, 0)} />
 			<BeatingHeart
 				size={new UDim2(0.45, 0, 1, 0)}
 				beatSize={new UDim2(0.55, 0, 1.22, 0)}
@@ -21,13 +21,11 @@ export function LifeCounter({ lives }: LifeCounterProps) {
 			<Label
 				size={new UDim2(0.55, 0, 0.8, 0)}
 				position={new UDim2(0.45, 0, 0.1, 0)}
-				textColor={Theme.Text}
+				textColor={new Color3(233, 233, 233)}
 				font={fonts.inter.regular}
 				textAlignmentX={Enum.TextXAlignment.Right}
 				text={`${lives}`}
-			>
-				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={1} />
-			</Label>
-		</Frame>
+			/>
+		</CounterFrame>
 	);
 }
