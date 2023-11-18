@@ -8,13 +8,5 @@ export type Possible<T> =
 	  };
 
 export function possible<T>(value: T | undefined): Possible<T> {
-	if (value === undefined)
-		return {
-			exists: false,
-		};
-	const castedValue = value as T;
-	return {
-		exists: true,
-		value: castedValue,
-	};
+	return value !== undefined ? { exists: true, value } : { exists: false };
 }
