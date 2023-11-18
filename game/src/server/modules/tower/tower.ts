@@ -1,7 +1,8 @@
-import Maid from "@rbxts/maid";
-import { Signal } from "@rbxts/beacon";
 import { TowerType } from "shared/modules/tower/tower-type";
 import { HttpService } from "@rbxts/services";
+import { store } from "server/store";
+import { getClosestEnemyToTower } from "server/store/enemy";
+import { Events } from "server/network";
 
 export interface GenericTowerStats {
 	damage: number;
@@ -17,18 +18,9 @@ export type DamageDealtInfo = {
 };
 
 export class Tower<T extends GenericTowerStats> {
-	readonly dealDamage: Signal<[tower: GenericTower, info: DamageDealtInfo]>;
-
-	private maid: Maid;
-
 	private readonly id: string;
 
 	constructor(private readonly towerType: TowerType, private readonly stats: T) {
-		this.dealDamage = new Signal();
-
-		this.maid = new Maid();
-		this.maid.GiveTask(this.dealDamage);
-
 		this.id = HttpService.GenerateGUID();
 
 		this.start();
@@ -70,13 +62,13 @@ export class Tower<T extends GenericTowerStats> {
 		for (;;) {
 			task.wait(this.stats.firerate);
 
-			this.dealDamage.Fire(this, {
-				damage: this.getStat("damage"),
-			});
-		}
-	}
+			const possibleClosestEnemy = store.getState(getClosestEnemyToTower(this));
+			if (!possibleClosestEnemy.exists) continue;
 
-	private destroy() {
-		this.maid.Destroy();
+			const closestEnemy = possibleClosestEnemy.value;
+			store.dealDamageToEnemy(closestEnemy.id, this.getStat("damage"));
+
+			Events.towerAttack.broadcast(this.getId(), closestEnemy.cframe.Position);
+		}
 	}
 }

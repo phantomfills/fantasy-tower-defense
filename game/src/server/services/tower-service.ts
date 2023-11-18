@@ -1,27 +1,19 @@
 import { Service } from "@flamework/core";
-import { DamageDealtInfo, GenericTower } from "server/modules/tower/tower";
-import { Signal } from "@rbxts/beacon";
+import { GenericTower } from "server/modules/tower/tower";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 
 @Service({})
 export class TowerService {
 	private towers: GenericTower[];
-	readonly dealDamageFromTower: Signal<[tower: GenericTower, info: DamageDealtInfo]>;
 
 	constructor() {
 		this.towers = [];
-
-		this.dealDamageFromTower = new Signal();
 	}
 
 	private addTower(tower: GenericTower) {
 		this.towers.push(tower);
 		Events.createTower.broadcast(tower.getTowerType(), tower.getId(), tower.getStat("cframe"));
-
-		tower.dealDamage.Connect((tower, info) => {
-			this.dealDamageFromTower.Fire(tower, info);
-		});
 	}
 
 	start() {

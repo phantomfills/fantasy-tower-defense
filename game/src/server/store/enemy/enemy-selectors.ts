@@ -8,6 +8,10 @@ export function getEnemies(state: RootState) {
 	return state.enemy;
 }
 
+export function getEnemyCount(state: RootState) {
+	return state.enemy.size();
+}
+
 export function getClosestEnemyToTower(tower: GenericTower): (state: RootState) => Possible<Enemy> {
 	return (state: RootState) => {
 		const enemiesInTowerRange = state.enemy

@@ -7,7 +7,7 @@ export interface EnemyStats {
 
 export const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 	NINJA: {
-		maxHealth: 10,
+		maxHealth: 20,
 		speed: 6,
 	},
 };

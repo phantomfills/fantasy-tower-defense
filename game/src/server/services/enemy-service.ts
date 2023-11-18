@@ -49,15 +49,12 @@ export class EnemyService {
 
 		task.wait(5);
 
-		// for (let i = 0; i < 10000; i++) {
-		// 	task.wait(0.5);
+		for (let i = 0; i < 100_000; i++) {
+			task.wait(0.05);
 
-		// 	const ninja = createEnemy("NINJA", path);
-		// 	this.addEnemy(ninja);
-		// }
-
-		const ninja = createEnemy("NINJA", path);
-		this.addEnemy(ninja);
+			const ninja = createEnemy("NINJA", path);
+			this.addEnemy(ninja);
+		}
 	}
 
 	tick() {
