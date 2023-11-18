@@ -6,6 +6,7 @@ import { Players } from "@rbxts/services";
 import { App } from "client/ui/app";
 import { possible } from "shared/modules/util/possible";
 import { RootProvider } from "client/providers/root-provider-component";
+import { ErrorBoundary } from "client/ui/error-boundary";
 
 const LOCAL_PLAYER = Players.LocalPlayer;
 
@@ -20,9 +21,11 @@ export class AppController implements OnStart {
 
 		const appElement = (
 			<StrictMode>
-				<RootProvider>
-					<App />
-				</RootProvider>
+				<ErrorBoundary fallback={(exception) => <textlabel Text={`Error loading UI: ${error} \n Rejoin?`} />}>
+					<RootProvider>
+						<App />
+					</RootProvider>
+				</ErrorBoundary>
 			</StrictMode>
 		);
 

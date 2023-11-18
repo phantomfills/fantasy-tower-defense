@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import Roact, { Suspense } from "@rbxts/roact";
 import { Panel } from "./utils/panel";
 import { TowerLoadout } from "./towers/tower-loadout";
 import { LifeCounter } from "./game/life-counter";

@@ -1,3 +1,4 @@
+import { Possible } from "shared/modules/util/possible";
 import { RootState } from "..";
 import { Enemy } from "./enemy-slice";
 import { GenericTower } from "server/modules/tower/tower";
@@ -7,14 +8,31 @@ export function getEnemies(state: RootState) {
 	return state.enemy;
 }
 
-export function getEnemiesInTowerRange(tower: GenericTower): (state: RootState) => Enemy[] {
+export function getClosestEnemyToTower(tower: GenericTower): (state: RootState) => Possible<Enemy> {
 	return (state: RootState) => {
-		return state.enemy.filter((enemy) => {
-			const cframe = enemy.cframe;
-			const position = cframe.Position;
+		const enemiesInTowerRange = state.enemy
+			.filter((enemy) => {
+				const cframe = enemy.cframe;
+				const position = cframe.Position;
 
-			return tower.getPositionInRange(position);
-		});
+				return tower.getPositionInRange(position);
+			})
+			.sort((lastEnemy, currentEnemy) => {
+				const towerPosition = tower.getStat("cframe").Position;
+
+				const distanceToLastEnemy = lastEnemy.cframe.Position.sub(towerPosition).Magnitude;
+				const distanceToCurrentEnemy = currentEnemy.cframe.Position.sub(towerPosition).Magnitude;
+
+				return distanceToLastEnemy < distanceToCurrentEnemy;
+			});
+		if (enemiesInTowerRange.size() < 1)
+			return {
+				exists: false,
+			};
+		return {
+			exists: true,
+			value: enemiesInTowerRange[0],
+		};
 	};
 }
 

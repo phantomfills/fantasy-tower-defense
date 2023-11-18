@@ -13,7 +13,7 @@ export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 		id: HttpService.GenerateGUID(),
 		currentWaypointIndex: 0,
 		path,
-		startTimeInMilliseconds: DateTime.now().UnixTimestampMillis,
+		timestampAtLastWaypoint: DateTime.now().UnixTimestampMillis,
 		type: enemyType,
 	};
 

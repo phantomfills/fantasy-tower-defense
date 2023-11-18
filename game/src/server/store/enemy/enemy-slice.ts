@@ -8,7 +8,7 @@ export interface Enemy {
 	type: EnemyType;
 	path: PathWaypoint[];
 	currentWaypointIndex: number;
-	startTimeInMilliseconds: number;
+	timestampAtLastWaypoint: number;
 	health: number;
 	cframe: CFrame;
 }
@@ -20,19 +20,23 @@ const initialState: EnemyState = [];
 export const enemySlice = createProducer(initialState, {
 	addEnemy: (state, enemyToAdd: Enemy) => [...state, enemyToAdd],
 
-	removeEnemyFromId: (state, enemyIdToRemove: string) => state.filter((enemy) => enemy.id !== enemyIdToRemove),
+	removeEnemy: (state, enemyIdToRemove: string) => state.filter((enemy) => enemy.id !== enemyIdToRemove),
 
-	dealDamageToEnemyFromId: (state, enemyIdToDamage: string, damage: number) => {
-		return state
-			.map((enemy) => {
-				if (enemy.id === enemyIdToDamage) {
-					return { ...enemy, health: enemy.health - damage };
-				}
-				return enemy;
-			})
-			.filter((enemy) => {
-				return enemy.health > 0;
-			});
+	dealDamageToEnemy: (state, enemyIdToDamage: string, damage: number) => {
+		const updatedState: EnemyState = [];
+		state.forEach((enemy) => {
+			if (enemy.id === enemyIdToDamage) {
+				const updatedEnemyHealth = enemy.health - damage;
+				if (updatedEnemyHealth <= 0) return;
+
+				updatedState.push({ ...enemy, health: enemy.health - damage });
+				return;
+			}
+
+			updatedState.push(enemy);
+		});
+
+		return updatedState;
 	},
 
 	enemyTick: (state) => {
@@ -51,7 +55,7 @@ export const enemySlice = createProducer(initialState, {
 				const totalMovementTimeInMilliseconds = (distanceBetweenWaypoints / enemyStats.speed) * 1000;
 
 				const currentTimeInMilliseconds = DateTime.now().UnixTimestampMillis;
-				const elapsedTimeInMilliseconds = currentTimeInMilliseconds - enemy.startTimeInMilliseconds;
+				const elapsedTimeInMilliseconds = currentTimeInMilliseconds - enemy.timestampAtLastWaypoint;
 
 				const waypointLerpAlpha = math.clamp(elapsedTimeInMilliseconds / totalMovementTimeInMilliseconds, 0, 1);
 
@@ -62,7 +66,7 @@ export const enemySlice = createProducer(initialState, {
 						...enemy,
 						cframe,
 						currentWaypointIndex: enemy.currentWaypointIndex + 1,
-						startTimeInMilliseconds: currentTimeInMilliseconds,
+						timestampAtLastWaypoint: currentTimeInMilliseconds,
 					};
 				}
 
