@@ -1,10 +1,10 @@
-import { Service } from "@flamework/core";
+import { OnStart, Service } from "@flamework/core";
 import { GenericTower } from "server/modules/tower/tower";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 
 @Service({})
-export class TowerService {
+export class TowerService implements OnStart {
 	private towers: GenericTower[];
 
 	constructor() {
@@ -16,7 +16,7 @@ export class TowerService {
 		Events.createTower.broadcast(tower.getTowerType(), tower.getId(), tower.getStat("cframe"));
 	}
 
-	start() {
+	onStart() {
 		Events.placeTower.connect((player, towerType, cframe) => {
 			const tower = createTower(towerType, cframe);
 			this.addTower(tower);

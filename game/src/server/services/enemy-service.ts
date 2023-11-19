@@ -1,16 +1,16 @@
-import { Service } from "@flamework/core";
-import { PathWaypoint } from "shared/modules/map/path-waypoint";
+import { OnStart, OnTick, Service } from "@flamework/core";
 import { DamageDealtInfo, GenericTower } from "server/modules/tower/tower";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { Events } from "server/network";
 import { store } from "server/store";
 import { Enemy, getClientEnemies, getClosestEnemyToTower, getEnemies } from "server/store/enemy";
 import { getCurrentTimeInMilliseconds } from "../../shared/modules/util/get-time-in-ms";
+import { getMap } from "server/store/map";
 
 const TIMESTAMP_BETWEEN_CLIENT_ENEMY_SYNC = 100;
 
 @Service({})
-export class EnemyService {
+export class EnemyService implements OnStart, OnTick {
 	private lastClientEnemySyncTimestamp: number;
 
 	constructor() {
@@ -32,7 +32,10 @@ export class EnemyService {
 		Events.towerAttack.broadcast(tower.getId(), closestEnemyToTower.cframe.Position);
 	}
 
-	async start(path: PathWaypoint[]) {
+	onStart() {
+		const map = store.getState(getMap);
+		const path = map.path;
+
 		store.subscribe(getEnemies, (current, previous) => {
 			previous.forEach((enemy) => {
 				const id = enemy.id;
@@ -54,7 +57,7 @@ export class EnemyService {
 		}
 	}
 
-	tick() {
+	onTick() {
 		store.enemyTick();
 
 		const currentTimeInMilliseconds = getCurrentTimeInMilliseconds();

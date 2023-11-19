@@ -1,8 +1,15 @@
-import { Service } from "@flamework/core";
-import { CombatService } from "./combat-service";
+import { createProducer } from "@rbxts/reflex";
 import { Workspace } from "@rbxts/services";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { possible } from "shared/modules/util/possible";
+
+export interface Map {
+	name: string;
+	model: Model;
+	path: PathWaypoint[];
+}
+
+export type MapState = Map;
 
 function throwIfChildrenAreNotPathWaypoints<T extends Folder>(
 	value: T & {
@@ -24,25 +31,17 @@ function assertValueIsPathWaypoint(instance: Instance): instance is PathWaypoint
 	return classIs(waypointAttachment, "Attachment");
 }
 
-@Service({})
-export class MapService {
-	constructor(private combatService: CombatService) {}
+throwIfChildrenAreNotPathWaypoints(Workspace.gameMap.path);
 
-	async start() {
-		const gameMap = Workspace.gameMap;
-		const pathFolder = gameMap.path;
-
-		throwIfChildrenAreNotPathWaypoints(pathFolder);
-
-		const path = pathFolder.GetChildren();
-		if (!assertAllInstancesArePathWaypoints(path)) {
-			throw "Not all children are path waypoints!";
-		}
-
-		await this.combatService.start(path);
-	}
-
-	tick() {
-		this.combatService.tick();
-	}
+const path = Workspace.gameMap.path.GetChildren();
+if (!assertAllInstancesArePathWaypoints(path)) {
+	throw "Not all children are path waypoints!";
 }
+
+const initialState: MapState = {
+	name: "Ninja Hideaway",
+	model: Workspace.gameMap,
+	path,
+};
+
+export const mapSlice = createProducer(initialState, {});
