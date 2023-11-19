@@ -2,7 +2,6 @@ import { Controller, OnStart } from "@flamework/core";
 import { TowerPlacementController } from "./tower-placement-controller";
 import { TowerType } from "shared/modules/tower/tower-type";
 import { towerTypeToModelMap } from "shared/modules/tower/tower-type-to-model";
-import { Workspace } from "@rbxts/services";
 import { rootProducer } from "client/providers/root-provider";
 import { images } from "shared/assets";
 
