@@ -21,9 +21,9 @@ export function LifeCounter({ lives }: LifeCounterProps) {
 			<Label
 				size={new UDim2(0.55, 0, 0.8, 0)}
 				position={new UDim2(0.45, 0, 0.1, 0)}
-				textColor={new Color3(233, 233, 233)}
-				font={fonts.inter.regular}
-				textAlignmentX={Enum.TextXAlignment.Right}
+				textColor={new Color3(1, 0, 0.42)}
+				font={fonts.inter.bold}
+				textAlignmentX={Enum.TextXAlignment.Center}
 				text={`${lives}`}
 			/>
 		</CounterFrame>

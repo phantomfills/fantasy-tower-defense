@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { Frame } from "../utils/frame";
+import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 
 interface CounterFrameProps extends Roact.PropsWithChildren {
 	children?: Roact.Children;
@@ -14,6 +15,7 @@ export function CounterFrame({ children }: CounterFrameProps) {
 			backgroundColor={new Color3(0, 0, 0)}
 			backgroundTransparency={0.5}
 		>
+			<OneThickWhiteStroke />
 			{children}
 		</Frame>
 	);

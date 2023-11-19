@@ -5,6 +5,7 @@ import { towerTypeToDisplayNameMap } from "shared/modules/tower/tower-type-to-di
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
+import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 
 interface TowerPlacementMessageTextProps {
 	text: string;
@@ -28,7 +29,7 @@ function TowerPlacementMessageText({ text, position, font }: TowerPlacementMessa
 			font={font}
 			size={new UDim2(0.9, 0, 0.175, 0)}
 			textAlignmentX={Enum.TextXAlignment.Left}
-			textColor={new Color3(222, 222, 222)}
+			textColor={new Color3(1, 1, 1)}
 		/>
 	);
 }
@@ -64,9 +65,8 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 			size={lerpBinding(messageShowTransition, new UDim2(0, 0, 1, 0), new UDim2(1, 0, 1, 0))}
 			backgroundColor={new Color3(0, 0, 0)}
 			backgroundTransparency={0.75}
-			zIndex={4}
 		>
-			<uistroke Thickness={1} Color={new Color3(0.39, 0.26, 0.48)} />
+			<OneThickWhiteStroke />
 			<TowerPlacementMessageText
 				text={`Placing ${displayName}`}
 				position={new UDim2(0.05, 0, 0.05, 0)}
@@ -74,7 +74,7 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 			/>
 			<Frame
 				backgroundTransparency={0}
-				backgroundColor={new Color3(0.39, 0.26, 0.48)}
+				backgroundColor={new Color3(0, 0.82, 1)}
 				size={getLerpBindingForElement(new UDim2(0.9, 0, 0.015, 0))}
 				position={new UDim2(0.05, 0, 0.25, 0)}
 			/>

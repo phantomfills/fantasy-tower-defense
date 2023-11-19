@@ -6,6 +6,7 @@ import { UserInputService } from "@rbxts/services";
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
+import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 
 export interface TowerSlotProps {
 	number: number;
@@ -102,19 +103,11 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					Position={lerpBinding(buttonHoverTransition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
 				/>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />
-				<uistroke
-					Color={new Color3(0.39, 0.26, 0.48)}
-					Thickness={1}
-					ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
-				/>
+				<OneThickWhiteStroke />
 				<Frame
 					size={new UDim2(0.4, 0, 0.4, 0)}
 					backgroundTransparency={0}
-					backgroundColor={lerpBinding(
-						buttonHoverTransition,
-						new Color3(0.39, 0.26, 0.48),
-						new Color3(0.39, 0.26, 0.48),
-					)}
+					backgroundColor={lerpBinding(buttonHoverTransition, new Color3(0, 0.58, 1), new Color3(0, 0.75, 1))}
 					position={new UDim2(-0.125, 0, -0.125, 0)}
 					rotation={lerpBinding(buttonHoverTransition, -10, 10)}
 				>
