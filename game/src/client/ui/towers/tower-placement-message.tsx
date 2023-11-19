@@ -89,7 +89,7 @@ export function TowerPlacementMessage({ towerType }: TowerPlacementMessageProps)
 				font={fonts.inter.regular}
 			/>
 			<TowerPlacementMessageText
-				text="Right click to place"
+				text="Left click to place"
 				position={new UDim2(0.05, 0, 0.725, 0)}
 				font={fonts.inter.regular}
 			/>
