@@ -1,5 +1,5 @@
 {
-	"name": "flamework-game",
+	"name": "fantasy-tower-defense",
 	"globIgnorePaths": [
 		"**/package.json",
 		"**/tsconfig.json"
