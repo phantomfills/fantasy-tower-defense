@@ -5,12 +5,9 @@ import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { Events } from "server/network";
 import { store } from "server/store";
 import { Enemy, getClientEnemies, getClosestEnemyToTower, getEnemies } from "server/store/enemy";
+import { getCurrentTimeInMilliseconds } from "../../shared/modules/util/get-time-in-ms";
 
 const TIMESTAMP_BETWEEN_CLIENT_ENEMY_SYNC = 100;
-
-export function getCurrentTimeInMilliseconds(): number {
-	return DateTime.now().UnixTimestampMillis;
-}
 
 @Service({})
 export class EnemyService {
