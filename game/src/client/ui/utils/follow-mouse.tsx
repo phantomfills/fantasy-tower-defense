@@ -1,6 +1,6 @@
-import Roact, { useBinding, useEffect } from "@rbxts/roact";
-import { RunService, UserInputService } from "@rbxts/services";
+import Roact from "@rbxts/roact";
 import { Frame } from "./frame";
+import { useMouse } from "@rbxts/pretty-react-hooks";
 
 interface FollowMouseProps extends Roact.PropsWithChildren {
 	size: UDim2;
@@ -8,19 +8,10 @@ interface FollowMouseProps extends Roact.PropsWithChildren {
 }
 
 export function FollowMouse({ size, children }: FollowMouseProps) {
-	const [position, updatePosition] = useBinding(new UDim2(0, 0, 0, 0));
-
-	useEffect(() => {
-		const updatePositionConnection = RunService.RenderStepped.Connect(() => {
-			const mouseLocation = UserInputService.GetMouseLocation();
-			updatePosition(new UDim2(0, mouseLocation.X, -size.Y.Scale, mouseLocation.Y));
-		});
-
-		return () => updatePositionConnection.Disconnect();
-	}, []);
+	const mouse = useMouse();
 
 	return (
-		<Frame size={size} position={position}>
+		<Frame size={size} position={mouse.map((position) => UDim2.fromOffset(position.X, position.Y))}>
 			{children}
 		</Frame>
 	);
