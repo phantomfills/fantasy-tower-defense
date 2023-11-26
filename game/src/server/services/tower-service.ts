@@ -1,5 +1,5 @@
 import { OnStart, Service } from "@flamework/core";
-import { GenericTower } from "server/modules/tower/tower";
+import { GenericTower } from "../../shared/modules/tower/tower";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 

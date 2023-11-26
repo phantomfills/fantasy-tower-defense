@@ -3,17 +3,15 @@ import { images } from "shared/assets";
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
-import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 
 export interface CashLabelProps {
 	value: number;
 	size?: UDim2;
 	position?: UDim2;
 	zIndex?: number;
-	stroke?: boolean;
 }
 
-export function CashLabel({ value, size, position, zIndex, stroke }: CashLabelProps) {
+export function CashLabel({ value, size, position, zIndex }: CashLabelProps) {
 	return (
 		<Frame size={size} position={position}>
 			<imagelabel

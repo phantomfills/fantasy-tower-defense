@@ -1,71 +1,30 @@
 import { OnStart, OnTick, Service } from "@flamework/core";
-import { DamageDealtInfo, GenericTower } from "server/modules/tower/tower";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
-import { Events } from "server/network";
 import { store } from "server/store";
-import { Enemy, getClientEnemies, getClosestEnemyToTower, getEnemies } from "server/store/enemy";
-import { getCurrentTimeInMilliseconds } from "../../shared/modules/util/get-time-in-ms";
-import { getMap } from "server/store/map";
-
-const TIMESTAMP_BETWEEN_CLIENT_ENEMY_SYNC = 100;
+import { getMap } from "shared/store/map";
+import { Enemy } from "shared/store/enemy";
 
 @Service({})
 export class EnemyService implements OnStart, OnTick {
-	private lastClientEnemySyncTimestamp: number;
-
-	constructor() {
-		this.lastClientEnemySyncTimestamp = getCurrentTimeInMilliseconds();
-	}
-
 	private addEnemy(enemy: Enemy): void {
 		store.addEnemy(enemy);
-		Events.createEnemy.broadcast(enemy.type, enemy.id, enemy.path[0].waypointAttachment.WorldCFrame);
 	}
 
-	dealDamageToClosestEnemyInRange(tower: GenericTower, { damage }: DamageDealtInfo): void {
-		const possibleClosestEnemyToTower = store.getState(getClosestEnemyToTower(tower));
-		if (!possibleClosestEnemyToTower.exists) return;
-
-		const closestEnemyToTower = possibleClosestEnemyToTower.value;
-		store.dealDamageToEnemy(closestEnemyToTower.id, damage);
-
-		Events.towerAttack.broadcast(tower.getId(), closestEnemyToTower.cframe.Position);
-	}
-
-	onStart() {
+	onStart(): void {
 		const map = store.getState(getMap);
 		const path = map.path;
-
-		store.subscribe(getEnemies, (current, previous) => {
-			previous.forEach((enemy) => {
-				const id = enemy.id;
-
-				const currentEnemy = current.find((currentEnemy) => currentEnemy.id === id);
-				if (!currentEnemy) {
-					Events.destroyEnemy.broadcast(id);
-				}
-			});
-		});
 
 		task.wait(5);
 
 		for (let i = 0; i < 100_000; i++) {
-			task.wait(0.05);
+			task.wait(1);
 
 			const ninja = createEnemy("NINJA", path);
 			this.addEnemy(ninja);
 		}
 	}
 
-	onTick() {
+	onTick(): void {
 		store.enemyTick();
-
-		const currentTimeInMilliseconds = getCurrentTimeInMilliseconds();
-		if (currentTimeInMilliseconds - this.lastClientEnemySyncTimestamp < TIMESTAMP_BETWEEN_CLIENT_ENEMY_SYNC) return;
-		this.lastClientEnemySyncTimestamp = currentTimeInMilliseconds;
-
-		const clientEnemies = store.getState(getClientEnemies);
-
-		Events.updateEnemies.broadcast(clientEnemies);
 	}
 }

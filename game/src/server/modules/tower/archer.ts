@@ -1,4 +1,4 @@
-import { GenericTowerStats, Tower } from "./tower";
+import { GenericTowerStats, Tower } from "../../../shared/modules/tower/tower";
 
 export class Archer extends Tower<GenericTowerStats> {
 	constructor(cframe: CFrame) {

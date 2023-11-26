@@ -1,5 +1,5 @@
-import { TowerType } from "shared/modules/tower/tower-type";
-import { GenericTower } from "./tower";
+import { TowerType } from "../../../shared/modules/tower/tower-type";
+import { GenericTower } from "../../../shared/modules/tower/tower";
 import { Archer } from "./archer";
 
 export function createTower(towerType: TowerType, cframe: CFrame): GenericTower {

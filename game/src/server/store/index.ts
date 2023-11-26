@@ -1,16 +1,29 @@
-import { InferState, combineProducers } from "@rbxts/reflex";
-import { enemySlice } from "./enemy/enemy-slice";
-import { mapSlice } from "./map/map-slice";
+import { InferState, combineProducers, createBroadcaster } from "@rbxts/reflex";
+import { Events } from "server/network";
+import { slices } from "shared/store";
 
 export type RootState = InferState<typeof store>;
 
 export function createStore() {
 	const store = combineProducers({
-		enemy: enemySlice,
-		map: mapSlice,
+		...slices,
 	});
 
 	return store;
 }
 
 export const store = createStore();
+
+const broadcaster = createBroadcaster({
+	producers: { enemy: slices.enemy },
+
+	dispatch: (player, actions) => {
+		Events.dispatch.fire(player, actions);
+	},
+});
+
+Events.start.connect((player) => {
+	broadcaster.start(player);
+});
+
+store.applyMiddleware(broadcaster.middleware);

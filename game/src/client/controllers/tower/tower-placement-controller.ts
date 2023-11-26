@@ -1,12 +1,12 @@
 import { Controller, OnStart } from "@flamework/core";
 import { Possible, possible } from "shared/modules/util/possible";
-import { TowerModel } from "shared/modules/tower/tower-model";
-import { TowerType } from "shared/modules/tower/tower-type";
+import { TowerModel } from "../../../shared/modules/tower/tower-model";
+import { TowerType } from "../../../shared/modules/tower/tower-type";
 import { UserInputService, Workspace, RunService, Players } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/util/snap-to-cframe";
 import { Events } from "client/network";
+import { store } from "client/store";
 import Maid from "@rbxts/maid";
-import { rootProducer } from "client/providers/root-provider";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -114,7 +114,7 @@ export class TowerPlacementController implements OnStart {
 		const towerModel = towerPrefabModel.Clone();
 		towerModel.Parent = Workspace;
 
-		rootProducer.setTowerPlacement(towerType);
+		store.setTowerPlacement(towerType);
 
 		const towerPlacementCFrame = possibleTowerPlacementCFrame.value;
 
@@ -124,7 +124,7 @@ export class TowerPlacementController implements OnStart {
 
 		const maid = new Maid();
 		maid.GiveTask(() => {
-			rootProducer.clearTowerPlacement();
+			store.clearTowerPlacement();
 			updateTowerPlacementConnection.Disconnect();
 			towerModel.Destroy();
 		});

@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
-import { CounterFrame } from "./counter-frame";
 import { CashLabel } from "../game/cash-label";
+import { CounterFrame } from "./counter-frame";
 
 interface CashCounterProps {
 	value: number;

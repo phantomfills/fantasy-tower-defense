@@ -5,7 +5,7 @@ import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
 import { App } from "client/ui/app";
 import { possible } from "shared/modules/util/possible";
-import { RootProvider } from "client/providers/root-provider-component";
+import { RootProvider } from "client/store";
 import { ErrorBoundary } from "client/ui/error-boundary";
 
 const LOCAL_PLAYER = Players.LocalPlayer;

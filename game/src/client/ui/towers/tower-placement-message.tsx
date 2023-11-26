@@ -1,7 +1,7 @@
 import { Spring, lerpBinding, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact, { useEffect } from "@rbxts/roact";
-import { TowerType } from "shared/modules/tower/tower-type";
-import { towerTypeToDisplayNameMap } from "shared/modules/tower/tower-type-to-display-name";
+import { TowerType } from "../../../shared/modules/tower/tower-type";
+import { towerTypeToDisplayNameMap } from "../../../shared/modules/tower/tower-type-to-display-name";
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";

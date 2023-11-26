@@ -24,6 +24,7 @@ export const enemySlice = createProducer(initialState, {
 
 	dealDamageToEnemy: (state, enemyIdToDamage: string, damage: number) => {
 		const updatedState: EnemyState = [];
+
 		state.forEach((enemy) => {
 			if (enemy.id === enemyIdToDamage) {
 				const updatedEnemyHealth = enemy.health - damage;

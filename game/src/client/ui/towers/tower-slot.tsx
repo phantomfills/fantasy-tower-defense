@@ -1,4 +1,4 @@
-import { Spring, lerpBinding, useMotor } from "@rbxts/pretty-react-hooks";
+import { Spring, lerpBinding, useKeyPress, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact, { useEffect, useState } from "@rbxts/roact";
 import { CashLabel } from "../game/cash-label";
 import { numberToKeyCodeMap } from "shared/modules/util/number-to-key-map";
@@ -22,31 +22,13 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 	const [clicking, setClicking] = useState(false);
 	const [buttonHoverTransition, setButtonHoverTransition] = useMotor(0);
 	const [buttonSizeTransition, setButtonSizeTransition] = useMotor(0);
+	const numberPressed = useKeyPress([numberToKeyCodeMap[index]]);
 
 	useEffect(() => {
-		if (!numberToKeyCodeMap[index]) return;
-		const keyCode = numberToKeyCodeMap[index];
+		if (!numberPressed) return;
 
-		const keyDownConnection = UserInputService.InputBegan.Connect((input, processed) => {
-			if (processed) return;
-			if (input.KeyCode !== keyCode) return;
-
-			setClicking(true);
-			callback();
-		});
-
-		const keyUpConnection = UserInputService.InputEnded.Connect((input, processed) => {
-			if (processed) return;
-			if (input.KeyCode !== keyCode) return;
-
-			setClicking(false);
-		});
-
-		return () => {
-			keyDownConnection.Disconnect();
-			keyUpConnection.Disconnect();
-		};
-	}, []);
+		callback();
+	}, [numberPressed]);
 
 	useEffect(() => {
 		setButtonHoverTransition(

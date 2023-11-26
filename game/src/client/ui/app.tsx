@@ -6,7 +6,7 @@ import { CashLabel } from "./game/cash-label";
 import { FollowMouse } from "./utils/follow-mouse";
 import { TowerPlacementMessage } from "./towers/tower-placement-message";
 import { useSelector } from "@rbxts/react-reflex";
-import { getPossibleTowerPlacement, getTowers } from "client/providers/root-provider";
+import { getPossibleTowerPlacement, getTowers } from "client/store/tower";
 import { TowerSlot } from "./towers/tower-slot";
 import { MatchInfo } from "./game/match-info";
 import { CashCounter } from "./game/cash-counter";

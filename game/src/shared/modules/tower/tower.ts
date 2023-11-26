@@ -1,8 +1,5 @@
-import { TowerType } from "shared/modules/tower/tower-type";
+import { TowerType } from "./tower-type";
 import { HttpService } from "@rbxts/services";
-import { store } from "server/store";
-import { getClosestEnemyToTower } from "server/store/enemy";
-import { Events } from "server/network";
 
 export interface GenericTowerStats {
 	damage: number;
@@ -58,17 +55,5 @@ export class Tower<T extends GenericTowerStats> {
 		return positionWithTowerY;
 	}
 
-	private async start() {
-		for (;;) {
-			task.wait(this.stats.firerate);
-
-			const possibleClosestEnemy = store.getState(getClosestEnemyToTower(this));
-			if (!possibleClosestEnemy.exists) continue;
-
-			const closestEnemy = possibleClosestEnemy.value;
-			store.dealDamageToEnemy(closestEnemy.id, this.getStat("damage"));
-
-			Events.towerAttack.broadcast(this.getId(), closestEnemy.cframe.Position);
-		}
-	}
+	private async start() {}
 }

@@ -1,6 +1,7 @@
 import { Networking } from "@flamework/networking";
 import { TowerType } from "./modules/tower/tower-type";
 import { EnemyType } from "./modules/enemy/enemy-type";
+import { BroadcastAction } from "@rbxts/reflex";
 
 /**
  * Stores the precision multiplier for syncing enemy positions to client.
@@ -29,6 +30,9 @@ interface SharedEvents {
 	createTower(towerType: TowerType, id: string, cframe: CFrame): void;
 	towerAttack(id: string, towardsPosition: Vector3): void;
 	destroyTower(id: string): void;
+
+	dispatch(actions: BroadcastAction[]): void;
+	start(): void;
 }
 
 interface ServerEvents extends SharedEvents {}

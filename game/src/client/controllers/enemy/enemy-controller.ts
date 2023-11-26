@@ -1,12 +1,13 @@
-import { Controller, OnStart } from "@flamework/core";
+import { Controller, OnStart, OnTick } from "@flamework/core";
 import { ClientEnemy } from "client/modules/enemy/client-enemy";
 import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
-import { Events } from "client/network";
+import { store } from "client/store";
 import { Possible, possible } from "shared/modules/util/possible";
 import { ClientEnemyInfo, POSITION_PRECISION_MULTIPLIER } from "shared/network";
+import { Enemy, getEnemies } from "shared/store/enemy";
 
 @Controller({})
-export class EnemyController implements OnStart {
+export class EnemyController implements OnStart, OnTick {
 	private clientEnemies: ClientEnemy[];
 
 	constructor() {
@@ -76,16 +77,40 @@ export class EnemyController implements OnStart {
 	}
 
 	onStart() {
-		Events.createEnemy.connect((enemyType, id, cframe) => {
-			const clientEnemy = createClientEnemy(enemyType, id, cframe);
-			this.addEnemy(clientEnemy);
-		});
+		store.subscribe(getEnemies, (enemies, lastEnemies) => {
+			enemies.forEach((enemy) => {
+				const id = enemy.id;
+				const enemyLastUpdate = lastEnemies.find((lastEnemy) => lastEnemy.id === id);
 
-		Events.updateEnemy.connect((enemyInfo) => this.tryUpdateEnemy(enemyInfo));
-		Events.updateEnemies.connect((enemies) => {
-			enemies.forEach((enemyInfo) => this.tryUpdateEnemy(enemyInfo));
-		});
+				if (!enemyLastUpdate) {
+					const clientEnemy = createClientEnemy(enemy.type, enemy.id, enemy.cframe);
+					this.addEnemy(clientEnemy);
+				}
 
-		Events.destroyEnemy.connect((id) => this.destroyEnemyFromId(id));
+				const possibleClientEnemy = this.getClientEnemyFromId(enemy.id);
+				if (!possibleClientEnemy.exists) return;
+
+				const clientEnemy = possibleClientEnemy.value;
+
+				this.updateEnemyByAnimation(clientEnemy, {
+					id: enemy.id,
+					position: new Vector3int16(
+						enemy.cframe.Position.X * POSITION_PRECISION_MULTIPLIER,
+						enemy.cframe.Position.Y * POSITION_PRECISION_MULTIPLIER,
+						enemy.cframe.Position.Z * POSITION_PRECISION_MULTIPLIER,
+					),
+					rotation: enemy.cframe.Rotation,
+				});
+			});
+
+			lastEnemies.forEach((lastEnemy) => {
+				const id = lastEnemy.id;
+				if (!enemies.find((enemy) => enemy.id === id)) {
+					this.destroyEnemyFromId(id);
+				}
+			});
+		});
 	}
+
+	onTick() {}
 }

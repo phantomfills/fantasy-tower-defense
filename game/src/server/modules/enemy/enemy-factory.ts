@@ -1,6 +1,6 @@
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
-import { Enemy } from "server/store/enemy";
+import { Enemy } from "shared/store/enemy";
 import { getEnemyStatsFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats";
 import { HttpService } from "@rbxts/services";
 
