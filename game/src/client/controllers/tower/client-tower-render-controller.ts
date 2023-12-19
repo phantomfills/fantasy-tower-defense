@@ -4,7 +4,6 @@ import { Possible, possible } from "shared/modules/util/possible";
 import { Controller, OnStart } from "@flamework/core";
 import { store } from "client/store";
 import { getTowers } from "shared/store/tower";
-import Object from "@rbxts/object-utils";
 
 @Controller({})
 export class ClientTowerRenderController implements OnStart {
