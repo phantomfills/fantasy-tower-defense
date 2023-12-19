@@ -1,8 +1,8 @@
 import { Controller, OnStart } from "@flamework/core";
 import { Possible, possible } from "shared/modules/util/possible";
-import { TowerModel } from "../../../shared/modules/tower/tower-model";
-import { TowerType } from "../../../shared/modules/tower/tower-type";
-import { UserInputService, Workspace, RunService, Players } from "@rbxts/services";
+import { TowerModel } from "client/modules/tower/client-tower";
+import { TowerType } from "shared/modules/tower/tower-type";
+import { UserInputService, Workspace, RunService } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/util/snap-to-cframe";
 import { Events } from "client/network";
 import { store } from "client/store";

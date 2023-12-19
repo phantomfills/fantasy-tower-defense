@@ -9,7 +9,7 @@ function getPrintTowerSlotNumberCallback(slotNumber: number) {
 
 export = (target: Frame) => {
 	const towerSlot = (
-		<TowerLoadout visible={true}>
+		<TowerLoadout>
 			<TowerSlot
 				number={1}
 				icon="rbxassetid://7618319705"

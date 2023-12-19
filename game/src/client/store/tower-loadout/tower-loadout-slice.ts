@@ -7,20 +7,20 @@ export interface TowerPlacement {
 	towerType: TowerType;
 }
 
-export interface TowerState {
+export interface TowerLoadoutState {
 	towers: TowerSlotProps[];
 	possibleTowerPlacement: Possible<TowerPlacement>;
 }
 
-const initialState: TowerState = {
+const initialState: TowerLoadoutState = {
 	towers: [],
 	possibleTowerPlacement: {
 		exists: false,
 	},
 };
 
-export const towerSlice = createProducer(initialState, {
-	addTower: (state, tower: TowerSlotProps) => ({ ...state, towers: [...state.towers, tower] }),
+export const towerLoadoutSlice = createProducer(initialState, {
+	addTowerSlot: (state, tower: TowerSlotProps) => ({ ...state, towers: [...state.towers, tower] }),
 
 	setTowerPlacement: (state, towerType: TowerType) => ({
 		...state,

@@ -6,11 +6,11 @@ import { Frame } from "../utils/frame";
 export = (target: Frame) => {
 	const towerPlacementMessage = (
 		<Frame
-			size={new UDim2(0.15, 0, 0.2, 0)}
+			size={new UDim2(0.075, 0, 0.04, 0)}
 			position={new UDim2(0.5, 0, 0.5, 0)}
 			anchorPoint={new Vector2(0.5, 0.5)}
 		>
-			<TowerPlacementMessage towerType="ARCHER" />
+			<TowerPlacementMessage />
 		</Frame>
 	);
 

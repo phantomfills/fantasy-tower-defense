@@ -15,11 +15,13 @@ export function createStore() {
 export const store = createStore();
 
 const broadcaster = createBroadcaster({
-	producers: { enemy: slices.enemy },
+	producers: { enemy: slices.enemy, tower: slices.tower },
 
 	dispatch: (player, actions) => {
 		Events.dispatch.fire(player, actions);
 	},
+
+	hydrateRate: 60,
 });
 
 Events.start.connect((player) => {

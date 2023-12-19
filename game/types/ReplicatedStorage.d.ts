@@ -1,17 +1,45 @@
 interface ReplicatedStorage extends Instance {
 	TS: Folder & {
 		modules: Folder & {
-			["tower-type"]: ModuleScript;
-			["tower-model"]: ModuleScript;
-			["snap-to-cframe"]: ModuleScript;
-			["path-waypoint"]: ModuleScript;
-			possible: ModuleScript;
-			["object-values"]: ModuleScript;
-			animatable: ModuleScript;
-			["enemy-type"]: ModuleScript;
+			map: Folder & {
+				["path-waypoint"]: ModuleScript;
+			};
+			tower: Folder & {
+				["tower-type-to-display-name-map"]: ModuleScript;
+				["tower-type-to-model-map"]: ModuleScript;
+				["tower-type"]: ModuleScript;
+				["tower-model"]: ModuleScript;
+			};
+			util: Folder & {
+				["get-time-in-ms"]: ModuleScript;
+				prettify: ModuleScript;
+				possible: ModuleScript;
+				["get-path-length"]: ModuleScript;
+				["number-to-key-map"]: ModuleScript;
+				["snap-to-cframe"]: ModuleScript;
+			};
+			enemy: Folder & {
+				["enemy-type-to-enemy-stats"]: ModuleScript;
+				["enemy-type"]: ModuleScript;
+			};
 		};
-		components: Folder;
+		assets: ModuleScript;
 		network: ModuleScript;
+		components: Folder;
+		store: ModuleScript & {
+			map: ModuleScript & {
+				["map-selectors"]: ModuleScript;
+				["map-slice"]: ModuleScript;
+			};
+			tower: ModuleScript & {
+				["tower-slice"]: ModuleScript;
+				["tower-selectors"]: ModuleScript;
+			};
+			enemy: ModuleScript & {
+				["enemy-slice"]: ModuleScript;
+				["enemy-selectors"]: ModuleScript;
+			};
+		};
 	};
 	assets: Folder & {
 		towers: Folder & {
@@ -59,16 +87,12 @@ interface ReplicatedStorage extends Instance {
 			};
 		};
 		enemies: Folder & {
-			foo: Folder & {
+			dummy: Folder & {
 				models: Folder & {
-					foo: Model & {
+					dummy: Model & {
 						["left-arm"]: MeshPart;
-						bandana: Part & {
-							Mesh: SpecialMesh;
-						};
 						["left-leg"]: MeshPart;
 						head: MeshPart & {
-							["head 🡪 bandana"]: Weld;
 							["sad-face"]: Decal;
 						};
 						torso: MeshPart & {
@@ -159,6 +183,36 @@ interface ReplicatedStorage extends Instance {
 				};
 			};
 			["@rbxts"]: Folder & {
+				remo: Folder & {
+					src: ModuleScript & {
+						getSender: ModuleScript;
+						Promise: ModuleScript;
+						builder: ModuleScript;
+						constants: ModuleScript;
+						utils: Folder & {
+							compose: ModuleScript;
+							testRemote: ModuleScript;
+							mockRemotes: ModuleScript;
+							unwrap: ModuleScript;
+							instances: ModuleScript;
+						};
+						types: ModuleScript;
+						server: ModuleScript & {
+							createRemote: ModuleScript;
+							createAsyncRemote: ModuleScript;
+						};
+						container: Configuration;
+						client: ModuleScript & {
+							createRemote: ModuleScript;
+							createAsyncRemote: ModuleScript;
+						};
+						middleware: Folder & {
+							loggerMiddleware: ModuleScript;
+							throttleMiddleware: ModuleScript;
+						};
+						createRemotes: ModuleScript;
+					};
+				};
 				["roact-hooked"]: Folder & {
 					src: ModuleScript & {
 						hoc: ModuleScript;
@@ -183,7 +237,30 @@ interface ReplicatedStorage extends Instance {
 						createUseBinding: ModuleScript;
 					};
 				};
-				["object-utils"]: ModuleScript;
+				reflex: Folder & {
+					src: ModuleScript & {
+						createProducer: ModuleScript;
+						broadcast: ModuleScript & {
+							createBroadcastReceiver: ModuleScript;
+							createBroadcaster: ModuleScript;
+							hydrate: ModuleScript;
+						};
+						Promise: ModuleScript;
+						createSelector: ModuleScript;
+						utils: Folder & {
+							shallowEqual: ModuleScript;
+							testSelector: ModuleScript;
+							createSelectArrayDiffs: ModuleScript;
+							setInterval: ModuleScript;
+						};
+						combineProducers: ModuleScript;
+						middleware: Folder & {
+							loggerMiddleware: ModuleScript;
+						};
+						applyMiddleware: ModuleScript;
+						types: ModuleScript;
+					};
+				};
 				Scheduler: ModuleScript & {
 					SchedulerPriorities: ModuleScript;
 					TracingSubscriptions: ModuleScript;
@@ -307,9 +384,15 @@ interface ReplicatedStorage extends Instance {
 					};
 					ES7Types: ModuleScript;
 				};
-				types: Folder & {
-					include: Folder & {
-						generated: Folder;
+				["react-reflex"]: ModuleScript & {
+					components: Folder & {
+						ReflexContext: ModuleScript;
+						ReflexProvider: ModuleScript;
+					};
+					hooks: Folder & {
+						["use-producer"]: ModuleScript;
+						["use-selector-creator"]: ModuleScript;
+						["use-selector"]: ModuleScript;
 					};
 				};
 				t: Folder & {
@@ -317,6 +400,12 @@ interface ReplicatedStorage extends Instance {
 						ts: ModuleScript;
 					};
 				};
+				types: Folder & {
+					include: Folder & {
+						generated: Folder;
+					};
+				};
+				signal: ModuleScript;
 				["pretty-react-hooks"]: ModuleScript & {
 					["use-latest"]: ModuleScript & {
 						["use-latest"]: ModuleScript;
@@ -507,7 +596,51 @@ interface ReplicatedStorage extends Instance {
 				maid: Folder & {
 					Maid: ModuleScript;
 				};
-				signal: ModuleScript;
+				Shared: ModuleScript & {
+					["UninitializedState.roblox"]: ModuleScript;
+					console: ModuleScript;
+					ReactComponentStackFrame: ModuleScript;
+					invariant: ModuleScript;
+					ReactTypes: ModuleScript;
+					objectIs: ModuleScript;
+					ReactInstanceMap: ModuleScript;
+					["Type.roblox"]: ModuleScript;
+					["ConsolePatchingDev.roblox"]: ModuleScript;
+					["ErrorHandling.roblox"]: ModuleScript;
+					shallowEqual: ModuleScript;
+					ReactElementType: ModuleScript;
+					isValidElementType: ModuleScript;
+					invokeGuardedCallbackImpl: ModuleScript;
+					getComponentName: ModuleScript;
+					formatProdErrorMessage: ModuleScript;
+					ReactFeatureFlags: ModuleScript;
+					PropMarkers: Folder & {
+						Change: ModuleScript;
+						Event: ModuleScript;
+						Tag: ModuleScript;
+					};
+					consoleWithStackDev: ModuleScript;
+					ReactErrorUtils: ModuleScript;
+					["enqueueTask.roblox"]: ModuleScript;
+					checkPropTypes: ModuleScript;
+					ReactSharedInternals: ModuleScript & {
+						ReactDebugCurrentFrame: ModuleScript;
+						ReactCurrentOwner: ModuleScript;
+						ReactCurrentDispatcher: ModuleScript;
+						IsSomeRendererActing: ModuleScript;
+						ReactCurrentBatchConfig: ModuleScript;
+					};
+					ReactVersion: ModuleScript;
+					ReactSymbols: ModuleScript;
+					["flowtypes.roblox"]: ModuleScript;
+					["Symbol.roblox"]: ModuleScript;
+					ExecutionEnvironment: ModuleScript;
+					ReactFiberHostConfig: ModuleScript & {
+						WithNoTestSelectors: ModuleScript;
+						WithNoHydration: ModuleScript;
+						WithNoPersistence: ModuleScript;
+					};
+				};
 				ReactReconciler: ModuleScript & {
 					ReactRootTags: ModuleScript;
 					["ReactFiberDevToolsHook.new"]: ModuleScript;
@@ -564,51 +697,6 @@ interface ReplicatedStorage extends Instance {
 					["ReactFiberRoot.new"]: ModuleScript;
 					["ReactFiberThrow.new"]: ModuleScript;
 				};
-				Shared: ModuleScript & {
-					["UninitializedState.roblox"]: ModuleScript;
-					console: ModuleScript;
-					ReactComponentStackFrame: ModuleScript;
-					invariant: ModuleScript;
-					ReactTypes: ModuleScript;
-					objectIs: ModuleScript;
-					ReactInstanceMap: ModuleScript;
-					["Type.roblox"]: ModuleScript;
-					["ConsolePatchingDev.roblox"]: ModuleScript;
-					["ErrorHandling.roblox"]: ModuleScript;
-					shallowEqual: ModuleScript;
-					ReactElementType: ModuleScript;
-					isValidElementType: ModuleScript;
-					invokeGuardedCallbackImpl: ModuleScript;
-					getComponentName: ModuleScript;
-					formatProdErrorMessage: ModuleScript;
-					ReactFeatureFlags: ModuleScript;
-					PropMarkers: Folder & {
-						Change: ModuleScript;
-						Event: ModuleScript;
-						Tag: ModuleScript;
-					};
-					consoleWithStackDev: ModuleScript;
-					ReactErrorUtils: ModuleScript;
-					["enqueueTask.roblox"]: ModuleScript;
-					checkPropTypes: ModuleScript;
-					ReactSharedInternals: ModuleScript & {
-						ReactDebugCurrentFrame: ModuleScript;
-						ReactCurrentOwner: ModuleScript;
-						ReactCurrentDispatcher: ModuleScript;
-						IsSomeRendererActing: ModuleScript;
-						ReactCurrentBatchConfig: ModuleScript;
-					};
-					ReactVersion: ModuleScript;
-					ReactSymbols: ModuleScript;
-					["flowtypes.roblox"]: ModuleScript;
-					["Symbol.roblox"]: ModuleScript;
-					ExecutionEnvironment: ModuleScript;
-					ReactFiberHostConfig: ModuleScript & {
-						WithNoTestSelectors: ModuleScript;
-						WithNoHydration: ModuleScript;
-						WithNoPersistence: ModuleScript;
-					};
-				};
 				["set-timeout"]: Folder & {
 					node_modules: Folder & {
 						["@rbxts"]: Folder & {
@@ -629,6 +717,9 @@ interface ReplicatedStorage extends Instance {
 					};
 				};
 				Promise: ModuleScript;
+				catppuccin: Folder & {
+					out: ModuleScript;
+				};
 				React: ModuleScript & {
 					["None.roblox"]: ModuleScript;
 					ReactLazy: ModuleScript;
@@ -647,25 +738,10 @@ interface ReplicatedStorage extends Instance {
 					ReactHooks: ModuleScript;
 					ReactChildren: ModuleScript;
 				};
-				ReactRoblox: ModuleScript & {
-					client: Folder & {
-						roblox: Folder & {
-							RobloxComponentProps: ModuleScript;
-							SingleEventManager: ModuleScript;
-							getDefaultInstanceProperty: ModuleScript;
-						};
-						ReactRobloxHostConfig: ModuleScript;
-						ReactRobloxRoot: ModuleScript;
-						ReactRoblox: ModuleScript;
-						ReactRobloxComponentTree: ModuleScript;
-						["ReactRobloxHostTypes.roblox"]: ModuleScript;
-						ReactRobloxComponent: ModuleScript;
-					};
-					["ReactReconciler.roblox"]: ModuleScript;
-				};
 				["compiler-types"]: Folder & {
 					types: Folder;
 				};
+				["object-utils"]: ModuleScript;
 				flipper: Folder & {
 					typings: Folder;
 					src: ModuleScript & {

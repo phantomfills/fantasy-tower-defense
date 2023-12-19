@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@flamework/core";
 import { TowerPlacementController } from "./tower-placement-controller";
 import { TowerType } from "../../../shared/modules/tower/tower-type";
-import { towerTypeToModelMap } from "../../../shared/modules/tower/tower-type-to-model";
+import { towerTypeToModelMap } from "shared/modules/tower/tower-type-to-model-map";
 import { store } from "client/store";
 import { images } from "shared/assets";
 
@@ -10,19 +10,10 @@ export class TowerLoadoutController implements OnStart {
 	constructor(private towerPlacementController: TowerPlacementController) {}
 
 	onStart() {
-		store.addTower({
+		store.addTowerSlot({
 			number: 1,
 			cost: 1000,
 			icon: images.archer,
-			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
-		});
-
-		task.wait(5);
-
-		store.addTower({
-			number: 2,
-			cost: 1000,
-			icon: images.cash,
 			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
 		});
 	}

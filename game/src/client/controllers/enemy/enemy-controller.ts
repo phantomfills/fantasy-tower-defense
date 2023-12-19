@@ -1,13 +1,15 @@
-import { Controller, OnStart, OnTick } from "@flamework/core";
+import { Controller, OnStart } from "@flamework/core";
+import Object from "@rbxts/object-utils";
 import { ClientEnemy } from "client/modules/enemy/client-enemy";
 import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
 import { store } from "client/store";
+import { PathWaypoint } from "shared/modules/map/path-waypoint";
+import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
 import { Possible, possible } from "shared/modules/util/possible";
-import { ClientEnemyInfo, POSITION_PRECISION_MULTIPLIER } from "shared/network";
-import { Enemy, getEnemies } from "shared/store/enemy";
+import { getEnemies } from "shared/store/enemy";
 
 @Controller({})
-export class EnemyController implements OnStart, OnTick {
+export class EnemyController implements OnStart {
 	private clientEnemies: ClientEnemy[];
 
 	constructor() {
@@ -23,38 +25,9 @@ export class EnemyController implements OnStart, OnTick {
 		this.clientEnemies.remove(index);
 	}
 
-	private getPositionFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
-		return new Vector3(
-			enemyInfo.position.X / POSITION_PRECISION_MULTIPLIER,
-			enemyInfo.position.Y / POSITION_PRECISION_MULTIPLIER,
-			enemyInfo.position.Z / POSITION_PRECISION_MULTIPLIER,
-		);
-	}
-
-	private getCFrameWithRotationFromEnemyInfo(enemyInfo: ClientEnemyInfo) {
-		const position = this.getPositionFromEnemyInfo(enemyInfo);
-		return new CFrame(position).mul(enemyInfo.rotation);
-	}
-
-	private updateEnemyByAnimation(clientEnemy: ClientEnemy, enemyInfo: ClientEnemyInfo) {
-		const cframe = this.getCFrameWithRotationFromEnemyInfo(enemyInfo);
+	private updateEnemyByAnimation(clientEnemy: ClientEnemy, path: PathWaypoint[], pathCompletionAlpha: number) {
+		const cframe = getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha);
 		clientEnemy.setTargetCFrame(cframe);
-	}
-
-	private updateEnemy(enemyInfo: ClientEnemyInfo) {
-		const possibleClientEnemy = this.getClientEnemyFromId(enemyInfo.id);
-		if (!possibleClientEnemy.exists) return;
-
-		const clientEnemy = possibleClientEnemy.value;
-		this.updateEnemyByAnimation(clientEnemy, enemyInfo);
-	}
-
-	private tryUpdateEnemy(enemyInfo: ClientEnemyInfo) {
-		try {
-			this.updateEnemy(enemyInfo);
-		} catch (error) {
-			warn(error);
-		}
 	}
 
 	private getClientEnemyFromId(id: string): Possible<ClientEnemy> {
@@ -78,39 +51,34 @@ export class EnemyController implements OnStart, OnTick {
 
 	onStart() {
 		store.subscribe(getEnemies, (enemies, lastEnemies) => {
-			enemies.forEach((enemy) => {
-				const id = enemy.id;
-				const enemyLastUpdate = lastEnemies.find((lastEnemy) => lastEnemy.id === id);
+			for (const [id, enemy] of pairs(enemies)) {
+				const enemyLastUpdate = possible<string>(
+					Object.keys(lastEnemies).find((lastEnemyId) => lastEnemyId === id),
+				);
 
-				if (!enemyLastUpdate) {
-					const clientEnemy = createClientEnemy(enemy.type, enemy.id, enemy.cframe);
+				if (!enemyLastUpdate.exists) {
+					const clientEnemy = createClientEnemy(
+						enemy.type,
+						id,
+						getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha),
+					);
 					this.addEnemy(clientEnemy);
 				}
 
-				const possibleClientEnemy = this.getClientEnemyFromId(enemy.id);
+				const possibleClientEnemy = this.getClientEnemyFromId(id);
 				if (!possibleClientEnemy.exists) return;
 
 				const clientEnemy = possibleClientEnemy.value;
 
-				this.updateEnemyByAnimation(clientEnemy, {
-					id: enemy.id,
-					position: new Vector3int16(
-						enemy.cframe.Position.X * POSITION_PRECISION_MULTIPLIER,
-						enemy.cframe.Position.Y * POSITION_PRECISION_MULTIPLIER,
-						enemy.cframe.Position.Z * POSITION_PRECISION_MULTIPLIER,
-					),
-					rotation: enemy.cframe.Rotation,
-				});
-			});
+				this.updateEnemyByAnimation(clientEnemy, enemy.path, enemy.pathCompletionAlpha);
+			}
 
-			lastEnemies.forEach((lastEnemy) => {
-				const id = lastEnemy.id;
-				if (!enemies.find((enemy) => enemy.id === id)) {
+			for (const [id, _] of pairs(lastEnemies)) {
+				const currentEnemyId = possible<string>(Object.keys(enemies).find((enemyId) => enemyId === id));
+				if (!currentEnemyId.exists) {
 					this.destroyEnemyFromId(id);
 				}
-			});
+			}
 		});
 	}
-
-	onTick() {}
 }

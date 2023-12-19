@@ -1,5 +1,5 @@
 import { InferState, combineProducers, createBroadcastReceiver } from "@rbxts/reflex";
-import { towerSlice } from "./tower";
+import { towerLoadoutSlice } from "./tower-loadout";
 import { ReflexProvider } from "@rbxts/react-reflex";
 import Roact from "@rbxts/roact";
 import { Events } from "client/network";
@@ -9,7 +9,7 @@ export type RootState = InferState<typeof store>;
 
 export const store = combineProducers({
 	...slices,
-	tower: towerSlice,
+	towerLoadout: towerLoadoutSlice,
 });
 
 export function RootProvider(props: Roact.PropsWithChildren) {

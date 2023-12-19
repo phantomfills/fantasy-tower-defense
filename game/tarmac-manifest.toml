@@ -17,3 +17,18 @@ packable = false
 hash = "8498cfac2c85d6b8dea5b650ca12e479f57bd1c298f322a132a232185cde866c"
 id = 14975200427
 packable = false
+
+[inputs."assets/images/left_mouse_button.png"]
+hash = "24855a01e5c3db143a76b369340ccfee423d83c95021501d2d7d5f51e6f0b945"
+id = 15521307634
+packable = false
+
+[inputs."assets/images/q_button.png"]
+hash = "106b70788c4d95c15d6413edaefca65fca3f876341695f57a19906ccb0cea154"
+id = 15521240434
+packable = false
+
+[inputs."assets/images/r_button.png"]
+hash = "c92f63f817455c862957ff358dbd6422a25745fbab1a3bb7a9093d5cac8d3b87"
+id = 15521240550
+packable = false

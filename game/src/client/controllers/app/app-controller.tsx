@@ -21,7 +21,11 @@ export class AppController implements OnStart {
 
 		const appElement = (
 			<StrictMode>
-				<ErrorBoundary fallback={(exception) => <textlabel Text={`Error loading UI: ${error} \n Rejoin?`} />}>
+				<ErrorBoundary
+					fallback={(exception) => (
+						<textlabel Text={`Error loading UI: ${error} \n Rejoin?`} Size={new UDim2(1, 0, 1, 0)} />
+					)}
+				>
 					<RootProvider>
 						<App />
 					</RootProvider>

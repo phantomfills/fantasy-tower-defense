@@ -24,7 +24,7 @@ export function CashLabel({ value, size, position, zIndex }: CashLabelProps) {
 			<Label
 				size={new UDim2(0.55, 0, 0.8, 0)}
 				position={new UDim2(0.45, 0, 0.1, 0)}
-				textColor={new Color3(0, 1, 0.52)}
+				textColor={Color3.fromRGB(255, 255, 255)}
 				textAlignmentX={Enum.TextXAlignment.Center}
 				font={fonts.inter.bold}
 				text={tostring(value)}

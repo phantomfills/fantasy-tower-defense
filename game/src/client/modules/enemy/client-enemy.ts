@@ -40,7 +40,7 @@ export class ClientEnemy {
 		this.maid.GiveTask(model);
 
 		this.targetCFrame = cframe;
-		this.model.PivotTo(cframe);
+		this.snapToCFrame(cframe);
 
 		this.random = new Random(math.random(2147483647));
 

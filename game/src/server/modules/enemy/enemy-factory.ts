@@ -2,19 +2,17 @@ import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { Enemy } from "shared/store/enemy";
 import { getEnemyStatsFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats";
-import { HttpService } from "@rbxts/services";
+import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
 
 export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 	const enemyStats = getEnemyStatsFromType(enemyType);
 
 	const enemyTemplate: Enemy = {
-		cframe: new CFrame(),
-		health: enemyStats.maxHealth,
-		id: HttpService.GenerateGUID(),
-		currentWaypointIndex: 0,
-		path,
-		timestampAtLastWaypoint: DateTime.now().UnixTimestampMillis,
 		type: enemyType,
+		health: enemyStats.maxHealth,
+		path,
+		spawnTimestamp: getCurrentTimeInMilliseconds(),
+		pathCompletionAlpha: 0,
 	};
 
 	switch (enemyType) {

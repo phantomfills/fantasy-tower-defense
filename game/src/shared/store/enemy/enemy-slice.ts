@@ -2,81 +2,75 @@ import { createProducer } from "@rbxts/reflex";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { getEnemyStatsFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
+import { getPathLength } from "shared/modules/util/path-utils";
 
 export interface Enemy {
-	id: string;
 	type: EnemyType;
 	path: PathWaypoint[];
-	currentWaypointIndex: number;
-	timestampAtLastWaypoint: number;
 	health: number;
-	cframe: CFrame;
+	spawnTimestamp: number;
+	pathCompletionAlpha: number;
 }
 
-export type EnemyState = Enemy[];
+export type EnemyState = Record<string, Enemy>;
 
-const initialState: EnemyState = [];
+const initialState: EnemyState = {};
 
 export const enemySlice = createProducer(initialState, {
-	addEnemy: (state, enemyToAdd: Enemy) => [...state, enemyToAdd],
+	addEnemy: (state, enemyToAdd: Enemy, id: string) => ({ ...state, [id]: enemyToAdd }),
 
-	removeEnemy: (state, enemyIdToRemove: string) => state.filter((enemy) => enemy.id !== enemyIdToRemove),
+	removeEnemy: (state, enemyIdToRemove: string) => {
+		const updatedState: EnemyState = {};
 
-	dealDamageToEnemy: (state, enemyIdToDamage: string, damage: number) => {
-		const updatedState: EnemyState = [];
+		for (const [id, enemy] of pairs(state)) {
+			if (id === enemyIdToRemove) continue;
 
-		state.forEach((enemy) => {
-			if (enemy.id === enemyIdToDamage) {
-				const updatedEnemyHealth = enemy.health - damage;
-				if (updatedEnemyHealth <= 0) return;
-
-				updatedState.push({ ...enemy, health: enemy.health - damage });
-				return;
-			}
-
-			updatedState.push(enemy);
-		});
+			updatedState[id] = enemy;
+		}
 
 		return updatedState;
 	},
 
-	enemyTick: (state) => {
-		const updatedState = state
-			.map((enemy) => {
-				const enemyStats = getEnemyStatsFromType(enemy.type);
+	dealDamageToEnemy: (state, enemyIdToDamage: string, damage: number) => {
+		const updatedState: EnemyState = {};
 
-				const previousWaypoint = enemy.path[enemy.currentWaypointIndex];
-				const previousWaypointCFrame = previousWaypoint.waypointAttachment.WorldCFrame;
+		for (const [id, enemy] of pairs(state)) {
+			if (id === enemyIdToDamage) {
+				print(enemy.health, damage);
 
-				const nextWaypoint = enemy.path[enemy.currentWaypointIndex + 1];
-				const nextWaypointCFrame = nextWaypoint.waypointAttachment.WorldCFrame;
-
-				const distanceBetweenWaypoints = previousWaypoint.Position.sub(nextWaypoint.Position).Magnitude;
-
-				const totalMovementTimeInMilliseconds = (distanceBetweenWaypoints / enemyStats.speed) * 1000;
-
-				const currentTimeInMilliseconds = DateTime.now().UnixTimestampMillis;
-				const elapsedTimeInMilliseconds = currentTimeInMilliseconds - enemy.timestampAtLastWaypoint;
-
-				const waypointLerpAlpha = math.clamp(elapsedTimeInMilliseconds / totalMovementTimeInMilliseconds, 0, 1);
-
-				const cframe = previousWaypointCFrame.Lerp(nextWaypointCFrame, waypointLerpAlpha);
-
-				if (waypointLerpAlpha === 1) {
-					return {
-						...enemy,
-						cframe,
-						currentWaypointIndex: enemy.currentWaypointIndex + 1,
-						timestampAtLastWaypoint: currentTimeInMilliseconds,
-					};
+				const updatedEnemyHealth = enemy.health - damage;
+				if (updatedEnemyHealth <= 0) {
+					continue;
 				}
 
-				return { ...enemy, cframe };
-			})
-			.filter((enemy) => {
-				return enemy.currentWaypointIndex + 1 < enemy.path.size();
-			});
+				updatedState[id] = { ...enemy, health: updatedEnemyHealth };
+				continue;
+			}
 
-		return [...updatedState];
+			updatedState[id] = enemy;
+		}
+
+		return updatedState;
+	},
+
+	enemyTick: (state, currentTimeInMilliseconds: number) => {
+		const updatedState: EnemyState = {};
+
+		for (const [id, enemy] of pairs(state)) {
+			const enemyStats = getEnemyStatsFromType(enemy.type);
+
+			const millisecondsSinceSpawn = currentTimeInMilliseconds - enemy.spawnTimestamp;
+
+			const pathLength = getPathLength(enemy.path);
+			const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
+
+			const pathCompletionAlpha = math.clamp(millisecondsSinceSpawn / totalMillisecondsToCompletePath, 0, 1);
+
+			if (pathCompletionAlpha >= 1) continue;
+
+			updatedState[id] = { ...enemy, pathCompletionAlpha };
+		}
+
+		return updatedState;
 	},
 });

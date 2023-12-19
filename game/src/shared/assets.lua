@@ -5,5 +5,8 @@ return {
 		cash = "rbxassetid://15017842957",
 		heart = "rbxassetid://14975106821",
 		heart_glow = "rbxassetid://14975200427",
+		left_mouse_button = "rbxassetid://15521307634",
+		q_button = "rbxassetid://15521240434",
+		r_button = "rbxassetid://15521240550",
 	},
 }

@@ -38,12 +38,12 @@
 				"$className": "Folder",
 				"enemies": {
 					"$className": "Folder",
-					"foo": {
+					"dummy": {
 						"$className": "Folder",
 						"models": {
 							"$className": "Folder",
-							"foo": {
-								"$path": "assets/foo.rbxm"
+							"dummy": {
+								"$path": "assets/dummy.rbxm"
 							}
 						}
 					}
@@ -90,12 +90,6 @@
 			},
 			"gameMap": {
 				"$path": "assets/map.rbxm"
-			},
-			"Terrain": {
-				"$path": "assets/terrain.rbxm",
-				"$properties": {
-					"Decoration": true
-				}
 			}
 		},
 		"HttpService": {

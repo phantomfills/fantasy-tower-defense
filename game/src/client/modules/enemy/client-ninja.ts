@@ -3,7 +3,7 @@ import { ReplicatedStorage, Workspace } from "@rbxts/services";
 
 export class ClientNinja extends ClientEnemy {
 	constructor(id: string, cframe: CFrame) {
-		const foo = ReplicatedStorage.assets.enemies.foo.models.foo.Clone();
+		const foo = ReplicatedStorage.assets.enemies.dummy.models.dummy.Clone();
 		foo.Parent = Workspace;
 		super(foo, id, cframe);
 	}
@@ -17,7 +17,7 @@ export class ClientNinja extends ClientEnemy {
 
 		const walkAnimation = new Instance("Animation");
 		walkAnimation.Parent = animator;
-		walkAnimation.AnimationId = "rbxassetid://14870146765";
+		walkAnimation.AnimationId = "rbxassetid://15597650423";
 
 		const animation = animator.LoadAnimation(walkAnimation);
 		animation.Play();
