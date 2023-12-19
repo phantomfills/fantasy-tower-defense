@@ -42,22 +42,14 @@ export class ClientTowerRenderController implements OnStart {
 		this.removeTower(clientTower);
 	}
 
-	onStart() {
-		store.subscribe(getTowers, (towers, lastTowers) => {
-			for (const [id, tower] of pairs(towers)) {
-				const lastTower = possible<string>(Object.keys(lastTowers).find((lastId) => lastId === id));
-				if (lastTower.exists) continue;
+	onStart(): void {
+		store.observe(getTowers, (tower, id) => {
+			const clientTower = createClientTower(tower.type, id, tower.cframe);
+			this.addTower(clientTower);
 
-				const clientTower = createClientTower(tower.type, id, tower.cframe);
-				this.addTower(clientTower);
-			}
-
-			for (const [id, _] of pairs(lastTowers)) {
-				const tower = possible<string>(Object.keys(towers).find((towerId) => towerId === id));
-				if (tower.exists) continue;
-
+			return () => {
 				this.destroyClientTowerFromId(id);
-			}
+			};
 		});
 	}
 }
