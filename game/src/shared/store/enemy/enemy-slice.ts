@@ -36,8 +36,6 @@ export const enemySlice = createProducer(initialState, {
 
 		for (const [id, enemy] of pairs(state)) {
 			if (id === enemyIdToDamage) {
-				print(enemy.health, damage);
-
 				const updatedEnemyHealth = enemy.health - damage;
 				if (updatedEnemyHealth <= 0) {
 					continue;
