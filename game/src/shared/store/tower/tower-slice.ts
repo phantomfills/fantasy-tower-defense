@@ -1,6 +1,6 @@
 import { createProducer } from "@rbxts/reflex";
 import { TowerType } from "shared/modules/tower/tower-type";
-import { HttpService, RunService } from "@rbxts/services";
+import { Attack } from "shared/modules/attack";
 
 export interface Tower {
 	type: TowerType;
@@ -10,12 +10,6 @@ export interface Tower {
 	attackCount: number;
 	spawnTimestamp: number;
 	attackDamage: number;
-}
-
-interface Attack {
-	towerId: string;
-	enemyId: string;
-	damage: number;
 }
 
 export type TowerState = {
@@ -40,7 +34,7 @@ export const towerSlice = createProducer(initialState, {
 		};
 	},
 
-	addAttack: (state, attack: Attack) => {
-		return { ...state, attacks: { ...state.attacks, [HttpService.GenerateGUID()]: attack } };
+	addAttack: (state, id: string, attack: Attack) => {
+		return { ...state, attacks: { ...state.attacks, [id]: attack } };
 	},
 });

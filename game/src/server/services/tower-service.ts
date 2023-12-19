@@ -3,15 +3,16 @@ import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { Tower } from "shared/store/tower/tower-slice";
 import { store } from "server/store";
-import { HttpService } from "@rbxts/services";
 import { getAttacks, getTowers } from "shared/store/tower";
 import { getClosestEnemyIdToTower } from "shared/store/enemy";
 import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
+import { createBasicAttack } from "shared/modules/attack";
+import { generateUniqueId } from "shared/modules/util/id";
 
 @Service({})
 export class TowerService implements OnStart, OnTick {
 	private addTower(tower: Tower) {
-		const towerId = HttpService.GenerateGUID();
+		const towerId = generateUniqueId();
 
 		store.addTower(towerId, tower);
 	}
@@ -27,7 +28,7 @@ export class TowerService implements OnStart, OnTick {
 		});
 	}
 
-	onTick(dt: number): void {
+	onTick(): void {
 		const towers = store.getState(getTowers);
 
 		for (const [id, tower] of pairs(towers)) {
@@ -39,8 +40,11 @@ export class TowerService implements OnStart, OnTick {
 			if (!possibleClosestEnemyIdToTower.exists) continue;
 
 			const closestEnemyIdToTower = possibleClosestEnemyIdToTower.value;
-			store.addAttack({ towerId: id, enemyId: closestEnemyIdToTower, damage: 10 });
 
+			const attackId = generateUniqueId();
+			const attack = createBasicAttack(closestEnemyIdToTower, id, tower.attackDamage);
+
+			store.addAttack(attackId, attack);
 			store.incrementTowerAttackCount(id);
 		}
 	}

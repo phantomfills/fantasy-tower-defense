@@ -7,7 +7,6 @@ export function createTower(towerType: TowerType, cframe: CFrame): Tower {
 		cframe: cframe,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),
 		attackCount: 0,
-		attackIntervalTimestamp: 1000,
 		type: towerType,
 	};
 
@@ -15,8 +14,9 @@ export function createTower(towerType: TowerType, cframe: CFrame): Tower {
 		case "ARCHER": {
 			return {
 				...towerTemplate,
-				health: 100,
-				attackDamage: 10,
+				health: 500,
+				attackDamage: 60,
+				attackIntervalTimestamp: 550,
 			};
 		}
 	}
