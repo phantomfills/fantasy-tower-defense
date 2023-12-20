@@ -1,8 +1,9 @@
 import { SharedState } from "..";
 import Object from "@rbxts/object-utils";
 import { Tower } from "../tower";
-import { Possible } from "shared/modules/util/possible";
+import { Possible, possible } from "shared/modules/util/possible";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
+import { Enemy } from "./enemy-slice";
 
 export function getEnemies(state: SharedState) {
 	return state.enemy;
@@ -10,6 +11,13 @@ export function getEnemies(state: SharedState) {
 
 export function getEnemyCount(state: SharedState) {
 	return Object.keys(state.enemy).size();
+}
+
+export function getEnemyFromId(id: string): (state: SharedState) => Possible<Enemy> {
+	return (state) => {
+		const possibleEnemy = possible<Enemy>(state.enemy[id]);
+		return possibleEnemy;
+	};
 }
 
 export function getClosestEnemyIdToTower(tower: Tower): (state: SharedState) => Possible<string> {

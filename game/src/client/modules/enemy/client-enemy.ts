@@ -58,6 +58,10 @@ export class ClientEnemy {
 		snapToCFrameWithAttachmentOffset(this.model, this.model.humanoidRootPart.rootAttachment, cframe);
 	}
 
+	getCFrame(): CFrame {
+		return this.targetCFrame;
+	}
+
 	setCFrame(cframe: CFrame) {
 		this.targetCFrame = cframe;
 		this.snapToCFrame(cframe);

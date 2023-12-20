@@ -4,10 +4,11 @@ import { createTower } from "server/modules/tower/tower-factory";
 import { Tower } from "shared/store/tower/tower-slice";
 import { store } from "server/store";
 import { getAttacks, getTowers } from "shared/store/tower";
-import { getClosestEnemyIdToTower } from "shared/store/enemy";
+import { getClosestEnemyIdToTower, getEnemyFromId } from "shared/store/enemy";
 import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
 import { createBasicAttack } from "shared/modules/attack";
 import { generateUniqueId } from "shared/modules/util/id";
+import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
 
 @Service({})
 export class TowerService implements OnStart, OnTick {
@@ -41,8 +42,18 @@ export class TowerService implements OnStart, OnTick {
 
 			const closestEnemyIdToTower = possibleClosestEnemyIdToTower.value;
 
+			const possibleClosestEnemy = store.getState(getEnemyFromId(closestEnemyIdToTower));
+			if (!possibleClosestEnemy.exists) continue;
+
+			const closestEnemy = possibleClosestEnemy.value;
+			const closestEnemyCFrame = getCFrameFromPathCompletionAlpha(
+				closestEnemy.path,
+				closestEnemy.pathCompletionAlpha,
+			);
+			const closestEnemyPosition = closestEnemyCFrame.Position;
+
 			const attackId = generateUniqueId();
-			const attack = createBasicAttack(closestEnemyIdToTower, id, tower.attackDamage);
+			const attack = createBasicAttack(closestEnemyIdToTower, closestEnemyPosition, id, tower.attackDamage);
 
 			store.addAttack(attackId, attack);
 			store.incrementTowerAttackCount(id);

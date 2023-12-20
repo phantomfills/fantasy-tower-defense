@@ -30,7 +30,7 @@ export class EnemyController implements OnStart {
 		clientEnemy.setTargetCFrame(cframe);
 	}
 
-	private getClientEnemyFromId(id: string): Possible<ClientEnemy> {
+	getClientEnemyFromId(id: string): Possible<ClientEnemy> {
 		const possibleClientEnemy = possible<ClientEnemy>(
 			this.clientEnemies.find((clientEnemy: ClientEnemy) => {
 				return clientEnemy.getId() === id;

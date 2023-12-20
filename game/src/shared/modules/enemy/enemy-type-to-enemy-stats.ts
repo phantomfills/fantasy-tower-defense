@@ -6,9 +6,13 @@ export interface EnemyStats {
 }
 
 export const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
-	NINJA: {
+	WEAK_DUMMY: {
 		maxHealth: 100,
-		speed: 4.5,
+		speed: 4,
+	},
+	STRONG_DUMMY: {
+		maxHealth: 200,
+		speed: 6,
 	},
 };
 

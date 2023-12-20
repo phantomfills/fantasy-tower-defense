@@ -20,8 +20,14 @@ export class EnemyService implements OnStart, OnTick {
 
 		for (let i = 0; i < 100_000_000; i++) {
 			task.wait(1);
-			const ninja = createEnemy("NINJA", path);
-			this.addEnemy(ninja);
+
+			const weakDummy = createEnemy("WEAK_DUMMY", path);
+			this.addEnemy(weakDummy);
+
+			task.wait(1);
+
+			const strongDummy = createEnemy("STRONG_DUMMY", path);
+			this.addEnemy(strongDummy);
 		}
 	}
 
