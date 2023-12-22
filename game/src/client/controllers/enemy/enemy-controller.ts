@@ -55,7 +55,6 @@ export class EnemyController implements OnStart {
 				const enemyLastUpdate = possible<string>(
 					Object.keys(lastEnemies).find((lastEnemyId) => lastEnemyId === id),
 				);
-
 				if (!enemyLastUpdate.exists) {
 					const clientEnemy = createClientEnemy(
 						enemy.type,
@@ -64,15 +63,11 @@ export class EnemyController implements OnStart {
 					);
 					this.addEnemy(clientEnemy);
 				}
-
 				const possibleClientEnemy = this.getClientEnemyFromId(id);
 				if (!possibleClientEnemy.exists) return;
-
 				const clientEnemy = possibleClientEnemy.value;
-
 				this.updateEnemyByAnimation(clientEnemy, enemy.path, enemy.pathCompletionAlpha);
 			}
-
 			for (const [id, _] of pairs(lastEnemies)) {
 				const currentEnemyId = possible<string>(Object.keys(enemies).find((enemyId) => enemyId === id));
 				if (!currentEnemyId.exists) {

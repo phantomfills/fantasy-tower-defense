@@ -6,7 +6,6 @@ export function createTower(towerType: TowerType, cframe: CFrame): Tower {
 	const towerTemplate = {
 		cframe: cframe,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),
-		attackCount: 0,
 		type: towerType,
 	};
 
@@ -15,8 +14,9 @@ export function createTower(towerType: TowerType, cframe: CFrame): Tower {
 			return {
 				...towerTemplate,
 				health: 250,
-				attackDamage: 100,
-				attackIntervalTimestamp: 2000,
+				attackDamage: 200,
+				attackRange: 20,
+				attackIntervalTimestamp: 10000,
 			};
 		}
 	}

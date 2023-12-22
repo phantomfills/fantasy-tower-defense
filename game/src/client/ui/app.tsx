@@ -1,12 +1,12 @@
 import Roact from "@rbxts/roact";
 import { Panel } from "./utils/panel";
-import { TowerLoadout } from "./towers/tower-loadout";
+import { TowerLoadout } from "./tower/tower-loadout";
 import { LifeCounter } from "./game/life-counter";
 import { FollowMouse } from "./utils/follow-mouse";
-import { TowerPlacementMessage } from "./towers/tower-placement-message";
+import { TowerPlacementMessage } from "./tower/tower-placement-message";
 import { useSelector } from "@rbxts/react-reflex";
 import { getPossibleTowerPlacement, getTowerLoadout } from "client/store/tower-loadout";
-import { TowerSlot } from "./towers/tower-slot";
+import { TowerSlot } from "./tower/tower-slot";
 import { MatchInfo } from "./game/match-info";
 import { CashCounter } from "./game/cash-counter";
 

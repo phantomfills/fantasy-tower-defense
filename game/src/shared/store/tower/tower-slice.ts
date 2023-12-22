@@ -6,9 +6,8 @@ export interface Tower {
 	type: TowerType;
 	health: number;
 	cframe: CFrame;
+	attackRange: number;
 	attackIntervalTimestamp: number;
-	attackCount: number;
-	spawnTimestamp: number;
 	attackDamage: number;
 }
 
@@ -25,13 +24,6 @@ const initialState: TowerState = {
 export const towerSlice = createProducer(initialState, {
 	addTower: (state, id: string, tower: Tower) => {
 		return { ...state, towers: { ...state.towers, [id]: tower } };
-	},
-
-	incrementTowerAttackCount: (state, id: string) => {
-		return {
-			...state,
-			towers: { ...state.towers, [id]: { ...state.towers[id], attackCount: state.towers[id].attackCount + 1 } },
-		};
 	},
 
 	addAttack: (state, id: string, attack: Attack) => {

@@ -1,17 +1,19 @@
-import { OnStart, OnTick, Service } from "@flamework/core";
+import { OnStart, Service } from "@flamework/core";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
-import { Tower } from "shared/store/tower/tower-slice";
+import { Tower, towerSlice } from "shared/store/tower/tower-slice";
 import { store } from "server/store";
 import { getAttacks, getTowers } from "shared/store/tower";
-import { getClosestEnemyIdToTower, getEnemyFromId } from "shared/store/enemy";
-import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
+import { getClosestEnemyIdToTower, getEnemyFromId, getEnemyIdsInTowerRange } from "shared/store/enemy";
 import { createBasicAttack } from "shared/modules/attack";
 import { generateUniqueId } from "shared/modules/util/id";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
+import { setInterval } from "@rbxts/set-timeout";
+import { Possible, possible } from "shared/modules/util/possible";
+import Object from "@rbxts/object-utils";
 
 @Service({})
-export class TowerService implements OnStart, OnTick {
+export class TowerService implements OnStart {
 	private addTower(tower: Tower) {
 		const towerId = generateUniqueId();
 
@@ -27,36 +29,132 @@ export class TowerService implements OnStart, OnTick {
 		store.observe(getAttacks, ({ enemyId, damage }) => {
 			store.dealDamageToEnemy(enemyId, damage);
 		});
-	}
 
-	onTick(): void {
-		const towers = store.getState(getTowers);
+		store.subscribe(getTowers, (towers, lastTowers) => {
+			for (const [id, tower] of pairs(towers)) {
+				if (Object.keys(lastTowers).includes(id)) continue;
 
-		for (const [id, tower] of pairs(towers)) {
-			const nextAttackTimestamp = tower.spawnTimestamp + tower.attackIntervalTimestamp * tower.attackCount;
-			const now = getCurrentTimeInMilliseconds();
-			if (now < nextAttackTimestamp) continue;
+				let possibleStopTowerAttacks: Possible<() => void> = { exists: false };
 
-			const possibleClosestEnemyIdToTower = store.getState(getClosestEnemyIdToTower(tower));
-			if (!possibleClosestEnemyIdToTower.exists) continue;
+				const stopCheckingForEnemiesInTowerRange = store.subscribe(
+					getEnemyIdsInTowerRange(tower),
+					(enemies) => {
+						if (enemies.size() === 0) {
+							if (possibleStopTowerAttacks.exists) possibleStopTowerAttacks.value();
+							possibleStopTowerAttacks = {
+								exists: false,
+							};
+							return;
+						}
 
-			const closestEnemyIdToTower = possibleClosestEnemyIdToTower.value;
+						if (possibleStopTowerAttacks.exists) return;
 
-			const possibleClosestEnemy = store.getState(getEnemyFromId(closestEnemyIdToTower));
-			if (!possibleClosestEnemy.exists) continue;
+						print("I got to this point!!!");
 
-			const closestEnemy = possibleClosestEnemy.value;
-			const closestEnemyCFrame = getCFrameFromPathCompletionAlpha(
-				closestEnemy.path,
-				closestEnemy.pathCompletionAlpha,
-			);
-			const closestEnemyPosition = closestEnemyCFrame.Position;
+						setInterval(() => {
+							print("interval");
 
-			const attackId = generateUniqueId();
-			const attack = createBasicAttack(closestEnemyIdToTower, closestEnemyPosition, id, tower.attackDamage);
+							const possibleClosestEnemyToTower = store.getState(getClosestEnemyIdToTower(tower));
+							if (!possibleClosestEnemyToTower.exists) return;
 
-			store.addAttack(attackId, attack);
-			store.incrementTowerAttackCount(id);
-		}
+							const [closestEnemyIdToTower] = possibleClosestEnemyToTower.value;
+							const possibleClosestEnemy = store.getState(getEnemyFromId(closestEnemyIdToTower));
+							if (!possibleClosestEnemy.exists) return;
+
+							const closestEnemy = possibleClosestEnemy.value;
+							const closestEnemyCFrame = getCFrameFromPathCompletionAlpha(
+								closestEnemy.path,
+								closestEnemy.pathCompletionAlpha,
+							);
+							const closestEnemyPosition = closestEnemyCFrame.Position;
+
+							const attackId = generateUniqueId();
+							const attack = createBasicAttack(
+								closestEnemyIdToTower,
+								closestEnemyPosition,
+								id,
+								tower.attackDamage,
+							);
+
+							store.addAttack(attackId, attack);
+						}, tower.attackIntervalTimestamp / 1000);
+
+						/*possibleStopTowerAttacks = {
+							exists: true,
+							value: setInterval(() => {
+								print("interval");
+
+								const possibleClosestEnemyToTower = store.getState(getClosestEnemyIdToTower(tower));
+								if (!possibleClosestEnemyToTower.exists) return;
+
+								const [closestEnemyIdToTower] = possibleClosestEnemyToTower.value;
+								const possibleClosestEnemy = store.getState(getEnemyFromId(closestEnemyIdToTower));
+								if (!possibleClosestEnemy.exists) return;
+
+								const closestEnemy = possibleClosestEnemy.value;
+								const closestEnemyCFrame = getCFrameFromPathCompletionAlpha(
+									closestEnemy.path,
+									closestEnemy.pathCompletionAlpha,
+								);
+								const closestEnemyPosition = closestEnemyCFrame.Position;
+
+								const attackId = generateUniqueId();
+								const attack = createBasicAttack(
+									closestEnemyIdToTower,
+									closestEnemyPosition,
+									id,
+									tower.attackDamage,
+								);
+
+								store.addAttack(attackId, attack);
+							}, tower.attackIntervalTimestamp / 1000),
+						}; */
+					},
+				);
+
+				return stopCheckingForEnemiesInTowerRange;
+			}
+		});
+
+		// store.observe(getTowers, (tower, id) => {
+		// 	let possibleStopTowerAttacks: Possible<() => void> = { exists: false };
+
+		// 	const stopCheckingForEnemiesInTowerRange = store.subscribe(getEnemyIdsInTowerRange(tower), (enemies) => {
+		// 		if (enemies.size() === 0) {
+		// 			if (possibleStopTowerAttacks.exists) possibleStopTowerAttacks.value();
+		// 			return;
+		// 		}
+
+		// 		possibleStopTowerAttacks = {
+		// 			exists: true,
+		// 			value: setInterval(() => {
+		// 				const possibleClosestEnemyToTower = store.getState(getClosestEnemyIdToTower(tower));
+		// 				if (!possibleClosestEnemyToTower.exists) return;
+
+		// 				const [closestEnemyIdToTower] = possibleClosestEnemyToTower.value;
+		// 				const possibleClosestEnemy = store.getState(getEnemyFromId(closestEnemyIdToTower));
+		// 				if (!possibleClosestEnemy.exists) return;
+
+		// 				const closestEnemy = possibleClosestEnemy.value;
+		// 				const closestEnemyCFrame = getCFrameFromPathCompletionAlpha(
+		// 					closestEnemy.path,
+		// 					closestEnemy.pathCompletionAlpha,
+		// 				);
+		// 				const closestEnemyPosition = closestEnemyCFrame.Position;
+
+		// 				const attackId = generateUniqueId();
+		// 				const attack = createBasicAttack(
+		// 					closestEnemyIdToTower,
+		// 					closestEnemyPosition,
+		// 					id,
+		// 					tower.attackDamage,
+		// 				);
+		// 				store.addAttack(attackId, attack);
+		// 			}, tower.attackIntervalTimestamp / 1000),
+		// 		};
+		// 	});
+
+		// 	return stopCheckingForEnemiesInTowerRange();
+		// });
 	}
 }

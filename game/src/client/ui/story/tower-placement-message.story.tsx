@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { TowerPlacementMessage } from "../towers/tower-placement-message";
+import { TowerPlacementMessage } from "../tower/tower-placement-message";
 import { createRoot } from "@rbxts/react-roblox";
 import { Frame } from "../utils/frame";
 
