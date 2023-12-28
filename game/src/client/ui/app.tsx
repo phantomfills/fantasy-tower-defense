@@ -9,10 +9,13 @@ import { getPossibleTowerPlacement, getTowerLoadout } from "client/store/tower-l
 import { TowerSlot } from "./tower/tower-slot";
 import { MatchInfo } from "./game/match-info";
 import { CashCounter } from "./game/cash-counter";
+import { getHoveringEnemyId } from "client/store/enemy-hover";
+import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
 
 export function App() {
 	const towers = useSelector(getTowerLoadout);
 	const possibleTowerPlacement = useSelector(getPossibleTowerPlacement);
+	const possibleHoveringEnemyId = useSelector(getHoveringEnemyId);
 
 	return (
 		<Panel>
@@ -33,6 +36,8 @@ export function App() {
 					<TowerPlacementMessage />
 				</FollowMouse>
 			)}
+
+			{possibleHoveringEnemyId.exists && <EnemyTooltipFromId id={possibleHoveringEnemyId.value} />}
 
 			<MatchInfo>
 				<LifeCounter lives={1000} />

@@ -5,29 +5,15 @@ import { Possible, possible } from "shared/modules/util/possible";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
 import { Enemy } from "./enemy-slice";
 import { createSelector } from "@rbxts/reflex";
+import { describeTower } from "shared/modules/tower/tower-type-to-tower-stats-map";
 
 export function getEnemies(state: SharedState) {
 	return state.enemy;
 }
 
-// export function getEnemyIdsInTowerRange(tower: Tower): (state: SharedState) => string[] {
-// 	return (state) => {
-// 		const enemies = state.enemy;
-
-// 		const enemiesInTowerRange = Object.keys(enemies).filter((enemyId) => {
-// 			const enemy = enemies[enemyId];
-// 			const enemyCFrame = getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha);
-// 			const enemyPosition = enemyCFrame.Position;
-
-// 			const distanceToEnemy = enemyPosition.sub(tower.cframe.Position).Magnitude;
-// 			return distanceToEnemy <= tower.attackRange;
-// 		});
-
-// 		return enemiesInTowerRange;
-// 	};
-// }
-
 export function getEnemyIdsInTowerRange(tower: Tower) {
+	const towerStats = describeTower(tower.type);
+
 	return createSelector([getEnemies], (enemies) => {
 		const enemiesInTowerRange = Object.keys(enemies).filter((enemyId) => {
 			const enemy = enemies[enemyId];
@@ -35,7 +21,7 @@ export function getEnemyIdsInTowerRange(tower: Tower) {
 			const enemyPosition = enemyCFrame.Position;
 
 			const distanceToEnemy = enemyPosition.sub(tower.cframe.Position).Magnitude;
-			return distanceToEnemy <= tower.attackRange;
+			return distanceToEnemy <= towerStats.range;
 		});
 
 		return enemiesInTowerRange;

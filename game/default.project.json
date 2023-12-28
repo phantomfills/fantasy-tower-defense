@@ -57,15 +57,6 @@
 							"archer": {
 								"$path": "assets/archer.rbxm"
 							}
-						},
-						"images": {
-							"$className": "Folder",
-							"placement": {
-								"$className": "NumberValue",
-								"$properties": {
-									"Value": 536776117
-								}
-							}
 						}
 					}
 				}
@@ -117,7 +108,9 @@
 				"TimeOfDay": "12:00:00",
 				"ShadowSoftness": 0.2,
 				"Technology": "ShadowMap",
-				"GeographicLatitude": 0
+				"GeographicLatitude": 0,
+				"EnvironmentDiffuseScale": 1,
+				"EnvironmentSpecularScale": 1
 			},
 			"$path": "assets/lighting"
 		}

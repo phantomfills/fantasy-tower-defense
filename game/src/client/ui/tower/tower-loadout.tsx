@@ -1,6 +1,5 @@
 import Roact from "@rbxts/roact";
 import { Frame } from "../utils/frame";
-import { lerpBinding } from "@rbxts/pretty-react-hooks";
 
 interface TowerLoadoutProps extends Roact.PropsWithChildren {
 	children?: Roact.Children;

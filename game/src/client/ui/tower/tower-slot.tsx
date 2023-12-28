@@ -2,11 +2,11 @@ import { Spring, lerpBinding, useKeyPress, useMotor } from "@rbxts/pretty-react-
 import Roact, { useEffect, useState } from "@rbxts/roact";
 import { CashLabel } from "../game/cash-label";
 import { numberToKeyCodeMap } from "shared/modules/util/number-to-key-map";
-import { UserInputService } from "@rbxts/services";
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
+import { useRem } from "../hooks/use-rem";
 
 export interface TowerSlotProps {
 	number: number;
@@ -16,6 +16,8 @@ export interface TowerSlotProps {
 }
 
 export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
+	const rem = useRem();
+
 	const index = number - 1;
 
 	const [hovering, setHovering] = useState(false);
@@ -76,12 +78,18 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} DominantAxis={Enum.DominantAxis.Height} />
-				<CashLabel value={cost} size={new UDim2(1, 0, 0.4, 0)} position={new UDim2(0, 0, 0.6, 0)} zIndex={3} />
+				<CashLabel
+					value={cost}
+					size={new UDim2(1, 0, 0.4, 0)}
+					position={new UDim2(0, 0, 0.6, 0)}
+					zIndex={3}
+					textSize={rem(3)}
+				/>
 				<imagelabel
 					Image={icon}
 					Size={new UDim2(1, 0, 1, 0)}
 					BackgroundTransparency={1}
-					ZIndex={1}
+					ZIndex={0}
 					Position={lerpBinding(buttonHoverTransition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
 				/>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />
@@ -100,6 +108,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<Label
 						text={tostring(number)}
+						textSize={rem(3)}
 						font={fonts.inter.bold}
 						textColor={Color3.fromRGB(255, 255, 255)}
 						textAlignmentX={Enum.TextXAlignment.Center}

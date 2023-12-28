@@ -13,10 +13,6 @@ export function createTower(towerType: TowerType, cframe: CFrame): Tower {
 		case "ARCHER": {
 			return {
 				...towerTemplate,
-				health: 250,
-				attackDamage: 200,
-				attackRange: 20,
-				attackIntervalTimestamp: 10000,
 			};
 		}
 	}

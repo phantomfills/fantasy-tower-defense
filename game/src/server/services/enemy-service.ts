@@ -8,7 +8,7 @@ import { generateUniqueId } from "shared/modules/util/id";
 
 @Service({})
 export class EnemyService implements OnStart, OnTick {
-	private addEnemy(enemy: Enemy): void {
+	private addEnemyToStore(enemy: Enemy): void {
 		store.addEnemy(enemy, generateUniqueId());
 	}
 
@@ -16,11 +16,16 @@ export class EnemyService implements OnStart, OnTick {
 		const map = store.getState(getMap);
 		const path = map.path;
 
-		task.wait(5);
+		task.wait(10);
 
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < 100_000_000; i++) {
+			const weakDummy = createEnemy("WEAK_DUMMY", path);
+			this.addEnemyToStore(weakDummy);
+
+			task.wait(1);
+
 			const strongDummy = createEnemy("STRONG_DUMMY", path);
-			this.addEnemy(strongDummy);
+			this.addEnemyToStore(strongDummy);
 
 			task.wait(1);
 		}

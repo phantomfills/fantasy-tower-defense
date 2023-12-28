@@ -5,17 +5,17 @@ export interface EnemyStats {
 	speed: number;
 }
 
-export const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
+const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 	WEAK_DUMMY: {
-		maxHealth: 100,
+		maxHealth: 50,
 		speed: 4,
 	},
 	STRONG_DUMMY: {
-		maxHealth: 200,
-		speed: 6,
+		maxHealth: 150,
+		speed: 5.5,
 	},
 };
 
-export function getEnemyStatsFromType(enemyType: EnemyType) {
+export function describeEnemy(enemyType: EnemyType): EnemyStats {
 	return enemyTypeToStatsMap[enemyType];
 }

@@ -34,6 +34,8 @@ export class ClientEnemy {
 		this.id = id;
 		this.model = model;
 
+		this.model.SetAttribute("id", id);
+
 		this.maid = new Maid();
 		this.targetCFrame = new CFrame();
 

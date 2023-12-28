@@ -1,5 +1,4 @@
 import Roact from "@rbxts/roact";
-import { TowerType } from "../../../shared/modules/tower/tower-type";
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";

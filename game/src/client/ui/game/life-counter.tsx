@@ -3,12 +3,15 @@ import { BeatingHeart } from "./beating-heart";
 import { fonts } from "../constants/fonts";
 import { Label } from "../utils/label";
 import { CounterFrame } from "./counter-frame";
+import { useRem } from "../hooks/use-rem";
 
 interface LifeCounterProps {
 	lives: number;
 }
 
 export function LifeCounter({ lives }: LifeCounterProps) {
+	const rem = useRem();
+
 	return (
 		<CounterFrame>
 			<uicorner CornerRadius={new UDim(0.1, 0)} />
@@ -25,6 +28,7 @@ export function LifeCounter({ lives }: LifeCounterProps) {
 				font={fonts.inter.bold}
 				textAlignmentX={Enum.TextXAlignment.Center}
 				text={`${lives}`}
+				textSize={rem(3)}
 			/>
 		</CounterFrame>
 	);

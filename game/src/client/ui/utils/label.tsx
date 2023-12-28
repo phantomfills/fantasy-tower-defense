@@ -11,6 +11,7 @@ interface LabelProps extends Roact.PropsWithChildren {
 	textAlignmentY?: Enum.TextYAlignment;
 	textColor?: Color3;
 	zIndex?: number;
+	textSize?: number;
 }
 
 export function Label({
@@ -24,6 +25,7 @@ export function Label({
 	zIndex,
 	textAlignmentX,
 	textAlignmentY,
+	textSize,
 }: LabelProps) {
 	return (
 		<textlabel
@@ -32,11 +34,12 @@ export function Label({
 			BackgroundTransparency={backgroundTransparency !== undefined ? backgroundTransparency : 1}
 			Size={size}
 			Position={position}
-			TextScaled={true}
+			TextScaled={textSize === undefined}
 			TextColor3={textColor}
 			ZIndex={zIndex}
 			TextXAlignment={textAlignmentX}
 			TextYAlignment={textAlignmentY}
+			TextSize={textSize}
 		>
 			{children}
 		</textlabel>

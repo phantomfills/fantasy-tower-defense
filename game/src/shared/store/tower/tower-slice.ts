@@ -4,11 +4,7 @@ import { Attack } from "shared/modules/attack";
 
 export interface Tower {
 	type: TowerType;
-	health: number;
 	cframe: CFrame;
-	attackRange: number;
-	attackIntervalTimestamp: number;
-	attackDamage: number;
 }
 
 export type TowerState = {
