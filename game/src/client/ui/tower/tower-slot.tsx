@@ -89,7 +89,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					Image={icon}
 					Size={new UDim2(1, 0, 1, 0)}
 					BackgroundTransparency={1}
-					ZIndex={0}
+					ZIndex={1}
 					Position={lerpBinding(buttonHoverTransition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
 				/>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />
