@@ -5,6 +5,6 @@ const enemyTypeToDisplayNameMap: Record<EnemyType, string> = {
 	STRONG_DUMMY: "Strong Dummy",
 };
 
-export function getEnemyDisplayName(enemyType: EnemyType) {
+export function getEnemyDisplayName(enemyType: EnemyType): string {
 	return enemyTypeToDisplayNameMap[enemyType];
 }

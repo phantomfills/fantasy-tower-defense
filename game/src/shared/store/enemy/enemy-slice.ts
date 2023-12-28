@@ -1,6 +1,6 @@
 import { createProducer } from "@rbxts/reflex";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
-import { describeEnemy } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
+import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { getPathLength } from "shared/modules/util/path-utils";
 
@@ -55,7 +55,7 @@ export const enemySlice = createProducer(initialState, {
 		const updatedState: EnemyState = {};
 
 		for (const [id, enemy] of pairs(state)) {
-			const enemyStats = describeEnemy(enemy.type);
+			const enemyStats = describeEnemyFromType(enemy.type);
 
 			const millisecondsSinceSpawn = currentTimeInMilliseconds - enemy.spawnTimestamp;
 

@@ -1,6 +1,6 @@
 import { TowerType } from "./tower-type";
 
-export interface TowerStats {
+interface TowerStats {
 	damage: number;
 	range: number;
 	firerate: number;
@@ -16,6 +16,6 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 	},
 };
 
-export function describeTower(towerType: TowerType) {
+export function describeTowerFromType(towerType: TowerType) {
 	return towerTypeToStatsMap[towerType];
 }

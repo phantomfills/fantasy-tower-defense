@@ -1,5 +1,9 @@
 import { TowerType } from "./tower-type";
 
-export const towerTypeToDisplayNameMap: Record<TowerType, string> = {
+const towerTypeToDisplayNameMap: Record<TowerType, string> = {
 	ARCHER: "Archer",
 };
+
+export function getTowerDisplayNameFromType(_type: TowerType): string {
+	return towerTypeToDisplayNameMap[_type];
+}

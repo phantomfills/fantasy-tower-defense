@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@flamework/core";
 import { TowerPlacementController } from "./tower-placement-controller";
 import { TowerType } from "../../../shared/modules/tower/tower-type";
-import { towerTypeToModelMap } from "shared/modules/tower/tower-type-to-model-map";
+import { getTowerModelFromType } from "shared/modules/tower/tower-type-to-model-map";
 import { store } from "client/store";
 import { images } from "shared/assets";
 
@@ -18,9 +18,9 @@ export class TowerLoadoutController implements OnStart {
 		});
 	}
 
-	private getTowerClickHandlerForTowerType(towerType: TowerType): () => void {
+	private getTowerClickHandlerForTowerType(_type: TowerType): () => void {
 		return () => {
-			const model = towerTypeToModelMap[towerType];
+			const model = getTowerModelFromType(_type);
 
 			const towerPrefabModel = model.Clone();
 
@@ -28,7 +28,7 @@ export class TowerLoadoutController implements OnStart {
 			highlight.FillTransparency = 1;
 			highlight.Parent = towerPrefabModel;
 
-			this.towerPlacementController.setTower(towerType, towerPrefabModel);
+			this.towerPlacementController.setTower(_type, towerPrefabModel);
 		};
 	}
 }

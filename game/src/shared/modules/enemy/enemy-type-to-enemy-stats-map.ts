@@ -1,6 +1,6 @@
 import { EnemyType } from "./enemy-type";
 
-export interface EnemyStats {
+interface EnemyStats {
 	maxHealth: number;
 	speed: number;
 }
@@ -16,6 +16,6 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 	},
 };
 
-export function describeEnemy(enemyType: EnemyType): EnemyStats {
+export function describeEnemyFromType(enemyType: EnemyType): EnemyStats {
 	return enemyTypeToStatsMap[enemyType];
 }

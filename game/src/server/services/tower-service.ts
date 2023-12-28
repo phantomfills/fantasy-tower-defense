@@ -8,15 +8,17 @@ import { getClosestEnemyIdToTower, getEnemyCFrameFromId, getEnemyIdsInTowerRange
 import { generateUniqueId } from "shared/modules/util/id";
 import Object from "@rbxts/object-utils";
 import { Attack } from "shared/modules/attack";
-import { describeTower } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
 
-function towerAdded(towerId: string) {
+const MILLISECONDS_IN_SECOND = 1000;
+
+function towerAdded(towerId: string): void {
 	const possibleTower = store.getState(getTowerFromId(towerId));
 	if (!possibleTower.exists) return;
 
 	const tower = possibleTower.value;
-	const towerStats = describeTower(tower.type);
+	const towerStats = describeTowerFromType(tower.type);
 
 	let lastAttackTimestamp = getCurrentTimeInMilliseconds();
 
@@ -24,7 +26,7 @@ function towerAdded(towerId: string) {
 		if (enemies.isEmpty()) return;
 
 		const currentTimestamp = getCurrentTimeInMilliseconds();
-		if (currentTimestamp - lastAttackTimestamp < towerStats.firerate * 1000) return;
+		if (currentTimestamp - lastAttackTimestamp < towerStats.firerate * MILLISECONDS_IN_SECOND) return;
 
 		lastAttackTimestamp = currentTimestamp;
 
@@ -55,12 +57,6 @@ function towerAdded(towerId: string) {
 
 @Service({})
 export class TowerService implements OnStart {
-	private addTower(tower: Tower) {
-		const towerId = generateUniqueId();
-
-		store.addTower(towerId, tower);
-	}
-
 	onStart(): void {
 		Events.placeTower.connect((_, towerType, cframe) => {
 			const tower = createTower(towerType, cframe);
@@ -77,5 +73,11 @@ export class TowerService implements OnStart {
 				towerAdded(id);
 			}
 		});
+	}
+
+	private addTower(tower: Tower): void {
+		const towerId = generateUniqueId();
+
+		store.addTower(towerId, tower);
 	}
 }

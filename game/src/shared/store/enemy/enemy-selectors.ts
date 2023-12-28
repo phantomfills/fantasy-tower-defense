@@ -5,14 +5,14 @@ import { Possible, possible } from "shared/modules/util/possible";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
 import { Enemy } from "./enemy-slice";
 import { createSelector } from "@rbxts/reflex";
-import { describeTower } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 
 export function getEnemies(state: SharedState) {
 	return state.enemy;
 }
 
 export function getEnemyIdsInTowerRange(tower: Tower) {
-	const towerStats = describeTower(tower.type);
+	const towerStats = describeTowerFromType(tower.type);
 
 	return createSelector([getEnemies], (enemies) => {
 		const enemiesInTowerRange = Object.keys(enemies).filter((enemyId) => {

@@ -2,7 +2,7 @@ import Roact, { useEffect } from "@rbxts/roact";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
-import { describeEnemy } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
+import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getEnemyDisplayName } from "shared/modules/enemy/enemy-type-to-display-name-map";
 import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
@@ -17,7 +17,7 @@ interface EnemyTooltipProps {
 export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 	const rem = useRem();
 
-	const enemyStats = describeEnemy(_type);
+	const enemyStats = describeEnemyFromType(_type);
 	const maxHealth = enemyStats.maxHealth;
 	const healthPercent = health / maxHealth;
 
