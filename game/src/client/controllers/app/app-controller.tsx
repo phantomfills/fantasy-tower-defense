@@ -4,7 +4,7 @@ import { StrictMode } from "@rbxts/roact";
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
 import { App } from "client/ui/app";
-import { possible } from "shared/modules/util/possible";
+import { possible } from "shared/modules/utils/possible";
 import { RootProvider } from "client/store";
 import { ErrorBoundary } from "client/ui/error-boundary";
 

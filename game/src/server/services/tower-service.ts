@@ -2,72 +2,74 @@ import { OnStart, Service } from "@flamework/core";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { Tower } from "shared/store/tower/tower-slice";
-import { store } from "server/store";
+import { producer } from "server/store";
 import { getAttacks, getTowerFromId, getTowers, towerDoesNotExistFromId } from "shared/store/tower";
 import { getClosestEnemyIdToTower, getEnemyCFrameFromId, getEnemyIdsInTowerRange } from "shared/store/enemy";
-import { generateUniqueId } from "shared/modules/util/id";
-import Object from "@rbxts/object-utils";
+import { createId } from "shared/modules/utils/id-utils";
 import { Attack } from "shared/modules/attack";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
-import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import Object from "@rbxts/object-utils";
 
 const MILLISECONDS_IN_SECOND = 1000;
 
 function towerAdded(towerId: string): void {
-	const possibleTower = store.getState(getTowerFromId(towerId));
-	if (!possibleTower.exists) return;
-
-	const tower = possibleTower.value;
-	const towerStats = describeTowerFromType(tower.type);
-
 	let lastAttackTimestamp = getCurrentTimeInMilliseconds();
 
-	const stopCheckingForEnemiesInTowerRange = store.subscribe(getEnemyIdsInTowerRange(tower), (enemies) => {
+	const stopCheckingForEnemiesInTowerRange = producer.subscribe(getEnemyIdsInTowerRange(towerId), (enemies) => {
 		if (enemies.isEmpty()) return;
 
+		const possibleTower = producer.getState(getTowerFromId(towerId));
+		if (!possibleTower.exists) return;
+
+		const tower = possibleTower.value;
+
+		const { towerType, level } = tower;
+		const { cooldown, damage } = describeTowerFromType(towerType, level);
+
 		const currentTimestamp = getCurrentTimeInMilliseconds();
-		if (currentTimestamp - lastAttackTimestamp < towerStats.firerate * MILLISECONDS_IN_SECOND) return;
+		if (currentTimestamp - lastAttackTimestamp < cooldown * MILLISECONDS_IN_SECOND) return;
 
 		lastAttackTimestamp = currentTimestamp;
 
-		const possibleClosestEnemyId = store.getState(getClosestEnemyIdToTower(tower));
+		const possibleClosestEnemyId = producer.getState(getClosestEnemyIdToTower(tower));
 		if (!possibleClosestEnemyId.exists) return;
 
 		const [closestEnemyId] = possibleClosestEnemyId.value;
 
-		const possibleEnemyCFrame = store.getState(getEnemyCFrameFromId(closestEnemyId));
+		const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(closestEnemyId));
 		if (!possibleEnemyCFrame.exists) return;
 
 		const enemyCFrame = possibleEnemyCFrame.value;
 		const enemyPosition = enemyCFrame.Position;
 
-		const attackId = generateUniqueId();
+		const attackId = createId();
 		const attack: Attack = {
 			towerId,
 			enemyId: closestEnemyId,
-			damage: towerStats.damage,
+			damage: damage,
 			enemyPosition,
 		};
 
-		store.addAttack(attackId, attack);
+		producer.addAttack(attackId, attack);
 	});
 
-	store.once(towerDoesNotExistFromId(towerId), stopCheckingForEnemiesInTowerRange);
+	producer.once(towerDoesNotExistFromId(towerId), stopCheckingForEnemiesInTowerRange);
 }
 
 @Service({})
 export class TowerService implements OnStart {
 	onStart(): void {
-		Events.placeTower.connect((_, towerType, cframe) => {
-			const tower = createTower(towerType, cframe);
+		Events.placeTower.connect((_, _type, cframe) => {
+			const tower = createTower(_type, cframe);
 			this.addTower(tower);
 		});
 
-		store.observe(getAttacks, ({ enemyId, damage }) => {
-			store.dealDamageToEnemy(enemyId, damage);
+		producer.observe(getAttacks, ({ enemyId, damage }) => {
+			producer.dealDamageToEnemy(enemyId, damage);
 		});
 
-		store.subscribe(getTowers, (towers, lastTowers) => {
+		producer.subscribe(getTowers, (towers, lastTowers) => {
 			for (const [id, _] of pairs(towers)) {
 				if (Object.keys(lastTowers).includes(id)) continue;
 				towerAdded(id);
@@ -76,8 +78,8 @@ export class TowerService implements OnStart {
 	}
 
 	private addTower(tower: Tower): void {
-		const towerId = generateUniqueId();
+		const towerId = createId();
 
-		store.addTower(towerId, tower);
+		producer.addTower(towerId, tower);
 	}
 }

@@ -1,27 +1,28 @@
 import { Controller, OnStart } from "@flamework/core";
-import { Possible, possible } from "shared/modules/util/possible";
+import { Possible, possible } from "shared/modules/utils/possible";
 import { TowerModel } from "client/modules/tower/client-tower";
 import { TowerType } from "shared/modules/tower/tower-type";
 import { UserInputService, Workspace, RunService } from "@rbxts/services";
-import { snapToCFrameWithAttachmentOffset } from "shared/modules/util/snap-to-cframe";
+import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
 import { Events } from "client/network";
-import { store } from "client/store";
+import { producer } from "client/store";
 import Maid from "@rbxts/maid";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
 @Controller({})
 export class TowerPlacementController implements OnStart {
-	private towerPlacement: Possible<{
+	private possibleTowerPlacement: Possible<{
 		model: TowerModel;
 		type: TowerType;
 		cframe: CFrame;
+		rotation: number;
 		updatePlacementConnection: RBXScriptConnection;
 		maid: Maid;
 	}>;
 
 	constructor() {
-		this.towerPlacement = {
+		this.possibleTowerPlacement = {
 			exists: false,
 		};
 	}
@@ -34,6 +35,14 @@ export class TowerPlacementController implements OnStart {
 				case Enum.KeyCode.Q: {
 					this.clearTower();
 					break;
+				}
+
+				case Enum.KeyCode.R: {
+					const possibleTowerPlacement = this.possibleTowerPlacement;
+					if (!possibleTowerPlacement.exists) return;
+
+					const towerPlacement = possibleTowerPlacement.value;
+					towerPlacement.rotation += 90;
 				}
 			}
 
@@ -86,7 +95,7 @@ export class TowerPlacementController implements OnStart {
 	}
 
 	private updateTowerPlacementCFrame() {
-		const possibleTowerPlacement = this.towerPlacement;
+		const possibleTowerPlacement = this.possibleTowerPlacement;
 		if (!possibleTowerPlacement.exists) return;
 
 		const towerPlacement = possibleTowerPlacement.value;
@@ -102,7 +111,11 @@ export class TowerPlacementController implements OnStart {
 
 		towerPlacement.cframe = cframe;
 
-		snapToCFrameWithAttachmentOffset(towerPrefabModel, towerPrefabModel.humanoidRootPart.rootAttachment, cframe);
+		snapToCFrameWithAttachmentOffset(
+			towerPrefabModel,
+			towerPrefabModel.humanoidRootPart.rootAttachment,
+			cframe.mul(CFrame.Angles(0, math.rad(towerPlacement.rotation), 0)),
+		);
 	}
 
 	setTower(towerType: TowerType, towerPrefabModel: TowerModel) {
@@ -114,7 +127,7 @@ export class TowerPlacementController implements OnStart {
 		const towerModel = towerPrefabModel.Clone();
 		towerModel.Parent = Workspace;
 
-		store.setTowerPlacement(towerType);
+		producer.setTowerPlacement(towerType);
 
 		const towerPlacementCFrame = possibleTowerPlacementCFrame.value;
 
@@ -124,16 +137,17 @@ export class TowerPlacementController implements OnStart {
 
 		const maid = new Maid();
 		maid.GiveTask(() => {
-			store.clearTowerPlacement();
+			producer.clearTowerPlacement();
 			updateTowerPlacementConnection.Disconnect();
 			towerModel.Destroy();
 		});
 
-		this.towerPlacement = {
+		this.possibleTowerPlacement = {
 			exists: true,
 			value: {
 				model: towerModel,
 				cframe: towerPlacementCFrame,
+				rotation: 0,
 				type: towerType,
 				updatePlacementConnection: updateTowerPlacementConnection,
 				maid: maid,
@@ -142,26 +156,27 @@ export class TowerPlacementController implements OnStart {
 	}
 
 	private clearTower() {
-		const possibleTowerPlacement = this.towerPlacement;
+		const possibleTowerPlacement = this.possibleTowerPlacement;
 		if (!possibleTowerPlacement.exists) return;
 
 		const towerPlacement = possibleTowerPlacement.value;
 		towerPlacement.maid.Destroy();
 
-		this.towerPlacement = {
+		this.possibleTowerPlacement = {
 			exists: false,
 		};
 	}
 
 	private placeTower() {
-		const possibleTowerPlacement = this.towerPlacement;
+		const possibleTowerPlacement = this.possibleTowerPlacement;
 		if (!possibleTowerPlacement.exists) return;
 
 		const towerPlacement = possibleTowerPlacement.value;
 		const towerType = towerPlacement.type;
 		const towerCFrame = towerPlacement.cframe;
+		const towerRotation = towerPlacement.rotation;
 
-		Events.placeTower.fire(towerType, towerCFrame);
+		Events.placeTower.fire(towerType, towerCFrame.mul(CFrame.Angles(0, math.rad(towerRotation), 0)));
 
 		this.clearTower();
 	}

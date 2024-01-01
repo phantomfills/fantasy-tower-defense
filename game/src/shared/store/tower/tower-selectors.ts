@@ -1,4 +1,4 @@
-import { Possible } from "shared/modules/util/possible";
+import { Possible } from "shared/modules/utils/possible";
 import { SharedState } from "..";
 import { Tower } from "./tower-slice";
 

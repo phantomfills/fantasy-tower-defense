@@ -1,5 +1,5 @@
 import Maid from "@rbxts/maid";
-import { snapToCFrameWithAttachmentOffset } from "shared/modules/util/snap-to-cframe";
+import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
 import { RunService } from "@rbxts/services";
 
 const MINIMUM_CLIENT_ENEMY_POSITION_OFFSET = -0.3;

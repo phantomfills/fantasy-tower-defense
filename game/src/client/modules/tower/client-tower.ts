@@ -1,5 +1,5 @@
 import Maid from "@rbxts/maid";
-import { snapToCFrameWithAttachmentOffset } from "shared/modules/util/snap-to-cframe";
+import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
 
 export interface TowerModel extends Model {
 	humanoidRootPart: BasePart & {

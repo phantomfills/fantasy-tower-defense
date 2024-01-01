@@ -2,9 +2,9 @@ import { InferState, combineProducers, createBroadcaster } from "@rbxts/reflex";
 import { Events } from "server/network";
 import { slices } from "shared/store";
 
-export type RootState = InferState<typeof store>;
+export type RootState = InferState<typeof producer>;
 
-export function createStore() {
+function createProducer() {
 	const store = combineProducers({
 		...slices,
 	});
@@ -12,7 +12,7 @@ export function createStore() {
 	return store;
 }
 
-export const store = createStore();
+export const producer = createProducer();
 
 const broadcaster = createBroadcaster({
 	producers: { enemy: slices.enemy, tower: slices.tower },
@@ -28,4 +28,4 @@ Events.start.connect((player) => {
 	broadcaster.start(player);
 });
 
-store.applyMiddleware(broadcaster.middleware);
+producer.applyMiddleware(broadcaster.middleware);

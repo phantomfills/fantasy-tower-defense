@@ -2,7 +2,7 @@ import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { Enemy } from "shared/store/enemy";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
-import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 
 export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 	const enemyStats = describeEnemyFromType(enemyType);

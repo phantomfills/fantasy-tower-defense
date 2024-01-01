@@ -1,11 +1,11 @@
 import { ClientTower } from "client/modules/tower/client-tower";
 import { createClientTower } from "client/modules/tower/client-tower-factory";
-import { Possible, possible } from "shared/modules/util/possible";
+import { Possible, possible } from "shared/modules/utils/possible";
 import { Controller, OnStart } from "@flamework/core";
-import { store } from "client/store";
+import { producer } from "client/store";
 import { getAttacks, getTowers } from "shared/store/tower";
 import { getEnemyFromId } from "shared/store/enemy";
-import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
+import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 
 @Controller({})
 export class ClientTowerRenderController implements OnStart {
@@ -44,8 +44,8 @@ export class ClientTowerRenderController implements OnStart {
 	}
 
 	onStart(): void {
-		store.observe(getTowers, (tower, id) => {
-			const clientTower = createClientTower(tower.type, id, tower.cframe);
+		producer.observe(getTowers, (tower, id) => {
+			const clientTower = createClientTower(tower.towerType, id, tower.cframe);
 			this.addTower(clientTower);
 
 			return () => {
@@ -53,7 +53,7 @@ export class ClientTowerRenderController implements OnStart {
 			};
 		});
 
-		store.observe(getAttacks, ({ towerId, enemyPosition }, id) => {
+		producer.observe(getAttacks, ({ towerId, enemyPosition }, id) => {
 			const possibleClientTower = this.getClientTowerFromId(towerId);
 			if (!possibleClientTower.exists) return;
 

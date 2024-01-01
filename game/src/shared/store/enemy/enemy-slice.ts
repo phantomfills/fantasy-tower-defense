@@ -2,7 +2,7 @@ import { createProducer } from "@rbxts/reflex";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
-import { getPathLength } from "shared/modules/util/path-utils";
+import { getPathLength } from "shared/modules/utils/path-utils";
 
 export interface Enemy {
 	type: EnemyType;

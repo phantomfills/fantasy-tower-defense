@@ -1,7 +1,7 @@
 import { createProducer } from "@rbxts/reflex";
 import { TowerSlotProps } from "client/ui/tower/tower-slot";
 import { TowerType } from "shared/modules/tower/tower-type";
-import { Possible } from "shared/modules/util/possible";
+import { Possible } from "shared/modules/utils/possible";
 
 export interface TowerPlacement {
 	towerType: TowerType;

@@ -1,8 +1,8 @@
 import { SharedState } from "..";
 import Object from "@rbxts/object-utils";
-import { Tower } from "../tower";
-import { Possible, possible } from "shared/modules/util/possible";
-import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
+import { Tower, getTowers } from "../tower";
+import { Possible, possible } from "shared/modules/utils/possible";
+import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 import { Enemy } from "./enemy-slice";
 import { createSelector } from "@rbxts/reflex";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
@@ -11,10 +11,14 @@ export function getEnemies(state: SharedState) {
 	return state.enemy;
 }
 
-export function getEnemyIdsInTowerRange(tower: Tower) {
-	const towerStats = describeTowerFromType(tower.type);
+export function getEnemyIdsInTowerRange(towerId: string) {
+	return createSelector([getEnemies, getTowers], (enemies, towers) => {
+		const possibleTower = possible<Tower>(towers[towerId]);
+		if (!possibleTower.exists) return [];
 
-	return createSelector([getEnemies], (enemies) => {
+		const tower = possibleTower.value;
+		const towerStats = describeTowerFromType(tower.towerType, tower.level);
+
 		const enemiesInTowerRange = Object.keys(enemies).filter((enemyId) => {
 			const enemy = enemies[enemyId];
 			const enemyCFrame = getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha);
@@ -26,13 +30,6 @@ export function getEnemyIdsInTowerRange(tower: Tower) {
 
 		return enemiesInTowerRange;
 	});
-}
-
-export function enemiesAreInTowerRange(tower: Tower): (state: SharedState) => boolean {
-	return (state) => {
-		const enemiesInTowerRange = getEnemyIdsInTowerRange(tower)(state);
-		return enemiesInTowerRange.size() > 0;
-	};
 }
 
 export function getEnemyCount(state: SharedState) {

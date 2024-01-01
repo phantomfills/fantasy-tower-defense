@@ -6,16 +6,16 @@ import { Events } from "client/network";
 import { slices } from "shared/store";
 import { enemyHoverSlice } from "./enemy-hover";
 
-export type RootState = InferState<typeof store>;
+export type RootState = InferState<typeof producer>;
 
-export const store = combineProducers({
+export const producer = combineProducers({
 	...slices,
 	towerLoadout: towerLoadoutSlice,
 	enemyHover: enemyHoverSlice,
 });
 
 export function RootProvider(props: Roact.PropsWithChildren) {
-	return <ReflexProvider producer={store}>{props.children}</ReflexProvider>;
+	return <ReflexProvider producer={producer}>{props.children}</ReflexProvider>;
 }
 
 const reciever = createBroadcastReceiver({
@@ -28,4 +28,4 @@ Events.dispatch.connect((actions) => {
 	reciever.dispatch(actions);
 });
 
-store.applyMiddleware(reciever.middleware);
+producer.applyMiddleware(reciever.middleware);

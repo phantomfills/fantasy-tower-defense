@@ -1,8 +1,8 @@
 import { Controller, OnTick } from "@flamework/core";
 import { UserInputService, Workspace } from "@rbxts/services";
-import { store } from "client/store";
+import { producer } from "client/store";
 import { getHoveringEnemyId } from "client/store/enemy-hover";
-import { Possible, possible } from "shared/modules/util/possible";
+import { Possible, possible } from "shared/modules/utils/possible";
 
 const MAX_ENEMY_HOVER_DISTANCE = 100;
 
@@ -58,10 +58,10 @@ export class EnemyHoverController implements OnTick {
 	onTick() {
 		const possibleEnemyHoverId = this.getHoveringEnemyId();
 		if (!possibleEnemyHoverId.exists) {
-			store.clearEnemyHoverId();
+			producer.clearEnemyHoverId();
 			return;
 		}
 
-		store.setEnemyHoverId(possibleEnemyHoverId.value);
+		producer.setEnemyHoverId(possibleEnemyHoverId.value);
 	}
 }

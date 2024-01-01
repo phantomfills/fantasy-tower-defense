@@ -1,12 +1,11 @@
 import { TowerType } from "shared/modules/tower/tower-type";
-import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
 import { Tower } from "shared/store/tower/tower-slice";
 
-export function createTower(towerType: TowerType, cframe: CFrame): Tower {
+export function createTower(towerType: TowerType, cframe: CFrame, level: number = 0): Tower {
 	const towerTemplate = {
 		cframe: cframe,
-		spawnTimestamp: getCurrentTimeInMilliseconds(),
-		type: towerType,
+		towerType: towerType,
+		level,
 	};
 
 	switch (towerType) {

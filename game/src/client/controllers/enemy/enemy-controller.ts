@@ -2,10 +2,10 @@ import { Controller, OnStart } from "@flamework/core";
 import Object from "@rbxts/object-utils";
 import { ClientEnemy } from "client/modules/enemy/client-enemy";
 import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
-import { store } from "client/store";
+import { producer } from "client/store";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
-import { getCFrameFromPathCompletionAlpha } from "shared/modules/util/path-utils";
-import { Possible, possible } from "shared/modules/util/possible";
+import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
+import { Possible, possible } from "shared/modules/utils/possible";
 import { getEnemies } from "shared/store/enemy";
 
 @Controller({})
@@ -50,7 +50,7 @@ export class EnemyController implements OnStart {
 	}
 
 	onStart() {
-		store.subscribe(getEnemies, (enemies, lastEnemies) => {
+		producer.subscribe(getEnemies, (enemies, lastEnemies) => {
 			for (const [id, enemy] of pairs(enemies)) {
 				const enemyLastUpdate = possible<string>(
 					Object.keys(lastEnemies).find((lastEnemyId) => lastEnemyId === id),

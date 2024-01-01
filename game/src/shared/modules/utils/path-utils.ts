@@ -26,11 +26,13 @@ export function getCFrameFromPathCompletionAlpha(path: PathWaypoint[], pathCompl
 }
 
 export function getPathLength(path: PathWaypoint[]) {
-	let totalDistance = 0;
-	for (let index = 0; index < path.size() - 1; index++) {
-		const waypoint = path[index];
-		const nextWaypoint = path[index + 1];
-		totalDistance += waypoint.Position.sub(nextWaypoint.Position).Magnitude;
-	}
-	return totalDistance;
+	return path.reduce((total, currentWaypoint, currentIndex) => {
+		const lastIndex = currentIndex - 1;
+		if (lastIndex < 0) return 0;
+
+		const lastWaypoint = path[lastIndex];
+		const distance = lastWaypoint.Position.sub(currentWaypoint.Position).Magnitude;
+
+		return total + distance;
+	}, 0);
 }

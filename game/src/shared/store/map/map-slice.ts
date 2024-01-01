@@ -1,7 +1,7 @@
 import { createProducer } from "@rbxts/reflex";
 import { Workspace } from "@rbxts/services";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
-import { possible } from "shared/modules/util/possible";
+import { possible } from "shared/modules/utils/possible";
 
 export interface Map {
 	name: string;

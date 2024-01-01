@@ -1,37 +1,45 @@
 import { OnStart, OnTick, Service } from "@flamework/core";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
-import { store } from "server/store";
+import { producer } from "server/store";
 import { getMap } from "shared/store/map";
 import { Enemy } from "shared/store/enemy";
-import { getCurrentTimeInMilliseconds } from "shared/modules/util/get-time-in-ms";
-import { generateUniqueId } from "shared/modules/util/id";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import { createId } from "shared/modules/utils/id-utils";
 
 @Service({})
 export class EnemyService implements OnStart, OnTick {
 	private addEnemyToStore(enemy: Enemy): void {
-		store.addEnemy(enemy, generateUniqueId());
+		producer.addEnemy(enemy, createId());
 	}
 
 	onStart(): void {
-		const map = store.getState(getMap);
+		const map = producer.getState(getMap);
 		const path = map.path;
 
-		task.wait(10);
+		task.wait(5);
 
-		for (let i = 0; i < 100_000_000; i++) {
-			const weakDummy = createEnemy("WEAK_DUMMY", path);
-			this.addEnemyToStore(weakDummy);
+		for (;;) {
+			for (let i = 0; i < 10; i++) {
+				const enemy = createEnemy("WEAK_DUMMY", path);
+				this.addEnemyToStore(enemy);
 
-			task.wait(1);
+				task.wait(1);
+			}
 
-			const strongDummy = createEnemy("STRONG_DUMMY", path);
-			this.addEnemyToStore(strongDummy);
+			task.wait(5);
 
-			task.wait(1);
+			for (let i = 0; i < 5; i++) {
+				const enemy = createEnemy("STRONG_DUMMY", path);
+				this.addEnemyToStore(enemy);
+
+				task.wait(1);
+			}
+
+			task.wait(5);
 		}
 	}
 
 	onTick(): void {
-		store.enemyTick(getCurrentTimeInMilliseconds());
+		producer.enemyTick(getCurrentTimeInMilliseconds());
 	}
 }

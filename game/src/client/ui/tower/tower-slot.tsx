@@ -1,7 +1,7 @@
 import { Spring, lerpBinding, useKeyPress, useMotor } from "@rbxts/pretty-react-hooks";
 import Roact, { useEffect, useState } from "@rbxts/roact";
 import { CashLabel } from "../game/cash-label";
-import { numberToKeyCodeMap } from "shared/modules/util/number-to-key-map";
+import { numberToKeyCodeMap } from "shared/modules/utils/number-to-key-map";
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
