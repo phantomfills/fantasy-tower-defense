@@ -1,13 +1,15 @@
-import { Controller, OnTick } from "@flamework/core";
+import { Controller, OnStart, OnTick } from "@flamework/core";
 import { ClientTowerRenderController } from "./client-tower-render-controller";
 import { UserInputService, Workspace } from "@rbxts/services";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { ClientTower } from "client/modules/tower/client-tower";
+import { producer } from "client/store";
+import { getTowerFromId } from "shared/store/tower";
 
 const MAX_TOWER_HOVER_DISTANCE = 100;
 
 @Controller({})
-export class TowerActionController implements OnTick {
+export class TowerActionController implements OnStart, OnTick {
 	private readonly highlight: Highlight;
 	private hoveringTower: Possible<ClientTower>;
 
@@ -58,6 +60,20 @@ export class TowerActionController implements OnTick {
 			}),
 		);
 		return possibleClientTower;
+	}
+
+	onStart(): void {
+		UserInputService.InputBegan.Connect((input) => {
+			if (input.UserInputType === Enum.UserInputType.MouseButton1) {
+				const possibleClientTower = this.getHoveringTower();
+				if (!possibleClientTower.exists) return;
+
+				const clientTower = possibleClientTower.value;
+				const id = clientTower.getId();
+
+				producer.setTowerId(id);
+			}
+		});
 	}
 
 	onTick(dt: number): void {

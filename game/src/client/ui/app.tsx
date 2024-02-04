@@ -11,11 +11,14 @@ import { MatchInfo } from "./game/match-info";
 import { CashCounter } from "./game/cash-counter";
 import { getHoveringEnemyId } from "client/store/enemy-hover";
 import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
+import { getPossibleTowerId } from "client/store/tower-action-menu-slice/tower-action-selectors";
+import { TowerActionMenu } from "./tower/tower-action-menu";
 
 export function App() {
 	const towers = useSelector(getTowerLoadout);
 	const possibleTowerPlacement = useSelector(getPossibleTowerPlacement);
 	const possibleHoveringEnemyId = useSelector(getHoveringEnemyId);
+	const possibleTowerFocusId = useSelector(getPossibleTowerId);
 
 	return (
 		<Panel>
@@ -38,6 +41,8 @@ export function App() {
 			)}
 
 			{possibleHoveringEnemyId.exists && <EnemyTooltipFromId id={possibleHoveringEnemyId.value} />}
+
+			{possibleTowerFocusId.exists && <TowerActionMenu towerId={possibleTowerFocusId.value} />}
 
 			<MatchInfo>
 				<LifeCounter lives={1000} />

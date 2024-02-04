@@ -6,14 +6,23 @@ import { getTowerDisplayNameFromType } from "shared/modules/tower/tower-type-to-
 import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";
 import { fonts } from "../constants/fonts";
+import { useSelector } from "@rbxts/react-reflex";
+import { getTowerFromId } from "shared/store/tower";
 
 interface TowerActionMenuProps {
-	towerType: TowerType;
-	level: number;
+	towerId: string;
 }
 
-export function TowerActionMenu({ towerType, level }: TowerActionMenuProps) {
-	const towerDisplayName = getTowerDisplayNameFromType(towerType);
+export function TowerActionMenu({ towerId }: TowerActionMenuProps) {
+	const possibleTower = useSelector(getTowerFromId(towerId));
+	if (!possibleTower.exists) {
+		return <></>;
+	}
+
+	const tower = possibleTower.value;
+	const towerType = tower.towerType;
+
+	const towerDisplayName = towerId;
 	const rem = useRem();
 
 	return (
