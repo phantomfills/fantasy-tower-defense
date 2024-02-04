@@ -21,15 +21,8 @@ export interface ClientEnemyInfo {
 type EnemyList = ClientEnemyInfo[];
 
 interface SharedEvents {
-	createEnemy(enemyType: EnemyType, id: string, startCFrame: CFrame): void;
-	updateEnemy(enemyInfo: ClientEnemyInfo): void;
-	updateEnemies(enemies: EnemyList): void;
-	destroyEnemy(id: string): void;
-
 	placeTower(towerType: TowerType, cframe: CFrame): void;
-	createTower(towerType: TowerType, id: string, cframe: CFrame): void;
-	towerAttack(id: string, towardsPosition: Vector3): void;
-	destroyTower(id: string): void;
+	upgradeTower(id: string): void;
 
 	dispatch(actions: BroadcastAction[]): void;
 	start(): void;

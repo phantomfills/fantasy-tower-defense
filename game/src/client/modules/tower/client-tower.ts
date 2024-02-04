@@ -26,6 +26,10 @@ export class ClientTower {
 		this.snapToCFrame(CFrame.lookAt(this.cframe.Position, cframeWithTowerY));
 	}
 
+	getModel() {
+		return this.model;
+	}
+
 	getId() {
 		return this.id;
 	}

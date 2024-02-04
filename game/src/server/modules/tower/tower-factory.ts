@@ -1,11 +1,12 @@
 import { TowerType } from "shared/modules/tower/tower-type";
 import { Tower } from "shared/store/tower/tower-slice";
 
-export function createTower(towerType: TowerType, cframe: CFrame, level: number = 0): Tower {
+export function createTower(towerType: TowerType, cframe: CFrame, level: number = 0, owner: number): Tower {
 	const towerTemplate = {
-		cframe: cframe,
-		towerType: towerType,
+		cframe,
+		towerType,
 		level,
+		owner,
 	};
 
 	switch (towerType) {

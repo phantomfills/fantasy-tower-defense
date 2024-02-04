@@ -6,12 +6,12 @@ import { Enemy } from "shared/store/enemy";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
 
+function addEnemyToStore(enemy: Enemy): void {
+	producer.addEnemy(enemy, createId());
+}
+
 @Service({})
 export class EnemyService implements OnStart, OnTick {
-	private addEnemyToStore(enemy: Enemy): void {
-		producer.addEnemy(enemy, createId());
-	}
-
 	onStart(): void {
 		const map = producer.getState(getMap);
 		const path = map.path;
@@ -19,23 +19,10 @@ export class EnemyService implements OnStart, OnTick {
 		task.wait(5);
 
 		for (;;) {
-			for (let i = 0; i < 10; i++) {
-				const enemy = createEnemy("WEAK_DUMMY", path);
-				this.addEnemyToStore(enemy);
+			const enemy = createEnemy("WEAK_DUMMY", path);
+			addEnemyToStore(enemy);
 
-				task.wait(1);
-			}
-
-			task.wait(5);
-
-			for (let i = 0; i < 5; i++) {
-				const enemy = createEnemy("STRONG_DUMMY", path);
-				this.addEnemyToStore(enemy);
-
-				task.wait(1);
-			}
-
-			task.wait(5);
+			task.wait(0.1);
 		}
 	}
 

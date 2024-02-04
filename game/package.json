@@ -7,7 +7,8 @@
     "build": "rbxtsc",
     "watch": "rbxtsc -w",
     "build-rbx": "rojo build -o build.rbxl",
-    "serve-rbx": "rojo serve"
+    "serve-rbx": "rojo serve",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -15,12 +16,14 @@
   "devDependencies": {
     "@rbxts/compiler-types": "^2.2.0-types.0",
     "@rbxts/types": "^1.0.729",
+    "@types/jest": "^29.5.11",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-roblox-ts": "0.0.36",
+    "jest": "^29.7.0",
     "prettier": "^2.8.8",
     "rbxts-transformer-flamework": "^1.0.0-beta.23",
     "roblox-ts": "^2.2.0",
@@ -39,15 +42,17 @@
     "@rbxts/react-reflex": "^0.2.0",
     "@rbxts/react-roblox": "^0.1.2",
     "@rbxts/react-roblox-internal": "^0.2.0",
-    "@rbxts/reflex": "^4.2.2",
+    "@rbxts/reflex": "^4.3.1",
     "@rbxts/remo": "^1.2.4",
     "@rbxts/roact": "npm:@rbxts/react-ts@^1.0.1",
     "@rbxts/roact-hooked": "^2.6.1",
     "@rbxts/roact-hooks": "^0.4.1-ts.3",
     "@rbxts/roact-spring": "^2.0.0",
+    "@rbxts/services": "^1.5.1",
     "@rbxts/set-timeout": "^1.1.2",
     "@rbxts/signal": "^1.1.1",
     "@rbxts/t": "^3.1.0",
+    "@rbxts/testez": "^0.4.2-ts.0",
     "io-serve": "^1.1.2",
     "ts-api-utils": "^1.0.3"
   }

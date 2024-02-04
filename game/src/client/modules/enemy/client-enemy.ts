@@ -1,6 +1,9 @@
 import Maid from "@rbxts/maid";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
-import { RunService } from "@rbxts/services";
+import { RunService, Workspace } from "@rbxts/services";
+import { possible } from "shared/modules/utils/possible";
+
+const ENEMY_ON_SCREEN_BUFFER_PIXELS = 50;
 
 const MINIMUM_CLIENT_ENEMY_POSITION_OFFSET = -0.3;
 const MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET = 0.3;
@@ -12,7 +15,7 @@ export interface EnemyModel extends Model {
 }
 
 function getRandomOffset(random: Random): number {
-	return random.NextInteger(MINIMUM_CLIENT_ENEMY_POSITION_OFFSET, MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET);
+	return random.NextNumber(MINIMUM_CLIENT_ENEMY_POSITION_OFFSET, MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET);
 }
 
 function getRandomPositionOffset(random: Random): LuaTuple<[number, number]> {
@@ -60,7 +63,7 @@ export class ClientEnemy {
 		snapToCFrameWithAttachmentOffset(this.model, this.model.humanoidRootPart.rootAttachment, cframe);
 	}
 
-	getCFrame(): CFrame {
+	private getTargetCFrame(): CFrame {
 		return this.targetCFrame;
 	}
 
@@ -74,12 +77,36 @@ export class ClientEnemy {
 	}
 
 	start() {
+		let wasOnScreenLastFrame: boolean = false;
+
 		this.maid.GiveTask(
-			RunService.Heartbeat.Connect(() => {
+			RunService.RenderStepped.Connect(() => {
+				const possibleCamera = possible<Camera>(Workspace.CurrentCamera);
+				if (!possibleCamera.exists) return;
+
+				const camera = possibleCamera.value;
+				const viewportSize = camera.ViewportSize;
+				const [screenPosition] = camera.WorldToViewportPoint(this.getTargetCFrame().Position);
+
+				if (
+					screenPosition.X < -ENEMY_ON_SCREEN_BUFFER_PIXELS &&
+					screenPosition.Y < -ENEMY_ON_SCREEN_BUFFER_PIXELS &&
+					screenPosition.X > viewportSize.X + ENEMY_ON_SCREEN_BUFFER_PIXELS &&
+					screenPosition.Y > viewportSize.Y + ENEMY_ON_SCREEN_BUFFER_PIXELS
+				) {
+					return;
+				}
+
+				if (wasOnScreenLastFrame) {
+					this.snapToCFrame(this.targetCFrame.add(this.positionOffset));
+					wasOnScreenLastFrame = true;
+					return;
+				}
+
 				this.snapToCFrame(
 					this.model.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(
 						this.targetCFrame.add(this.positionOffset),
-						0.1,
+						0.5,
 					),
 				);
 			}),

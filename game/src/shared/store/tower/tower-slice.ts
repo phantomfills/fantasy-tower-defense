@@ -7,6 +7,7 @@ export interface Tower {
 	towerType: TowerType;
 	cframe: CFrame;
 	level: number;
+	owner: number;
 }
 
 export type TowerState = {

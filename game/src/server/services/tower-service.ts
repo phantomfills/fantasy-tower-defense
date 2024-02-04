@@ -13,13 +13,13 @@ import Object from "@rbxts/object-utils";
 
 const MILLISECONDS_IN_SECOND = 1000;
 
-function towerAdded(towerId: string): void {
+function towerAdded(id: string): void {
 	let lastAttackTimestamp = getCurrentTimeInMilliseconds();
 
-	const stopCheckingForEnemiesInTowerRange = producer.subscribe(getEnemyIdsInTowerRange(towerId), (enemies) => {
+	const stopCheckingForEnemiesInTowerRange = producer.subscribe(getEnemyIdsInTowerRange(id), (enemies) => {
 		if (enemies.isEmpty()) return;
 
-		const possibleTower = producer.getState(getTowerFromId(towerId));
+		const possibleTower = producer.getState(getTowerFromId(id));
 		if (!possibleTower.exists) return;
 
 		const tower = possibleTower.value;
@@ -45,7 +45,7 @@ function towerAdded(towerId: string): void {
 
 		const attackId = createId();
 		const attack: Attack = {
-			towerId,
+			towerId: id,
 			enemyId: closestEnemyId,
 			damage: damage,
 			enemyPosition,
@@ -54,15 +54,30 @@ function towerAdded(towerId: string): void {
 		producer.addAttack(attackId, attack);
 	});
 
-	producer.once(towerDoesNotExistFromId(towerId), stopCheckingForEnemiesInTowerRange);
+	producer.once(towerDoesNotExistFromId(id), stopCheckingForEnemiesInTowerRange);
 }
 
 @Service({})
 export class TowerService implements OnStart {
 	onStart(): void {
-		Events.placeTower.connect((_, _type, cframe) => {
-			const tower = createTower(_type, cframe);
-			this.addTower(tower);
+		Events.placeTower.connect((player, _type, cframe) => {
+			const userId = player.UserId;
+
+			const tower = createTower(_type, cframe, 0, userId);
+			const towerId = createId();
+
+			producer.addTower(towerId, tower);
+		});
+
+		Events.upgradeTower.connect((player, id) => {
+			const possibleTower = producer.getState(getTowerFromId(id));
+			if (!possibleTower.exists) return;
+
+			const tower = possibleTower.value;
+			const { owner } = tower;
+			if (owner !== player.UserId) return;
+
+			producer.upgradeTower(id);
 		});
 
 		producer.observe(getAttacks, ({ enemyId, damage }) => {
@@ -75,11 +90,5 @@ export class TowerService implements OnStart {
 				towerAdded(id);
 			}
 		});
-	}
-
-	private addTower(tower: Tower): void {
-		const towerId = createId();
-
-		producer.addTower(towerId, tower);
 	}
 }
