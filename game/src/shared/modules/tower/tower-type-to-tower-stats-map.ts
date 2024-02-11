@@ -79,3 +79,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 export function describeTowerFromType(_type: TowerType, level: number): TowerLevel {
 	return towerTypeToStatsMap[_type].levels[level];
 }
+
+export function getTowerMaxLevelFromType(_type: TowerType): number {
+	return towerTypeToStatsMap[_type].levels.size() - 1;
+}

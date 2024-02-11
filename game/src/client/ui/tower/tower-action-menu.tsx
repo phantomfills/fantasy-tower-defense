@@ -11,18 +11,21 @@ import { getTowerFromId } from "shared/store/tower";
 
 interface TowerActionMenuProps {
 	towerId: string;
+	actions: {
+		upgrade: () => void;
+	};
 }
 
-export function TowerActionMenu({ towerId }: TowerActionMenuProps) {
+export function TowerActionMenu({ towerId, actions }: TowerActionMenuProps) {
 	const possibleTower = useSelector(getTowerFromId(towerId));
 	if (!possibleTower.exists) {
 		return <></>;
 	}
 
 	const tower = possibleTower.value;
-	const towerType = tower.towerType;
+	const { towerType, level } = tower;
 
-	const towerDisplayName = towerId;
+	const towerDisplayName = `${getTowerDisplayNameFromType(towerType)} Lv. ${level}`;
 	const rem = useRem();
 
 	return (
@@ -41,7 +44,12 @@ export function TowerActionMenu({ towerId }: TowerActionMenuProps) {
 				text={towerDisplayName}
 				textColor={new Color3(255, 255, 255)}
 			/>
-			<textbutton Size={new UDim2(1, -30, 0.15, 0)} Position={new UDim2(0, 15, 0.15, 0)} Text="Upgrade" />
+			<textbutton
+				Size={new UDim2(1, -30, 0.15, 0)}
+				Position={new UDim2(0, 15, 0.15, 0)}
+				Text="Upgrade"
+				Event={{ MouseButton1Click: actions.upgrade }}
+			/>
 		</Frame>
 	);
 }

@@ -7,7 +7,7 @@ import { getAttacks, getTowerFromId, getTowers, towerDoesNotExistFromId } from "
 import { getClosestEnemyIdToTower, getEnemyCFrameFromId, getEnemyIdsInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { Attack } from "shared/modules/attack";
-import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { describeTowerFromType, getTowerMaxLevelFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import Object from "@rbxts/object-utils";
 
@@ -74,8 +74,11 @@ export class TowerService implements OnStart {
 			if (!possibleTower.exists) return;
 
 			const tower = possibleTower.value;
-			const { owner } = tower;
+			const { owner, towerType } = tower;
 			if (owner !== player.UserId) return;
+
+			const maxLevel = getTowerMaxLevelFromType(towerType);
+			if (tower.level >= maxLevel) return;
 
 			producer.upgradeTower(id);
 		});

@@ -13,6 +13,7 @@ import { getHoveringEnemyId } from "client/store/enemy-hover";
 import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
 import { getPossibleTowerId } from "client/store/tower-action-menu-slice/tower-action-selectors";
 import { TowerActionMenu } from "./tower/tower-action-menu";
+import { Events } from "client/network";
 
 export function App() {
 	const towers = useSelector(getTowerLoadout);
@@ -42,7 +43,16 @@ export function App() {
 
 			{possibleHoveringEnemyId.exists && <EnemyTooltipFromId id={possibleHoveringEnemyId.value} />}
 
-			{possibleTowerFocusId.exists && <TowerActionMenu towerId={possibleTowerFocusId.value} />}
+			{possibleTowerFocusId.exists && (
+				<TowerActionMenu
+					towerId={possibleTowerFocusId.value}
+					actions={{
+						upgrade: () => {
+							Events.upgradeTower.fire(possibleTowerFocusId.value);
+						},
+					}}
+				/>
+			)}
 
 			<MatchInfo>
 				<LifeCounter lives={1000} />
