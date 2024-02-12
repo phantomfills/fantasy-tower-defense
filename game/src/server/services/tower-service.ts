@@ -68,11 +68,6 @@ function userHasMoney(userId: string, amount: number): boolean {
 
 function deductMoneyFromUser(userId: string, amount: number): void {
 	producer.removeMoney(userId, amount);
-
-	const possibleUserMoney = producer.getState(getMoney(userId));
-	if (!possibleUserMoney.exists) return;
-
-	const money = possibleUserMoney.value;
 }
 
 @Service({})
