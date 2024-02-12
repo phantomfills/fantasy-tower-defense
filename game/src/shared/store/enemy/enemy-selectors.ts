@@ -61,7 +61,7 @@ export function enemyDoesNotExistFromId(id: string): (state: SharedState) => boo
 	};
 }
 
-export function getClosestEnemyIdToPosition(position: Vector3): (state: SharedState) => Possible<[string, number]> {
+export function getClosestEnemyIdToPosition(position: Vector3): (state: SharedState) => Possible<[string, Enemy]> {
 	return (state) => {
 		const enemies = state.enemy;
 
@@ -87,16 +87,17 @@ export function getClosestEnemyIdToPosition(position: Vector3): (state: SharedSt
 			return previousEnemyDistanceToPosition < currentEnemyDistanceToPosition;
 		});
 		const closestEnemyId = enemyIdsByDistanceToPosition[0];
+		const closestEnemy = state.enemy[closestEnemyId];
 		const closestEnemyPosition = getCFrameFromPathCompletionAlpha(
 			enemies[closestEnemyId].path,
 			enemies[closestEnemyId].pathCompletionAlpha,
 		).Position;
 		const closestEnemyDistanceToPosition = closestEnemyPosition.sub(position).Magnitude;
 
-		return { exists: true, value: [closestEnemyId, closestEnemyDistanceToPosition] };
+		return { exists: true, value: [closestEnemyId, closestEnemy] };
 	};
 }
 
-export function getClosestEnemyIdToTower(tower: Tower): (state: SharedState) => Possible<[string, number]> {
+export function getClosestEnemyIdToTower(tower: Tower): (state: SharedState) => Possible<[string, Enemy]> {
 	return getClosestEnemyIdToPosition(tower.cframe.Position);
 }

@@ -5,6 +5,7 @@ import { Possible, possible } from "shared/modules/utils/possible";
 import { ClientTower } from "client/modules/tower/client-tower";
 import { producer } from "client/store";
 import { getTowerFromId } from "shared/store/tower";
+import { towerActionSlice } from "client/store/tower-action-menu-slice";
 
 const MAX_TOWER_HOVER_DISTANCE = 100;
 
@@ -15,7 +16,8 @@ export class TowerActionController implements OnStart, OnTick {
 
 	constructor(readonly clientTowerRenderController: ClientTowerRenderController) {
 		this.highlight = new Instance("Highlight");
-		this.highlight.FillTransparency = 0.8;
+		this.highlight.FillTransparency = 0.25;
+		this.highlight.FillColor = Color3.fromRGB(255, 255, 255);
 
 		this.hoveringTower = {
 			exists: false,

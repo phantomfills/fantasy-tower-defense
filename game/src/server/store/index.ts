@@ -15,13 +15,13 @@ function createProducer() {
 export const producer = createProducer();
 
 const broadcaster = createBroadcaster({
-	producers: { enemy: slices.enemy, tower: slices.tower },
+	producers: slices,
 
 	dispatch: (player, actions) => {
 		Events.dispatch.fire(player, actions);
 	},
 
-	hydrateRate: 60,
+	hydrateRate: 10,
 });
 
 Events.start.connect((player) => {

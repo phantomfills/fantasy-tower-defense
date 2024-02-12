@@ -14,12 +14,15 @@ import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
 import { getPossibleTowerId } from "client/store/tower-action-menu-slice/tower-action-selectors";
 import { TowerActionMenu } from "./tower/tower-action-menu";
 import { Events } from "client/network";
+import { getMoney } from "shared/store/money";
+import { Players } from "@rbxts/services";
 
 export function App() {
 	const towers = useSelector(getTowerLoadout);
 	const possibleTowerPlacement = useSelector(getPossibleTowerPlacement);
 	const possibleHoveringEnemyId = useSelector(getHoveringEnemyId);
 	const possibleTowerFocusId = useSelector(getPossibleTowerId);
+	const money = useSelector(getMoney(tostring(Players.LocalPlayer.UserId)));
 
 	return (
 		<Panel>
@@ -56,7 +59,7 @@ export function App() {
 
 			<MatchInfo>
 				<LifeCounter lives={1000} />
-				<CashCounter value={1000} />
+				<CashCounter value={money.exists ? money.value : 0} />
 			</MatchInfo>
 		</Panel>
 	);

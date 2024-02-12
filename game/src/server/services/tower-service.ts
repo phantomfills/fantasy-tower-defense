@@ -10,6 +10,7 @@ import { Attack } from "shared/modules/attack";
 import { describeTowerFromType, getTowerMaxLevelFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import Object from "@rbxts/object-utils";
+import { getMoney } from "shared/store/money";
 
 const MILLISECONDS_IN_SECOND = 1000;
 
@@ -35,7 +36,7 @@ function towerAdded(id: string): void {
 		const possibleClosestEnemyId = producer.getState(getClosestEnemyIdToTower(tower));
 		if (!possibleClosestEnemyId.exists) return;
 
-		const [closestEnemyId] = possibleClosestEnemyId.value;
+		const [closestEnemyId, closestEnemy] = possibleClosestEnemyId.value;
 
 		const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(closestEnemyId));
 		if (!possibleEnemyCFrame.exists) return;
@@ -47,7 +48,7 @@ function towerAdded(id: string): void {
 		const attack: Attack = {
 			towerId: id,
 			enemyId: closestEnemyId,
-			damage: damage,
+			damage: math.min(closestEnemy.health, damage),
 			enemyPosition,
 		};
 
@@ -57,28 +58,55 @@ function towerAdded(id: string): void {
 	producer.once(towerDoesNotExistFromId(id), stopCheckingForEnemiesInTowerRange);
 }
 
+function userHasMoney(userId: string, amount: number): boolean {
+	const possibleUserMoney = producer.getState(getMoney(userId));
+	if (!possibleUserMoney.exists) return false;
+
+	const userMoney = possibleUserMoney.value;
+	return userMoney >= amount;
+}
+
+function deductMoneyFromUser(userId: string, amount: number): void {
+	producer.removeMoney(userId, amount);
+
+	const possibleUserMoney = producer.getState(getMoney(userId));
+	if (!possibleUserMoney.exists) return;
+
+	const money = possibleUserMoney.value;
+}
+
 @Service({})
 export class TowerService implements OnStart {
 	onStart(): void {
 		Events.placeTower.connect((player, _type, cframe) => {
-			const userId = player.UserId;
+			const userId = tostring(player.UserId);
 
 			const tower = createTower(_type, cframe, 0, userId);
 			const towerId = createId();
+
+			const towerPlacementCost = describeTowerFromType(_type, 0).cost;
+			if (!userHasMoney(userId, towerPlacementCost)) return;
+			deductMoneyFromUser(tostring(userId), towerPlacementCost);
 
 			producer.addTower(towerId, tower);
 		});
 
 		Events.upgradeTower.connect((player, id) => {
+			const userId = tostring(player.UserId);
+
 			const possibleTower = producer.getState(getTowerFromId(id));
 			if (!possibleTower.exists) return;
 
 			const tower = possibleTower.value;
 			const { owner, towerType } = tower;
-			if (owner !== player.UserId) return;
+			if (owner !== userId) return;
 
 			const maxLevel = getTowerMaxLevelFromType(towerType);
 			if (tower.level >= maxLevel) return;
+
+			const upgradeCost = describeTowerFromType(towerType, tower.level + 1).cost;
+			if (!userHasMoney(userId, upgradeCost)) return;
+			deductMoneyFromUser(userId, upgradeCost);
 
 			producer.upgradeTower(id);
 		});
