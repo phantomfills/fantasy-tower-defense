@@ -17,6 +17,13 @@ export function getTowerFromId(id: string): (state: SharedState) => Possible<Tow
 	};
 }
 
+export function getTowerLevelFromId(id: string): (state: SharedState) => number {
+	return (state) => {
+		const tower = state.tower.towers[id];
+		return tower ? tower.level : 0;
+	};
+}
+
 export function getAttacks(state: SharedState) {
 	return state.tower.attacks;
 }

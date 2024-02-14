@@ -2,29 +2,30 @@ import { Controller, OnStart, OnTick } from "@flamework/core";
 import { ClientTowerRenderController } from "./client-tower-render-controller";
 import { UserInputService, Workspace } from "@rbxts/services";
 import { Possible, possible } from "shared/modules/utils/possible";
-import { ClientTower } from "client/modules/tower/client-tower";
+import { ClientTower, GenericClientTower } from "client/modules/tower/client-tower";
 import { producer } from "client/store";
-import { getTowerFromId } from "shared/store/tower";
+import { getTowerFromId, getTowerLevelFromId } from "shared/store/tower";
 import { towerActionSlice } from "client/store/tower-action-menu-slice";
+import { getPossibleTowerId } from "client/store/tower-action-menu-slice/tower-action-selectors";
+import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 
 const MAX_TOWER_HOVER_DISTANCE = 100;
 
 @Controller({})
 export class TowerActionController implements OnStart, OnTick {
-	private readonly highlight: Highlight;
-	private hoveringTower: Possible<ClientTower>;
+	private highlight: Possible<Highlight>;
+	private rangeIndicator: Possible<Part>;
 
 	constructor(readonly clientTowerRenderController: ClientTowerRenderController) {
-		this.highlight = new Instance("Highlight");
-		this.highlight.FillTransparency = 0.25;
-		this.highlight.FillColor = Color3.fromRGB(255, 255, 255);
-
-		this.hoveringTower = {
+		this.highlight = {
+			exists: false,
+		};
+		this.rangeIndicator = {
 			exists: false,
 		};
 	}
 
-	private getHoveringTower(): Possible<ClientTower> {
+	private getHoveringTower(): Possible<GenericClientTower> {
 		const possibleCamera = possible<Camera>(Workspace.CurrentCamera);
 		if (!possibleCamera.exists)
 			return {
@@ -55,13 +56,62 @@ export class TowerActionController implements OnStart, OnTick {
 		const model = possibleModel.value;
 		const clientTowers = this.clientTowerRenderController.getClientTowers();
 
-		const possibleClientTower = possible<ClientTower>(
+		const possibleClientTower = possible<GenericClientTower>(
 			clientTowers.find((clientTower) => {
 				const towerModel = clientTower.getModel();
 				return towerModel === model;
 			}),
 		);
 		return possibleClientTower;
+	}
+
+	private destroyHighlight() {
+		if (!this.highlight.exists) return;
+
+		this.highlight.value.Destroy();
+		this.highlight = {
+			exists: false,
+		};
+	}
+
+	private createHighlight(parent: Instance) {
+		this.destroyHighlight();
+
+		const highlight = new Instance("Highlight");
+		highlight.Parent = parent;
+
+		this.highlight = {
+			exists: true,
+			value: highlight,
+		};
+	}
+
+	private destroyRangeIndicator() {
+		if (!this.rangeIndicator.exists) return;
+
+		this.rangeIndicator.value.Destroy();
+		this.rangeIndicator = {
+			exists: false,
+		};
+	}
+
+	private createRangeIndicator(parent: Instance, range: number, position: Vector3) {
+		this.destroyRangeIndicator();
+
+		const rangeIndicator = new Instance("Part");
+		rangeIndicator.Shape = Enum.PartType.Cylinder;
+		rangeIndicator.Size = new Vector3(0.1, range * 2, range * 2);
+		rangeIndicator.Anchored = true;
+		rangeIndicator.CanCollide = false;
+		rangeIndicator.Transparency = 0.5;
+		rangeIndicator.BrickColor = new BrickColor("Bright blue");
+		rangeIndicator.CFrame = new CFrame(position).mul(CFrame.Angles(0, 0, math.rad(90)));
+		rangeIndicator.Parent = parent;
+
+		this.rangeIndicator = {
+			exists: true,
+			value: rangeIndicator,
+		};
 	}
 
 	onStart(): void {
@@ -76,18 +126,53 @@ export class TowerActionController implements OnStart, OnTick {
 				producer.setTowerId(id);
 			}
 		});
+
+		producer.subscribe(getPossibleTowerId, (possibleTowerId) => {
+			if (!possibleTowerId.exists) return;
+
+			const towerId = possibleTowerId.value;
+
+			const possibleTower = producer.getState(getTowerFromId(towerId));
+			if (!possibleTower.exists) return;
+
+			const { towerType, level } = possibleTower.value;
+			const towerStats = describeTowerFromType(towerType, level);
+
+			const possibleClientTower = this.clientTowerRenderController.getClientTowerFromId(towerId);
+			if (!possibleClientTower.exists) return;
+
+			const clientTower = possibleClientTower.value;
+			const model = clientTower.getModel();
+
+			const rootPosition = model.humanoidRootPart.rootAttachment.WorldPosition;
+
+			this.createRangeIndicator(Workspace, towerStats.range, rootPosition);
+
+			const unsubscribe = producer.subscribe(getTowerLevelFromId(towerId), (level) => {
+				const towerStats = describeTowerFromType(towerType, level);
+				this.createRangeIndicator(Workspace, towerStats.range, rootPosition);
+			});
+
+			return () => {
+				unsubscribe();
+				this.destroyRangeIndicator();
+			};
+		});
 	}
 
 	onTick(dt: number): void {
 		const possibleClientTower = this.getHoveringTower();
-		this.hoveringTower = possibleClientTower;
 		if (!possibleClientTower.exists) {
-			this.highlight.Parent = undefined;
+			this.destroyHighlight();
 			return;
 		}
 
 		const clientTower = possibleClientTower.value;
 		const model = clientTower.getModel();
-		this.highlight.Parent = model;
+		if (this.highlight.exists && this.highlight.value.Parent === model) {
+			return;
+		}
+
+		this.createHighlight(model);
 	}
 }

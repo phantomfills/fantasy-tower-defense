@@ -83,3 +83,13 @@ export function describeTowerFromType(_type: TowerType, level: number): TowerLev
 export function getTowerMaxLevelFromType(_type: TowerType): number {
 	return towerTypeToStatsMap[_type].levels.size() - 1;
 }
+
+export function getTotalCostForTowerUpToLevel(_type: TowerType, level: number): number {
+	return towerTypeToStatsMap[_type].levels.reduce((accumulator, currentTowerLevel) => {
+		return accumulator <= level ? accumulator + currentTowerLevel.cost : accumulator;
+	}, 0);
+}
+
+export function getSellPriceForTower(_type: TowerType, level: number, sellbackRate: number): number {
+	return getTotalCostForTowerUpToLevel(_type, level) * sellbackRate;
+}

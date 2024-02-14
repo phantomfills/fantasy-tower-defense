@@ -16,6 +16,7 @@ import { TowerActionMenu } from "./tower/tower-action-menu";
 import { Events } from "client/network";
 import { getMoney } from "shared/store/money";
 import { Players } from "@rbxts/services";
+import { producer } from "client/store";
 
 export function App() {
 	const towers = useSelector(getTowerLoadout);
@@ -52,6 +53,10 @@ export function App() {
 					actions={{
 						upgrade: () => {
 							Events.upgradeTower.fire(possibleTowerFocusId.value);
+						},
+						sell: () => {
+							producer.clearTowerId();
+							Events.sellTower.fire(possibleTowerFocusId.value);
 						},
 					}}
 				/>

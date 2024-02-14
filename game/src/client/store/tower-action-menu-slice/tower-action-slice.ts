@@ -13,8 +13,9 @@ export const initialState: TowerActionState = {
 
 export const towerActionSlice = createProducer(initialState, {
 	setTowerId: (state, id: string) => ({
+		...state,
 		towerId: { exists: true, value: id },
 	}),
 
-	clearTowerId: (state) => ({ towerId: { exists: false } }),
+	clearTowerId: (state) => ({ ...state, towerId: { exists: false } }),
 });

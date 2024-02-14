@@ -11,8 +11,8 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 		speed: 4,
 	},
 	STRONG_DUMMY: {
-		maxHealth: 100,
-		speed: 5.5,
+		maxHealth: 1000,
+		speed: 8,
 	},
 };
 

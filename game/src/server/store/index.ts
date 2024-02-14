@@ -21,7 +21,7 @@ const broadcaster = createBroadcaster({
 		Events.dispatch.fire(player, actions);
 	},
 
-	hydrateRate: 10,
+	hydrateRate: 120,
 });
 
 Events.start.connect((player) => {

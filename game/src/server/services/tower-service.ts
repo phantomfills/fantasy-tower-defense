@@ -7,12 +7,17 @@ import { getAttacks, getTowerFromId, getTowers, towerDoesNotExistFromId } from "
 import { getClosestEnemyIdToTower, getEnemyCFrameFromId, getEnemyIdsInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { Attack } from "shared/modules/attack";
-import { describeTowerFromType, getTowerMaxLevelFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import {
+	describeTowerFromType,
+	getSellPriceForTower,
+	getTowerMaxLevelFromType,
+} from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import Object from "@rbxts/object-utils";
 import { getMoney } from "shared/store/money";
 
 const MILLISECONDS_IN_SECOND = 1000;
+const SELLBACK_RATE = 0.25;
 
 function towerAdded(id: string): void {
 	let lastAttackTimestamp = getCurrentTimeInMilliseconds();
@@ -70,6 +75,19 @@ function deductMoneyFromUser(userId: string, amount: number): void {
 	producer.removeMoney(userId, amount);
 }
 
+function sellTower(id: string): void {
+	const possibleTower = producer.getState(getTowerFromId(id));
+	if (!possibleTower.exists) return;
+
+	const tower = possibleTower.value;
+	const sellPrice = getSellPriceForTower(tower.towerType, tower.level, SELLBACK_RATE);
+
+	const owner = tower.owner;
+	producer.addMoney(owner, sellPrice);
+
+	producer.destroyTower(id);
+}
+
 @Service({})
 export class TowerService implements OnStart {
 	onStart(): void {
@@ -104,6 +122,16 @@ export class TowerService implements OnStart {
 			deductMoneyFromUser(userId, upgradeCost);
 
 			producer.upgradeTower(id);
+		});
+
+		Events.sellTower.connect((player, id) => {
+			const possibleTower = producer.getState(getTowerFromId(id));
+			if (!possibleTower.exists) return;
+
+			const tower = possibleTower.value;
+			if (tower.owner !== tostring(player.UserId)) return;
+
+			sellTower(id);
 		});
 
 		producer.observe(getAttacks, ({ enemyId, damage }) => {

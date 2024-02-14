@@ -1,4 +1,4 @@
-import { ClientTower } from "client/modules/tower/client-tower";
+import { GenericClientTower } from "client/modules/tower/client-tower";
 import { createClientTower } from "client/modules/tower/client-tower-factory";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { Controller, OnStart } from "@flamework/core";
@@ -7,24 +7,24 @@ import { getAttacks, getTowers } from "shared/store/tower";
 
 @Controller({})
 export class ClientTowerRenderController implements OnStart {
-	private clientTowers: ClientTower[];
+	private clientTowers: GenericClientTower[];
 
 	constructor() {
 		this.clientTowers = [];
 	}
 
-	private addTower(tower: ClientTower) {
+	private addTower(tower: GenericClientTower) {
 		this.clientTowers.push(tower);
 	}
 
-	private removeTower(tower: ClientTower) {
+	private removeTower(tower: GenericClientTower) {
 		const index = this.clientTowers.indexOf(tower);
 		this.clientTowers.remove(index);
 	}
 
-	private getClientTowerFromId(id: string): Possible<ClientTower> {
-		const possibleClientTower = possible<ClientTower>(
-			this.clientTowers.find((clientTower: ClientTower) => {
+	getClientTowerFromId(id: string): Possible<GenericClientTower> {
+		const possibleClientTower = possible<GenericClientTower>(
+			this.clientTowers.find((clientTower: GenericClientTower) => {
 				return clientTower.getId() === id;
 			}),
 		);
@@ -41,7 +41,7 @@ export class ClientTowerRenderController implements OnStart {
 		this.removeTower(clientTower);
 	}
 
-	getClientTowers(): ClientTower[] {
+	getClientTowers(): GenericClientTower[] {
 		return this.clientTowers;
 	}
 

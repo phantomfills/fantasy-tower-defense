@@ -7,10 +7,12 @@ export interface TowerModel extends Model {
 	};
 }
 
-export class ClientTower {
+export type GenericClientTower = ClientTower<TowerModel>;
+
+export class ClientTower<T extends TowerModel> {
 	private maid: Maid;
 
-	constructor(private readonly model: TowerModel, private readonly id: string, private readonly cframe: CFrame) {
+	constructor(private readonly model: T, private readonly id: string, private readonly cframe: CFrame) {
 		this.maid = new Maid();
 		this.maid.GiveTask(this.model);
 

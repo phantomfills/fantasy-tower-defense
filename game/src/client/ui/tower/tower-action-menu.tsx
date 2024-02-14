@@ -13,6 +13,7 @@ interface TowerActionMenuProps {
 	towerId: string;
 	actions: {
 		upgrade: () => void;
+		sell: () => void;
 	};
 }
 
@@ -49,6 +50,12 @@ export function TowerActionMenu({ towerId, actions }: TowerActionMenuProps) {
 				Position={new UDim2(0, 15, 0.15, 0)}
 				Text="Upgrade"
 				Event={{ MouseButton1Click: actions.upgrade }}
+			/>
+			<textbutton
+				Size={new UDim2(1, -30, 0.15, 0)}
+				Position={new UDim2(0, 30, 0.3, 0)}
+				Text="Sell"
+				Event={{ MouseButton1Click: actions.sell }}
 			/>
 		</Frame>
 	);

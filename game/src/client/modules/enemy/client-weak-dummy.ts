@@ -17,7 +17,7 @@ export class ClientWeakDummy extends ClientEnemy {
 
 		const walkAnimation = new Instance("Animation");
 		walkAnimation.Parent = animator;
-		walkAnimation.AnimationId = "rbxassetid://15794735591";
+		walkAnimation.AnimationId = "rbxassetid://16356319282";
 
 		const animation = animator.LoadAnimation(walkAnimation);
 		animation.Play();

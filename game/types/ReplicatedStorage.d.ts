@@ -4,27 +4,34 @@ interface ReplicatedStorage extends Instance {
 			map: Folder & {
 				["path-waypoint"]: ModuleScript;
 			};
-			tower: Folder & {
-				["tower-type-to-display-name-map"]: ModuleScript;
-				["tower-type-to-model-map"]: ModuleScript;
-				["tower-type"]: ModuleScript;
-				["tower-model"]: ModuleScript;
-			};
-			util: Folder & {
+			utils: Folder & {
 				["get-time-in-ms"]: ModuleScript;
+				["id-utils"]: ModuleScript;
 				prettify: ModuleScript;
 				possible: ModuleScript;
-				["get-path-length"]: ModuleScript;
+				["path-utils"]: ModuleScript;
 				["number-to-key-map"]: ModuleScript;
 				["snap-to-cframe"]: ModuleScript;
 			};
+			tower: Folder & {
+				["tower-type-to-display-name-map"]: ModuleScript;
+				["tower-model"]: ModuleScript;
+				["tower-type-to-tower-stats-map"]: ModuleScript;
+				["tower-type"]: ModuleScript;
+				["tower-type-to-model-map"]: ModuleScript;
+			};
 			enemy: Folder & {
-				["enemy-type-to-enemy-stats"]: ModuleScript;
+				["enemy-type-to-enemy-stats-map"]: ModuleScript;
+				["enemy-type-to-display-name-map"]: ModuleScript;
 				["enemy-type"]: ModuleScript;
+			};
+			attack: ModuleScript & {
+				["attack-factory"]: ModuleScript;
 			};
 		};
 		assets: ModuleScript;
 		network: ModuleScript;
+		tests: Folder;
 		components: Folder;
 		store: ModuleScript & {
 			map: ModuleScript & {
@@ -34,6 +41,10 @@ interface ReplicatedStorage extends Instance {
 			tower: ModuleScript & {
 				["tower-slice"]: ModuleScript;
 				["tower-selectors"]: ModuleScript;
+			};
+			money: ModuleScript & {
+				["money-slice"]: ModuleScript;
+				["money-selectors"]: ModuleScript;
 			};
 			enemy: ModuleScript & {
 				["enemy-slice"]: ModuleScript;
@@ -46,43 +57,48 @@ interface ReplicatedStorage extends Instance {
 			archer: Folder & {
 				models: Folder & {
 					archer: Model & {
-						["Left Leg"]: MeshPart;
-						["Right Leg"]: MeshPart;
-						Head: MeshPart & {
-							face: Decal;
+						rightArm: MeshPart & {
+							bow: Part & {
+								top: Attachment;
+								topBeam: Beam;
+								bottom: Attachment;
+								middle: Attachment;
+								bottomBeam: Beam;
+								mesh: SpecialMesh;
+							};
+							["rightArm 🡪 bow"]: Weld;
 						};
-						Torso: MeshPart & {
-							["Left Shoulder"]: Motor6D;
+						leftArm: MeshPart & {
+							bowDrawAttachment: Attachment;
+						};
+						rightLeg: MeshPart;
+						head: MeshPart & {
+							["head 🡪 hat"]: Weld;
+							hat: MeshPart;
+						};
+						torso: MeshPart & {
+							quiver: MeshPart;
 							["Right Shoulder"]: Motor6D;
 							Neck: Motor6D;
 							["Right Hip"]: Motor6D;
+							strap: MeshPart & {
+								["Left Shoulder"]: Motor6D;
+								["Right Shoulder"]: Motor6D;
+								Neck: Motor6D;
+								["Right Hip"]: Motor6D;
+								["Left Hip"]: Motor6D;
+							};
+							["torso 🡪 quiver"]: Weld;
 							["Left Hip"]: Motor6D;
+							["Left Shoulder"]: Motor6D;
+							["torso 🡪 strap"]: Weld;
 						};
 						humanoidRootPart: Part & {
 							rootAttachment: Attachment;
 							RootJoint: Motor6D;
 						};
-						["Right Arm"]: MeshPart & {
-							["Right Arm 🡪 Arrow"]: Weld;
-							["Right Arm 🡪 Bow"]: Weld;
-						};
-						["Left Arm"]: MeshPart;
-						Bow: Part & {
-							Top: Attachment;
-							TopBeam: Beam;
-							Weld: Weld;
-							Bottom: Attachment;
-							BottomBeam: Beam;
-							Middle: Attachment;
-							Mesh: SpecialMesh;
-						};
-						Arrow: Part & {
-							Mesh: SpecialMesh;
-						};
+						leftLeg: MeshPart;
 					};
-				};
-				images: Folder & {
-					placement: NumberValue;
 				};
 			};
 		};
@@ -93,7 +109,7 @@ interface ReplicatedStorage extends Instance {
 						["left-arm"]: MeshPart;
 						["left-leg"]: MeshPart;
 						head: MeshPart & {
-							["sad-face"]: Decal;
+							face: Decal;
 						};
 						torso: MeshPart & {
 							["Left Shoulder"]: Motor6D;
@@ -384,6 +400,11 @@ interface ReplicatedStorage extends Instance {
 					};
 					ES7Types: ModuleScript;
 				};
+				t: Folder & {
+					lib: Folder & {
+						ts: ModuleScript;
+					};
+				};
 				["react-reflex"]: ModuleScript & {
 					components: Folder & {
 						ReflexContext: ModuleScript;
@@ -395,9 +416,24 @@ interface ReplicatedStorage extends Instance {
 						["use-selector"]: ModuleScript;
 					};
 				};
-				t: Folder & {
-					lib: Folder & {
-						ts: ModuleScript;
+				testez: Folder & {
+					src: ModuleScript & {
+						TestPlanner: ModuleScript;
+						TestResults: ModuleScript;
+						TestRunner: ModuleScript;
+						TestBootstrap: ModuleScript;
+						TestSession: ModuleScript;
+						LifecycleHooks: ModuleScript;
+						Reporters: Folder & {
+							TextReporter: ModuleScript;
+							TextReporterQuiet: ModuleScript;
+							TeamCityReporter: ModuleScript;
+						};
+						TestPlan: ModuleScript;
+						TestEnum: ModuleScript;
+						ExpectationContext: ModuleScript;
+						Context: ModuleScript;
+						Expectation: ModuleScript;
 					};
 				};
 				types: Folder & {

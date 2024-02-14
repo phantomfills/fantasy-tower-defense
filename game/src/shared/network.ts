@@ -18,11 +18,10 @@ export interface ClientEnemyInfo {
 	rotation: CFrame;
 }
 
-type EnemyList = ClientEnemyInfo[];
-
 interface SharedEvents {
 	placeTower(towerType: TowerType, cframe: CFrame): void;
 	upgradeTower(id: string): void;
+	sellTower(id: string): void;
 
 	dispatch(actions: BroadcastAction[]): void;
 	start(): void;
