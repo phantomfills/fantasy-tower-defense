@@ -69,6 +69,9 @@ export function App() {
 							producer.clearTowerId();
 						},
 					}}
+					close={() => {
+						producer.clearTowerId();
+					}}
 					key="tower-action-menu"
 				/>
 			)}

@@ -68,13 +68,21 @@ interface TowerActionMenuProps {
 	upgradeTitle: string;
 	upgradeDescription: string;
 	level: number;
+	close: () => void;
 	actions: {
 		upgrade: Action;
 		sell: Action;
 	};
 }
 
-export function TowerActionMenu({ name, level, actions, upgradeTitle, upgradeDescription }: TowerActionMenuProps) {
+export function TowerActionMenu({
+	name,
+	level,
+	actions,
+	upgradeTitle,
+	upgradeDescription,
+	close,
+}: TowerActionMenuProps) {
 	const rem = useRem();
 
 	return (
@@ -84,6 +92,13 @@ export function TowerActionMenu({ name, level, actions, upgradeTitle, upgradeDes
 			backgroundTransparency={0.5}
 			backgroundColor={new Color3(0, 0, 0)}
 		>
+			<imagebutton
+				Size={new UDim2(0, 20, 0, 20)}
+				Position={new UDim2(1, -30, 0, 10)}
+				BackgroundTransparency={1}
+				Image={images.x_button}
+				Event={{ MouseButton1Click: close }}
+			/>
 			<uicorner CornerRadius={new UDim(0, 8)} />
 			<OneThickWhiteStroke />
 			<Label
@@ -140,10 +155,11 @@ interface TowerActionMenuFromIdProps {
 		upgrade: () => void;
 		sell: () => void;
 	};
+	close: () => void;
 	towerId: string;
 }
 
-export function TowerActionMenuFromId({ towerId, actions }: TowerActionMenuFromIdProps) {
+export function TowerActionMenuFromId({ towerId, actions, close }: TowerActionMenuFromIdProps) {
 	const possibleTower = useSelector(getPossibleTowerFromId(towerId));
 	if (!possibleTower.exists) {
 		return <></>;
@@ -175,6 +191,7 @@ export function TowerActionMenuFromId({ towerId, actions }: TowerActionMenuFromI
 					call: actions.sell,
 				},
 			}}
+			close={close}
 			upgradeTitle={upgradeTitle}
 			upgradeDescription={upgradeDescription}
 		/>

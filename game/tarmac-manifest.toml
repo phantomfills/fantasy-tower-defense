@@ -42,3 +42,8 @@ packable = false
 hash = "47bfd927d86ade64846d4bf0e29e05e0bdee89d14b933da1973158b740c14262"
 id = 15771465269
 packable = false
+
+[inputs."assets/images/x_button.png"]
+hash = "3f97f6f5ca98055cfe8b82f94299d3c2fb6c597cfa2b17393b7706577b1ca58b"
+id = 16724865948
+packable = false

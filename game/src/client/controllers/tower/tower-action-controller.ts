@@ -5,7 +5,7 @@ import { Possible, possible } from "shared/modules/utils/possible";
 import { GenericClientTower } from "client/modules/tower/client-tower";
 import { producer } from "client/store";
 import { getPossibleTowerFromId, getPossibleTowerLevelFromId, towerDoesNotExistFromId } from "shared/store/tower";
-import { getPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
+import { getPossibleTowerId, getTowerIsNotFocused } from "client/store/tower-action-menu/tower-action-selectors";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 
 const MAX_TOWER_HOVER_DISTANCE = 100;
@@ -100,7 +100,6 @@ export class TowerActionController implements OnStart, OnTick {
 	private createRangeIndicator(parent: Instance, range: number, position: Vector3) {
 		this.destroyRangeIndicator();
 
-		// containing range indicator in a model to allow for a highlight (transparent parts do not support highlights)
 		const rangeIndicatorModel = new Instance("Model");
 		rangeIndicatorModel.Parent = parent;
 		rangeIndicatorModel.Name = "Range Indicator Model";
@@ -167,12 +166,13 @@ export class TowerActionController implements OnStart, OnTick {
 
 			const unsubscribe = producer.subscribe(towerLevelSelector, (possibleLevel) => {
 				if (!possibleLevel.exists) return;
+
 				const level = possibleLevel.value;
 				const towerStats = describeTowerFromType(towerType, level);
 				this.createRangeIndicator(Workspace, towerStats.range, rootPosition);
 			});
 
-			producer.once(towerDoesNotExistFromId(towerId), () => {
+			producer.once(getTowerIsNotFocused(towerId), () => {
 				this.destroyRangeIndicator();
 				unsubscribe();
 			});

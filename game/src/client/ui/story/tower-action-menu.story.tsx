@@ -21,6 +21,9 @@ export = (target: Frame) => {
 					},
 				},
 			}}
+			close={() => {
+				print("Close!");
+			}}
 			upgradeTitle="Bat Signal"
 			upgradeDescription="Shine the bat signal to call for help!"
 		/>

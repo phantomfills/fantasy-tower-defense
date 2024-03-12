@@ -8,6 +8,7 @@ interface Images {
 	left_mouse_button: string;
 	stripes: string;
 	pixel_heart: string;
+	x_button: string;
 }
 
 export declare const images: Images;

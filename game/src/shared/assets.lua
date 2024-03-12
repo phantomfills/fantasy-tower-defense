@@ -10,5 +10,6 @@ return {
 		q_button = "rbxassetid://15521240434",
 		r_button = "rbxassetid://15521240550",
 		stripes = "rbxassetid://15771465269",
+		x_button = "rbxassetid://16724865948",
 	},
 }
