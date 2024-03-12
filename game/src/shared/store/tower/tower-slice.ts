@@ -11,12 +11,10 @@ export interface Tower {
 }
 
 export type TowerState = {
-	attacks: Record<string, Attack>;
 	towers: Record<string, Tower | undefined>;
 };
 
 const initialState: TowerState = {
-	attacks: {},
 	towers: {},
 };
 
@@ -35,9 +33,5 @@ export const towerSlice = createProducer(initialState, {
 
 	destroyTower: (state, id: string) => {
 		return { ...state, towers: { ...state.towers, [id]: undefined } };
-	},
-
-	addAttack: (state, id: string, attack: Attack) => {
-		return { ...state, attacks: { ...state.attacks, [id]: attack } };
 	},
 });

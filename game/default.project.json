@@ -54,6 +54,12 @@
 						"$className": "Folder",
 						"models": {
 							"$className": "Folder",
+							"level_0": {
+								"$path": "assets/archer/level-0.rbxm"
+							},
+							"level_1": {
+								"$path": "assets/archer/level-1.rbxm"
+							},
 							"archer": {
 								"$path": "assets/archer.rbxm"
 							}

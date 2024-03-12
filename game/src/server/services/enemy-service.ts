@@ -2,10 +2,12 @@ import { OnStart, OnTick, Service } from "@flamework/core";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
 import { getMap } from "shared/store/map";
-import { Enemy, getClosestEnemyIdToTower } from "shared/store/enemy";
+import { Enemy, getEnemies } from "shared/store/enemy";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
-import { getAttacks, getTowerFromId } from "shared/store/tower";
+import { getPossibleTowerFromId } from "shared/store/tower";
+import { getAttacks } from "shared/store/attack";
+import Object from "@rbxts/object-utils";
 
 function addEnemyToStore(enemy: Enemy): void {
 	producer.addEnemy(enemy, createId());
@@ -14,10 +16,10 @@ function addEnemyToStore(enemy: Enemy): void {
 @Service({})
 export class EnemyService implements OnStart, OnTick {
 	onStart(): void {
-		producer.observe(getAttacks, (attack, _) => {
+		producer.observe(getAttacks, (attack) => {
 			const { towerId, damage } = attack;
 
-			const possibleTower = producer.getState(getTowerFromId(towerId));
+			const possibleTower = producer.getState(getPossibleTowerFromId(towerId));
 			if (!possibleTower.exists) return;
 
 			const tower = possibleTower.value;
@@ -35,7 +37,7 @@ export class EnemyService implements OnStart, OnTick {
 			const enemy = createEnemy("STRONG_DUMMY", path);
 			addEnemyToStore(enemy);
 
-			task.wait(5);
+			task.wait(1);
 		}
 	}
 

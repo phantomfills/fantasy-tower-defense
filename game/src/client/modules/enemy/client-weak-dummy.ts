@@ -10,7 +10,7 @@ export class ClientWeakDummy extends ClientEnemy {
 
 	start() {
 		const animationController = new Instance("AnimationController");
-		animationController.Parent = this.model;
+		animationController.Parent = this.getModel();
 
 		const animator = new Instance("Animator");
 		animator.Parent = animationController;

@@ -1,9 +1,8 @@
 import { OnStart, Service } from "@flamework/core";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
-import { Tower } from "shared/store/tower/tower-slice";
 import { producer } from "server/store";
-import { getAttacks, getTowerFromId, getTowers, towerDoesNotExistFromId } from "shared/store/tower";
+import { getPossibleTowerFromId, getTowers, towerDoesNotExistFromId } from "shared/store/tower";
 import { getClosestEnemyIdToTower, getEnemyCFrameFromId, getEnemyIdsInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { Attack } from "shared/modules/attack";
@@ -15,9 +14,9 @@ import {
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import Object from "@rbxts/object-utils";
 import { getMoney } from "shared/store/money";
+import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 
 const MILLISECONDS_IN_SECOND = 1000;
-const SELLBACK_RATE = 0.25;
 
 function towerAdded(id: string): void {
 	let lastAttackTimestamp = getCurrentTimeInMilliseconds();
@@ -25,7 +24,7 @@ function towerAdded(id: string): void {
 	const stopCheckingForEnemiesInTowerRange = producer.subscribe(getEnemyIdsInTowerRange(id), (enemies) => {
 		if (enemies.isEmpty()) return;
 
-		const possibleTower = producer.getState(getTowerFromId(id));
+		const possibleTower = producer.getState(getPossibleTowerFromId(id));
 		if (!possibleTower.exists) return;
 
 		const tower = possibleTower.value;
@@ -76,7 +75,7 @@ function deductMoneyFromUser(userId: string, amount: number): void {
 }
 
 function sellTower(id: string): void {
-	const possibleTower = producer.getState(getTowerFromId(id));
+	const possibleTower = producer.getState(getPossibleTowerFromId(id));
 	if (!possibleTower.exists) return;
 
 	const tower = possibleTower.value;
@@ -107,7 +106,7 @@ export class TowerService implements OnStart {
 		Events.upgradeTower.connect((player, id) => {
 			const userId = tostring(player.UserId);
 
-			const possibleTower = producer.getState(getTowerFromId(id));
+			const possibleTower = producer.getState(getPossibleTowerFromId(id));
 			if (!possibleTower.exists) return;
 
 			const tower = possibleTower.value;
@@ -125,17 +124,13 @@ export class TowerService implements OnStart {
 		});
 
 		Events.sellTower.connect((player, id) => {
-			const possibleTower = producer.getState(getTowerFromId(id));
+			const possibleTower = producer.getState(getPossibleTowerFromId(id));
 			if (!possibleTower.exists) return;
 
 			const tower = possibleTower.value;
 			if (tower.owner !== tostring(player.UserId)) return;
 
 			sellTower(id);
-		});
-
-		producer.observe(getAttacks, ({ enemyId, damage }) => {
-			producer.dealDamageToEnemy(enemyId, damage);
 		});
 
 		producer.subscribe(getTowers, (towers, lastTowers) => {

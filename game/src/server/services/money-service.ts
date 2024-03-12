@@ -2,7 +2,7 @@ import { Service, OnStart } from "@flamework/core";
 import { Players } from "@rbxts/services";
 import { producer } from "server/store";
 
-const STARTING_CASH = 25000;
+const STARTING_CASH = 2_500_000;
 
 function initializeMoney(userId: string, amount: number) {
 	producer.initializeMoney(userId, amount);

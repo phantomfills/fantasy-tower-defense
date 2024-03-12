@@ -14,13 +14,13 @@ interface ArcherModel extends TowerModel {
 	};
 }
 
-export class ClientArcher extends ClientTower<ArcherModel> {
+export class ClientArcher1 extends ClientTower<ArcherModel> {
 	private readonly animator: Animator;
 	private readonly idleAnimationTrack: AnimationTrack;
 	private readonly attackAnimationTrack: AnimationTrack;
 
 	constructor(id: string, cframe: CFrame) {
-		const archerModel = ReplicatedStorage.assets.towers.archer.models.level_0.Clone();
+		const archerModel = ReplicatedStorage.assets.towers.archer.models.level_1.Clone();
 		archerModel.Parent = Workspace;
 		super(archerModel, id, cframe);
 
@@ -31,23 +31,22 @@ export class ClientArcher extends ClientTower<ArcherModel> {
 		this.animator.Name = "animator";
 		this.animator.Parent = animationController;
 
-		const idle = this.playAnimation("rbxassetid://16590249418");
+		const idle = this.createAnimation("rbxassetid://16590249418");
+		idle.Play();
 		this.idleAnimationTrack = idle;
 
-		const attack = this.playAnimation("rbxassetid://16590396309");
+		const attack = this.createAnimation("rbxassetid://16590396309");
 		this.attackAnimationTrack = attack;
 
 		this.connectBeamsToLeftArm();
 	}
 
-	private playAnimation(animationId: string) {
+	private createAnimation(animationId: string) {
 		const animation = new Instance("Animation");
 		animation.AnimationId = animationId;
 		animation.Parent = this.animator;
 
 		const track = this.animator.LoadAnimation(animation);
-		track.Play();
-
 		return track;
 	}
 

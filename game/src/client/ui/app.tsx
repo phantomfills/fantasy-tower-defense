@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import Roact, { useEffect } from "@rbxts/roact";
 import { Panel } from "./utils/panel";
 import { TowerLoadout } from "./tower/tower-loadout";
 import { LifeCounter } from "./game/life-counter";
@@ -11,11 +11,14 @@ import { MatchInfo } from "./game/match-info";
 import { CashCounter } from "./game/cash-counter";
 import { getHoveringEnemyId } from "client/store/enemy-hover";
 import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
-import { getPossibleTowerId } from "client/store/tower-action-menu-slice/tower-action-selectors";
-import { TowerActionMenu } from "./tower/tower-action-menu";
+import { getPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
+import { TowerActionMenuFromId } from "./tower/tower-action-menu";
 import { Events } from "client/network";
 import { getMoney } from "shared/store/money";
 import { Players } from "@rbxts/services";
+import { getEnemyDamageIndicators } from "client/store/enemy-damage-indicator";
+import Object from "@rbxts/object-utils";
+import { EnemyDamageIndicator } from "./enemy/enemy-damage-indicator";
 import { producer } from "client/store";
 
 export function App() {
@@ -23,48 +26,67 @@ export function App() {
 	const possibleTowerPlacement = useSelector(getPossibleTowerPlacement);
 	const possibleHoveringEnemyId = useSelector(getHoveringEnemyId);
 	const possibleTowerFocusId = useSelector(getPossibleTowerId);
+	const enemyDamageIndicators = useSelector(getEnemyDamageIndicators);
 	const money = useSelector(getMoney(tostring(Players.LocalPlayer.UserId)));
 
+	useEffect(() => {
+		print(possibleTowerFocusId.exists);
+	}, [possibleTowerFocusId]);
+
 	return (
-		<Panel>
-			<TowerLoadout>
+		<Panel key="app">
+			<TowerLoadout key="tower-loadout">
 				{towers.map((tower, index) => (
 					<TowerSlot
 						number={tower.number}
 						icon={tower.icon}
 						cost={tower.cost}
 						callback={tower.callback}
-						key={index}
+						key={`tower-slot-${index}`}
 					/>
 				))}
 			</TowerLoadout>
 
 			{possibleTowerPlacement.exists && (
-				<FollowMouse size={new UDim2(0.075, 0, 0.04, 0)} zIndex={5}>
-					<TowerPlacementMessage />
+				<FollowMouse size={new UDim2(0.075, 0, 0.04, 0)} zIndex={5} key="tower-placement-message-container">
+					<TowerPlacementMessage key="tower-placement-message" />
 				</FollowMouse>
 			)}
 
-			{possibleHoveringEnemyId.exists && <EnemyTooltipFromId id={possibleHoveringEnemyId.value} />}
+			{possibleHoveringEnemyId.exists && (
+				<EnemyTooltipFromId id={possibleHoveringEnemyId.value} key="enemy-tooltip" />
+			)}
 
 			{possibleTowerFocusId.exists && (
-				<TowerActionMenu
+				<TowerActionMenuFromId
 					towerId={possibleTowerFocusId.value}
 					actions={{
 						upgrade: () => {
 							Events.upgradeTower.fire(possibleTowerFocusId.value);
 						},
 						sell: () => {
-							producer.clearTowerId();
 							Events.sellTower.fire(possibleTowerFocusId.value);
+							producer.clearTowerId();
 						},
 					}}
+					key="tower-action-menu"
 				/>
 			)}
 
-			<MatchInfo>
-				<LifeCounter lives={1000} />
-				<CashCounter value={money.exists ? money.value : 0} />
+			{Object.values(enemyDamageIndicators).map(({ damage, position, spawnTime }, index) => {
+				return (
+					<EnemyDamageIndicator
+						key={`enemy-damage-indicator-${index}`}
+						damage={damage}
+						position={position}
+						spawnTime={spawnTime}
+					/>
+				);
+			})}
+
+			<MatchInfo key="match-info">
+				<LifeCounter lives={1000} key="life-counter" />
+				<CashCounter value={money.exists ? money.value : 0} key="money-counter" />
 			</MatchInfo>
 		</Panel>
 	);

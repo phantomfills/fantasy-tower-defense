@@ -5,7 +5,8 @@ import Roact from "@rbxts/roact";
 import { Events } from "client/network";
 import { slices } from "shared/store";
 import { enemyHoverSlice } from "./enemy-hover";
-import { towerActionSlice } from "./tower-action-menu-slice";
+import { towerActionSlice } from "./tower-action-menu";
+import { enemyDamageIndicatorSlice } from "./enemy-damage-indicator";
 
 export type RootState = InferState<typeof producer>;
 
@@ -14,6 +15,7 @@ export const producer = combineProducers({
 	towerLoadout: towerLoadoutSlice,
 	enemyHover: enemyHoverSlice,
 	towerAction: towerActionSlice,
+	enemyDamageIndicator: enemyDamageIndicatorSlice,
 });
 
 export function RootProvider(props: Roact.PropsWithChildren) {

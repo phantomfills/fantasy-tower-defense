@@ -1,7 +1,7 @@
 import { createProducer } from "@rbxts/reflex";
 import { Possible } from "shared/modules/utils/possible";
 
-export interface EnemyHoverState {
+interface EnemyHoverState {
 	possibleEnemyHoverId: Possible<string>;
 }
 

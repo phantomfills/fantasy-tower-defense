@@ -3,7 +3,8 @@ import { createClientTower } from "client/modules/tower/client-tower-factory";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { Controller, OnStart } from "@flamework/core";
 import { producer } from "client/store";
-import { getAttacks, getTowers } from "shared/store/tower";
+import { getTowers } from "shared/store/tower";
+import { getAttacks } from "shared/store/attack";
 
 @Controller({})
 export class ClientTowerRenderController implements OnStart {
@@ -46,8 +47,8 @@ export class ClientTowerRenderController implements OnStart {
 	}
 
 	onStart(): void {
-		producer.observe(getTowers, (tower, id) => {
-			const clientTower = createClientTower(tower.towerType, id, tower.cframe);
+		producer.observe(getTowers, ({ towerType, level, cframe }, id) => {
+			const clientTower = createClientTower(towerType, level, id, cframe);
 			this.addTower(clientTower);
 
 			return () => {

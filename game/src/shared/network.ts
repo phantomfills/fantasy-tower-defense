@@ -22,6 +22,7 @@ interface SharedEvents {
 	placeTower(towerType: TowerType, cframe: CFrame): void;
 	upgradeTower(id: string): void;
 	sellTower(id: string): void;
+	attackEnemy(towerId: string, enemyId: string, damage: number, enemyPosition: Vector3): void;
 
 	dispatch(actions: BroadcastAction[]): void;
 	start(): void;

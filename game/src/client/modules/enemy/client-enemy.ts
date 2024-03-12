@@ -5,8 +5,8 @@ import { possible } from "shared/modules/utils/possible";
 
 const ENEMY_ON_SCREEN_BUFFER_PIXELS = 50;
 
-const MINIMUM_CLIENT_ENEMY_POSITION_OFFSET = -0.18;
-const MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET = 0.18;
+const MINIMUM_CLIENT_ENEMY_POSITION_OFFSET = -0.5;
+const MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET = 0.5;
 
 export interface EnemyModel extends Model {
 	humanoidRootPart: BasePart & {
@@ -26,7 +26,7 @@ function getRandomPositionOffset(random: Random): LuaTuple<[number, number]> {
 }
 
 export class ClientEnemy {
-	readonly model: EnemyModel;
+	private readonly model: EnemyModel;
 	private id: string;
 	private targetCFrame: CFrame;
 	private maid: Maid;
@@ -57,6 +57,10 @@ export class ClientEnemy {
 
 	getId(): string {
 		return this.id;
+	}
+
+	getModel(): EnemyModel {
+		return this.model;
 	}
 
 	snapToCFrame(cframe: CFrame) {

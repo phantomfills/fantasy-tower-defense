@@ -99,6 +99,86 @@ interface ReplicatedStorage extends Instance {
 						};
 						leftLeg: MeshPart;
 					};
+					level_1: Model & {
+						rightArm: MeshPart & {
+							bow: Part & {
+								top: Attachment;
+								topBeam: Beam;
+								bottom: Attachment;
+								middle: Attachment;
+								bottomBeam: Beam;
+								mesh: SpecialMesh;
+							};
+							["rightArm 🡪 bow"]: Weld;
+						};
+						leftArm: MeshPart & {
+							bowDrawAttachment: Attachment;
+						};
+						rightLeg: MeshPart;
+						head: MeshPart & {
+							hat: MeshPart;
+							face: Decal;
+							["head 🡪 hat"]: Weld;
+						};
+						torso: MeshPart & {
+							quiver: MeshPart;
+							["Right Shoulder"]: Motor6D;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							strap: MeshPart & {
+								["Left Shoulder"]: Motor6D;
+								["Right Shoulder"]: Motor6D;
+								Neck: Motor6D;
+								["Right Hip"]: Motor6D;
+								["Left Hip"]: Motor6D;
+							};
+							["torso 🡪 quiver"]: Weld;
+							["Left Hip"]: Motor6D;
+							["Left Shoulder"]: Motor6D;
+							["torso 🡪 strap"]: Weld;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_0: Model & {
+						rightArm: MeshPart & {
+							bow: Part & {
+								top: Attachment;
+								topBeam: Beam;
+								bottom: Attachment;
+								middle: Attachment;
+								bottomBeam: Beam;
+								mesh: SpecialMesh;
+							};
+							["rightArm 🡪 bow"]: Weld;
+						};
+						leftArm: MeshPart & {
+							bowDrawAttachment: Attachment;
+						};
+						rightLeg: MeshPart;
+						head: MeshPart & {
+							hat: MeshPart;
+							face: Decal;
+							["head 🡪 hat"]: Weld;
+						};
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							["torso 🡪 quiver"]: Weld;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							quiver: MeshPart;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
 				};
 			};
 		};
@@ -106,24 +186,40 @@ interface ReplicatedStorage extends Instance {
 			dummy: Folder & {
 				models: Folder & {
 					dummy: Model & {
-						["left-arm"]: MeshPart;
-						["left-leg"]: MeshPart;
-						head: MeshPart & {
-							face: Decal;
+						["Left Leg"]: Part;
+						["Right Leg"]: Part;
+						Head: Part & {
+							Face: Decal;
+							Mesh: SpecialMesh;
+							Crown: Motor6D;
 						};
-						torso: MeshPart & {
+						cape: Part & {
+							SpecialMesh: SpecialMesh;
+						};
+						Torso: Part & {
 							["Left Shoulder"]: Motor6D;
 							["Right Shoulder"]: Motor6D;
+							Cape: Motor6D;
 							Neck: Motor6D;
 							["Right Hip"]: Motor6D;
+							HitSound: Sound;
 							["Left Hip"]: Motor6D;
 						};
-						["right-leg"]: MeshPart;
 						humanoidRootPart: Part & {
+							["Root Hip"]: Motor6D;
 							rootAttachment: Attachment;
-							RootJoint: Motor6D;
 						};
-						["right-arm"]: MeshPart;
+						["Right Arm"]: Part & {
+							Sword: Motor6D;
+						};
+						["Left Arm"]: Part;
+						crown: Part & {
+							Mesh: SpecialMesh;
+						};
+						["Body Colors"]: BodyColors;
+						Sword: Part & {
+							Mesh: SpecialMesh;
+						};
 					};
 				};
 			};

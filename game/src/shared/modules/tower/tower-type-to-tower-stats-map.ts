@@ -1,3 +1,4 @@
+import Object from "@rbxts/object-utils";
 import { TowerType } from "./tower-type";
 
 interface TowerLevel {
@@ -18,59 +19,60 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 	ARCHER: {
 		levels: [
 			{
-				damage: 25,
-				range: 12,
+				damage: 24,
+				range: 14,
 				cooldown: 2.2,
-				health: 100,
-				cost: 1000,
-				title: "Archer",
-				description: "Fires arrows at enemies which can pierce!",
+				health: 150,
+				cost: 800,
+				title: "Vanessa, Archer",
+				description: "She fires arrows at enemies which can pierce!",
 			},
 			{
-				damage: 25,
+				damage: 30,
 				range: 15,
 				cooldown: 2.2,
 				health: 175,
-				cost: 800,
-				title: "Long Range Arrows",
-				description: "Increased radius.",
+				cost: 725,
+				title: "Level Up",
+				description: "Vanessa sees further, and deals more damage!",
 			},
 			{
-				damage: 25,
+				damage: 32,
 				range: 15,
-				cooldown: 1.8,
-				health: 225,
-				cost: 1300,
+				cooldown: 2,
+				health: 175,
+				cost: 1350,
 				title: "Enhanced Eyesight",
-				description: "Can detect camoflauged enemies. Also attacks faster.",
+				description: "Detects camoflauged enemies. Also attacks faster.",
 			},
 			{
-				damage: 50,
-				range: 17,
-				cooldown: 1.35,
-				health: 350,
-				cost: 2400,
+				damage: 70,
+				range: 17.5,
+				cooldown: 1.25,
+				health: 250,
+				cost: 3800,
 				title: "Crossbow",
-				description: "Uses a fast attacking, long range crossbow that can pierce through many enemies!",
+				description: "Fast attacking, long range crossbow that can pierce through many enemies!",
 			},
 			{
-				damage: 70,
-				range: 17,
-				cooldown: 0.6,
-				health: 600,
-				cost: 5000,
-				title: "Iron Arrows",
+				damage: 90,
+				range: 19.5,
+				cooldown: 0.45,
+				health: 400,
+				cost: 13300,
+				title: "Hunter's Instinct",
 				description:
-					"Attacks faster and does powerful critical shots every so often that deal greatly increased damage.",
+					"She attacks faster and does powerful critical shots every so often that deal MASSIVELY increased damage.",
 			},
 			{
-				damage: 70,
-				range: 18,
-				cooldown: 0.16,
-				health: 900,
-				cost: 12500,
-				title: "Elite Sharpshooter",
-				description: "Elite Sharpshooter shoots really fast and devastates enemies with ease!",
+				damage: 100,
+				range: 22.5,
+				cooldown: 0.18,
+				health: 600,
+				cost: 24500,
+				title: "ELITE SHARPSHOOTER",
+				description:
+					"Elite Sharpshooter shoots really fast and devastates most enemy types with ease! Watch out; you might be next!",
 			},
 		],
 	},
@@ -84,12 +86,61 @@ export function getTowerMaxLevelFromType(_type: TowerType): number {
 	return towerTypeToStatsMap[_type].levels.size() - 1;
 }
 
+export function getTowerUpgradeCost(_type: TowerType, level: number): number {
+	return towerTypeToStatsMap[_type].levels[level] ? towerTypeToStatsMap[_type].levels[level].cost : 0;
+}
+
 export function getTotalCostForTowerUpToLevel(_type: TowerType, level: number): number {
-	return towerTypeToStatsMap[_type].levels.reduce((accumulator, currentTowerLevel) => {
-		return accumulator <= level ? accumulator + currentTowerLevel.cost : accumulator;
-	}, 0);
+	let totalCost = 0;
+	for (let index = 0; index <= level; index++) {
+		totalCost += towerTypeToStatsMap[_type].levels[index].cost;
+	}
+	return totalCost;
 }
 
 export function getSellPriceForTower(_type: TowerType, level: number, sellbackRate: number): number {
-	return getTotalCostForTowerUpToLevel(_type, level) * sellbackRate;
+	const sellPrice = math.floor(getTotalCostForTowerUpToLevel(_type, level) * sellbackRate);
+	return sellPrice;
+}
+
+export function getUpgradeTitle(_type: TowerType, level: number): string {
+	const nextStats = towerTypeToStatsMap[_type].levels[level];
+	if (!nextStats) return "YOU MAXED THIS TOWER!";
+
+	return `Lv. ${level} - ${nextStats.title}`;
+}
+
+export function getUpgradeDescription(_type: TowerType, level: number): string {
+	const nextStats = towerTypeToStatsMap[_type].levels[level];
+	if (!nextStats) return "INFINITE POWER!!";
+
+	return nextStats.description;
+}
+
+export function getChangesForLevel(
+	_type: TowerType,
+	currentLevel: number,
+): { name: string; oldValue: number; newValue: number }[] {
+	const currentStats = towerTypeToStatsMap[_type].levels[currentLevel];
+	const nextStats = towerTypeToStatsMap[_type].levels[currentLevel + 1];
+
+	if (!nextStats) return [];
+
+	const changes = [];
+
+	const keys = Object.keys(currentStats);
+	for (const key of keys) {
+		if (key === "cost") continue;
+
+		const currentStat = currentStats[key];
+		const nextStat = nextStats[key];
+
+		if (!typeIs(currentStat, "number") || !typeIs(nextStat, "number")) continue;
+
+		if (currentStat !== nextStat) {
+			changes.push({ name: key, oldValue: currentStat, newValue: nextStat });
+		}
+	}
+
+	return changes;
 }
