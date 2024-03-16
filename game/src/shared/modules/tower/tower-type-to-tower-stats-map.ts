@@ -19,57 +19,57 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 	ARCHER: {
 		levels: [
 			{
-				damage: 24,
-				range: 14,
-				cooldown: 2.2,
+				damage: 25,
+				range: 10,
+				cooldown: 2,
 				health: 150,
-				cost: 800,
+				cost: 900,
 				title: "Vanessa, Archer",
 				description: "She fires arrows at enemies which can pierce!",
 			},
 			{
-				damage: 30,
-				range: 15,
-				cooldown: 2.2,
+				damage: 50,
+				range: 14,
+				cooldown: 2,
 				health: 175,
-				cost: 725,
+				cost: 750,
 				title: "Level Up",
 				description: "Vanessa sees further, and deals more damage!",
 			},
 			{
-				damage: 32,
+				damage: 50,
 				range: 15,
-				cooldown: 2,
+				cooldown: 1.6,
 				health: 175,
-				cost: 1350,
+				cost: 925,
 				title: "Enhanced Eyesight",
 				description: "Detects camoflauged enemies. Also attacks faster.",
 			},
 			{
-				damage: 70,
-				range: 17.5,
-				cooldown: 1.25,
-				health: 250,
-				cost: 3800,
+				damage: 100,
+				range: 16,
+				cooldown: 1.2,
+				health: 225,
+				cost: 2_200,
 				title: "Crossbow",
 				description: "Fast attacking, long range crossbow that can pierce through many enemies!",
 			},
 			{
-				damage: 90,
-				range: 19.5,
-				cooldown: 0.45,
-				health: 400,
-				cost: 13300,
+				damage: 150,
+				range: 18,
+				cooldown: 1,
+				health: 300,
+				cost: 6_800,
 				title: "Hunter's Instinct",
 				description:
 					"She attacks faster and does powerful critical shots every so often that deal MASSIVELY increased damage.",
 			},
 			{
-				damage: 100,
-				range: 22.5,
-				cooldown: 0.18,
-				health: 600,
-				cost: 24500,
+				damage: 150,
+				range: 20,
+				cooldown: 0.35,
+				health: 375,
+				cost: 14_200,
 				title: "ELITE SHARPSHOOTER",
 				description:
 					"Elite Sharpshooter shoots really fast and devastates most enemy types with ease! Watch out; you might be next!",
@@ -115,6 +115,10 @@ export function getUpgradeDescription(_type: TowerType, level: number): string {
 	if (!nextStats) return "INFINITE POWER!!";
 
 	return nextStats.description;
+}
+
+export function getPlacementCostForTower(_type: TowerType): number {
+	return towerTypeToStatsMap[_type].levels[0].cost;
 }
 
 export function getChangesForLevel(
