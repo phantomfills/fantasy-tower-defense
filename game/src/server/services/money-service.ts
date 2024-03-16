@@ -4,7 +4,7 @@ import { producer } from "server/store";
 import { getAttacks } from "shared/store/attack";
 import { getPossibleTowerFromId } from "shared/store/tower";
 
-const STARTING_CASH = 2_500_000;
+const STARTING_CASH = 2_000;
 
 function initializeMoney(userId: string, amount: number) {
 	producer.initializeMoney(userId, amount);
