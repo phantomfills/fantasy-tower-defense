@@ -1,9 +1,10 @@
 import { Controller, OnStart } from "@flamework/core";
 import { TowerPlacementController } from "./tower-placement-controller";
 import { TowerType } from "../../../shared/modules/tower/tower-type";
-import { getTowerModelFromType } from "shared/modules/tower/tower-type-to-model-map";
+import { getTowerPlacementModelFromType } from "shared/modules/tower/tower-type-to-model-map";
 import { producer } from "client/store";
 import { images } from "shared/assets";
+import { getPlacementCostForTower } from "shared/modules/tower/tower-type-to-tower-stats-map";
 
 @Controller({})
 export class TowerLoadoutController implements OnStart {
@@ -12,7 +13,7 @@ export class TowerLoadoutController implements OnStart {
 	onStart() {
 		producer.addTowerSlot({
 			number: 1,
-			cost: 1000,
+			cost: getPlacementCostForTower("ARCHER"),
 			icon: images.archer,
 			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
 		});
@@ -20,9 +21,7 @@ export class TowerLoadoutController implements OnStart {
 
 	private getTowerClickHandlerForTowerType(_type: TowerType): () => void {
 		return () => {
-			const model = getTowerModelFromType(_type);
-
-			const towerPrefabModel = model.Clone();
+			const towerPrefabModel = getTowerPlacementModelFromType(_type);
 
 			const highlight = new Instance("Highlight");
 			highlight.FillTransparency = 1;
