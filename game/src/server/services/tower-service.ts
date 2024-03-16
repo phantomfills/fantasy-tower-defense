@@ -5,7 +5,7 @@ import { producer } from "server/store";
 import { getPossibleTowerFromId, getTowers, towerDoesNotExistFromId } from "shared/store/tower";
 import { getClosestEnemyIdToTower, getEnemyCFrameFromId, getEnemyIdsInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
-import { Attack } from "shared/modules/attack";
+import { Attack, createBasicAttack } from "shared/modules/attack";
 import {
 	describeTowerFromType,
 	getSellPriceForTower,
@@ -40,7 +40,7 @@ function towerAdded(id: string): void {
 		const possibleClosestEnemyId = producer.getState(getClosestEnemyIdToTower(tower));
 		if (!possibleClosestEnemyId.exists) return;
 
-		const [closestEnemyId, closestEnemy] = possibleClosestEnemyId.value;
+		const [closestEnemyId] = possibleClosestEnemyId.value;
 
 		const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(closestEnemyId));
 		if (!possibleEnemyCFrame.exists) return;
@@ -49,13 +49,8 @@ function towerAdded(id: string): void {
 		const enemyPosition = enemyCFrame.Position;
 
 		const attackId = createId();
-		const attack: Attack = {
-			towerId: id,
-			enemyId: closestEnemyId,
-			damage: math.min(closestEnemy.health, damage),
-			enemyPosition,
-		};
 
+		const attack = createBasicAttack(closestEnemyId, enemyPosition, id, damage);
 		producer.addAttack(attackId, attack);
 	});
 
