@@ -7,12 +7,12 @@ interface EnemyStats {
 
 const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 	WEAK_DUMMY: {
-		maxHealth: 25,
-		speed: 3,
+		maxHealth: 50,
+		speed: 4,
 	},
 	STRONG_DUMMY: {
-		maxHealth: 35,
-		speed: 5,
+		maxHealth: 250,
+		speed: 2,
 	},
 };
 
