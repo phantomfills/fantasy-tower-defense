@@ -1,12 +1,25 @@
 import { Service, OnStart } from "@flamework/core";
+import { RunService } from "@rbxts/services";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
+import { noEnemiesExist } from "shared/store/enemy";
 import { getMap } from "shared/store/map";
 
-const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 10_000;
+const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 500;
+const ROUND_BONUS = 300;
+const ROUND_BONUS_MULTIPLIER = 1.5;
+
+function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number) {
+	const additionalBonusMultiplier = roundBonusMultiplier - 1;
+	const totalRoundBonusMultiplier = 1 + (round - 1) * additionalBonusMultiplier;
+
+	const roundBonus = math.floor(initialRoundBonus * totalRoundBonusMultiplier);
+
+	return roundBonus;
+}
 
 interface Group {
 	enemyType: EnemyType;
@@ -60,7 +73,16 @@ const level1: Level = [
 		{
 			enemyType: "STRONG_DUMMY",
 			count: 12,
-			enemySpawnInterval: 250,
+			enemySpawnInterval: 1000,
+			delayToNextGroup: 0,
+		},
+	],
+	// essentially infinite round of strong dummies for testing
+	[
+		{
+			enemyType: "STRONG_DUMMY",
+			count: 1_000,
+			enemySpawnInterval: 1000,
 			delayToNextGroup: 0,
 		},
 	],
@@ -80,7 +102,16 @@ export class RoundService implements OnStart {
 	onStart() {
 		task.wait(10);
 
-		this.spawnRound(level1[0]);
+		this.spawnRound(level1[0]).await();
+		producer.awardBonusToAll(getRoundBonusForRound(1, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
+		this.spawnRound(level1[1]).await();
+		producer.awardBonusToAll(getRoundBonusForRound(2, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
+		this.spawnRound(level1[2]).await();
+		producer.awardBonusToAll(getRoundBonusForRound(3, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
+		this.spawnRound(level1[3]).await();
+		producer.awardBonusToAll(getRoundBonusForRound(4, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
+		this.spawnRound(level1[4]).await();
+		producer.awardBonusToAll(getRoundBonusForRound(5, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
 	}
 
 	private async spawnRound(round: Round): Promise<RoundResult> {
@@ -97,8 +128,18 @@ export class RoundService implements OnStart {
 			holdFor(group.delayToNextGroup);
 		}
 
-		return {
-			type: "success",
-		};
+		let roundEnded = false;
+
+		producer.once(noEnemiesExist, () => {
+			roundEnded = true;
+		});
+
+		while (!roundEnded) {
+			RunService.Heartbeat.Wait();
+		}
+
+		holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
+
+		return { type: "success" };
 	}
 }
