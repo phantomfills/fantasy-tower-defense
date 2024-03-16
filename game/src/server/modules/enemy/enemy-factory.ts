@@ -16,10 +16,10 @@ export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 	};
 
 	switch (enemyType) {
-		case "WEAK_DUMMY": {
+		case "TRAINING_DUMMY": {
 			return enemyTemplate;
 		}
-		case "STRONG_DUMMY": {
+		case "ARMORED_DUMMY": {
 			return enemyTemplate;
 		}
 	}

@@ -1,15 +1,15 @@
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { ClientEnemy } from "./client-enemy";
-import { ClientWeakDummy } from "./client-weak-dummy";
-import { ClientStrongDummy } from "./client-strong-dummy";
+import { ClientTrainingDummy } from "./client-training-dummy";
+import { ClientArmoredDummy } from "./client-armored-dummy";
 
 export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFrame): ClientEnemy {
 	switch (enemyType) {
-		case "WEAK_DUMMY": {
-			return new ClientWeakDummy(id, cframe);
+		case "TRAINING_DUMMY": {
+			return new ClientTrainingDummy(id, cframe);
 		}
-		case "STRONG_DUMMY": {
-			return new ClientStrongDummy(id, cframe);
+		case "ARMORED_DUMMY": {
+			return new ClientArmoredDummy(id, cframe);
 		}
 	}
 }

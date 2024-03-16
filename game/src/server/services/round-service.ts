@@ -35,7 +35,7 @@ type Level = Round[];
 const level1: Level = [
 	[
 		{
-			enemyType: "WEAK_DUMMY",
+			enemyType: "TRAINING_DUMMY",
 			count: 6,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
@@ -43,7 +43,7 @@ const level1: Level = [
 	],
 	[
 		{
-			enemyType: "WEAK_DUMMY",
+			enemyType: "TRAINING_DUMMY",
 			count: 10,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
@@ -51,13 +51,13 @@ const level1: Level = [
 	],
 	[
 		{
-			enemyType: "WEAK_DUMMY",
+			enemyType: "TRAINING_DUMMY",
 			count: 9,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 1500,
 		},
 		{
-			enemyType: "STRONG_DUMMY",
+			enemyType: "ARMORED_DUMMY",
 			count: 3,
 			enemySpawnInterval: 250,
 			delayToNextGroup: 0,
@@ -65,13 +65,13 @@ const level1: Level = [
 	],
 	[
 		{
-			enemyType: "WEAK_DUMMY",
+			enemyType: "TRAINING_DUMMY",
 			count: 6,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 3000,
 		},
 		{
-			enemyType: "STRONG_DUMMY",
+			enemyType: "ARMORED_DUMMY",
 			count: 12,
 			enemySpawnInterval: 1000,
 			delayToNextGroup: 0,
@@ -80,7 +80,7 @@ const level1: Level = [
 	// essentially infinite round of strong dummies for testing
 	[
 		{
-			enemyType: "STRONG_DUMMY",
+			enemyType: "ARMORED_DUMMY",
 			count: 1_000,
 			enemySpawnInterval: 1000,
 			delayToNextGroup: 0,

@@ -1,8 +1,8 @@
 import { EnemyType } from "./enemy-type";
 
 const enemyTypeToDisplayNameMap: Record<EnemyType, string> = {
-	WEAK_DUMMY: "Weak Dummy",
-	STRONG_DUMMY: "Strong Dummy",
+	TRAINING_DUMMY: "Training Dummy",
+	ARMORED_DUMMY: "Armored Dummy",
 };
 
 export function getEnemyDisplayName(enemyType: EnemyType): string {
