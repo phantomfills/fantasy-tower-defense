@@ -40,7 +40,7 @@ function towerAdded(id: string): void {
 		const possibleClosestEnemyId = producer.getState(getClosestEnemyIdToTower(tower));
 		if (!possibleClosestEnemyId.exists) return;
 
-		const [closestEnemyId] = possibleClosestEnemyId.value;
+		const [closestEnemyId, closestEnemy] = possibleClosestEnemyId.value;
 
 		const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(closestEnemyId));
 		if (!possibleEnemyCFrame.exists) return;
@@ -50,7 +50,7 @@ function towerAdded(id: string): void {
 
 		const attackId = createId();
 
-		const attack = createBasicAttack(closestEnemyId, enemyPosition, id, damage);
+		const attack = createBasicAttack(closestEnemyId, enemyPosition, id, math.min(damage, closestEnemy.health));
 		producer.addAttack(attackId, attack);
 	});
 
