@@ -173,13 +173,15 @@ export class TowerActionController implements OnStart, OnTick {
 			});
 
 			producer.once(getTowerIsNotFocused(towerId), () => {
-				this.destroyRangeIndicator();
+				if (!producer.getState(getPossibleTowerId).exists) {
+					this.destroyRangeIndicator();
+				}
 				unsubscribe();
 			});
 		});
 	}
 
-	onTick(dt: number): void {
+	onTick(): void {
 		const possibleClientTower = this.getHoveringTower();
 		if (!possibleClientTower.exists) {
 			this.destroyHighlight();
