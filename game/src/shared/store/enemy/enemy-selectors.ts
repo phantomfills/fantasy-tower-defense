@@ -7,6 +7,10 @@ import { Enemy } from "./enemy-slice";
 import { createSelector } from "@rbxts/reflex";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 
+export function noEnemiesExist(state: SharedState) {
+	return Object.keys(state.enemy).size() === 0;
+}
+
 export function getEnemies(state: SharedState) {
 	return state.enemy;
 }
