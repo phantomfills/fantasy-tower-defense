@@ -16,6 +16,14 @@ export const moneySlice = createProducer(initialState, {
 		};
 	},
 
+	awardBonusToAll: (state, amount: number) => {
+		const newState: Record<string, number> = {};
+		for (const [userId, money] of pairs(state)) {
+			newState[userId] = money + amount;
+		}
+		return newState;
+	},
+
 	addMoney: (state, userId: string, amount: number) => {
 		const userMoney = state[userId];
 		if (userMoney === undefined) throw "User does not exist";
