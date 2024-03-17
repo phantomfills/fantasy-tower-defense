@@ -248,6 +248,30 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
+				stealthDummy: Model & {
+					rightArm: MeshPart;
+					head: MeshPart & {
+						["head 🡪 headband"]: Weld;
+						headband: Part & {
+							SpecialMesh: SpecialMesh;
+						};
+					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
 				trainingDummy: Model & {
 					rightArm: MeshPart;
 					head: MeshPart;
@@ -267,14 +291,9 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
-				stealthDummy: Model & {
+				dummyTank: Model & {
 					rightArm: MeshPart;
-					head: MeshPart & {
-						["head 🡪 headband"]: Weld;
-						headband: Part & {
-							SpecialMesh: SpecialMesh;
-						};
-					};
+					head: MeshPart;
 					leftArm: MeshPart;
 					rightLeg: MeshPart;
 					torso: MeshPart & {

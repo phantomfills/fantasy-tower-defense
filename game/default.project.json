@@ -51,6 +51,9 @@
 						},
 						"stealthDummy": {
 							"$path": "assets/stealth-dummy.rbxm"
+						},
+						"dummyTank": {
+							"$path": "assets/dummy-tank.rbxm"
 						}
 					}
 				},

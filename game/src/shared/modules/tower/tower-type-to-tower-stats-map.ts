@@ -20,7 +20,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 		levels: [
 			{
 				damage: 25,
-				range: 10,
+				range: 12,
 				cooldown: 2,
 				health: 150,
 				cost: 900,
@@ -29,7 +29,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 50,
-				range: 14,
+				range: 15,
 				cooldown: 2,
 				health: 175,
 				cost: 750,
@@ -38,7 +38,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 50,
-				range: 15,
+				range: 16,
 				cooldown: 1.6,
 				health: 175,
 				cost: 925,
@@ -47,7 +47,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 100,
-				range: 16,
+				range: 18,
 				cooldown: 1.2,
 				health: 225,
 				cost: 2_200,
@@ -56,7 +56,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 150,
-				range: 18,
+				range: 25,
 				cooldown: 1,
 				health: 300,
 				cost: 6_800,
@@ -65,11 +65,11 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 					"She attacks faster and does powerful critical shots every so often that deal MASSIVELY increased damage.",
 			},
 			{
-				damage: 150,
-				range: 20,
-				cooldown: 0.35,
-				health: 375,
-				cost: 14_200,
+				damage: 300,
+				range: 32,
+				cooldown: 0.2,
+				health: 400,
+				cost: 30_000,
 				title: "ELITE SHARPSHOOTER",
 				description:
 					"Elite Sharpshooter shoots really fast and devastates most enemy types with ease! Watch out; you might be next!",

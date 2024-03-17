@@ -105,3 +105,35 @@ export function getClosestEnemyIdToPosition(position: Vector3): (state: SharedSt
 export function getClosestEnemyIdToTower(tower: Tower): (state: SharedState) => Possible<[string, Enemy]> {
 	return getClosestEnemyIdToPosition(tower.cframe.Position);
 }
+
+// gets the enemy with the highest path completion alpha in the tower's range
+export function getFirstEnemyInTowerRange(towerId: string): (state: SharedState) => Possible<[string, Enemy]> {
+	return createSelector([getEnemies, getTowers], (enemies, towers) => {
+		const possibleTower = possible<Tower>(towers[towerId]);
+		if (!possibleTower.exists) return { exists: false };
+
+		const tower = possibleTower.value;
+		const towerStats = describeTowerFromType(tower.towerType, tower.level);
+
+		const enemiesInTowerRange = Object.keys(enemies).filter((enemyId) => {
+			const enemy = enemies[enemyId];
+			const enemyCFrame = getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha);
+			const enemyPosition = enemyCFrame.Position;
+
+			const distanceToEnemy = enemyPosition.sub(tower.cframe.Position).Magnitude;
+			return distanceToEnemy <= towerStats.range;
+		});
+		if (enemiesInTowerRange.size() === 0) return { exists: false };
+
+		const enemyIdsByPathCompletionAlpha = enemiesInTowerRange.sort((previousEnemyId, currentEnemyId) => {
+			const previousEnemy = enemies[previousEnemyId];
+			const currentEnemy = enemies[currentEnemyId];
+
+			return previousEnemy.pathCompletionAlpha > currentEnemy.pathCompletionAlpha;
+		});
+
+		const firstEnemyId = enemyIdsByPathCompletionAlpha[0];
+		const firstEnemy = enemies[firstEnemyId];
+		return { exists: true, value: [firstEnemyId, firstEnemy] };
+	});
+}

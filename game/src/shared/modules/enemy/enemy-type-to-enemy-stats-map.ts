@@ -11,23 +11,28 @@ interface EnemyStats {
 const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 	TRAINING_DUMMY: {
 		maxHealth: 50,
-		speed: 5,
+		speed: 50,
 		immunities: [],
 	},
 	ARMORED_DUMMY: {
 		maxHealth: 200,
-		speed: 3,
+		speed: 50,
 		immunities: [],
 	},
 	SPEEDSTER_DUMMY: {
 		maxHealth: 100,
-		speed: 7,
+		speed: 50,
 		immunities: [],
 	},
 	STEALTH_DUMMY: {
 		maxHealth: 300,
-		speed: 5,
+		speed: 50,
 		immunities: ["STEALTH"],
+	},
+	DUMMY_TANK: {
+		maxHealth: 1_000_000,
+		speed: 0.2,
+		immunities: [],
 	},
 };
 

@@ -29,10 +29,6 @@ export function App() {
 	const enemyDamageIndicators = useSelector(getEnemyDamageIndicators);
 	const money = useSelector(getMoney(tostring(Players.LocalPlayer.UserId)));
 
-	useEffect(() => {
-		print(possibleTowerFocusId.exists);
-	}, [possibleTowerFocusId]);
-
 	return (
 		<Panel key="app">
 			<TowerLoadout key="tower-loadout">
