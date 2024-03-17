@@ -7,11 +7,15 @@ interface ReplicatedStorage extends Instance {
 			utils: Folder & {
 				["get-time-in-ms"]: ModuleScript;
 				["id-utils"]: ModuleScript;
+				["wait-util"]: ModuleScript;
 				prettify: ModuleScript;
 				possible: ModuleScript;
 				["path-utils"]: ModuleScript;
 				["number-to-key-map"]: ModuleScript;
 				["snap-to-cframe"]: ModuleScript;
+			};
+			money: Folder & {
+				["sellback-rate"]: ModuleScript;
 			};
 			tower: Folder & {
 				["tower-type-to-display-name-map"]: ModuleScript;
@@ -38,17 +42,21 @@ interface ReplicatedStorage extends Instance {
 				["map-selectors"]: ModuleScript;
 				["map-slice"]: ModuleScript;
 			};
-			tower: ModuleScript & {
-				["tower-slice"]: ModuleScript;
-				["tower-selectors"]: ModuleScript;
-			};
 			money: ModuleScript & {
 				["money-slice"]: ModuleScript;
 				["money-selectors"]: ModuleScript;
 			};
+			tower: ModuleScript & {
+				["tower-slice"]: ModuleScript;
+				["tower-selectors"]: ModuleScript;
+			};
 			enemy: ModuleScript & {
 				["enemy-slice"]: ModuleScript;
 				["enemy-selectors"]: ModuleScript;
+			};
+			attack: ModuleScript & {
+				["attack-slice"]: ModuleScript;
+				["attack-selectors"]: ModuleScript;
 			};
 		};
 	};
@@ -101,6 +109,9 @@ interface ReplicatedStorage extends Instance {
 					};
 					level_1: Model & {
 						rightArm: MeshPart & {
+							["rightArm 🡪 rightSleeve"]: Weld;
+							rightSleeve: MeshPart;
+							["rightArm 🡪 bow"]: Weld;
 							bow: Part & {
 								top: Attachment;
 								topBeam: Beam;
@@ -109,33 +120,31 @@ interface ReplicatedStorage extends Instance {
 								bottomBeam: Beam;
 								mesh: SpecialMesh;
 							};
-							["rightArm 🡪 bow"]: Weld;
 						};
 						leftArm: MeshPart & {
+							leftSleeve: MeshPart;
+							["leftArm 🡪 leftSleeve"]: Weld;
 							bowDrawAttachment: Attachment;
 						};
 						rightLeg: MeshPart;
 						head: MeshPart & {
 							hat: MeshPart;
-							face: Decal;
 							["head 🡪 hat"]: Weld;
+							face: Decal;
+							["head 🡪 hair"]: Weld;
+							hair: Part & {
+								Mesh: SpecialMesh;
+								Decal: Decal;
+							};
 						};
 						torso: MeshPart & {
-							quiver: MeshPart;
+							["Left Shoulder"]: Motor6D;
 							["Right Shoulder"]: Motor6D;
+							["torso 🡪 quiver"]: Weld;
 							Neck: Motor6D;
 							["Right Hip"]: Motor6D;
-							strap: MeshPart & {
-								["Left Shoulder"]: Motor6D;
-								["Right Shoulder"]: Motor6D;
-								Neck: Motor6D;
-								["Right Hip"]: Motor6D;
-								["Left Hip"]: Motor6D;
-							};
-							["torso 🡪 quiver"]: Weld;
+							quiver: MeshPart;
 							["Left Hip"]: Motor6D;
-							["Left Shoulder"]: Motor6D;
-							["torso 🡪 strap"]: Weld;
 						};
 						humanoidRootPart: Part & {
 							rootAttachment: Attachment;
@@ -160,9 +169,12 @@ interface ReplicatedStorage extends Instance {
 						};
 						rightLeg: MeshPart;
 						head: MeshPart & {
-							hat: MeshPart;
 							face: Decal;
-							["head 🡪 hat"]: Weld;
+							["head 🡪 hair"]: Weld;
+							hair: Part & {
+								Mesh: SpecialMesh;
+								Decal: Decal;
+							};
 						};
 						torso: MeshPart & {
 							["Left Shoulder"]: Motor6D;
@@ -183,44 +195,101 @@ interface ReplicatedStorage extends Instance {
 			};
 		};
 		enemies: Folder & {
-			dummy: Folder & {
-				models: Folder & {
-					dummy: Model & {
-						["Left Leg"]: Part;
-						["Right Leg"]: Part;
-						Head: Part & {
-							Face: Decal;
+			models: Folder & {
+				armoredDummy: Model & {
+					rightArm: MeshPart & {
+						rightArmPiece: Model;
+					};
+					head: MeshPart & {
+						helmet: Part & {
 							Mesh: SpecialMesh;
-							Crown: Motor6D;
 						};
-						cape: Part & {
+						["head 🡪 helmet"]: Weld;
+					};
+					leftArm: MeshPart & {
+						rightArmPiece: Model;
+					};
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				speedsterDummy: Model & {
+					rightArm: MeshPart;
+					head: MeshPart & {
+						["head 🡪 headband"]: Weld;
+						headband: Part & {
 							SpecialMesh: SpecialMesh;
 						};
-						Torso: Part & {
-							["Left Shoulder"]: Motor6D;
-							["Right Shoulder"]: Motor6D;
-							Cape: Motor6D;
-							Neck: Motor6D;
-							["Right Hip"]: Motor6D;
-							HitSound: Sound;
-							["Left Hip"]: Motor6D;
-						};
-						humanoidRootPart: Part & {
-							["Root Hip"]: Motor6D;
-							rootAttachment: Attachment;
-						};
-						["Right Arm"]: Part & {
-							Sword: Motor6D;
-						};
-						["Left Arm"]: Part;
-						crown: Part & {
-							Mesh: SpecialMesh;
-						};
-						["Body Colors"]: BodyColors;
-						Sword: Part & {
-							Mesh: SpecialMesh;
+					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				trainingDummy: Model & {
+					rightArm: MeshPart;
+					head: MeshPart;
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				stealthDummy: Model & {
+					rightArm: MeshPart;
+					head: MeshPart & {
+						["head 🡪 headband"]: Weld;
+						headband: Part & {
+							SpecialMesh: SpecialMesh;
 						};
 					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
 				};
 			};
 		};

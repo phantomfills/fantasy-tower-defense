@@ -1,9 +1,9 @@
 import { ClientEnemy } from "./client-enemy";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 
-export class ClientTrainingDummy extends ClientEnemy {
+export class ClientSpeedsterDummy extends ClientEnemy {
 	constructor(id: string, cframe: CFrame) {
-		const dummyModel = ReplicatedStorage.assets.enemies.models.trainingDummy.Clone();
+		const dummyModel = ReplicatedStorage.assets.enemies.models.speedsterDummy.Clone();
 		dummyModel.Parent = Workspace;
 		super(dummyModel, id, cframe);
 	}
@@ -17,7 +17,7 @@ export class ClientTrainingDummy extends ClientEnemy {
 
 		const walkAnimation = new Instance("Animation");
 		walkAnimation.Parent = animator;
-		walkAnimation.AnimationId = "rbxassetid://16769024725";
+		walkAnimation.AnimationId = "rbxassetid://16769451847";
 
 		const animation = animator.LoadAnimation(walkAnimation);
 		animation.Play();

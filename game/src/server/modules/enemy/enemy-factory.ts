@@ -22,5 +22,11 @@ export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 		case "ARMORED_DUMMY": {
 			return enemyTemplate;
 		}
+		case "SPEEDSTER_DUMMY": {
+			return enemyTemplate;
+		}
+		case "STEALTH_DUMMY": {
+			return enemyTemplate;
+		}
 	}
 }

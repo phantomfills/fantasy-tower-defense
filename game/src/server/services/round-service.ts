@@ -8,11 +8,11 @@ import { holdFor } from "shared/modules/utils/wait-util";
 import { noEnemiesExist } from "shared/store/enemy";
 import { getMap } from "shared/store/map";
 
-const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 500;
-const ROUND_BONUS = 300;
-const ROUND_BONUS_MULTIPLIER = 1.5;
+const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 3_000;
+const ROUND_BONUS = 500;
+const ROUND_BONUS_MULTIPLIER = 1.25;
 
-function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number) {
+function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number): number {
 	const additionalBonusMultiplier = roundBonusMultiplier - 1;
 	const totalRoundBonusMultiplier = 1 + (round - 1) * additionalBonusMultiplier;
 
@@ -36,7 +36,7 @@ const level1: Level = [
 	[
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 6,
+			count: 3,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
@@ -44,7 +44,7 @@ const level1: Level = [
 	[
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 10,
+			count: 7,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
@@ -52,13 +52,13 @@ const level1: Level = [
 	[
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 9,
+			count: 4,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 1500,
 		},
 		{
-			enemyType: "ARMORED_DUMMY",
-			count: 3,
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 4,
 			enemySpawnInterval: 250,
 			delayToNextGroup: 0,
 		},
@@ -66,23 +66,82 @@ const level1: Level = [
 	[
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 6,
+			count: 8,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 3000,
 		},
 		{
-			enemyType: "ARMORED_DUMMY",
-			count: 12,
-			enemySpawnInterval: 1000,
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 4,
+			enemySpawnInterval: 250,
 			delayToNextGroup: 0,
 		},
 	],
-	// essentially infinite round of strong dummies for testing
 	[
 		{
 			enemyType: "ARMORED_DUMMY",
-			count: 1_000,
+			count: 3,
 			enemySpawnInterval: 1000,
+			delayToNextGroup: 250,
+		},
+		{
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 5,
+			enemySpawnInterval: 250,
+			delayToNextGroup: 250,
+		},
+		{
+			enemyType: "TRAINING_DUMMY",
+			count: 3,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "ARMORED_DUMMY",
+			count: 9,
+			enemySpawnInterval: 750,
+			delayToNextGroup: 250,
+		},
+		{
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 2,
+			enemySpawnInterval: 250,
+			delayToNextGroup: 250,
+		},
+		{
+			enemyType: "TRAINING_DUMMY",
+			count: 2,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "ARMORED_DUMMY",
+			count: 18,
+			enemySpawnInterval: 1250,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "ARMORED_DUMMY",
+			count: 3,
+			enemySpawnInterval: 1250,
+			delayToNextGroup: 250,
+		},
+		{
+			enemyType: "STEALTH_DUMMY",
+			count: 3,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 500,
+		},
+		{
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 5,
+			enemySpawnInterval: 250,
 			delayToNextGroup: 0,
 		},
 	],
@@ -102,16 +161,25 @@ export class RoundService implements OnStart {
 	onStart() {
 		task.wait(10);
 
-		this.spawnRound(level1[0]).await();
-		producer.awardBonusToAll(getRoundBonusForRound(1, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
-		this.spawnRound(level1[1]).await();
-		producer.awardBonusToAll(getRoundBonusForRound(2, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
-		this.spawnRound(level1[2]).await();
-		producer.awardBonusToAll(getRoundBonusForRound(3, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
-		this.spawnRound(level1[3]).await();
-		producer.awardBonusToAll(getRoundBonusForRound(4, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
-		this.spawnRound(level1[4]).await();
-		producer.awardBonusToAll(getRoundBonusForRound(5, ROUND_BONUS, ROUND_BONUS_MULTIPLIER));
+		for (let roundIndex = 0; roundIndex < level1.size(); roundIndex++) {
+			const round = level1[roundIndex];
+			const roundNumber = roundIndex + 1;
+
+			const roundBonus = getRoundBonusForRound(roundNumber, ROUND_BONUS, ROUND_BONUS_MULTIPLIER);
+
+			let roundCompleted = false;
+
+			this.spawnRound(round).finally(() => {
+				producer.awardBonusToAll(roundBonus);
+				roundCompleted = true;
+			});
+
+			while (!roundCompleted) {
+				RunService.Heartbeat.Wait();
+			}
+
+			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
+		}
 	}
 
 	private async spawnRound(round: Round): Promise<RoundResult> {
@@ -137,8 +205,6 @@ export class RoundService implements OnStart {
 		while (!roundEnded) {
 			RunService.Heartbeat.Wait();
 		}
-
-		holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
 
 		return { type: "success" };
 	}

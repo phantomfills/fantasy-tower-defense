@@ -38,13 +38,19 @@
 				"$className": "Folder",
 				"enemies": {
 					"$className": "Folder",
-					"dummy": {
+					"models": {
 						"$className": "Folder",
-						"models": {
-							"$className": "Folder",
-							"dummy": {
-								"$path": "assets/dummy.rbxm"
-							}
+						"trainingDummy": {
+							"$path": "assets/training-dummy.rbxm"
+						},
+						"armoredDummy": {
+							"$path": "assets/armored-dummy.rbxm"
+						},
+						"speedsterDummy": {
+							"$path": "assets/speedster-dummy.rbxm"
+						},
+						"stealthDummy": {
+							"$path": "assets/stealth-dummy.rbxm"
 						}
 					}
 				},
