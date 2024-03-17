@@ -58,7 +58,7 @@ const level1: Level = [
 		},
 		{
 			enemyType: "SPEEDSTER_DUMMY",
-			count: 4,
+			count: 2,
 			enemySpawnInterval: 250,
 			delayToNextGroup: 0,
 		},
@@ -72,7 +72,7 @@ const level1: Level = [
 		},
 		{
 			enemyType: "SPEEDSTER_DUMMY",
-			count: 4,
+			count: 3,
 			enemySpawnInterval: 250,
 			delayToNextGroup: 0,
 		},
@@ -80,19 +80,19 @@ const level1: Level = [
 	[
 		{
 			enemyType: "ARMORED_DUMMY",
-			count: 3,
+			count: 2,
 			enemySpawnInterval: 1000,
 			delayToNextGroup: 250,
 		},
 		{
 			enemyType: "SPEEDSTER_DUMMY",
-			count: 5,
+			count: 4,
 			enemySpawnInterval: 250,
 			delayToNextGroup: 250,
 		},
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 3,
+			count: 2,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
@@ -100,7 +100,7 @@ const level1: Level = [
 	[
 		{
 			enemyType: "ARMORED_DUMMY",
-			count: 9,
+			count: 7,
 			enemySpawnInterval: 750,
 			delayToNextGroup: 250,
 		},
@@ -120,7 +120,7 @@ const level1: Level = [
 	[
 		{
 			enemyType: "ARMORED_DUMMY",
-			count: 18,
+			count: 15,
 			enemySpawnInterval: 1250,
 			delayToNextGroup: 0,
 		},
@@ -128,19 +128,93 @@ const level1: Level = [
 	[
 		{
 			enemyType: "ARMORED_DUMMY",
-			count: 3,
+			count: 6,
 			enemySpawnInterval: 1250,
 			delayToNextGroup: 250,
 		},
 		{
 			enemyType: "STEALTH_DUMMY",
-			count: 3,
+			count: 4,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 500,
 		},
 		{
 			enemyType: "SPEEDSTER_DUMMY",
-			count: 5,
+			count: 2,
+			enemySpawnInterval: 250,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "STEALTH_DUMMY",
+			count: 18,
+			enemySpawnInterval: 1500,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "STEALTH_DUMMY",
+			count: 22,
+			enemySpawnInterval: 250,
+			delayToNextGroup: 0,
+		},
+		{
+			enemyType: "ARMORED_DUMMY",
+			count: 22,
+			enemySpawnInterval: 250,
+			delayToNextGroup: 0,
+		},
+		{
+			enemyType: "TRAINING_DUMMY",
+			count: 22,
+			enemySpawnInterval: 250,
+			delayToNextGroup: 0,
+		},
+		{
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 22,
+			enemySpawnInterval: 250,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "STEALTH_DUMMY",
+			count: 35,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+		{
+			enemyType: "ARMORED_DUMMY",
+			count: 35,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+		{
+			enemyType: "TRAINING_DUMMY",
+			count: 35,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+		{
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 35,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "DUMMY_TANK",
+			count: 1,
+			enemySpawnInterval: 0,
+			delayToNextGroup: 500,
+		},
+		{
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 125,
 			enemySpawnInterval: 250,
 			delayToNextGroup: 0,
 		},
@@ -159,7 +233,7 @@ type RoundResult =
 @Service({})
 export class RoundService implements OnStart {
 	onStart() {
-		task.wait(10);
+		task.wait(20);
 
 		for (let roundIndex = 0; roundIndex < level1.size(); roundIndex++) {
 			const round = level1[roundIndex];

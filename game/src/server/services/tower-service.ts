@@ -3,7 +3,12 @@ import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { producer } from "server/store";
 import { getPossibleTowerFromId, getTowers, towerDoesNotExistFromId } from "shared/store/tower";
-import { getClosestEnemyIdToTower, getEnemyCFrameFromId, getEnemyIdsInTowerRange } from "shared/store/enemy";
+import {
+	getClosestEnemyIdToTower,
+	getEnemyCFrameFromId,
+	getEnemyIdsInTowerRange,
+	getFirstEnemyInTowerRange,
+} from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { Attack, createBasicAttack } from "shared/modules/attack";
 import {
@@ -37,12 +42,12 @@ function towerAdded(id: string): void {
 
 		lastAttackTimestamp = currentTimestamp;
 
-		const possibleClosestEnemyId = producer.getState(getClosestEnemyIdToTower(tower));
-		if (!possibleClosestEnemyId.exists) return;
+		const possibleFirstEnemyInRangeId = producer.getState(getFirstEnemyInTowerRange(id));
+		if (!possibleFirstEnemyInRangeId.exists) return;
 
-		const [closestEnemyId, closestEnemy] = possibleClosestEnemyId.value;
+		const [firstEnemyInRangeId, firstEnemyInRange] = possibleFirstEnemyInRangeId.value;
 
-		const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(closestEnemyId));
+		const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(firstEnemyInRangeId));
 		if (!possibleEnemyCFrame.exists) return;
 
 		const enemyCFrame = possibleEnemyCFrame.value;
@@ -50,7 +55,12 @@ function towerAdded(id: string): void {
 
 		const attackId = createId();
 
-		const attack = createBasicAttack(closestEnemyId, enemyPosition, id, math.min(damage, closestEnemy.health));
+		const attack = createBasicAttack(
+			firstEnemyInRangeId,
+			enemyPosition,
+			id,
+			math.min(damage, firstEnemyInRange.health),
+		);
 		producer.addAttack(attackId, attack);
 	});
 
