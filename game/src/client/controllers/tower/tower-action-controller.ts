@@ -7,6 +7,7 @@ import { producer } from "client/store";
 import { getPossibleTowerFromId, getPossibleTowerLevelFromId, towerDoesNotExistFromId } from "shared/store/tower";
 import { getPossibleTowerId, getTowerIsNotFocused } from "client/store/tower-action-menu/tower-action-selectors";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { createRangeModel } from "client/modules/tower/range-model";
 
 const MAX_TOWER_HOVER_DISTANCE = 100;
 
@@ -100,25 +101,8 @@ export class TowerActionController implements OnStart, OnTick {
 	private createRangeIndicator(parent: Instance, range: number, position: Vector3) {
 		this.destroyRangeIndicator();
 
-		const rangeIndicatorModel = new Instance("Model");
+		const rangeIndicatorModel = createRangeModel(range, position);
 		rangeIndicatorModel.Parent = parent;
-		rangeIndicatorModel.Name = "Range Indicator Model";
-
-		const rangeIndicator = new Instance("Part");
-		rangeIndicator.Shape = Enum.PartType.Cylinder;
-		rangeIndicator.Size = new Vector3(0.1, range * 2, range * 2);
-		rangeIndicator.Anchored = true;
-		rangeIndicator.CanCollide = false;
-		rangeIndicator.Transparency = 0.75;
-		rangeIndicator.BrickColor = new BrickColor("Light grey");
-		rangeIndicator.CFrame = new CFrame(position).mul(CFrame.Angles(0, 0, math.rad(90)));
-		rangeIndicator.Parent = rangeIndicatorModel;
-
-		const highlight = new Instance("Highlight");
-		highlight.Parent = rangeIndicatorModel;
-		highlight.OutlineColor = Color3.fromRGB(255, 255, 255);
-		highlight.FillColor = Color3.fromRGB(255, 255, 255);
-		highlight.FillTransparency = 0.6;
 
 		this.rangeIndicator = {
 			exists: true,

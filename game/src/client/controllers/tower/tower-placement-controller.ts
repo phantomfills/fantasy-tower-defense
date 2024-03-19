@@ -7,6 +7,8 @@ import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-c
 import { Events } from "client/network";
 import { producer } from "client/store";
 import Maid from "@rbxts/maid";
+import { createRangeModel } from "client/modules/tower/range-model";
+import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -124,8 +126,13 @@ export class TowerPlacementController implements OnStart {
 		const possibleTowerPlacementCFrame = this.getTowerPlacementCFrame(towerPrefabModel);
 		if (!possibleTowerPlacementCFrame.exists) return;
 
+		const { range } = describeTowerFromType(towerType, 0);
+
 		const towerModel = towerPrefabModel.Clone();
 		towerModel.Parent = Workspace;
+
+		const rangeIndicator = createRangeModel(range, towerModel.humanoidRootPart.rootAttachment.WorldPosition);
+		rangeIndicator.Parent = towerModel;
 
 		producer.setTowerPlacement(towerType);
 
