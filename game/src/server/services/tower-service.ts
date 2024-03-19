@@ -3,7 +3,7 @@ import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { producer } from "server/store";
 import { getPossibleTowerFromId, selectTowers, towerDoesNotExistFromId } from "shared/store/tower";
-import { getEnemyCFrameFromId, getEnemyIdsInTowerRange, getFirstEnemyInTowerRange } from "shared/store/enemy";
+import { getEnemyCFrameFromId, getEnemyIdsInTowerRange, getFirstAttackableEnemyInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { createBasicAttack } from "shared/modules/attack";
 import {
@@ -36,13 +36,12 @@ function towerAdded(id: string): void {
 		const currentTimestamp = getCurrentTimeInMilliseconds();
 		if (currentTimestamp - lastAttackTimestamp < cooldown * MILLISECONDS_IN_SECOND) return;
 
-		const possibleFirstEnemyInRangeId = producer.getState(getFirstEnemyInTowerRange(id));
+		const possibleFirstEnemyInRangeId = producer.getState(getFirstAttackableEnemyInTowerRange(id));
 		if (!possibleFirstEnemyInRangeId.exists) return;
 
 		const [firstEnemyInRangeId, firstEnemyInRange] = possibleFirstEnemyInRangeId.value;
 
-		const { immunities } = describeEnemyFromType(firstEnemyInRange.type);
-		if (immunities.includes("STEALTH") && !traits.includes("STEALTH")) return;
+		const { immunities } = describeEnemyFromType(firstEnemyInRange.enemyType);
 
 		const effectiveDamage = immunities.includes("REINFORCED")
 			? traits.includes("REINFORCED")

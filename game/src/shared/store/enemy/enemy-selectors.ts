@@ -6,6 +6,7 @@ import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-util
 import { Enemy } from "./enemy-slice";
 import { createSelector } from "@rbxts/reflex";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 
 export function noEnemiesExist(state: SharedState) {
 	return Object.keys(state.enemy).size() === 0;
@@ -106,8 +107,9 @@ export function getClosestEnemyIdToTower(tower: Tower): (state: SharedState) => 
 	return getClosestEnemyIdToPosition(tower.cframe.Position);
 }
 
-// gets the enemy with the highest path completion alpha in the tower's range
-export function getFirstEnemyInTowerRange(towerId: string): (state: SharedState) => Possible<[string, Enemy]> {
+export function getFirstAttackableEnemyInTowerRange(
+	towerId: string,
+): (state: SharedState) => Possible<[string, Enemy]> {
 	return createSelector([getEnemies, selectTowers], (enemies, towers) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return { exists: false };
@@ -123,9 +125,21 @@ export function getFirstEnemyInTowerRange(towerId: string): (state: SharedState)
 			const distanceToEnemy = enemyPosition.sub(tower.cframe.Position).Magnitude;
 			return distanceToEnemy <= towerStats.range;
 		});
-		if (enemiesInTowerRange.size() === 0) return { exists: false };
+		if (enemiesInTowerRange.isEmpty()) return { exists: false };
 
-		const enemyIdsByPathCompletionAlpha = enemiesInTowerRange.sort((previousEnemyId, currentEnemyId) => {
+		const attackableEnemiesInTowerRange = enemiesInTowerRange.filter((enemyId) => {
+			const possibleEnemy = possible<Enemy>(enemies[enemyId]);
+			if (!possibleEnemy.exists) return false;
+
+			const { enemyType } = possibleEnemy.value;
+			const { immunities } = describeEnemyFromType(enemyType);
+
+			return immunities.includes("STEALTH") ? towerStats.traits.includes("STEALTH") : true;
+		});
+
+		if (attackableEnemiesInTowerRange.isEmpty()) return { exists: false };
+
+		const enemyIdsByPathCompletionAlpha = attackableEnemiesInTowerRange.sort((previousEnemyId, currentEnemyId) => {
 			const previousEnemy = enemies[previousEnemyId];
 			const currentEnemy = enemies[currentEnemyId];
 
@@ -134,6 +148,7 @@ export function getFirstEnemyInTowerRange(towerId: string): (state: SharedState)
 
 		const firstEnemyId = enemyIdsByPathCompletionAlpha[0];
 		const firstEnemy = enemies[firstEnemyId];
+
 		return { exists: true, value: [firstEnemyId, firstEnemy] };
 	});
 }

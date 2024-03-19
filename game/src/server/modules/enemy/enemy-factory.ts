@@ -8,7 +8,7 @@ export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 	const enemyStats = describeEnemyFromType(enemyType);
 
 	const enemyTemplate: Enemy = {
-		type: enemyType,
+		enemyType: enemyType,
 		health: enemyStats.maxHealth,
 		path,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),

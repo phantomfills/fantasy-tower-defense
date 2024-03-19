@@ -57,7 +57,7 @@ export class EnemyController implements OnStart {
 				);
 				if (!enemyLastUpdate.exists) {
 					const clientEnemy = createClientEnemy(
-						enemy.type,
+						enemy.enemyType,
 						id,
 						getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha),
 					);

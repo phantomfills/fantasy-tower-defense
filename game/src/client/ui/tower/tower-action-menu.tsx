@@ -9,6 +9,7 @@ import { fonts } from "../constants/fonts";
 import { useSelector } from "@rbxts/react-reflex";
 import { getPossibleTowerFromId } from "shared/store/tower";
 import {
+	describeTowerFromType,
 	getChangesForLevel,
 	getSellPriceForTower,
 	getTowerUpgradeCost,
@@ -17,6 +18,7 @@ import {
 } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { images } from "shared/assets";
+import { Immunity } from "shared/modules/attack/immunity";
 
 interface TowerActionButtonProps {
 	name: string;
@@ -69,6 +71,7 @@ interface TowerActionMenuProps {
 	upgradeDescription: string;
 	level: number;
 	close: () => void;
+	traits: Immunity[];
 	actions: {
 		upgrade: Action;
 		sell: Action;
@@ -82,6 +85,7 @@ export function TowerActionMenu({
 	upgradeTitle,
 	upgradeDescription,
 	close,
+	traits,
 }: TowerActionMenuProps) {
 	const rem = useRem();
 
@@ -146,6 +150,27 @@ export function TowerActionMenu({
 					textWrapped={true}
 				/>
 			</Frame>
+			<Frame size={new UDim2(0, 50, 0, 50)} position={new UDim2(1, 5, 0, 0)}>
+				<uigridlayout
+					CellSize={new UDim2(1, 0, 1, 0)}
+					CellPadding={new UDim2(0, 5, 0, 5)}
+					FillDirection={Enum.FillDirection.Horizontal}
+				/>
+				{traits.includes("STEALTH") && (
+					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
+						<OneThickWhiteStroke />
+						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.eye} />
+						<uicorner CornerRadius={new UDim(0, 5)} />
+					</Frame>
+				)}
+				{traits.includes("REINFORCED") && (
+					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
+						<OneThickWhiteStroke />
+						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.shield} />
+						<uicorner CornerRadius={new UDim(0, 5)} />
+					</Frame>
+				)}
+			</Frame>
 		</Frame>
 	);
 }
@@ -177,6 +202,9 @@ export function TowerActionMenuFromId({ towerId, actions, close }: TowerActionMe
 	const upgradeTitle = getUpgradeTitle(towerType, level + 1);
 	const upgradeDescription = getUpgradeDescription(towerType, level + 1);
 
+	const stats = describeTowerFromType(towerType, level);
+	const traits = stats.traits;
+
 	return (
 		<TowerActionMenu
 			name={towerDisplayName}
@@ -194,6 +222,7 @@ export function TowerActionMenuFromId({ towerId, actions, close }: TowerActionMe
 			close={close}
 			upgradeTitle={upgradeTitle}
 			upgradeDescription={upgradeDescription}
+			traits={traits}
 		/>
 	);
 }

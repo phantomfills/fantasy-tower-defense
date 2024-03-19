@@ -24,6 +24,7 @@ export = (target: Frame) => {
 			close={() => {
 				print("Close!");
 			}}
+			traits={["STEALTH", "REINFORCED"]}
 			upgradeTitle="Bat Signal"
 			upgradeDescription="Shine the bat signal to call for help!"
 		/>

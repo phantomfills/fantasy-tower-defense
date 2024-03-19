@@ -5,7 +5,7 @@ import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { getPathLength } from "shared/modules/utils/path-utils";
 
 export interface Enemy {
-	type: EnemyType;
+	enemyType: EnemyType;
 	path: PathWaypoint[];
 	health: number;
 	spawnTimestamp: number;
@@ -55,7 +55,7 @@ export const enemySlice = createProducer(initialState, {
 		const updatedState: EnemyState = {};
 
 		for (const [id, enemy] of pairs(state)) {
-			const enemyStats = describeEnemyFromType(enemy.type);
+			const enemyStats = describeEnemyFromType(enemy.enemyType);
 
 			const millisecondsSinceSpawn = currentTimeInMilliseconds - enemy.spawnTimestamp;
 

@@ -35,6 +35,12 @@ type Level = Round[];
 const level: Level = [
 	[
 		{
+			enemyType: "STEALTH_DUMMY",
+			count: 1,
+			enemySpawnInterval: 1_000,
+			delayToNextGroup: 0,
+		},
+		{
 			enemyType: "TRAINING_DUMMY",
 			count: 10,
 			enemySpawnInterval: 1_000,

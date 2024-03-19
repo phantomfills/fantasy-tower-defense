@@ -16,7 +16,7 @@ export function getEnemyHoverDetailsFromId(
 		return {
 			exists: true,
 			value: {
-				_type: enemy.type,
+				_type: enemy.enemyType,
 				health: enemy.health,
 			},
 		};
