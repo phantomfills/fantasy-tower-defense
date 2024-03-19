@@ -4,7 +4,7 @@ import { getAttacks } from "shared/store/attack";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { Attack } from "shared/modules/attack";
 
-function getAttackId(attack: Attack, id: string) {
+function getAttackId(_: Attack, id: string) {
 	return id;
 }
 
