@@ -11,13 +11,12 @@ export function towerDoesNotExistFromId(id: string): (state: SharedState) => boo
 	return (state) => !state.tower.towers[id];
 }
 
-function selectTowers(state: SharedState) {
-	return state.tower.towers;
+function selectTower(id: string): (state: SharedState) => Tower | undefined {
+	return (state) => state.tower.towers[id];
 }
 
 export function getPossibleTowerFromId(id: string): (state: SharedState) => Possible<Tower> {
-	return createSelector(selectTowers, (towers) => {
-		const tower = towers[id];
+	return createSelector(selectTower(id), (tower) => {
 		return tower ? { exists: true, value: tower } : { exists: false };
 	});
 }

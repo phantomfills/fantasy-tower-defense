@@ -9,6 +9,8 @@ interface Images {
 	stripes: string;
 	pixel_heart: string;
 	x_button: string;
+	eye: string;
+	shield: string;
 }
 
 export declare const images: Images;

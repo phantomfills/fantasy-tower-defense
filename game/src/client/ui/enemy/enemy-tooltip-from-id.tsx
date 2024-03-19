@@ -10,13 +10,11 @@ interface EnemyTooltipFromIdProps {
 
 export function EnemyTooltipFromId({ id }: EnemyTooltipFromIdProps) {
 	const enemyDetails = useSelector(getEnemyHoverDetailsFromId(id));
+	if (!enemyDetails.exists) return <></>;
 
 	return (
-		<FollowMouse size={new UDim2(0.16, 0, 0.07, 0)} zIndex={5}>
-			<EnemyTooltip
-				_type={enemyDetails.exists ? enemyDetails.value._type : "TRAINING_DUMMY"}
-				health={enemyDetails.exists ? enemyDetails.value.health : 0}
-			/>
+		<FollowMouse size={new UDim2(0, 150, 0, 40)} zIndex={5}>
+			<EnemyTooltip _type={enemyDetails.value._type} health={enemyDetails.value.health} />
 		</FollowMouse>
 	);
 }

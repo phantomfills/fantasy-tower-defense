@@ -8,6 +8,11 @@ hash = "9d8c8804a144d6e1fce007b0b9b3922865f18ea5e0c4e64a03250fae27f91349"
 id = 16726140587
 packable = false
 
+[inputs."assets/images/eye.png"]
+hash = "b5d4433e2073c715b3a9a9e31fd2bff369972e5a3b0bd8de808e383b3bbc3e70"
+id = 16781146299
+packable = false
+
 [inputs."assets/images/heart.png"]
 hash = "d9a29e2adce7d63f3a7ae69ee97dfa03a83d589c32f93584008eddb904cd578e"
 id = 16726140716
@@ -36,6 +41,11 @@ packable = false
 [inputs."assets/images/r_button.png"]
 hash = "c92f63f817455c862957ff358dbd6422a25745fbab1a3bb7a9093d5cac8d3b87"
 id = 16726141209
+packable = false
+
+[inputs."assets/images/shield.png"]
+hash = "13d3ac1dff3338ea04490fc6a7e9d1aea93e8af7c9ee60da2fd7b79a5a65f369"
+id = 16781363004
 packable = false
 
 [inputs."assets/images/stripes.png"]

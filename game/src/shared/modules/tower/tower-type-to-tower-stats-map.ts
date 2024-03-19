@@ -1,5 +1,6 @@
 import Object from "@rbxts/object-utils";
 import { TowerType } from "./tower-type";
+import { Immunity } from "../attack/immunity";
 
 interface TowerLevel {
 	damage: number;
@@ -9,6 +10,7 @@ interface TowerLevel {
 	cost: number;
 	title: string;
 	description: string;
+	traits: Immunity[];
 }
 
 interface TowerStats {
@@ -19,60 +21,67 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 	ARCHER: {
 		levels: [
 			{
-				damage: 25,
+				damage: 30,
 				range: 12,
 				cooldown: 2,
-				health: 150,
-				cost: 900,
+				health: 100,
+				cost: 1_500,
 				title: "Vanessa, Archer",
 				description: "She fires arrows at enemies which can pierce!",
+				traits: [],
 			},
 			{
-				damage: 50,
-				range: 15,
-				cooldown: 2,
-				health: 175,
-				cost: 750,
+				damage: 30,
+				range: 14,
+				cooldown: 1.8,
+				health: 125,
+				cost: 400,
 				title: "Level Up",
-				description: "Vanessa sees further, and deals more damage!",
+				description: "Vanessa can see further and shoot faster!",
+				traits: [],
 			},
 			{
 				damage: 50,
-				range: 16,
-				cooldown: 1.6,
-				health: 175,
-				cost: 925,
-				title: "Enhanced Eyesight",
-				description: "Detects camoflauged enemies. Also attacks faster.",
+				range: 14,
+				cooldown: 1.8,
+				health: 125,
+				cost: 725,
+				title: "Iron Tipped Arrows",
+				description: "Iron tipped arrows deal more damage and can penetrate armor!",
+				traits: ["REINFORCED"],
 			},
 			{
-				damage: 100,
-				range: 18,
-				cooldown: 1.2,
-				health: 225,
-				cost: 2_200,
+				damage: 80,
+				range: 15,
+				cooldown: 1.5,
+				health: 160,
+				cost: 1_600,
 				title: "Crossbow",
-				description: "Fast attacking, long range crossbow that can pierce through many enemies!",
+				description:
+					"Fast attacking, long range crossbow that can pierce through many enemies! Also detects stealth enemies.",
+				traits: ["STEALTH", "REINFORCED"],
 			},
 			{
-				damage: 150,
-				range: 25,
-				cooldown: 1,
-				health: 300,
-				cost: 6_800,
+				damage: 120,
+				range: 16,
+				cooldown: 0.8,
+				health: 160,
+				cost: 4_500,
 				title: "Hunter's Instinct",
 				description:
 					"She attacks faster and does powerful critical shots every so often that deal MASSIVELY increased damage.",
+				traits: ["STEALTH", "REINFORCED"],
 			},
 			{
-				damage: 300,
-				range: 32,
-				cooldown: 0.2,
-				health: 400,
-				cost: 30_000,
+				damage: 200,
+				range: 19,
+				cooldown: 0.5,
+				health: 200,
+				cost: 17_500,
 				title: "ELITE SHARPSHOOTER",
 				description:
-					"Elite Sharpshooter shoots really fast and devastates most enemy types with ease! Watch out; you might be next!",
+					"Elite Sharpshooter shoots really fast and devastates most enemy types with ease, with a HUGE radius!",
+				traits: ["STEALTH", "REINFORCED"],
 			},
 		],
 	},

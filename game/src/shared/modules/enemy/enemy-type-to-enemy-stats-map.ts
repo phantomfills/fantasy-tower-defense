@@ -1,6 +1,5 @@
+import { Immunity } from "../attack/immunity";
 import { EnemyType } from "./enemy-type";
-
-type Immunity = "STEALTH";
 
 interface EnemyStats {
 	maxHealth: number;
@@ -10,28 +9,28 @@ interface EnemyStats {
 
 const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 	TRAINING_DUMMY: {
-		maxHealth: 50,
-		speed: 50,
-		immunities: [],
-	},
-	ARMORED_DUMMY: {
-		maxHealth: 200,
-		speed: 50,
+		maxHealth: 30,
+		speed: 3.5,
 		immunities: [],
 	},
 	SPEEDSTER_DUMMY: {
-		maxHealth: 100,
-		speed: 50,
+		maxHealth: 50,
+		speed: 7.5,
 		immunities: [],
 	},
+	ARMORED_DUMMY: {
+		maxHealth: 125,
+		speed: 3,
+		immunities: ["REINFORCED"],
+	},
 	STEALTH_DUMMY: {
-		maxHealth: 300,
-		speed: 50,
+		maxHealth: 200,
+		speed: 5.5,
 		immunities: ["STEALTH"],
 	},
 	DUMMY_TANK: {
-		maxHealth: 1_000_000,
-		speed: 0.2,
+		maxHealth: 50_000,
+		speed: 0.5,
 		immunities: [],
 	},
 };

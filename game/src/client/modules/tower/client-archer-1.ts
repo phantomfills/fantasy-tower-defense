@@ -1,6 +1,6 @@
 import { getTowerModelFromTypeAndLevel } from "shared/modules/tower/tower-type-to-model-map";
 import { ClientTower, TowerModel } from "./client-tower";
-import { ReplicatedStorage, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 
 interface ArcherModel extends TowerModel {
 	rightArm: BasePart & {
@@ -32,22 +32,23 @@ export class ClientArcher1 extends ClientTower<ArcherModel> {
 		this.animator.Name = "animator";
 		this.animator.Parent = animationController;
 
-		const idle = this.createAnimation("rbxassetid://16590249418");
+		const idle = this.getAnimationTrack("rbxassetid://16590249418");
 		idle.Play();
 		this.idleAnimationTrack = idle;
 
-		const attack = this.createAnimation("rbxassetid://16590396309");
+		const attack = this.getAnimationTrack("rbxassetid://16590396309");
 		this.attackAnimationTrack = attack;
 
 		this.connectBeamsToLeftArm();
 	}
 
-	private createAnimation(animationId: string) {
+	private getAnimationTrack(animationId: string) {
 		const animation = new Instance("Animation");
 		animation.AnimationId = animationId;
 		animation.Parent = this.animator;
 
 		const track = this.animator.LoadAnimation(animation);
+
 		return track;
 	}
 
@@ -84,7 +85,7 @@ export class ClientArcher1 extends ClientTower<ArcherModel> {
 
 		this.connectBeamsToBow();
 
-		this.attackAnimationTrack.Stopped.Connect(() => {
+		this.attackAnimationTrack.Stopped.Once(() => {
 			this.idleAnimationTrack.Play();
 			this.connectBeamsToLeftArm();
 		});

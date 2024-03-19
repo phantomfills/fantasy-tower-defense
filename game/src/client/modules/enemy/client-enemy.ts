@@ -5,8 +5,8 @@ import { possible } from "shared/modules/utils/possible";
 
 const ENEMY_ON_SCREEN_BUFFER_PIXELS = 50;
 
-const MINIMUM_CLIENT_ENEMY_POSITION_OFFSET = -0.5;
-const MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET = 0.5;
+const MINIMUM_CLIENT_ENEMY_POSITION_OFFSET = -0.25;
+const MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET = 0.25;
 
 export interface EnemyModel extends Model {
 	humanoidRootPart: BasePart & {
