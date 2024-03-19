@@ -3,13 +3,21 @@ export interface Attack {
 	enemyPosition: Vector3;
 	towerId: string;
 	damage: number;
+	id: string;
 }
 
-export function createBasicAttack(enemyId: string, enemyPosition: Vector3, towerId: string, damage: number): Attack {
+export function createBasicAttack(
+	id: string,
+	enemyId: string,
+	enemyPosition: Vector3,
+	towerId: string,
+	damage: number,
+): Attack {
 	return {
 		enemyId,
 		enemyPosition,
 		towerId,
 		damage,
+		id,
 	};
 }

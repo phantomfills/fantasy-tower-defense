@@ -1,6 +1,6 @@
 import { SharedState } from "..";
 import Object from "@rbxts/object-utils";
-import { Tower, getTowers } from "../tower";
+import { Tower, selectTowers } from "../tower";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 import { Enemy } from "./enemy-slice";
@@ -16,7 +16,7 @@ export function getEnemies(state: SharedState) {
 }
 
 export function getEnemyIdsInTowerRange(towerId: string) {
-	return createSelector([getEnemies, getTowers], (enemies, towers) => {
+	return createSelector([getEnemies, selectTowers], (enemies, towers) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return [];
 
@@ -108,7 +108,7 @@ export function getClosestEnemyIdToTower(tower: Tower): (state: SharedState) => 
 
 // gets the enemy with the highest path completion alpha in the tower's range
 export function getFirstEnemyInTowerRange(towerId: string): (state: SharedState) => Possible<[string, Enemy]> {
-	return createSelector([getEnemies, getTowers], (enemies, towers) => {
+	return createSelector([getEnemies, selectTowers], (enemies, towers) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return { exists: false };
 

@@ -1,13 +1,14 @@
 import { createProducer } from "@rbxts/reflex";
 import { TowerType } from "shared/modules/tower/tower-type";
 import { Attack } from "shared/modules/attack";
-import { possible } from "shared/modules/utils/possible";
+import { Possible, possible } from "shared/modules/utils/possible";
 
 export interface Tower {
 	towerType: TowerType;
 	cframe: CFrame;
 	level: number;
 	owner: string;
+	attack: Possible<Attack>;
 }
 
 export type TowerState = {
@@ -33,5 +34,13 @@ export const towerSlice = createProducer(initialState, {
 
 	destroyTower: (state, id: string) => {
 		return { ...state, towers: { ...state.towers, [id]: undefined } };
+	},
+
+	setTowerAttack: (state, id: string, attack: Attack) => {
+		const possibleTower = possible<Tower>(state.towers[id]);
+		if (!possibleTower.exists) throw `Tower with id ${id} does not exist`;
+
+		const tower = possibleTower.value;
+		return { ...state, towers: { ...state.towers, [id]: { ...tower, attack: { exists: true, value: attack } } } };
 	},
 });

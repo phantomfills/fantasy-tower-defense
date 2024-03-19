@@ -7,7 +7,10 @@ export function createTower(towerType: TowerType, cframe: CFrame, level: number 
 		towerType,
 		level,
 		owner,
-	};
+		attack: {
+			exists: false,
+		},
+	} as const;
 
 	switch (towerType) {
 		case "ARCHER": {

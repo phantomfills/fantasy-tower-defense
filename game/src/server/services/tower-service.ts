@@ -2,7 +2,7 @@ import { OnStart, Service } from "@flamework/core";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { producer } from "server/store";
-import { getPossibleTowerFromId, getTowers, towerDoesNotExistFromId } from "shared/store/tower";
+import { getPossibleTowerFromId, selectTowers, towerDoesNotExistFromId } from "shared/store/tower";
 import { getEnemyCFrameFromId, getEnemyIdsInTowerRange, getFirstEnemyInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { createBasicAttack } from "shared/modules/attack";
@@ -61,12 +61,13 @@ function towerAdded(id: string): void {
 		const attackId = createId();
 
 		const attack = createBasicAttack(
+			attackId,
 			firstEnemyInRangeId,
 			enemyPosition,
 			id,
 			math.min(effectiveDamage, firstEnemyInRange.health),
 		);
-		producer.addAttack(attackId, attack);
+		producer.setTowerAttack(id, attack);
 	});
 
 	producer.once(towerDoesNotExistFromId(id), stopCheckingForEnemiesInTowerRange);
@@ -143,7 +144,7 @@ export class TowerService implements OnStart {
 			sellTower(id);
 		});
 
-		producer.subscribe(getTowers, (towers, lastTowers) => {
+		producer.subscribe(selectTowers, (towers, lastTowers) => {
 			for (const [id, _] of pairs(towers)) {
 				if (Object.keys(lastTowers).includes(id)) continue;
 				towerAdded(id);
