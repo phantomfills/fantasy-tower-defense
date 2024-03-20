@@ -29,8 +29,8 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 		immunities: ["STEALTH"],
 	},
 	DUMMY_TANK: {
-		maxHealth: 50_000,
-		speed: 0.5,
+		maxHealth: 100_000,
+		speed: 1,
 		immunities: [],
 	},
 };

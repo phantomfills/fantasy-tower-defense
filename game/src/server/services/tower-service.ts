@@ -104,13 +104,13 @@ export class TowerService implements OnStart, OnTick {
 			const { cooldown, damage, traits } = describeTowerFromType(towerType, level);
 			const cooldownMilliseconds = cooldown * MILLISECONDS_IN_SECOND;
 			const currentTimestamp = getCurrentTimeInMilliseconds();
-			if (currentTimestamp - lastAttackTimestamp < cooldownMilliseconds) return;
+			if (currentTimestamp - lastAttackTimestamp < cooldownMilliseconds) continue;
 
 			const enemies = producer.getState(getEnemies);
-			if (Object.keys(enemies).isEmpty()) return;
+			if (Object.keys(enemies).isEmpty()) continue;
 
 			const possibleFirstEnemyInRangeId = producer.getState(getFirstAttackableEnemyInTowerRange(id));
-			if (!possibleFirstEnemyInRangeId.exists) return;
+			if (!possibleFirstEnemyInRangeId.exists) continue;
 
 			const [firstEnemyInRangeId, firstEnemyInRange] = possibleFirstEnemyInRangeId.value;
 
@@ -123,7 +123,7 @@ export class TowerService implements OnStart, OnTick {
 				: damage;
 
 			const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(firstEnemyInRangeId));
-			if (!possibleEnemyCFrame.exists) return;
+			if (!possibleEnemyCFrame.exists) continue;
 
 			producer.setLastAtackTimestamp(id, currentTimestamp);
 
