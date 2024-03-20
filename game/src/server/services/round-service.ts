@@ -35,12 +35,6 @@ type Level = Round[];
 const level: Level = [
 	[
 		{
-			enemyType: "STEALTH_DUMMY",
-			count: 1,
-			enemySpawnInterval: 1_000,
-			delayToNextGroup: 0,
-		},
-		{
 			enemyType: "TRAINING_DUMMY",
 			count: 10,
 			enemySpawnInterval: 1_000,
@@ -179,7 +173,7 @@ type RoundResult =
 @Service({})
 export class RoundService implements OnStart {
 	onStart() {
-		task.wait(20);
+		task.wait(2000);
 
 		for (let roundIndex = 0; roundIndex < level.size(); roundIndex++) {
 			const round = level[roundIndex];

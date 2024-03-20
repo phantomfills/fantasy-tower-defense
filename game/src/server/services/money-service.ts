@@ -1,7 +1,8 @@
 import { Service, OnStart } from "@flamework/core";
 import { Players } from "@rbxts/services";
+import { towerAttack } from "server/events";
 import { producer } from "server/store";
-import { getPossibleTowerFromId, selectAttacks } from "shared/store/tower";
+import { getPossibleTowerFromId } from "shared/store/tower";
 
 const STARTING_CASH = 2_000;
 
@@ -12,7 +13,7 @@ function initializeMoney(userId: string, amount: number) {
 @Service({})
 export class MoneyService implements OnStart {
 	onStart() {
-		producer.observe(selectAttacks, (attack) => {
+		towerAttack.Connect((attack) => {
 			const { towerId, damage } = attack;
 
 			const possibleTower = producer.getState(getPossibleTowerFromId(towerId));

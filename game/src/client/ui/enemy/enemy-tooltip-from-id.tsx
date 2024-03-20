@@ -13,7 +13,7 @@ export function EnemyTooltipFromId({ id }: EnemyTooltipFromIdProps) {
 	if (!enemyDetails.exists) return <></>;
 
 	return (
-		<FollowMouse size={new UDim2(0, 150, 0, 40)} zIndex={5}>
+		<FollowMouse size={new UDim2(0, 175, 0, 50)} zIndex={5}>
 			<EnemyTooltip _type={enemyDetails.value._type} health={enemyDetails.value.health} />
 		</FollowMouse>
 	);

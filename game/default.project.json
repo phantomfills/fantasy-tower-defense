@@ -128,6 +128,14 @@
 				"EnvironmentSpecularScale": 1
 			},
 			"$path": "assets/lighting"
+		},
+		"TextChatService": {
+			"$className": "TextChatService",
+			"$properties": {
+				"ChatVersion": "TextChatService",
+				"CreateDefaultCommands": true,
+				"CreateDefaultTextChannels": true
+			}
 		}
 	}
 }

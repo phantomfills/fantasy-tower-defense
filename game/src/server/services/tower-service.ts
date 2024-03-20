@@ -1,9 +1,14 @@
-import { OnStart, Service } from "@flamework/core";
+import { OnStart, OnTick, Service } from "@flamework/core";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { producer } from "server/store";
 import { getPossibleTowerFromId, selectTowers, towerDoesNotExistFromId } from "shared/store/tower";
-import { getEnemyCFrameFromId, getEnemyIdsInTowerRange, getFirstAttackableEnemyInTowerRange } from "shared/store/enemy";
+import {
+	getEnemies,
+	getEnemyCFrameFromId,
+	getEnemyIdsInTowerRange,
+	getFirstAttackableEnemyInTowerRange,
+} from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { createBasicAttack } from "shared/modules/attack";
 import {
@@ -16,61 +21,9 @@ import Object from "@rbxts/object-utils";
 import { getMoney } from "shared/store/money";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
+import { towerAttack } from "server/events";
 
 const MILLISECONDS_IN_SECOND = 1000;
-
-function towerAdded(id: string): void {
-	let lastAttackTimestamp = getCurrentTimeInMilliseconds();
-
-	const stopCheckingForEnemiesInTowerRange = producer.subscribe(getEnemyIdsInTowerRange(id), (enemies) => {
-		if (enemies.isEmpty()) return;
-
-		const possibleTower = producer.getState(getPossibleTowerFromId(id));
-		if (!possibleTower.exists) return;
-
-		const tower = possibleTower.value;
-
-		const { towerType, level } = tower;
-		const { cooldown, damage, traits } = describeTowerFromType(towerType, level);
-
-		const currentTimestamp = getCurrentTimeInMilliseconds();
-		if (currentTimestamp - lastAttackTimestamp < cooldown * MILLISECONDS_IN_SECOND) return;
-
-		const possibleFirstEnemyInRangeId = producer.getState(getFirstAttackableEnemyInTowerRange(id));
-		if (!possibleFirstEnemyInRangeId.exists) return;
-
-		const [firstEnemyInRangeId, firstEnemyInRange] = possibleFirstEnemyInRangeId.value;
-
-		const { immunities } = describeEnemyFromType(firstEnemyInRange.enemyType);
-
-		const effectiveDamage = immunities.includes("REINFORCED")
-			? traits.includes("REINFORCED")
-				? damage
-				: 0
-			: damage;
-
-		const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(firstEnemyInRangeId));
-		if (!possibleEnemyCFrame.exists) return;
-
-		lastAttackTimestamp = currentTimestamp;
-
-		const enemyCFrame = possibleEnemyCFrame.value;
-		const enemyPosition = enemyCFrame.Position;
-
-		const attackId = createId();
-
-		const attack = createBasicAttack(
-			attackId,
-			firstEnemyInRangeId,
-			enemyPosition,
-			id,
-			math.min(effectiveDamage, firstEnemyInRange.health),
-		);
-		producer.setTowerAttack(id, attack);
-	});
-
-	producer.once(towerDoesNotExistFromId(id), stopCheckingForEnemiesInTowerRange);
-}
 
 function userHasMoney(userId: string, amount: number): boolean {
 	const possibleUserMoney = producer.getState(getMoney(userId));
@@ -98,12 +51,12 @@ function sellTower(id: string): void {
 }
 
 @Service({})
-export class TowerService implements OnStart {
+export class TowerService implements OnStart, OnTick {
 	onStart(): void {
 		Events.placeTower.connect((player, _type, cframe) => {
 			const userId = tostring(player.UserId);
 
-			const tower = createTower(_type, cframe, 0, userId);
+			const tower = createTower(_type, cframe, 0, userId, getCurrentTimeInMilliseconds());
 			const towerId = createId();
 
 			const towerPlacementCost = describeTowerFromType(_type, 0).cost;
@@ -142,12 +95,51 @@ export class TowerService implements OnStart {
 
 			sellTower(id);
 		});
+	}
 
-		producer.subscribe(selectTowers, (towers, lastTowers) => {
-			for (const [id, _] of pairs(towers)) {
-				if (Object.keys(lastTowers).includes(id)) continue;
-				towerAdded(id);
-			}
-		});
+	onTick() {
+		const towers = producer.getState(selectTowers);
+
+		for (const [id, { lastAttackTimestamp, towerType, level }] of pairs(towers)) {
+			const { cooldown, damage, traits } = describeTowerFromType(towerType, level);
+			const cooldownMilliseconds = cooldown * MILLISECONDS_IN_SECOND;
+			const currentTimestamp = getCurrentTimeInMilliseconds();
+			if (currentTimestamp - lastAttackTimestamp < cooldownMilliseconds) return;
+
+			const enemies = producer.getState(getEnemies);
+			if (Object.keys(enemies).isEmpty()) return;
+
+			const possibleFirstEnemyInRangeId = producer.getState(getFirstAttackableEnemyInTowerRange(id));
+			if (!possibleFirstEnemyInRangeId.exists) return;
+
+			const [firstEnemyInRangeId, firstEnemyInRange] = possibleFirstEnemyInRangeId.value;
+
+			const { immunities } = describeEnemyFromType(firstEnemyInRange.enemyType);
+
+			const effectiveDamage = immunities.includes("REINFORCED")
+				? traits.includes("REINFORCED")
+					? damage
+					: 0
+				: damage;
+
+			const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(firstEnemyInRangeId));
+			if (!possibleEnemyCFrame.exists) return;
+
+			producer.setLastAtackTimestamp(id, currentTimestamp);
+
+			const enemyCFrame = possibleEnemyCFrame.value;
+			const enemyPosition = enemyCFrame.Position;
+
+			const attackId = createId();
+
+			const attack = createBasicAttack(
+				attackId,
+				firstEnemyInRangeId,
+				enemyPosition,
+				id,
+				math.min(effectiveDamage, firstEnemyInRange.health),
+			);
+			towerAttack.Fire(attack);
+		}
 	}
 }

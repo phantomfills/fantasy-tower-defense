@@ -8,7 +8,7 @@ export interface Tower {
 	cframe: CFrame;
 	level: number;
 	owner: string;
-	attack: Possible<Attack>;
+	lastAttackTimestamp: number;
 }
 
 export type TowerState = {
@@ -36,11 +36,11 @@ export const towerSlice = createProducer(initialState, {
 		return { ...state, towers: { ...state.towers, [id]: undefined } };
 	},
 
-	setTowerAttack: (state, id: string, attack: Attack) => {
+	setLastAtackTimestamp: (state, id: string, timestamp: number) => {
 		const possibleTower = possible<Tower>(state.towers[id]);
 		if (!possibleTower.exists) throw `Tower with id ${id} does not exist`;
 
 		const tower = possibleTower.value;
-		return { ...state, towers: { ...state.towers, [id]: { ...tower, attack: { exists: true, value: attack } } } };
+		return { ...state, towers: { ...state.towers, [id]: { ...tower, lastAttackTimestamp: timestamp } } };
 	},
 });

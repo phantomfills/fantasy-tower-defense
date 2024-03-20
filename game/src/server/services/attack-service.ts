@@ -1,12 +1,15 @@
 import { Service, OnStart } from "@flamework/core";
+import { towerAttack } from "server/events";
+import { Events } from "server/network";
 import { producer } from "server/store";
-import { getAttackId, selectAttacks } from "shared/store/tower";
 
 @Service({})
 export class AttackService implements OnStart {
 	onStart() {
-		producer.observe(selectAttacks, getAttackId, ({ enemyId, damage }) => {
+		towerAttack.Connect((attack) => {
+			const { enemyId, damage } = attack;
 			producer.dealDamageToEnemy(enemyId, damage);
+			Events.towerAttack.broadcast(attack);
 		});
 	}
 }

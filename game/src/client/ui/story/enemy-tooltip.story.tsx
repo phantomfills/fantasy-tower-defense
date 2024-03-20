@@ -5,8 +5,8 @@ import { Frame } from "../utils/frame";
 
 export = (target: Frame) => {
 	const enemyTooltip = (
-		<Frame position={new UDim2(0.5, 0, 0.5, 0)} size={new UDim2(0, 150, 0, 40)}>
-			<EnemyTooltip _type="STEALTH_DUMMY" health={350} />
+		<Frame position={new UDim2(0.5, 0, 0.5, 0)} size={new UDim2(0, 175, 0, 50)}>
+			<EnemyTooltip _type="STEALTH_DUMMY" health={160} />
 		</Frame>
 	);
 
