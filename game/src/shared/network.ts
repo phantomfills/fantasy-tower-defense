@@ -24,6 +24,7 @@ interface SharedEvents {
 	sellTower(id: string): void;
 	attackEnemy(towerId: string, enemyId: string, damage: number, enemyPosition: Vector3): void;
 	towerAttack(attack: Attack): void;
+	setDialog(text: string, time: number): void;
 
 	dispatch(actions: BroadcastAction[]): void;
 	start(): void;

@@ -9,7 +9,7 @@ import { getPossibleTowerPlacement, getTowerLoadout } from "client/store/tower-l
 import { TowerSlot } from "./tower/tower-slot";
 import { MatchInfo } from "./game/match-info";
 import { CashCounter } from "./game/cash-counter";
-import { getHoveringEnemyId } from "client/store/enemy-hover";
+import { selectEnemyFocusDetails, selectFocusEnemyId } from "client/store/enemy-focus";
 import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
 import { getPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
 import { TowerActionMenuFromId } from "./tower/tower-action-menu";
@@ -21,14 +21,22 @@ import Object from "@rbxts/object-utils";
 import { EnemyDamageIndicator } from "./enemy/enemy-damage-indicator";
 import { producer } from "client/store";
 import { Music } from "./music/music";
+import { selectDialogText } from "client/store/dialog";
+import { Dialog } from "./game/dialog";
+import { Possible } from "shared/modules/utils/possible";
+import { EnemyType } from "shared/modules/enemy/enemy-type";
+import { selectEnemyDetailViewType } from "client/store/settings";
+import { EnemyTooltipBillboardFromId } from "./enemy/enemy-tooltip";
 
 export function App() {
 	const towers = useSelector(getTowerLoadout);
 	const possibleTowerPlacement = useSelector(getPossibleTowerPlacement);
-	const possibleHoveringEnemyId = useSelector(getHoveringEnemyId);
+	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
 	const possibleTowerFocusId = useSelector(getPossibleTowerId);
 	const enemyDamageIndicators = useSelector(getEnemyDamageIndicators);
 	const money = useSelector(getMoney(tostring(Players.LocalPlayer.UserId)));
+	const dialog = useSelector(selectDialogText);
+	const enemyDetailViewType = useSelector(selectEnemyDetailViewType);
 
 	return (
 		<>
@@ -52,8 +60,16 @@ export function App() {
 					</FollowMouse>
 				)}
 
-				{possibleHoveringEnemyId.exists && (
-					<EnemyTooltipFromId id={possibleHoveringEnemyId.value} key="enemy-tooltip" />
+				{possibleEnemyFocusId.exists ? (
+					enemyDetailViewType === "HOVER" ? (
+						<EnemyTooltipFromId id={possibleEnemyFocusId.value} key="enemy-tooltip" />
+					) : (
+						enemyDetailViewType === "CLOSEST" && (
+							<EnemyTooltipBillboardFromId id={possibleEnemyFocusId.value} key="enemy-tooltip" />
+						)
+					)
+				) : (
+					<></>
 				)}
 
 				{possibleTowerFocusId.exists && (
@@ -85,6 +101,8 @@ export function App() {
 						/>
 					);
 				})}
+
+				{dialog.exists && <Dialog text={dialog.value} key="dialog" />}
 
 				<MatchInfo key="match-info">
 					<LifeCounter lives={1000} key="life-counter" />

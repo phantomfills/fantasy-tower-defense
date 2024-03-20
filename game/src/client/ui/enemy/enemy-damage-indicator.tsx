@@ -29,7 +29,7 @@ export function EnemyDamageIndicator({ damage, position, spawnTime }: EnemyDamag
 
 	return (
 		<billboardgui
-			Size={new UDim2(0, 500, 0, 275)}
+			Size={new UDim2(0, 100, 0, 45)}
 			AlwaysOnTop={true}
 			StudsOffsetWorldSpace={position.add(
 				new Vector3(

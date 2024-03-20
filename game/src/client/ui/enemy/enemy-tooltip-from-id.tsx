@@ -2,14 +2,14 @@ import Roact from "@rbxts/roact";
 import { FollowMouse } from "../utils/follow-mouse";
 import { EnemyTooltip } from "./enemy-tooltip";
 import { useSelector } from "@rbxts/react-reflex";
-import { getEnemyHoverDetailsFromId } from "client/store/enemy-hover";
+import { selectEnemyFocusDetails } from "client/store/enemy-focus";
 
 interface EnemyTooltipFromIdProps {
 	id: string;
 }
 
 export function EnemyTooltipFromId({ id }: EnemyTooltipFromIdProps) {
-	const enemyDetails = useSelector(getEnemyHoverDetailsFromId(id));
+	const enemyDetails = useSelector(selectEnemyFocusDetails(id));
 	if (!enemyDetails.exists) return <></>;
 
 	return (

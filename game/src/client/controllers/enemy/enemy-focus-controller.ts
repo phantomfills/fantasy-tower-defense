@@ -1,13 +1,16 @@
 import { Controller, OnTick } from "@flamework/core";
-import { UserInputService, Workspace } from "@rbxts/services";
+import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { producer } from "client/store";
-import { getHoveringEnemyId } from "client/store/enemy-hover";
+import { selectEnemyDetailViewType } from "client/store/settings";
 import { Possible, possible } from "shared/modules/utils/possible";
+import { getClosestEnemyIdToPosition } from "shared/store/enemy";
 
 const MAX_ENEMY_HOVER_DISTANCE = 100;
 
+const player = Players.LocalPlayer;
+
 @Controller({})
-export class EnemyHoverController implements OnTick {
+export class EnemyFocusController implements OnTick {
 	private getHoveringEnemyId(): Possible<string> {
 		const possibleCamera = possible<Camera>(Workspace.CurrentCamera);
 		if (!possibleCamera.exists)
@@ -55,13 +58,47 @@ export class EnemyHoverController implements OnTick {
 		};
 	}
 
-	onTick() {
-		const possibleEnemyHoverId = this.getHoveringEnemyId();
-		if (!possibleEnemyHoverId.exists) {
-			producer.clearEnemyHoverId();
-			return;
-		}
+	private getClosestEnemyId(): Possible<string> {
+		const character = player.Character;
+		if (!character) return { exists: false };
 
-		producer.setEnemyHoverId(possibleEnemyHoverId.value);
+		const characterPosition = character.GetPivot().Position;
+
+		const closestEnemy = producer.getState(getClosestEnemyIdToPosition(characterPosition));
+		if (!closestEnemy.exists) return { exists: false };
+
+		return {
+			exists: true,
+			value: closestEnemy.value[0],
+		};
+	}
+
+	onTick() {
+		const enemyDetailViewType = producer.getState(selectEnemyDetailViewType);
+
+		switch (enemyDetailViewType) {
+			case "HOVER": {
+				const possibleEnemyHoverId = this.getHoveringEnemyId();
+				if (!possibleEnemyHoverId.exists) {
+					producer.clearEnemyFocusId();
+					return;
+				}
+
+				producer.setEnemyFocusId(possibleEnemyHoverId.value);
+
+				break;
+			}
+			case "CLOSEST": {
+				const possibleClosestEnemyId = this.getClosestEnemyId();
+				if (!possibleClosestEnemyId.exists) {
+					producer.clearEnemyFocusId();
+					return;
+				}
+
+				producer.setEnemyFocusId(possibleClosestEnemyId.value);
+
+				break;
+			}
+		}
 	}
 }

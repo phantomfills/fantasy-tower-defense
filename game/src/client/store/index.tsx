@@ -4,18 +4,22 @@ import { ReflexProvider } from "@rbxts/react-reflex";
 import Roact from "@rbxts/roact";
 import { Events } from "client/network";
 import { slices } from "shared/store";
-import { enemyHoverSlice } from "./enemy-hover";
+import { enemyFocusSlice } from "./enemy-focus";
 import { towerActionSlice } from "./tower-action-menu";
 import { enemyDamageIndicatorSlice } from "./enemy-damage-indicator";
+import { dialogSlice } from "./dialog";
+import { settingsSlice } from "./settings";
 
 export type RootState = InferState<typeof producer>;
 
 export const producer = combineProducers({
 	...slices,
 	towerLoadout: towerLoadoutSlice,
-	enemyHover: enemyHoverSlice,
+	enemyFocus: enemyFocusSlice,
 	towerAction: towerActionSlice,
 	enemyDamageIndicator: enemyDamageIndicatorSlice,
+	dialog: dialogSlice,
+	settings: settingsSlice,
 });
 
 export function RootProvider(props: Roact.PropsWithChildren) {

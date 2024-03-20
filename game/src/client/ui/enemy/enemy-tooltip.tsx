@@ -1,4 +1,4 @@
-import Roact, { useEffect } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
@@ -8,6 +8,9 @@ import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { images } from "shared/assets";
 import { useRem } from "../hooks/use-rem";
+import { getEnemyFromId } from "shared/store/enemy";
+import { useSelector } from "@rbxts/react-reflex";
+import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 
 interface EnemyTooltipProps {
 	_type: EnemyType;
@@ -23,7 +26,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 	const enemyDisplayName = getEnemyDisplayName(_type);
 
 	return (
-		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 20, 0, 0)}>
+		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 0, 0, 0)}>
 			<Label
 				size={new UDim2(1, 0, 0.5, 0)}
 				text={enemyDisplayName}
@@ -168,4 +171,32 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 			</Frame>
 		</Frame>
 	);
+}
+
+interface EnemyTooltipBillboardProps extends EnemyTooltipProps {
+	position: Vector3;
+}
+
+function EnemyTooltipBillboard({ position, _type, health }: EnemyTooltipBillboardProps) {
+	return (
+		<billboardgui StudsOffsetWorldSpace={position} Size={new UDim2(0, 120, 0, 45)} AlwaysOnTop={true}>
+			<EnemyTooltip _type={_type} health={health} />
+		</billboardgui>
+	);
+}
+
+interface EnemyTooltipBillboardFromIdProps {
+	id: string;
+}
+
+export function EnemyTooltipBillboardFromId({ id }: EnemyTooltipBillboardFromIdProps) {
+	const possibleEnemy = useSelector(getEnemyFromId(id));
+	if (!possibleEnemy.exists) {
+		return <></>;
+	}
+
+	const { pathCompletionAlpha, enemyType, health, path } = possibleEnemy.value;
+	const position = getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha).Position;
+
+	return <EnemyTooltipBillboard position={position} _type={enemyType} health={health} />;
 }
