@@ -257,12 +257,10 @@ export class RoundService implements OnStart {
 
 		let roundEnded = false;
 
-		producer.once(noEnemiesExist, () => {
-			roundEnded = true;
-		});
-
 		while (!roundEnded) {
 			RunService.Heartbeat.Wait();
+
+			roundEnded = producer.getState(noEnemiesExist);
 		}
 
 		return { type: "success" };
