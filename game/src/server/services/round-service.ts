@@ -10,7 +10,7 @@ import { noEnemiesExist } from "shared/store/enemy";
 import { getMap } from "shared/store/map";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 3_000;
-const ROUND_BONUS = 500;
+const ROUND_BONUS = 750;
 const ROUND_BONUS_MULTIPLIER = 2;
 
 function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number): number {
