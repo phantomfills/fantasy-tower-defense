@@ -15,13 +15,13 @@ interface ArcherModel extends TowerModel {
 	};
 }
 
-export class ClientArcher1 extends ClientTower<ArcherModel> {
+export class ClientArcher2 extends ClientTower<ArcherModel> {
 	private readonly animator: Animator;
 	private readonly idleAnimationTrack: AnimationTrack;
 	private readonly attackAnimationTrack: AnimationTrack;
 
 	constructor(id: string, cframe: CFrame) {
-		const archerModel = getTowerModel("ARCHER", 1);
+		const archerModel = getTowerModel("ARCHER", 2);
 		archerModel.Parent = Workspace;
 		super(archerModel, id, cframe);
 

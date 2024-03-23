@@ -1,4 +1,4 @@
-import { getTowerModelFromTypeAndLevel } from "shared/modules/tower/tower-type-to-model-map";
+import { getTowerModel } from "shared/modules/tower/tower-type-to-model-map";
 import { ClientTower, TowerModel } from "./client-tower";
 import { Workspace } from "@rbxts/services";
 
@@ -21,7 +21,7 @@ export class ClientArcher0 extends ClientTower<ArcherModel> {
 	private readonly attackAnimationTrack: AnimationTrack;
 
 	constructor(id: string, cframe: CFrame) {
-		const archerModel = getTowerModelFromTypeAndLevel("ARCHER", 0);
+		const archerModel = getTowerModel("ARCHER", 0);
 		archerModel.Parent = Workspace;
 		super(archerModel, id, cframe);
 
