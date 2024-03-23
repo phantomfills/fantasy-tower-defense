@@ -2,18 +2,20 @@ import { Service, OnStart } from "@flamework/core";
 import { Players } from "@rbxts/services";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
-import { EnemyType, isEnemyType } from "shared/modules/enemy/enemy-type";
+import { isEnemyType } from "shared/modules/enemy/enemy-type";
 import { createId } from "shared/modules/utils/id-utils";
 import { getMap } from "shared/store/map";
 
 const COMMAND_PREFIX = "!";
 
 const ADMINS = [
-	16778030463, // PhantomFills
-	556438497, // ManicDarkCat
+	"585267099", // PhantomFills
+	"556438497", // ManicDarkCat
+	"1620332636", // "roblox26io"
 ];
 
 function processPlayerMessage(userId: string, message: string) {
+	if (!ADMINS.includes(userId)) return;
 	if (message.sub(1, 1) !== COMMAND_PREFIX) return;
 
 	const splitMessage = message.split(" ");
