@@ -6,11 +6,11 @@ import { producer } from "server/store";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
-import { noEnemiesExist } from "shared/store/enemy";
+import { selectNoEnemiesExist } from "shared/store/enemy";
 import { getMap } from "shared/store/map";
 
-const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 3_000;
-const ROUND_BONUS = 750;
+const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 0;
+const ROUND_BONUS = 1_000;
 const ROUND_BONUS_MULTIPLIER = 2;
 
 function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number): number {
@@ -131,27 +131,65 @@ const level: Level = [
 	[
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 16,
+			count: 20,
 			enemySpawnInterval: 250,
 			delayToNextGroup: 1_000,
 		},
 		{
 			enemyType: "ARMORED_DUMMY",
-			count: 7,
+			count: 8,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
 			enemyType: "SPEEDSTER_DUMMY",
-			count: 5,
+			count: 10,
 			enemySpawnInterval: 125,
 			delayToNextGroup: 1_000,
 		},
 		{
 			enemyType: "STEALTH_DUMMY",
-			count: 8,
+			count: 7,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 3_000,
+		},
+		{
+			enemyType: "GUARD_DUMMY",
+			count: 5,
+			enemySpawnInterval: 1_000,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "TRAINING_DUMMY",
+			count: 15,
+			enemySpawnInterval: 250,
+			delayToNextGroup: 1_000,
+		},
+		{
+			enemyType: "ARMORED_DUMMY",
+			count: 15,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 1_000,
+		},
+		{
+			enemyType: "SPEEDSTER_DUMMY",
+			count: 15,
+			enemySpawnInterval: 125,
+			delayToNextGroup: 1_000,
+		},
+		{
+			enemyType: "STEALTH_DUMMY",
+			count: 15,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 5_000,
+		},
+		{
+			enemyType: "GUARD_DUMMY",
+			count: 5,
+			enemySpawnInterval: 1_000,
+			delayToNextGroup: 3_000,
 		},
 		{
 			enemyType: "DUMMY_TANK",
@@ -176,30 +214,28 @@ export class RoundService implements OnStart {
 	onStart() {
 		holdFor(10_000);
 
-		Events.setDialog.broadcast("Welcome to the tutorial!", 6_000);
-		holdFor(5_000);
+		Events.setDialog.broadcast("Welcome to the tutorial!", 11_000);
+		holdFor(10_000);
 		Events.setDialog.broadcast(
-			"Click on the tower button at the bottom, and move the tower to a location where its blue circle reaches the path",
-			6_000,
+			"Click on the tower button at the bottom, and move the tower to a location where its blue circle reaches the path, then click again to place it!",
+			11_000,
 		);
-		holdFor(5_000);
+		holdFor(10_000);
+		Events.setDialog.broadcast("Click on a tower to upgrade it!", 10_000);
+		holdFor(10_000);
 
 		for (let roundIndex = 0; roundIndex < level.size(); roundIndex++) {
 			const round = level[roundIndex];
 			const roundNumber = roundIndex + 1;
 
 			switch (roundNumber) {
-				case 1: {
-					Events.setDialog.broadcast("Click / tap on a tower to upgrade it!", 10_000);
-					break;
-				}
 				case 2: {
 					Events.setDialog.broadcast("I saw some quicker enemies in the distance, be prepared!", 10_000);
 					break;
 				}
 				case 4: {
 					Events.setDialog.broadcast(
-						"Armored enemies are on the way! They have the 'reinforced' immunity, meaning that towers without the corresponding trait cannot attack them! Upgrade Archer to level 2 to take them out!",
+						"Armored enemies are on the way! They're really strong, so upgrading or placing more Archers is essential.",
 						10_000,
 					);
 					break;
@@ -212,12 +248,22 @@ export class RoundService implements OnStart {
 					break;
 				}
 				case 8: {
-					Events.setDialog.broadcast("Loud thuds in the distance? I don't like what I'm hearing...", 10_000);
+					Events.setDialog.broadcast(
+						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Archers are level 4 or higher to counter them!",
+						10_000,
+					);
 					break;
 				}
 				case 9: {
 					Events.setDialog.broadcast(
-						"THE DUMMY TANK HAS ARRIVED! It's slow, but it has a LOT of health. If he gets through the range of your towers, sell and rebuy them in a different location!",
+						"Who are they? Are they protecting something? Just kidding. I know everything, I am the narrator, you will just have to find out.",
+						10_000,
+					);
+					break;
+				}
+				case 10: {
+					Events.setDialog.broadcast(
+						"The Dummy Tank is here! It has a lot of health, but it is very slow! Good luck taking it down.",
 						10_000,
 					);
 					break;
@@ -260,7 +306,7 @@ export class RoundService implements OnStart {
 		while (!roundEnded) {
 			RunService.Heartbeat.Wait();
 
-			roundEnded = producer.getState(noEnemiesExist);
+			roundEnded = producer.getState(selectNoEnemiesExist);
 		}
 
 		return { type: "success" };
