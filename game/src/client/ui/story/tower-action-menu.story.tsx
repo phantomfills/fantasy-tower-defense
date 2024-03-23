@@ -27,6 +27,7 @@ export = (target: Frame) => {
 			traits={["STEALTH", "REINFORCED"]}
 			upgradeTitle="Bat Signal"
 			upgradeDescription="Shine the bat signal to call for help!"
+			upgradeCost={2000}
 		/>
 	);
 

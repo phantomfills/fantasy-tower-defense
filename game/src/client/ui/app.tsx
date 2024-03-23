@@ -14,7 +14,7 @@ import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
 import { getPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
 import { TowerActionMenuFromId } from "./tower/tower-action-menu";
 import { Events } from "client/network";
-import { getMoney } from "shared/store/money";
+import { selectMoney } from "shared/store/money";
 import { Players } from "@rbxts/services";
 import { getEnemyDamageIndicators } from "client/store/enemy-damage-indicator";
 import Object from "@rbxts/object-utils";
@@ -34,7 +34,7 @@ export function App() {
 	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
 	const possibleTowerFocusId = useSelector(getPossibleTowerId);
 	const enemyDamageIndicators = useSelector(getEnemyDamageIndicators);
-	const money = useSelector(getMoney(tostring(Players.LocalPlayer.UserId)));
+	const money = useSelector(selectMoney(tostring(Players.LocalPlayer.UserId)));
 	const dialog = useSelector(selectDialogText);
 	const enemyDetailViewType = useSelector(selectEnemyDetailViewType);
 
