@@ -29,13 +29,13 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 		traits: ["STEALTH"],
 	},
 	GUARD_DUMMY: {
-		maxHealth: 1_500,
+		maxHealth: 2_500,
 		speed: 1.5,
 		traits: ["REINFORCED"],
 	},
 	DUMMY_TANK: {
-		maxHealth: 20_000,
-		speed: 1,
+		maxHealth: 30_000,
+		speed: 1.25,
 		traits: [],
 	},
 };
