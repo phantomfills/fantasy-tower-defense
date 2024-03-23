@@ -183,7 +183,12 @@ interface EnemyTooltipBillboardProps extends EnemyTooltipProps {
 
 function EnemyTooltipBillboard({ position, _type, health }: EnemyTooltipBillboardProps) {
 	return (
-		<billboardgui StudsOffsetWorldSpace={position} Size={new UDim2(0, 120, 0, 45)} AlwaysOnTop={true}>
+		<billboardgui
+			StudsOffsetWorldSpace={position}
+			Size={new UDim2(0, 175, 0, 50)}
+			AlwaysOnTop={true}
+			ClipsDescendants={false}
+		>
 			<EnemyTooltip _type={_type} health={health} />
 		</billboardgui>
 	);
