@@ -144,24 +144,16 @@ export class TowerActionController implements OnStart, OnTick {
 			const model = clientTower.getModel();
 
 			const rootPosition = model.humanoidRootPart.rootAttachment.WorldPosition;
-			this.createRangeIndicator(model, towerStats.range, rootPosition);
+			this.createRangeIndicator(Workspace, towerStats.range, rootPosition);
 
 			const towerLevelSelector = getPossibleTowerLevelFromId(towerId);
 
 			const unsubscribe = producer.subscribe(towerLevelSelector, (possibleLevel) => {
 				if (!possibleLevel.exists) return;
 
-				const possibleClientTower = this.clientTowerRenderController.getClientTowerFromId(towerId);
-				if (!possibleClientTower.exists) return;
-
-				const clientTower = possibleClientTower.value;
-				const model = clientTower.getModel();
-
-				const rootPosition = model.humanoidRootPart.rootAttachment.WorldPosition;
-
 				const level = possibleLevel.value;
 				const towerStats = describeTowerFromType(towerType, level);
-				this.createRangeIndicator(model, towerStats.range, rootPosition);
+				this.createRangeIndicator(Workspace, towerStats.range, rootPosition);
 			});
 
 			producer.once(getTowerIsNotFocused(towerId), () => {
