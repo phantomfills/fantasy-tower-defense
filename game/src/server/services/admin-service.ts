@@ -21,8 +21,6 @@ function processPlayerMessage(userId: string, message: string) {
 	const splitMessage = message.split(" ");
 	const command = splitMessage[0].split("!")[1];
 
-	print(command);
-
 	switch (command) {
 		case "money": {
 			const playerString = splitMessage[1];
@@ -47,12 +45,11 @@ function processPlayerMessage(userId: string, message: string) {
 
 			const enemyCount = splitMessage[2];
 			const enemyCountNumber = tonumber(enemyCount);
-			if (enemyCountNumber === undefined) return;
 
 			const map = producer.getState(getMap);
 			const path = map.path;
 
-			for (let i = 0; i < enemyCountNumber; i++) {
+			for (let i = 0; i < (enemyCountNumber === undefined ? 1 : enemyCountNumber); i++) {
 				const enemy = createEnemy(enemyType, path);
 				producer.addEnemy(enemy, createId());
 				task.wait(0.2);
