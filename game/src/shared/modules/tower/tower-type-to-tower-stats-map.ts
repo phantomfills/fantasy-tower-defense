@@ -23,9 +23,9 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			{
 				damage: 30,
 				range: 11,
-				cooldown: 2,
+				cooldown: 1.6,
 				health: 100,
-				cost: 1_500,
+				cost: 1_000,
 				title: "Vanessa, Archer",
 				description: "She fires arrows at enemies which can pierce!",
 				traits: [],
@@ -33,9 +33,9 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			{
 				damage: 30,
 				range: 12,
-				cooldown: 1.8,
+				cooldown: 1.2,
 				health: 125,
-				cost: 400,
+				cost: 350,
 				title: "Level Up",
 				description: "Vanessa can see further and shoot faster!",
 				traits: [],
@@ -43,41 +43,41 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			{
 				damage: 50,
 				range: 12,
-				cooldown: 1.8,
-				health: 125,
-				cost: 725,
+				cooldown: 1.2,
+				health: 135,
+				cost: 625,
 				title: "Iron Tipped Arrows",
-				description: "Iron tipped arrows deal WAY more damage.",
+				description: "Iron tipped arrows deal WAY more damage!",
 				traits: [],
 			},
 			{
-				damage: 100,
+				damage: 130,
 				range: 14,
 				cooldown: 1.2,
 				health: 150,
-				cost: 3_000,
+				cost: 2_750,
 				title: "Crossbow",
 				description:
 					"Fast attacking, long range crossbow that can pierce through many enemies! Also detects stealth enemies.",
 				traits: ["STEALTH"],
 			},
 			{
-				damage: 200,
+				damage: 175,
 				range: 15,
-				cooldown: 1,
-				health: 185,
-				cost: 6_750,
+				cooldown: 0.75,
+				health: 175,
+				cost: 7_250,
 				title: "Hunter's Instinct",
 				description:
 					"She attacks faster, deals more damage and does powerful critical shots every so often that deal MASSIVELY increased damage. Gains armor penetration.",
 				traits: ["STEALTH", "REINFORCED"],
 			},
 			{
-				damage: 200,
+				damage: 100,
 				range: 16,
-				cooldown: 0.3,
+				cooldown: 0.1,
 				health: 200,
-				cost: 20_000,
+				cost: 27_200,
 				title: "ELITE SHARPSHOOTER",
 				description: "Elite Sharpshooter shoots really fast and devastates most enemy types with ease!",
 				traits: ["STEALTH", "REINFORCED"],
@@ -125,34 +125,13 @@ export function getUpgradeDescription(_type: TowerType, level: number): string {
 	return nextStats.description;
 }
 
-export function getPlacementCostForTower(_type: TowerType): number {
-	return towerTypeToStatsMap[_type].levels[0].cost;
+export function getUpgradeCost(_type: TowerType, level: number): number {
+	const nextStats = towerTypeToStatsMap[_type].levels[level];
+	if (!nextStats) return 0;
+
+	return nextStats.cost;
 }
 
-export function getChangesForLevel(
-	_type: TowerType,
-	currentLevel: number,
-): { name: string; oldValue: number; newValue: number }[] {
-	const currentStats = towerTypeToStatsMap[_type].levels[currentLevel];
-	const nextStats = towerTypeToStatsMap[_type].levels[currentLevel + 1];
-
-	if (!nextStats) return [];
-
-	const changes = [];
-
-	const keys = Object.keys(currentStats);
-	for (const key of keys) {
-		if (key === "cost") continue;
-
-		const currentStat = currentStats[key];
-		const nextStat = nextStats[key];
-
-		if (!typeIs(currentStat, "number") || !typeIs(nextStat, "number")) continue;
-
-		if (currentStat !== nextStat) {
-			changes.push({ name: key, oldValue: currentStat, newValue: nextStat });
-		}
-	}
-
-	return changes;
+export function getPlacementCostForTower(_type: TowerType): number {
+	return towerTypeToStatsMap[_type].levels[0].cost;
 }
