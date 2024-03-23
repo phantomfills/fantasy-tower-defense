@@ -19,24 +19,25 @@ export interface ClientEnemyInfo {
 }
 
 interface SharedEvents {
-	placeTower(towerType: TowerType, cframe: CFrame): void;
-	upgradeTower(id: string): void;
-	sellTower(id: string): void;
-	attackEnemy(towerId: string, enemyId: string, damage: number, enemyPosition: Vector3): void;
-	towerAttack(attack: Attack): void;
-	setDialog(text: string, time: number): void;
-
 	dispatch(actions: BroadcastAction[]): void;
 	start(): void;
 }
 
-interface ServerEvents extends SharedEvents {}
+interface ServerToClientEvents extends SharedEvents {
+	setDialog(text: string, time: number): void;
 
-interface ClientEvents extends SharedEvents {}
+	towerAttack: Networking.Unreliable<(attack: Attack) => void>;
+}
 
-interface ServerFunctions {}
+interface ClientToServerEvents extends SharedEvents {
+	placeTower(towerType: TowerType, cframe: CFrame): void;
+	upgradeTower(id: string): void;
+	sellTower(id: string): void;
+}
 
-interface ClientFunctions {}
+interface ServerToClientFunctions {}
 
-export const GlobalEvents = Networking.createEvent<ServerEvents, ClientEvents>();
-export const GlobalFunctions = Networking.createFunction<ServerFunctions, ClientFunctions>();
+interface ClientToServerFunctions {}
+
+export const GlobalEvents = Networking.createEvent<ClientToServerEvents, ServerToClientEvents>();
+export const GlobalFunctions = Networking.createFunction<ClientToServerFunctions, ServerToClientFunctions>();
