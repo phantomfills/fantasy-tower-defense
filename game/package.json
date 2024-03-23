@@ -15,7 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@rbxts/compiler-types": "^2.2.0-types.0",
-    "@rbxts/types": "^1.0.729",
+    "@rbxts/types": "^1.0.764",
     "@types/jest": "^29.5.11",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
@@ -25,14 +25,14 @@
     "eslint-plugin-roblox-ts": "0.0.36",
     "jest": "^29.7.0",
     "prettier": "^2.8.8",
-    "rbxts-transformer-flamework": "^1.0.0-beta.23",
-    "roblox-ts": "^2.2.0",
+    "rbxts-transformer-flamework": "^1.2.0",
+    "roblox-ts": "^2.3.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "@flamework/components": "^1.0.0-beta.21",
-    "@flamework/core": "^1.0.0-beta.23",
-    "@flamework/networking": "^1.0.0-beta.21",
+    "@flamework/core": "^1.2.0",
+    "@flamework/networking": "^1.2.0",
     "@rbxts/beacon": "^2.1.1",
     "@rbxts/catppuccin": "^1.0.2",
     "@rbxts/flipper": "^2.0.1",

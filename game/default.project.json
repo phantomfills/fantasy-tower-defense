@@ -54,6 +54,9 @@
 						},
 						"dummyTank": {
 							"$path": "assets/dummy-tank.rbxm"
+						},
+						"guardDummy": {
+							"$path": "assets/guard-dummy.rbxm"
 						}
 					}
 				},
@@ -69,8 +72,17 @@
 							"level_1": {
 								"$path": "assets/archer/level-1.rbxm"
 							},
-							"archer": {
-								"$path": "assets/archer.rbxm"
+							"level_2": {
+								"$path": "assets/archer/level-2.rbxm"
+							},
+							"level_3": {
+								"$path": "assets/archer/level-3.rbxm"
+							},
+							"level_4": {
+								"$path": "assets/archer/level-4.rbxm"
+							},
+							"level_5": {
+								"$path": "assets/archer/level-5.rbxm"
 							}
 						}
 					}
