@@ -4,10 +4,10 @@ import { createTower } from "server/modules/tower/tower-factory";
 import { producer } from "server/store";
 import { getPossibleTowerFromId, selectTowers, towerDoesNotExistFromId } from "shared/store/tower";
 import {
-	getEnemies,
-	getEnemyCFrameFromId,
-	getEnemyIdsInTowerRange,
-	getFirstAttackableEnemyInTowerRange,
+	selectEnemies,
+	selectEnemyCFrameFromId,
+	selectEnemyIdsInTowerRange,
+	selectFirstAttackableEnemyInTowerRange,
 } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { createBasicAttack } from "shared/modules/attack";
@@ -106,23 +106,23 @@ export class TowerService implements OnStart, OnTick {
 			const currentTimestamp = getCurrentTimeInMilliseconds();
 			if (currentTimestamp - lastAttackTimestamp < cooldownMilliseconds) continue;
 
-			const enemies = producer.getState(getEnemies);
+			const enemies = producer.getState(selectEnemies);
 			if (Object.keys(enemies).isEmpty()) continue;
 
-			const possibleFirstEnemyInRangeId = producer.getState(getFirstAttackableEnemyInTowerRange(id));
+			const possibleFirstEnemyInRangeId = producer.getState(selectFirstAttackableEnemyInTowerRange(id));
 			if (!possibleFirstEnemyInRangeId.exists) continue;
 
 			const [firstEnemyInRangeId, firstEnemyInRange] = possibleFirstEnemyInRangeId.value;
 
-			const { immunities } = describeEnemyFromType(firstEnemyInRange.enemyType);
+			const enemyTraits = describeEnemyFromType(firstEnemyInRange.enemyType).traits;
 
-			const effectiveDamage = immunities.includes("REINFORCED")
+			const effectiveDamage = enemyTraits.includes("REINFORCED")
 				? traits.includes("REINFORCED")
 					? damage
 					: 0
 				: damage;
 
-			const possibleEnemyCFrame = producer.getState(getEnemyCFrameFromId(firstEnemyInRangeId));
+			const possibleEnemyCFrame = producer.getState(selectEnemyCFrameFromId(firstEnemyInRangeId));
 			if (!possibleEnemyCFrame.exists) continue;
 
 			producer.setLastAtackTimestamp(id, currentTimestamp);

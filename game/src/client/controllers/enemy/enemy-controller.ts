@@ -6,7 +6,7 @@ import { producer } from "client/store";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 import { Possible, possible } from "shared/modules/utils/possible";
-import { getEnemies } from "shared/store/enemy";
+import { selectEnemies } from "shared/store/enemy";
 
 @Controller({})
 export class EnemyController implements OnStart {
@@ -50,7 +50,7 @@ export class EnemyController implements OnStart {
 	}
 
 	onStart() {
-		producer.subscribe(getEnemies, (enemies, lastEnemies) => {
+		producer.subscribe(selectEnemies, (enemies, lastEnemies) => {
 			for (const [id, enemy] of pairs(enemies)) {
 				const enemyLastUpdate = possible<string>(
 					Object.keys(lastEnemies).find((lastEnemyId) => lastEnemyId === id),

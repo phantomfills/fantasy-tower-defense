@@ -1,18 +1,23 @@
-import { TowerModel } from "./tower-model";
-import { TowerType } from "./tower-type";
 import { ReplicatedStorage } from "@rbxts/services";
+import { TowerType } from "./tower-type";
 
 const assets = ReplicatedStorage.assets;
 const archerModels = assets.towers.archer.models;
 
 const towerTypeToModelsMap = {
-	ARCHER: [archerModels.level_0, archerModels.level_1],
-} satisfies Record<TowerType, TowerModel[]>;
+	ARCHER: [
+		archerModels.level_0,
+		archerModels.level_1,
+		archerModels.level_2,
+		archerModels.level_3,
+		archerModels.level_4,
+		archerModels.level_5,
+	],
+} as const satisfies Record<TowerType, unknown>;
 
-export function getTowerPlacementModelFromType(_type: TowerType) {
-	return towerTypeToModelsMap[_type][0].Clone();
-}
-
-export function getTowerModelFromTypeAndLevel(_type: TowerType, level: number) {
-	return towerTypeToModelsMap[_type][level].Clone();
+export function getTowerModel<T extends TowerType, U extends number>(
+	towerType: T,
+	level: U,
+): (typeof towerTypeToModelsMap)[T][U] {
+	return towerTypeToModelsMap[towerType][level].Clone();
 }

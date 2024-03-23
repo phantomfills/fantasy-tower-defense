@@ -1,6 +1,6 @@
 import Object from "@rbxts/object-utils";
 import { TowerType } from "./tower-type";
-import { Immunity } from "../attack/immunity";
+import { Trait } from "../attack/immunity";
 
 interface TowerLevel {
 	damage: number;
@@ -10,7 +10,7 @@ interface TowerLevel {
 	cost: number;
 	title: string;
 	description: string;
-	traits: Immunity[];
+	traits: Trait[];
 }
 
 interface TowerStats {
@@ -47,37 +47,37 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 				health: 125,
 				cost: 725,
 				title: "Iron Tipped Arrows",
-				description: "Iron tipped arrows deal more damage and can penetrate armor!",
-				traits: ["REINFORCED"],
+				description: "Iron tipped arrows deal WAY more damage.",
+				traits: [],
 			},
 			{
-				damage: 80,
+				damage: 100,
 				range: 15.5,
 				cooldown: 1.2,
-				health: 160,
-				cost: 2_000,
+				health: 150,
+				cost: 3_000,
 				title: "Crossbow",
 				description:
 					"Fast attacking, long range crossbow that can pierce through many enemies! Also detects stealth enemies.",
-				traits: ["STEALTH", "REINFORCED"],
+				traits: ["STEALTH"],
 			},
 			{
-				damage: 150,
-				range: 17,
-				cooldown: 0.8,
-				health: 160,
-				cost: 4_500,
+				damage: 200,
+				range: 16,
+				cooldown: 1,
+				health: 185,
+				cost: 6_750,
 				title: "Hunter's Instinct",
 				description:
-					"She attacks faster and does powerful critical shots every so often that deal MASSIVELY increased damage.",
+					"She attacks faster, deals more damage and does powerful critical shots every so often that deal MASSIVELY increased damage. Gains armor penetration.",
 				traits: ["STEALTH", "REINFORCED"],
 			},
 			{
-				damage: 150,
-				range: 18.5,
-				cooldown: 0.2,
+				damage: 200,
+				range: 17.5,
+				cooldown: 0.3,
 				health: 200,
-				cost: 22_500,
+				cost: 20_000,
 				title: "ELITE SHARPSHOOTER",
 				description: "Elite Sharpshooter shoots really fast and devastates most enemy types with ease!",
 				traits: ["STEALTH", "REINFORCED"],

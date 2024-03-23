@@ -31,6 +31,7 @@ interface ReplicatedStorage extends Instance {
 			};
 			attack: ModuleScript & {
 				["attack-factory"]: ModuleScript;
+				immunity: ModuleScript;
 			};
 		};
 		assets: ModuleScript;
@@ -42,21 +43,17 @@ interface ReplicatedStorage extends Instance {
 				["map-selectors"]: ModuleScript;
 				["map-slice"]: ModuleScript;
 			};
-			money: ModuleScript & {
-				["money-slice"]: ModuleScript;
-				["money-selectors"]: ModuleScript;
-			};
 			tower: ModuleScript & {
 				["tower-slice"]: ModuleScript;
 				["tower-selectors"]: ModuleScript;
 			};
+			money: ModuleScript & {
+				["money-slice"]: ModuleScript;
+				["money-selectors"]: ModuleScript;
+			};
 			enemy: ModuleScript & {
 				["enemy-slice"]: ModuleScript;
 				["enemy-selectors"]: ModuleScript;
-			};
-			attack: ModuleScript & {
-				["attack-slice"]: ModuleScript;
-				["attack-selectors"]: ModuleScript;
 			};
 		};
 	};
@@ -64,42 +61,39 @@ interface ReplicatedStorage extends Instance {
 		towers: Folder & {
 			archer: Folder & {
 				models: Folder & {
-					archer: Model & {
+					level_4: Model & {
 						rightArm: MeshPart & {
-							bow: Part & {
-								top: Attachment;
-								topBeam: Beam;
-								bottom: Attachment;
-								middle: Attachment;
-								bottomBeam: Beam;
-								mesh: SpecialMesh;
+							crossbow: Part & {
+								Mesh: SpecialMesh;
 							};
-							["rightArm 🡪 bow"]: Weld;
+							rightSleeve: MeshPart;
+							["rightArm 🡪 rightSleeve"]: Weld;
+							["rightArm 🡪 crossbow"]: Weld;
 						};
 						leftArm: MeshPart & {
+							leftSleeve: MeshPart;
+							["leftArm 🡪 leftSleeve"]: Weld;
 							bowDrawAttachment: Attachment;
 						};
 						rightLeg: MeshPart;
 						head: MeshPart & {
-							["head 🡪 hat"]: Weld;
 							hat: MeshPart;
+							["head 🡪 hat"]: Weld;
+							face: Decal;
+							["head 🡪 hair"]: Weld;
+							hair: Part & {
+								Mesh: SpecialMesh;
+								Decal: Decal;
+							};
 						};
 						torso: MeshPart & {
-							quiver: MeshPart;
+							["Left Shoulder"]: Motor6D;
 							["Right Shoulder"]: Motor6D;
+							["torso 🡪 quiver"]: Weld;
 							Neck: Motor6D;
 							["Right Hip"]: Motor6D;
-							strap: MeshPart & {
-								["Left Shoulder"]: Motor6D;
-								["Right Shoulder"]: Motor6D;
-								Neck: Motor6D;
-								["Right Hip"]: Motor6D;
-								["Left Hip"]: Motor6D;
-							};
-							["torso 🡪 quiver"]: Weld;
+							quiver: MeshPart;
 							["Left Hip"]: Motor6D;
-							["Left Shoulder"]: Motor6D;
-							["torso 🡪 strap"]: Weld;
 						};
 						humanoidRootPart: Part & {
 							rootAttachment: Attachment;
@@ -107,19 +101,54 @@ interface ReplicatedStorage extends Instance {
 						};
 						leftLeg: MeshPart;
 					};
-					level_1: Model & {
+					level_5: Model & {
 						rightArm: MeshPart & {
-							["rightArm 🡪 rightSleeve"]: Weld;
-							rightSleeve: MeshPart;
-							["rightArm 🡪 bow"]: Weld;
-							bow: Part & {
-								top: Attachment;
-								topBeam: Beam;
-								bottom: Attachment;
-								middle: Attachment;
-								bottomBeam: Beam;
-								mesh: SpecialMesh;
+							crossbow: Part & {
+								Mesh: SpecialMesh;
 							};
+							rightSleeve: MeshPart;
+							["rightArm 🡪 rightSleeve"]: Weld;
+							["rightArm 🡪 crossbow"]: Weld;
+						};
+						leftArm: MeshPart & {
+							leftSleeve: MeshPart;
+							["leftArm 🡪 leftSleeve"]: Weld;
+							bowDrawAttachment: Attachment;
+						};
+						rightLeg: MeshPart;
+						head: MeshPart & {
+							hat: MeshPart;
+							["head 🡪 hair"]: Weld;
+							face: Decal;
+							["head 🡪 hat"]: Weld;
+							hair: Part & {
+								Mesh: SpecialMesh;
+								Decal: Decal;
+							};
+						};
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							["torso 🡪 quiver"]: Weld;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							quiver: MeshPart;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_3: Model & {
+						rightArm: MeshPart & {
+							crossbow: Part & {
+								Mesh: SpecialMesh;
+							};
+							rightSleeve: MeshPart;
+							["rightArm 🡪 rightSleeve"]: Weld;
+							["rightArm 🡪 crossbow"]: Weld;
 						};
 						leftArm: MeshPart & {
 							leftSleeve: MeshPart;
@@ -169,6 +198,94 @@ interface ReplicatedStorage extends Instance {
 						};
 						rightLeg: MeshPart;
 						head: MeshPart & {
+							face: Decal;
+							["head 🡪 hair"]: Weld;
+							hair: Part & {
+								Mesh: SpecialMesh;
+								Decal: Decal;
+							};
+						};
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							["torso 🡪 quiver"]: Weld;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							quiver: MeshPart;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_1: Model & {
+						rightArm: MeshPart & {
+							["rightArm 🡪 rightSleeve"]: Weld;
+							rightSleeve: MeshPart;
+							["rightArm 🡪 bow"]: Weld;
+							bow: Part & {
+								top: Attachment;
+								topBeam: Beam;
+								bottom: Attachment;
+								middle: Attachment;
+								bottomBeam: Beam;
+								mesh: SpecialMesh;
+							};
+						};
+						leftArm: MeshPart & {
+							leftSleeve: MeshPart;
+							["leftArm 🡪 leftSleeve"]: Weld;
+							bowDrawAttachment: Attachment;
+						};
+						rightLeg: MeshPart;
+						head: MeshPart & {
+							face: Decal;
+							["head 🡪 hair"]: Weld;
+							hair: Part & {
+								Mesh: SpecialMesh;
+								Decal: Decal;
+							};
+						};
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							["torso 🡪 quiver"]: Weld;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							quiver: MeshPart;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_2: Model & {
+						rightArm: MeshPart & {
+							["rightArm 🡪 rightSleeve"]: Weld;
+							rightSleeve: MeshPart;
+							["rightArm 🡪 bow"]: Weld;
+							bow: Part & {
+								top: Attachment;
+								topBeam: Beam;
+								bottom: Attachment;
+								middle: Attachment;
+								bottomBeam: Beam;
+								mesh: SpecialMesh;
+							};
+						};
+						leftArm: MeshPart & {
+							leftSleeve: MeshPart;
+							["leftArm 🡪 leftSleeve"]: Weld;
+							bowDrawAttachment: Attachment;
+						};
+						rightLeg: MeshPart;
+						head: MeshPart & {
+							hat: MeshPart;
+							["head 🡪 hat"]: Weld;
 							face: Decal;
 							["head 🡪 hair"]: Weld;
 							hair: Part & {
@@ -273,6 +390,25 @@ interface ReplicatedStorage extends Instance {
 					leftLeg: MeshPart;
 				};
 				trainingDummy: Model & {
+					rightArm: MeshPart;
+					head: MeshPart;
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				guardDummy: Model & {
 					rightArm: MeshPart;
 					head: MeshPart;
 					leftArm: MeshPart;
@@ -461,6 +597,11 @@ interface ReplicatedStorage extends Instance {
 						types: ModuleScript;
 					};
 				};
+				t: Folder & {
+					lib: Folder & {
+						ts: ModuleScript;
+					};
+				};
 				Scheduler: ModuleScript & {
 					SchedulerPriorities: ModuleScript;
 					TracingSubscriptions: ModuleScript;
@@ -584,10 +725,8 @@ interface ReplicatedStorage extends Instance {
 					};
 					ES7Types: ModuleScript;
 				};
-				t: Folder & {
-					lib: Folder & {
-						ts: ModuleScript;
-					};
+				catppuccin: Folder & {
+					out: ModuleScript;
 				};
 				["react-reflex"]: ModuleScript & {
 					components: Folder & {
@@ -937,7 +1076,7 @@ interface ReplicatedStorage extends Instance {
 					};
 				};
 				Promise: ModuleScript;
-				catppuccin: Folder & {
+				trove: Folder & {
 					out: ModuleScript;
 				};
 				React: ModuleScript & {

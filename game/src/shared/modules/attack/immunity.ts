@@ -1,1 +1,1 @@
-export type Immunity = "STEALTH" | "REINFORCED";
+export type Trait = "STEALTH" | "REINFORCED";

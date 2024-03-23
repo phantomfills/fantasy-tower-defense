@@ -8,16 +8,16 @@ import { createSelector } from "@rbxts/reflex";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 
-export function noEnemiesExist(state: SharedState) {
+export function selectNoEnemiesExist(state: SharedState) {
 	return Object.keys(state.enemy).size() === 0;
 }
 
-export function getEnemies(state: SharedState) {
+export function selectEnemies(state: SharedState) {
 	return state.enemy;
 }
 
-export function getEnemyIdsInTowerRange(towerId: string) {
-	return createSelector([getEnemies, selectTowers], (enemies, towers) => {
+export function selectEnemyIdsInTowerRange(towerId: string) {
+	return createSelector([selectEnemies, selectTowers], (enemies, towers) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return [];
 
@@ -37,20 +37,20 @@ export function getEnemyIdsInTowerRange(towerId: string) {
 	});
 }
 
-export function getEnemyCount(state: SharedState) {
+export function selectEnemyCount(state: SharedState) {
 	return Object.keys(state.enemy).size();
 }
 
-export function getEnemyFromId(id: string): (state: SharedState) => Possible<Enemy> {
+export function selectEnemyFromId(id: string): (state: SharedState) => Possible<Enemy> {
 	return (state) => {
 		const possibleEnemy = possible<Enemy>(state.enemy[id]);
 		return possibleEnemy;
 	};
 }
 
-export function getEnemyCFrameFromId(id: string): (state: SharedState) => Possible<CFrame> {
+export function selectEnemyCFrameFromId(id: string): (state: SharedState) => Possible<CFrame> {
 	return (state) => {
-		const possibleEnemy = getEnemyFromId(id)(state);
+		const possibleEnemy = selectEnemyFromId(id)(state);
 		if (!possibleEnemy.exists) return { exists: false };
 
 		const enemy = possibleEnemy.value;
@@ -59,14 +59,14 @@ export function getEnemyCFrameFromId(id: string): (state: SharedState) => Possib
 	};
 }
 
-export function enemyDoesNotExistFromId(id: string): (state: SharedState) => boolean {
+export function selectEnemyDoesNotExistFromId(id: string): (state: SharedState) => boolean {
 	return (state) => {
-		const possibleEnemy = getEnemyFromId(id)(state);
+		const possibleEnemy = selectEnemyFromId(id)(state);
 		return !possibleEnemy.exists;
 	};
 }
 
-export function getClosestEnemyIdToPosition(position: Vector3): (state: SharedState) => Possible<[string, Enemy]> {
+export function selectClosestEnemyIdToPosition(position: Vector3): (state: SharedState) => Possible<[string, Enemy]> {
 	return (state) => {
 		const enemies = state.enemy;
 
@@ -93,24 +93,19 @@ export function getClosestEnemyIdToPosition(position: Vector3): (state: SharedSt
 		});
 		const closestEnemyId = enemyIdsByDistanceToPosition[0];
 		const closestEnemy = state.enemy[closestEnemyId];
-		const closestEnemyPosition = getCFrameFromPathCompletionAlpha(
-			enemies[closestEnemyId].path,
-			enemies[closestEnemyId].pathCompletionAlpha,
-		).Position;
-		const closestEnemyDistanceToPosition = closestEnemyPosition.sub(position).Magnitude;
 
 		return { exists: true, value: [closestEnemyId, closestEnemy] };
 	};
 }
 
-export function getClosestEnemyIdToTower(tower: Tower): (state: SharedState) => Possible<[string, Enemy]> {
-	return getClosestEnemyIdToPosition(tower.cframe.Position);
+export function selectClosestEnemyIdToTower(tower: Tower): (state: SharedState) => Possible<[string, Enemy]> {
+	return selectClosestEnemyIdToPosition(tower.cframe.Position);
 }
 
-export function getFirstAttackableEnemyInTowerRange(
+export function selectFirstAttackableEnemyInTowerRange(
 	towerId: string,
 ): (state: SharedState) => Possible<[string, Enemy]> {
-	return createSelector([getEnemies, selectTowers], (enemies, towers) => {
+	return createSelector([selectEnemies, selectTowers], (enemies, towers) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return { exists: false };
 
@@ -132,9 +127,9 @@ export function getFirstAttackableEnemyInTowerRange(
 			if (!possibleEnemy.exists) return false;
 
 			const { enemyType } = possibleEnemy.value;
-			const { immunities } = describeEnemyFromType(enemyType);
+			const { traits } = describeEnemyFromType(enemyType);
 
-			return immunities.includes("STEALTH") ? towerStats.traits.includes("STEALTH") : true;
+			return traits.includes("STEALTH") ? towerStats.traits.includes("STEALTH") : true;
 		});
 
 		if (attackableEnemiesInTowerRange.isEmpty()) return { exists: false };
