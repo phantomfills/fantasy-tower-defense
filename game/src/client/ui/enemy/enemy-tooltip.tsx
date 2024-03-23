@@ -8,9 +8,10 @@ import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { images } from "shared/assets";
 import { useRem } from "../hooks/use-rem";
-import { getEnemyFromId } from "shared/store/enemy";
+import { selectEnemyFromId } from "shared/store/enemy";
 import { useSelector } from "@rbxts/react-reflex";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
+import { abbreviateNumber } from "client/modules/number/abbreviate-number";
 
 interface EnemyTooltipProps {
 	_type: EnemyType;
@@ -20,8 +21,11 @@ interface EnemyTooltipProps {
 export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 	const rem = useRem();
 
-	const { maxHealth, immunities } = describeEnemyFromType(_type);
+	const { maxHealth, traits } = describeEnemyFromType(_type);
 	const healthPercent = health / maxHealth;
+
+	const abbreviatedHealth = abbreviateNumber(health);
+	const abbreviatedMaxHealth = abbreviateNumber(maxHealth);
 
 	const enemyDisplayName = getEnemyDisplayName(_type);
 
@@ -73,7 +77,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 					/>
 					<Label
 						size={new UDim2(0.88, 0, 0.9, 0)}
-						text={`${health} / ${maxHealth}`}
+						text={`${abbreviatedHealth} / ${abbreviatedMaxHealth}`}
 						font={fonts.inter.bold}
 						textColor={Color3.fromRGB(255, 255, 255)}
 						textAlignmentX={Enum.TextXAlignment.Left}
@@ -86,7 +90,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 			</Frame>
 			<Frame size={new UDim2(1, 0, 0.6, 0)} position={new UDim2(0, 0, 1, 5)}>
 				<uilistlayout FillDirection={Enum.FillDirection.Horizontal} Padding={new UDim(0, 5)} />
-				{immunities.includes("STEALTH") && (
+				{traits.includes("STEALTH") && (
 					<Frame
 						size={new UDim2(0.5, 0, 1, 0)}
 						position={new UDim2(0, 0, 1, 5)}
@@ -127,7 +131,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 						<OneThickWhiteStroke />
 					</Frame>
 				)}
-				{immunities.includes("REINFORCED") && (
+				{traits.includes("REINFORCED") && (
 					<Frame
 						size={new UDim2(0.65, 0, 1, 0)}
 						position={new UDim2(0, 0, 1, 5)}
@@ -190,7 +194,7 @@ interface EnemyTooltipBillboardFromIdProps {
 }
 
 export function EnemyTooltipBillboardFromId({ id }: EnemyTooltipBillboardFromIdProps) {
-	const possibleEnemy = useSelector(getEnemyFromId(id));
+	const possibleEnemy = useSelector(selectEnemyFromId(id));
 	if (!possibleEnemy.exists) {
 		return <></>;
 	}
