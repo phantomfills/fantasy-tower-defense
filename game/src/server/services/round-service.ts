@@ -4,6 +4,7 @@ import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { Events } from "server/network";
 import { producer } from "server/store";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
+import { tracks } from "shared/modules/music/tracks";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { selectNoEnemiesExist } from "shared/store/enemy";
@@ -229,6 +230,10 @@ export class RoundService implements OnStart {
 			const roundNumber = roundIndex + 1;
 
 			switch (roundNumber) {
+				case 1: {
+					producer.setTrackId(tracks.techno);
+					break;
+				}
 				case 2: {
 					Events.setDialog.broadcast("I saw some quicker enemies in the distance, be prepared!", 10_000);
 					break;
@@ -262,6 +267,7 @@ export class RoundService implements OnStart {
 					break;
 				}
 				case 10: {
+					producer.setTrackId(tracks.light_show);
 					Events.setDialog.broadcast(
 						"The Dummy Tank is here! It has a lot of health, but it is very slow! Good luck taking it down.",
 						10_000,
@@ -284,6 +290,10 @@ export class RoundService implements OnStart {
 			}
 
 			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
+
+			if (roundNumber === 10) {
+				producer.setTrackId(tracks.victory);
+			}
 		}
 	}
 
