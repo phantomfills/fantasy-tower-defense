@@ -30,9 +30,9 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 	const enemyDisplayName = getEnemyDisplayName(_type);
 
 	return (
-		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 0, 0, 0)}>
+		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 0, 0, 0)} clipsDescendants={false}>
 			<Label
-				size={new UDim2(1, 0, 0.5, 0)}
+				size={new UDim2(1, 0, 0.3, 0)}
 				text={enemyDisplayName}
 				font={fonts.inter.bold}
 				textColor={Color3.fromRGB(255, 255, 255)}
@@ -43,8 +43,8 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 				<uistroke Thickness={2} Color={Color3.fromRGB(27, 27, 27)} />
 			</Label>
 			<Frame
-				size={new UDim2(1, -10, 0.5, 0)}
-				position={new UDim2(0, 10, 0.5, 0)}
+				size={new UDim2(1, -10, 0.3, 0)}
+				position={new UDim2(0, 10, 0.3, 0)}
 				backgroundColor={Color3.fromRGB(27, 27, 27)}
 				backgroundTransparency={0}
 			>
@@ -88,7 +88,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 					</Label>
 				</Frame>
 			</Frame>
-			<Frame size={new UDim2(1, 0, 0.6, 0)} position={new UDim2(0, 0, 1, 5)}>
+			<Frame size={new UDim2(1, 0, 0.4, -5)} position={new UDim2(0, 0, 0.6, 5)} clipsDescendants={false}>
 				<uilistlayout FillDirection={Enum.FillDirection.Horizontal} Padding={new UDim(0, 5)} />
 				{traits.includes("STEALTH") && (
 					<Frame
@@ -185,7 +185,7 @@ function EnemyTooltipBillboard({ position, _type, health }: EnemyTooltipBillboar
 	return (
 		<billboardgui
 			StudsOffsetWorldSpace={position}
-			Size={new UDim2(0, 175, 0, 50)}
+			Size={new UDim2(0, 175, 0, 75)}
 			AlwaysOnTop={true}
 			ClipsDescendants={false}
 		>
