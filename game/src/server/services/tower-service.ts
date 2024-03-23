@@ -18,7 +18,7 @@ import {
 } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import Object from "@rbxts/object-utils";
-import { getMoney } from "shared/store/money";
+import { selectMoney } from "shared/store/money";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { towerAttack } from "server/events";
@@ -26,7 +26,7 @@ import { towerAttack } from "server/events";
 const MILLISECONDS_IN_SECOND = 1000;
 
 function userHasMoney(userId: string, amount: number): boolean {
-	const possibleUserMoney = producer.getState(getMoney(userId));
+	const possibleUserMoney = producer.getState(selectMoney(userId));
 	if (!possibleUserMoney.exists) return false;
 
 	const userMoney = possibleUserMoney.value;
