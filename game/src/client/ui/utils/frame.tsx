@@ -9,6 +9,7 @@ interface FrameProps extends Roact.PropsWithChildren {
 	backgroundColor?: Color3 | Roact.Binding<Color3>;
 	rotation?: number | Roact.Binding<number>;
 	zIndex?: number;
+	clipsDescendants?: boolean;
 }
 
 export function Frame({
@@ -20,6 +21,7 @@ export function Frame({
 	backgroundColor,
 	rotation,
 	zIndex,
+	clipsDescendants,
 }: FrameProps) {
 	return (
 		<frame
@@ -31,6 +33,7 @@ export function Frame({
 			BorderSizePixel={0}
 			Rotation={rotation}
 			ZIndex={zIndex}
+			ClipsDescendants={clipsDescendants}
 		>
 			{children}
 		</frame>
