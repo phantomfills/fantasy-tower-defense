@@ -22,7 +22,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 		levels: [
 			{
 				damage: 30,
-				range: 12,
+				range: 11,
 				cooldown: 2,
 				health: 100,
 				cost: 1_500,
@@ -32,7 +32,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 30,
-				range: 14,
+				range: 12,
 				cooldown: 1.8,
 				health: 125,
 				cost: 400,
@@ -42,7 +42,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 50,
-				range: 14,
+				range: 12,
 				cooldown: 1.8,
 				health: 125,
 				cost: 725,
@@ -52,7 +52,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 100,
-				range: 15.5,
+				range: 14,
 				cooldown: 1.2,
 				health: 150,
 				cost: 3_000,
@@ -63,7 +63,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 200,
-				range: 16,
+				range: 15,
 				cooldown: 1,
 				health: 185,
 				cost: 6_750,
@@ -74,7 +74,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 			},
 			{
 				damage: 200,
-				range: 17.5,
+				range: 16,
 				cooldown: 0.3,
 				health: 200,
 				cost: 20_000,
