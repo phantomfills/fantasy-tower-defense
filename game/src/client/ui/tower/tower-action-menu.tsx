@@ -18,7 +18,7 @@ import {
 } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { images } from "shared/assets";
-import { Immunity } from "shared/modules/attack/immunity";
+import { Trait } from "shared/modules/attack/immunity";
 
 interface TowerActionButtonProps {
 	name: string;
@@ -71,7 +71,7 @@ interface TowerActionMenuProps {
 	upgradeDescription: string;
 	level: number;
 	close: () => void;
-	traits: Immunity[];
+	traits: Trait[];
 	actions: {
 		upgrade: Action;
 		sell: Action;

@@ -3,6 +3,7 @@ import { fonts } from "../constants/fonts";
 import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import { abbreviateNumber } from "client/modules/number/abbreviate-number";
 
 interface EnemyDamageIndicatorProps {
 	damage: number;
@@ -27,6 +28,8 @@ export function EnemyDamageIndicator({ damage, position, spawnTime }: EnemyDamag
 	const yOffset = random.NextNumber(-0.45, 0.45);
 	const zOffset = random.NextNumber(-0.45, 0.45);
 
+	const abbreviatedDamage = abbreviateNumber(damage);
+
 	return (
 		<billboardgui
 			Size={new UDim2(0, 100, 0, 45)}
@@ -41,7 +44,7 @@ export function EnemyDamageIndicator({ damage, position, spawnTime }: EnemyDamag
 		>
 			<Label
 				size={new UDim2(1, 0, 1, 0)}
-				text={`-${damage}`}
+				text={`-${abbreviatedDamage}`}
 				textSize={rem(5)}
 				backgroundTransparency={1}
 				textColor={Color3.fromRGB(255, 0, 0)}
