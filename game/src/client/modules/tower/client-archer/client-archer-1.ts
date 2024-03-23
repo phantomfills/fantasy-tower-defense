@@ -1,5 +1,5 @@
 import { getTowerModel } from "shared/modules/tower/tower-type-to-model-map";
-import { ClientTower, TowerModel } from "./client-tower";
+import { ClientTower, TowerModel } from "../client-tower";
 import { Workspace } from "@rbxts/services";
 
 interface ArcherModel extends TowerModel {
@@ -15,13 +15,13 @@ interface ArcherModel extends TowerModel {
 	};
 }
 
-export class ClientArcher0 extends ClientTower<ArcherModel> {
+export class ClientArcher1 extends ClientTower<ArcherModel> {
 	private readonly animator: Animator;
 	private readonly idleAnimationTrack: AnimationTrack;
 	private readonly attackAnimationTrack: AnimationTrack;
 
 	constructor(id: string, cframe: CFrame) {
-		const archerModel = getTowerModel("ARCHER", 0);
+		const archerModel = getTowerModel("ARCHER", 1);
 		archerModel.Parent = Workspace;
 		super(archerModel, id, cframe);
 

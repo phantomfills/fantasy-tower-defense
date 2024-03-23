@@ -1,11 +1,13 @@
 import { TowerType } from "shared/modules/tower/tower-type";
-import { ClientArcher0 } from "./client-archer-0";
 import { GenericClientTower } from "./client-tower";
-import { ClientArcher1 } from "./client-archer-1";
-import { ClientArcher5 } from "./client-archer-5";
-import { ClientArcher4 } from "./client-archer-4";
-import { ClientArcher3 } from "./client-archer-3";
-import { ClientArcher2 } from "./client-archer-2";
+import {
+	ClientArcher0,
+	ClientArcher1,
+	ClientArcher2,
+	ClientArcher3,
+	ClientArcher4,
+	ClientArcher5,
+} from "./client-archer";
 
 export function createClientTower(towerType: TowerType, level: number, id: string, cframe: CFrame): GenericClientTower {
 	switch (towerType) {

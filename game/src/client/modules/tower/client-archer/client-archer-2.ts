@@ -1,5 +1,5 @@
 import { getTowerModel } from "shared/modules/tower/tower-type-to-model-map";
-import { ClientTower, TowerModel } from "./client-tower";
+import { ClientTower, TowerModel } from "../client-tower";
 import { Workspace } from "@rbxts/services";
 
 interface ArcherModel extends TowerModel {
