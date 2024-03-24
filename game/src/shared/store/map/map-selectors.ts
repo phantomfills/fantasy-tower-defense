@@ -1,5 +1,5 @@
 import { SharedState } from "..";
 
-export function getMap(state: SharedState) {
-	return state.map;
+export function selectMap(state: SharedState) {
+	return state.map.map;
 }

@@ -4,7 +4,7 @@ import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
 import { isEnemyType } from "shared/modules/enemy/enemy-type";
 import { createId } from "shared/modules/utils/id-utils";
-import { getMap } from "shared/store/map";
+import { selectMap } from "shared/store/map";
 
 const COMMAND_PREFIX = "!";
 
@@ -46,7 +46,7 @@ function processPlayerMessage(userId: string, message: string) {
 			const enemyCount = splitMessage[2];
 			const enemyCountNumber = tonumber(enemyCount);
 
-			const map = producer.getState(getMap);
+			const map = producer.getState(selectMap);
 			const path = map.path;
 
 			for (let i = 0; i < (enemyCountNumber === undefined ? 1 : enemyCountNumber); i++) {

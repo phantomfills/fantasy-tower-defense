@@ -9,7 +9,9 @@ export interface Map {
 	path: PathWaypoint[];
 }
 
-export type MapState = Map;
+export type MapState = {
+	map: Map;
+};
 
 function throwIfChildrenAreNotPathWaypoints<T extends Folder>(
 	value: T & {
@@ -39,9 +41,11 @@ if (!assertAllInstancesArePathWaypoints(path)) {
 }
 
 const initialState: MapState = {
-	name: "Ninja Hideaway",
-	model: Workspace.gameMap,
-	path,
+	map: {
+		name: "Tutorial",
+		model: Workspace.gameMap,
+		path,
+	},
 };
 
 export const mapSlice = createProducer(initialState, {});

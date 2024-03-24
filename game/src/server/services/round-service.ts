@@ -8,7 +8,7 @@ import { tracks } from "shared/modules/music/tracks";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { selectNoEnemiesExist } from "shared/store/enemy";
-import { getMap } from "shared/store/map";
+import { selectMap } from "shared/store/map";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 0;
 const ROUND_BONUS = 1_000;
@@ -298,7 +298,7 @@ export class RoundService implements OnStart {
 	}
 
 	private async spawnRound(round: Round): Promise<RoundResult> {
-		const path = producer.getState(getMap).path;
+		const path = producer.getState(selectMap).path;
 
 		for (const group of round) {
 			for (let i = 0; i < group.count; i++) {
