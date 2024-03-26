@@ -23,10 +23,9 @@ import { producer } from "client/store";
 import { Music } from "./music/music";
 import { selectDialogText } from "client/store/dialog";
 import { Dialog } from "./game/dialog";
-import { Possible } from "shared/modules/utils/possible";
-import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { selectEnemyDetailViewType } from "client/store/settings";
 import { EnemyTooltipBillboardFromId } from "./enemy/enemy-tooltip";
+import { selectLives } from "shared/store/map";
 
 export function App() {
 	const towers = useSelector(getTowerLoadout);
@@ -37,6 +36,7 @@ export function App() {
 	const money = useSelector(selectMoney(tostring(Players.LocalPlayer.UserId)));
 	const dialog = useSelector(selectDialogText);
 	const enemyDetailViewType = useSelector(selectEnemyDetailViewType);
+	const lives = useSelector(selectLives);
 
 	return (
 		<>
@@ -105,7 +105,7 @@ export function App() {
 				{<Dialog visible={dialog.exists} text={dialog.exists ? dialog.value : ""} key="dialog" />}
 
 				<MatchInfo key="match-info">
-					<LifeCounter lives={1000} key="life-counter" />
+					<LifeCounter lives={lives} key="life-counter" />
 					<CashCounter value={money.exists ? money.value : 0} key="money-counter" />
 				</MatchInfo>
 			</Panel>

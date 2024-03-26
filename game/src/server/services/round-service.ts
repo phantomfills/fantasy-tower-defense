@@ -8,7 +8,7 @@ import { tracks } from "shared/modules/music/tracks";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { selectNoEnemiesExist } from "shared/store/enemy";
-import { selectMap } from "shared/store/map";
+import { selectGameOver, selectMap } from "shared/store/map";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 0;
 const ROUND_BONUS = 1_000;
@@ -38,7 +38,7 @@ const level: Level = [
 	[
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 3,
+			count: 100,
 			enemySpawnInterval: 1_000,
 			delayToNextGroup: 0,
 		},
@@ -213,6 +213,11 @@ type RoundResult =
 @Service({})
 export class RoundService implements OnStart {
 	onStart() {
+		producer.subscribe(selectGameOver, (gameOver) => {
+			if (!gameOver) return;
+			producer.clearEnemies();
+		});
+
 		holdFor(10_000);
 
 		Events.setDialog.broadcast("Welcome to the tutorial!", 11_000);
@@ -289,6 +294,9 @@ export class RoundService implements OnStart {
 				RunService.Heartbeat.Wait();
 			}
 
+			const gameOver = producer.getState(selectGameOver);
+			if (gameOver) break;
+
 			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
 
 			if (roundNumber === 10) {
@@ -302,6 +310,9 @@ export class RoundService implements OnStart {
 
 		for (const group of round) {
 			for (let i = 0; i < group.count; i++) {
+				const gameOver = producer.getState(selectGameOver);
+				if (gameOver) return { type: "error", message: "Game over - cancelling round" };
+
 				const enemy = createEnemy(group.enemyType, path);
 				producer.addEnemy(enemy, createId());
 

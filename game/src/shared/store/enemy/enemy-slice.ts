@@ -71,4 +71,6 @@ export const enemySlice = createProducer(initialState, {
 
 		return updatedState;
 	},
+
+	clearEnemies: (_) => ({}),
 });

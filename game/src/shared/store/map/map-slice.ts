@@ -3,14 +3,15 @@ import { Workspace } from "@rbxts/services";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { possible } from "shared/modules/utils/possible";
 
-export interface Map {
+interface Map {
 	name: string;
 	model: Model;
 	path: PathWaypoint[];
 }
 
-export type MapState = {
+type MapState = {
 	map: Map;
+	lives: number;
 };
 
 function throwIfChildrenAreNotPathWaypoints<T extends Folder>(
@@ -46,6 +47,12 @@ const initialState: MapState = {
 		model: Workspace.gameMap,
 		path,
 	},
+	lives: 2000,
 };
 
-export const mapSlice = createProducer(initialState, {});
+export const mapSlice = createProducer(initialState, {
+	deductLives: (state, lives: number) => ({
+		...state,
+		lives: math.max(state.lives - lives, 0),
+	}),
+});
