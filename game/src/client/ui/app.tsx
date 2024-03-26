@@ -21,7 +21,7 @@ import Object from "@rbxts/object-utils";
 import { EnemyDamageIndicator } from "./enemy/enemy-damage-indicator";
 import { producer } from "client/store";
 import { Music } from "./music/music";
-import { selectDialogText } from "client/store/dialog";
+import { selectDialogText } from "shared/store/dialog";
 import { Dialog } from "./game/dialog";
 import { selectEnemyDetailViewType } from "client/store/settings";
 import { EnemyTooltipBillboardFromId } from "./enemy/enemy-tooltip";

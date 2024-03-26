@@ -7,7 +7,6 @@ import { slices } from "shared/store";
 import { enemyFocusSlice } from "./enemy-focus";
 import { towerActionSlice } from "./tower-action-menu";
 import { enemyDamageIndicatorSlice } from "./enemy-damage-indicator";
-import { dialogSlice } from "./dialog";
 import { settingsSlice } from "./settings";
 
 export type RootState = InferState<typeof producer>;
@@ -18,7 +17,6 @@ export const producer = combineProducers({
 	enemyFocus: enemyFocusSlice,
 	towerAction: towerActionSlice,
 	enemyDamageIndicator: enemyDamageIndicatorSlice,
-	dialog: dialogSlice,
 	settings: settingsSlice,
 });
 

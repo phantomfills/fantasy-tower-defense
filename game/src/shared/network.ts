@@ -24,8 +24,6 @@ interface SharedEvents {
 }
 
 interface ServerToClientEvents extends SharedEvents {
-	setDialog(text: string, time: number): void;
-
 	towerAttack: Networking.Unreliable<(attack: Attack) => void>;
 }
 

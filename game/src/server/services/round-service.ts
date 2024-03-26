@@ -1,7 +1,6 @@
 import { Service, OnStart } from "@flamework/core";
 import { RunService } from "@rbxts/services";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
-import { Events } from "server/network";
 import { producer } from "server/store";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { tracks } from "shared/modules/music/tracks";
@@ -220,14 +219,13 @@ export class RoundService implements OnStart {
 
 		holdFor(10_000);
 
-		Events.setDialog.broadcast("Welcome to the tutorial!", 11_000);
+		producer.setDialog("Welcome to the tutorial!");
 		holdFor(10_000);
-		Events.setDialog.broadcast(
+		producer.setDialog(
 			"Click on the tower button at the bottom, and move the tower to a location where its blue circle reaches the path, then click again to place it!",
-			11_000,
 		);
 		holdFor(10_000);
-		Events.setDialog.broadcast("Click on a tower to upgrade it!", 10_000);
+		producer.setDialog("Click on a tower to upgrade it!");
 		holdFor(10_000);
 
 		for (let roundIndex = 0; roundIndex < level.size(); roundIndex++) {
@@ -240,42 +238,37 @@ export class RoundService implements OnStart {
 					break;
 				}
 				case 2: {
-					Events.setDialog.broadcast("I saw some quicker enemies in the distance, be prepared!", 10_000);
+					producer.setDialog("I saw some quicker enemies in the distance, be prepared!");
 					break;
 				}
 				case 4: {
-					Events.setDialog.broadcast(
+					producer.setDialog(
 						"Armored enemies are on the way! They're really strong, so upgrading or placing more Archers is essential.",
-						10_000,
 					);
 					break;
 				}
 				case 6: {
-					Events.setDialog.broadcast(
+					producer.setDialog(
 						"Stealth enemies are coming! They are invisible to towers without the 'stealth' trait! Archer gains this trait with its level 3 upgrade!",
-						10_000,
 					);
 					break;
 				}
 				case 8: {
-					Events.setDialog.broadcast(
+					producer.setDialog(
 						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Archers are level 4 or higher to counter them!",
-						10_000,
 					);
 					break;
 				}
 				case 9: {
-					Events.setDialog.broadcast(
+					producer.setDialog(
 						"Who are they? Are they protecting something? Just kidding. I know everything, I am the narrator, you will just have to find out.",
-						10_000,
 					);
 					break;
 				}
 				case 10: {
 					producer.setTrackId(tracks.light_show);
-					Events.setDialog.broadcast(
+					producer.setDialog(
 						"The Dummy Tank is here! It has a lot of health, but it is very slow! Good luck taking it down.",
-						10_000,
 					);
 					break;
 				}

@@ -11,6 +11,8 @@ export class MapService implements OnStart {
 	onStart() {
 		producer.observe(selectEnemies, getEnemyId, (enemy) => {
 			return () => {
+				// TODO: implement different number of lives lost depending on enemy health upon path completion
+
 				producer.deductLives(enemy.health);
 			};
 		});

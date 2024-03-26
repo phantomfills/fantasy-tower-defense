@@ -4,6 +4,7 @@ import { mapSlice } from "./map";
 import { towerSlice } from "./tower";
 import { moneySlice } from "./money";
 import { musicSlice } from "./music";
+import { dialogSlice } from "./dialog";
 
 export type SharedState = CombineStates<typeof slices>;
 
@@ -13,4 +14,5 @@ export const slices = {
 	tower: towerSlice,
 	money: moneySlice,
 	music: musicSlice,
+	dialog: dialogSlice,
 };
