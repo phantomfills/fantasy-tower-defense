@@ -13,7 +13,7 @@ const towerTypeToModelsMap = {
 		archerModels.level_4,
 		archerModels.level_5,
 	],
-} as const satisfies Record<TowerType, unknown>;
+} as const;
 
 export function getTowerModel<T extends TowerType, U extends number>(
 	towerType: T,
