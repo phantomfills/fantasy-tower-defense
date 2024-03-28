@@ -2,13 +2,8 @@ import { OnStart, OnTick, Service } from "@flamework/core";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { producer } from "server/store";
-import { getPossibleTowerFromId, selectTowers, towerDoesNotExistFromId } from "shared/store/tower";
-import {
-	selectEnemies,
-	selectEnemyCFrameFromId,
-	selectEnemyIdsInTowerRange,
-	selectFirstAttackableEnemyInTowerRange,
-} from "shared/store/enemy";
+import { getPossibleTowerFromId, selectTowers } from "shared/store/tower";
+import { selectEnemies, selectEnemyCFrameFromId, selectFirstAttackableEnemyInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { createBasicAttack } from "shared/modules/attack";
 import {
