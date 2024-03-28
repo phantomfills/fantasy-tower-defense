@@ -122,6 +122,8 @@ export function selectFirstAttackableEnemyInTowerRange(
 
 		const enemiesInTowerRange = Object.keys(enemies).filter((enemyId) => {
 			const enemy = enemies[enemyId];
+			if (enemy.dead) return false;
+
 			const enemyCFrame = getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha);
 			const enemyPosition = enemyCFrame.Position;
 
