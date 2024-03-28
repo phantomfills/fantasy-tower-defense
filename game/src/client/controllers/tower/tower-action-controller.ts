@@ -148,7 +148,7 @@ export class TowerActionController implements OnStart, OnTick {
 
 			const towerLevelSelector = getPossibleTowerLevelFromId(towerId);
 
-			const unsubscribe = producer.subscribe(towerLevelSelector, (possibleLevel) => {
+			const unsubscribeLevelSelector = producer.subscribe(towerLevelSelector, (possibleLevel) => {
 				if (!possibleLevel.exists) return;
 
 				const level = possibleLevel.value;
@@ -156,11 +156,16 @@ export class TowerActionController implements OnStart, OnTick {
 				this.createRangeIndicator(Workspace, towerStats.range, rootPosition);
 			});
 
+			const unsubscribeTowerDoesNotExist = producer.once(towerDoesNotExistFromId(towerId), () => {
+				producer.clearTowerId();
+			});
+
 			producer.once(getTowerIsNotFocused(towerId), () => {
 				if (!producer.getState(getPossibleTowerId).exists) {
 					this.destroyRangeIndicator();
 				}
-				unsubscribe();
+				unsubscribeLevelSelector();
+				unsubscribeTowerDoesNotExist();
 			});
 		});
 	}
