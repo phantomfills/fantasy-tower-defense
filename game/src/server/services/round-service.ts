@@ -37,8 +37,8 @@ const level: Level = [
 	[
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 100,
-			enemySpawnInterval: 1_000,
+			count: 4,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
 	],
@@ -46,7 +46,7 @@ const level: Level = [
 		{
 			enemyType: "TRAINING_DUMMY",
 			count: 7,
-			enemySpawnInterval: 1_000,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
 	],
@@ -54,7 +54,7 @@ const level: Level = [
 		{
 			enemyType: "TRAINING_DUMMY",
 			count: 5,
-			enemySpawnInterval: 1_000,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
@@ -68,7 +68,7 @@ const level: Level = [
 		{
 			enemyType: "TRAINING_DUMMY",
 			count: 5,
-			enemySpawnInterval: 1_000,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
@@ -82,13 +82,13 @@ const level: Level = [
 		{
 			enemyType: "ARMORED_DUMMY",
 			count: 7,
-			enemySpawnInterval: 1_500,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
 		{
 			enemyType: "TRAINING_DUMMY",
 			count: 2,
-			enemySpawnInterval: 1_000,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
@@ -102,7 +102,7 @@ const level: Level = [
 		{
 			enemyType: "ARMORED_DUMMY",
 			count: 12,
-			enemySpawnInterval: 1_500,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
 	],
@@ -110,13 +110,13 @@ const level: Level = [
 		{
 			enemyType: "STEALTH_DUMMY",
 			count: 2,
-			enemySpawnInterval: 1_000,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 250,
 		},
 		{
 			enemyType: "SPEEDSTER_DUMMY",
 			count: 7,
-			enemySpawnInterval: 250,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
 	],
@@ -124,7 +124,7 @@ const level: Level = [
 		{
 			enemyType: "STEALTH_DUMMY",
 			count: 9,
-			enemySpawnInterval: 250,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
 	],
@@ -132,7 +132,7 @@ const level: Level = [
 		{
 			enemyType: "TRAINING_DUMMY",
 			count: 20,
-			enemySpawnInterval: 250,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
@@ -144,7 +144,7 @@ const level: Level = [
 		{
 			enemyType: "SPEEDSTER_DUMMY",
 			count: 10,
-			enemySpawnInterval: 125,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
@@ -164,7 +164,7 @@ const level: Level = [
 		{
 			enemyType: "TRAINING_DUMMY",
 			count: 15,
-			enemySpawnInterval: 250,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
@@ -176,7 +176,7 @@ const level: Level = [
 		{
 			enemyType: "SPEEDSTER_DUMMY",
 			count: 15,
-			enemySpawnInterval: 125,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
@@ -222,7 +222,7 @@ export class RoundService implements OnStart {
 		producer.setDialog("Welcome to the tutorial!");
 		holdFor(10_000);
 		producer.setDialog(
-			"Click on the tower button at the bottom, and move the tower to a location where its blue circle reaches the path, then click again to place it!",
+			"Click on the tower button at the bottom, and move the tower to a location where its gray circle reaches the path, then click again to place it!",
 		);
 		holdFor(10_000);
 		producer.setDialog("Click on a tower to upgrade it!");
@@ -235,6 +235,9 @@ export class RoundService implements OnStart {
 			switch (roundNumber) {
 				case 1: {
 					producer.setTrackId(tracks.techno);
+					producer.setDialog(
+						"You will gain money for each enemy you defeat. Use it to build more towers, or upgrade existing ones!",
+					);
 					break;
 				}
 				case 2: {
