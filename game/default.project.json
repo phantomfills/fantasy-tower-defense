@@ -57,6 +57,12 @@
 						},
 						"guardDummy": {
 							"$path": "assets/guard-dummy.rbxm"
+						},
+						"multiplierDummy": {
+							"$path": "assets/multiplier-dummy.rbxm"
+						},
+						"dividedDummy": {
+							"$path": "assets/divided-dummy.rbxm"
 						}
 					}
 				},

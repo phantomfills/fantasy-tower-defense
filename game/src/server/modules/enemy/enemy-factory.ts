@@ -4,7 +4,7 @@ import { Enemy } from "shared/store/enemy";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 
-export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
+export function createEnemy(enemyType: EnemyType, path: PathWaypoint[], initialPathCompletionAlpha?: number): Enemy {
 	const enemyStats = describeEnemyFromType(enemyType);
 
 	const enemyTemplate: Enemy = {
@@ -13,6 +13,7 @@ export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 		path,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),
 		pathCompletionAlpha: 0,
+		initialPathCompletionAlpha,
 		dead: false,
 	};
 
@@ -27,6 +28,12 @@ export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 			return enemyTemplate;
 		}
 		case "STEALTH_DUMMY": {
+			return enemyTemplate;
+		}
+		case "MULTIPLIER_DUMMY": {
+			return enemyTemplate;
+		}
+		case "DIVIDED_DUMMY": {
 			return enemyTemplate;
 		}
 		case "GUARD_DUMMY": {

@@ -10,6 +10,7 @@ export interface Enemy {
 	health: number;
 	spawnTimestamp: number;
 	pathCompletionAlpha: number;
+	initialPathCompletionAlpha?: number;
 	dead: boolean;
 }
 
@@ -64,7 +65,12 @@ export const enemySlice = createProducer(initialState, {
 			const pathLength = getPathLength(enemy.path);
 			const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
 
-			const pathCompletionAlpha = math.clamp(millisecondsSinceSpawn / totalMillisecondsToCompletePath, 0, 1);
+			const initialPathCompletionAlpha = enemy.initialPathCompletionAlpha ?? 0;
+			const pathCompletionAlpha = math.clamp(
+				millisecondsSinceSpawn / totalMillisecondsToCompletePath + initialPathCompletionAlpha,
+				0,
+				1,
+			);
 
 			if (pathCompletionAlpha >= 1) continue;
 

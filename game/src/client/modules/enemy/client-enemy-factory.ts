@@ -6,6 +6,8 @@ import { ClientSpeedsterDummy } from "./client-speedster-dummy";
 import { ClientStealthDummy } from "./client-stealth-dummy";
 import { ClientDummyTank } from "./client-dummy-tank";
 import { ClientGuardDummy } from "./client-guard-dummy";
+import { ClientMultiplierDummy } from "./client-multiplier-dummy";
+import { ClientDividedDummy } from "./client-divided-dummy";
 
 export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFrame): ClientEnemy {
 	switch (enemyType) {
@@ -26,6 +28,12 @@ export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFra
 		}
 		case "DUMMY_TANK": {
 			return new ClientDummyTank(id, cframe);
+		}
+		case "MULTIPLIER_DUMMY": {
+			return new ClientMultiplierDummy(id, cframe);
+		}
+		case "DIVIDED_DUMMY": {
+			return new ClientDividedDummy(id, cframe);
 		}
 	}
 }

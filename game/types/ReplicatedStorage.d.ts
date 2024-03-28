@@ -14,15 +14,18 @@ interface ReplicatedStorage extends Instance {
 				["number-to-key-map"]: ModuleScript;
 				["snap-to-cframe"]: ModuleScript;
 			};
-			money: Folder & {
-				["sellback-rate"]: ModuleScript;
-			};
 			tower: Folder & {
 				["tower-type-to-display-name-map"]: ModuleScript;
 				["tower-model"]: ModuleScript;
 				["tower-type-to-tower-stats-map"]: ModuleScript;
 				["tower-type"]: ModuleScript;
 				["tower-type-to-model-map"]: ModuleScript;
+			};
+			money: Folder & {
+				["sellback-rate"]: ModuleScript;
+			};
+			music: Folder & {
+				tracks: ModuleScript;
 			};
 			enemy: Folder & {
 				["enemy-type-to-enemy-stats-map"]: ModuleScript;
@@ -51,9 +54,17 @@ interface ReplicatedStorage extends Instance {
 				["money-slice"]: ModuleScript;
 				["money-selectors"]: ModuleScript;
 			};
+			music: ModuleScript & {
+				["music-selectors"]: ModuleScript;
+				["music-slice"]: ModuleScript;
+			};
 			enemy: ModuleScript & {
 				["enemy-slice"]: ModuleScript;
 				["enemy-selectors"]: ModuleScript;
+			};
+			dialog: ModuleScript & {
+				["dialog-selectors"]: ModuleScript;
+				["dialog-slice"]: ModuleScript;
 			};
 		};
 	};
@@ -365,6 +376,25 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
+				trainingDummy: Model & {
+					rightArm: MeshPart;
+					head: MeshPart;
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
 				stealthDummy: Model & {
 					rightArm: MeshPart;
 					head: MeshPart & {
@@ -389,7 +419,7 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
-				trainingDummy: Model & {
+				multiplierDummy: Model & {
 					rightArm: MeshPart;
 					head: MeshPart;
 					leftArm: MeshPart;
@@ -427,6 +457,24 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
+				dividedDummy: Model & {
+					rightArm: MeshPart;
+					head: MeshPart;
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
 				dummyTank: Model & {
 					rightArm: MeshPart;
 					head: MeshPart;
@@ -455,20 +503,12 @@ interface ReplicatedStorage extends Instance {
 		node_modules: Folder & {
 			["@flamework"]: Folder & {
 				core: Folder & {
-					node_modules: Folder & {
-						["@rbxts"]: Folder & {
-							t: Folder & {
-								lib: Folder & {
-									ts: ModuleScript;
-								};
-							};
-						};
-					};
 					out: ModuleScript & {
-						reflect: ModuleScript;
-						metadata: ModuleScript;
-						modding: ModuleScript;
 						flamework: ModuleScript;
+						utility: ModuleScript;
+						reflect: ModuleScript;
+						modding: ModuleScript;
+						metadata: ModuleScript;
 					};
 				};
 				components: Folder & {
@@ -486,34 +526,37 @@ interface ReplicatedStorage extends Instance {
 					};
 				};
 				networking: Folder & {
-					node_modules: Folder & {
-						["@rbxts"]: Folder & {
-							t: Folder & {
-								lib: Folder & {
-									ts: ModuleScript;
-								};
-							};
-						};
-					};
 					out: ModuleScript & {
-						events: Folder & {
-							createClientHandler: ModuleScript;
-							createServerHandler: ModuleScript;
-							createNetworkingEvent: ModuleScript;
-						};
-						functions: Folder & {
-							createClientHandler: ModuleScript;
-							createNetworkingFunction: ModuleScript;
-							createServerHandler: ModuleScript;
+						["function"]: Folder & {
+							createFunctionSender: ModuleScript;
+							createFunctionReceiver: ModuleScript;
 							errors: ModuleScript;
 						};
-						handlers: ModuleScript;
-						middleware: Folder & {
-							createMiddlewareProcessor: ModuleScript;
-							skip: ModuleScript;
+						events: Folder & {
+							createServerMethod: ModuleScript;
+							createNetworkingEvent: ModuleScript;
+							createGenericHandler: ModuleScript;
+							createClientMethod: ModuleScript;
+						};
+						functions: Folder & {
+							createServerMethod: ModuleScript;
+							createNetworkingFunction: ModuleScript;
+							createGenericHandler: ModuleScript;
+							createClientMethod: ModuleScript;
 						};
 						util: Folder & {
-							populateInstanceMap: ModuleScript;
+							createSignalContainer: ModuleScript;
+							getNamespaceConfig: ModuleScript;
+							timeoutPromise: ModuleScript;
+						};
+						event: Folder & {
+							createEvent: ModuleScript;
+							createRemoteInstance: ModuleScript;
+						};
+						middleware: Folder & {
+							createMiddlewareProcessor: ModuleScript;
+							createGuardMiddleware: ModuleScript;
+							skip: ModuleScript;
 						};
 					};
 				};

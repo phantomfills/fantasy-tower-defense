@@ -1,4 +1,4 @@
-// TODO: add "splitter" enemy
+// TODO: add "splitter" / "mystery" enemy
 
 // TODO: add "tick" component to dialog
 // TODO: create tutorial-action-slice on server

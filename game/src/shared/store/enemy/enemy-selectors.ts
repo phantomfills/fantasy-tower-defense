@@ -20,6 +20,14 @@ export function selectEnemyIsDead(enemyId: string) {
 	});
 }
 
+export function selectEnemyPathCompletionAlpha(enemyId: string) {
+	return createSelector([selectEnemyFromId(enemyId)], (possibleEnemy) => {
+		if (!possibleEnemy.exists) return 0;
+
+		return possibleEnemy.value.pathCompletionAlpha;
+	});
+}
+
 export function selectEnemies(state: SharedState) {
 	return state.enemy;
 }

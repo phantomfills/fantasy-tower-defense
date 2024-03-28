@@ -5,6 +5,8 @@ const enemyTypeToDisplayNameMap: Record<EnemyType, string> = {
 	ARMORED_DUMMY: "Armored Dummy",
 	SPEEDSTER_DUMMY: "Speedster Dummy",
 	STEALTH_DUMMY: "Stealth Dummy",
+	MULTIPLIER_DUMMY: "Multiplier Dummy",
+	DIVIDED_DUMMY: "Divided Dummy",
 	GUARD_DUMMY: "Guard Dummy",
 	DUMMY_TANK: "Dummy Tank",
 };
