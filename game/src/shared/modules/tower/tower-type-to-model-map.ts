@@ -1,5 +1,7 @@
 import { ReplicatedStorage } from "@rbxts/services";
 import { TowerType } from "./tower-type";
+import { TowerModel } from "./tower-model";
+import { DeepReadonly } from "@rbxts/reflex";
 
 const assets = ReplicatedStorage.assets;
 const archerModels = assets.towers.archer.models;
@@ -13,7 +15,7 @@ const towerTypeToModelsMap = {
 		archerModels.level_4,
 		archerModels.level_5,
 	],
-} as const;
+} as const satisfies DeepReadonly<Record<TowerType, TowerModel[]>>;
 
 export function getTowerModel<T extends TowerType, U extends number>(
 	towerType: T,

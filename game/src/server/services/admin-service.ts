@@ -6,7 +6,7 @@ import { isEnemyType } from "shared/modules/enemy/enemy-type";
 import { createId } from "shared/modules/utils/id-utils";
 import { selectMap } from "shared/store/map";
 
-const COMMAND_PREFIX = "!";
+const COMMAND_PREFIX = "/";
 
 const ADMINS = [
 	"585267099", // PhantomFills
@@ -19,7 +19,7 @@ function processPlayerMessage(userId: string, message: string) {
 	if (message.sub(1, 1) !== COMMAND_PREFIX) return;
 
 	const splitMessage = message.split(" ");
-	const command = splitMessage[0].split("!")[1];
+	const command = splitMessage[0].split(COMMAND_PREFIX)[1];
 
 	switch (command) {
 		case "money": {
@@ -55,6 +55,10 @@ function processPlayerMessage(userId: string, message: string) {
 				task.wait(0.2);
 			}
 
+			break;
+		}
+		case "clearEnemies": {
+			producer.clearEnemies();
 			break;
 		}
 	}

@@ -1,6 +1,6 @@
 import { Service, OnStart } from "@flamework/core";
 import { producer } from "server/store";
-import { Enemy, selectEnemies } from "shared/store/enemy";
+import { Enemy, selectEnemies, selectEnemyHealth, selectEnemyIsDead } from "shared/store/enemy";
 
 function getEnemyId(_: Enemy, id: string) {
 	return id;
@@ -9,11 +9,22 @@ function getEnemyId(_: Enemy, id: string) {
 @Service({})
 export class MapService implements OnStart {
 	onStart() {
-		producer.observe(selectEnemies, getEnemyId, (enemy) => {
-			return () => {
-				// TODO: implement different number of lives lost depending on enemy health upon path completion
+		producer.observe(selectEnemies, getEnemyId, (_, id) => {
+			let enemyDied = false;
+			let enemyHealth = 0;
 
-				producer.deductLives(enemy.health);
+			const unsubscribeEnemyIsDead = producer.subscribe(selectEnemyIsDead(id), (isDead) => {
+				enemyDied = isDead;
+			});
+
+			const unsubscribeEnemyHealth = producer.subscribe(selectEnemyHealth(id), (health) => {
+				enemyHealth = health.exists ? health.value : 0;
+			});
+
+			return () => {
+				producer.deductLives(enemyHealth);
+				unsubscribeEnemyIsDead();
+				unsubscribeEnemyHealth();
 			};
 		});
 	}

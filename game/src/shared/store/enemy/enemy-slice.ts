@@ -10,6 +10,7 @@ export interface Enemy {
 	health: number;
 	spawnTimestamp: number;
 	pathCompletionAlpha: number;
+	dead: boolean;
 }
 
 export type EnemyState = Record<string, Enemy>;
@@ -38,6 +39,7 @@ export const enemySlice = createProducer(initialState, {
 			if (id === enemyIdToDamage) {
 				const updatedEnemyHealth = enemy.health - damage;
 				if (updatedEnemyHealth <= 0) {
+					updatedState[id] = { ...enemy, health: 0, dead: true };
 					continue;
 				}
 

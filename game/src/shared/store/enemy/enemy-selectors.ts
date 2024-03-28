@@ -12,6 +12,14 @@ export function selectNoEnemiesExist(state: SharedState) {
 	return Object.keys(state.enemy).size() === 0;
 }
 
+export function selectEnemyIsDead(enemyId: string) {
+	return createSelector([selectEnemyFromId(enemyId)], (possibleEnemy) => {
+		if (!possibleEnemy.exists) return false;
+
+		return possibleEnemy.value.dead;
+	});
+}
+
 export function selectEnemies(state: SharedState) {
 	return state.enemy;
 }
@@ -145,5 +153,17 @@ export function selectFirstAttackableEnemyInTowerRange(
 		const firstEnemy = enemies[firstEnemyId];
 
 		return { exists: true, value: [firstEnemyId, firstEnemy] };
+	});
+}
+
+export function getEnemyId(_: Enemy, id: string) {
+	return id;
+}
+
+export function selectEnemyHealth(enemyId: string): (state: SharedState) => Possible<number> {
+	return createSelector([selectEnemyFromId(enemyId)], (enemy) => {
+		if (!enemy.exists) return { exists: false };
+
+		return { exists: true, value: enemy.value.health };
 	});
 }

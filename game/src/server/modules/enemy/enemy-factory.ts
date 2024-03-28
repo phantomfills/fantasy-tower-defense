@@ -13,6 +13,7 @@ export function createEnemy(enemyType: EnemyType, path: PathWaypoint[]): Enemy {
 		path,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),
 		pathCompletionAlpha: 0,
+		dead: false,
 	};
 
 	switch (enemyType) {

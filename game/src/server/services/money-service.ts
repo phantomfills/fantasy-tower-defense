@@ -1,8 +1,8 @@
 import { Service, OnStart } from "@flamework/core";
 import { Players } from "@rbxts/services";
-import { towerAttack } from "server/events";
 import { producer } from "server/store";
-import { getPossibleTowerFromId } from "shared/store/tower";
+import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
+import { getEnemyId, selectEnemies, selectEnemyIsDead } from "shared/store/enemy";
 
 const STARTING_CASH = 2_000;
 
@@ -13,16 +13,19 @@ function initializeMoney(userId: string, amount: number) {
 @Service({})
 export class MoneyService implements OnStart {
 	onStart() {
-		towerAttack.Connect((attack) => {
-			const { towerId, damage } = attack;
+		producer.observe(selectEnemies, getEnemyId, ({ enemyType }, id) => {
+			const { maxHealth } = describeEnemyFromType(enemyType);
 
-			const possibleTower = producer.getState(getPossibleTowerFromId(towerId));
-			if (!possibleTower.exists) return;
+			const unsubscribe = producer.subscribe(selectEnemyIsDead(id), (isDead) => {
+				if (!isDead) return;
 
-			const tower = possibleTower.value;
-			const { owner } = tower;
+				producer.awardBonusToAll(maxHealth);
+				unsubscribe();
+			});
 
-			producer.addMoney(owner, damage);
+			return () => {
+				unsubscribe();
+			};
 		});
 
 		Players.GetPlayers().forEach((player) => {
