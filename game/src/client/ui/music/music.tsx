@@ -1,7 +1,7 @@
 import Roact, { useEffect, useState } from "@rbxts/roact";
 import { SoundService } from "@rbxts/services";
 import { useSelector } from "@rbxts/react-reflex";
-import { selectPossibleTrackId } from "shared/store/music";
+import { selectTrackId } from "shared/store/music";
 
 interface SoundOptions {
 	volume?: number;
@@ -26,12 +26,11 @@ function createSound(
 }
 
 export function Music() {
-	const possibleTrackId = useSelector(selectPossibleTrackId);
+	const trackId = useSelector(selectTrackId);
 	const [sound, setSound] = useState<Sound>();
 
 	useEffect(() => {
-		if (!possibleTrackId.exists) return;
-		const trackId = possibleTrackId.value;
+		if (trackId === undefined) return;
 
 		const newSound = createSound(trackId, { volume: 0.2, looped: true });
 		setSound(newSound);
@@ -39,7 +38,7 @@ export function Music() {
 		return () => {
 			newSound.Destroy();
 		};
-	}, [possibleTrackId]);
+	}, [trackId]);
 
 	useEffect(() => {
 		sound?.Play();
