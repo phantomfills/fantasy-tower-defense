@@ -1,6 +1,5 @@
-import { Possible } from "shared/modules/utils/possible";
 import { SharedState } from "..";
 
-export function selectPossibleTrackId(state: SharedState): Possible<string> {
+export function selectTrackId(state: SharedState): string | undefined {
 	return state.music.trackId;
 }

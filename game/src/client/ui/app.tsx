@@ -81,7 +81,6 @@ export function App() {
 							},
 							sell: () => {
 								Events.sellTower.fire(possibleTowerFocusId.value);
-								producer.clearTowerId();
 							},
 						}}
 						close={() => {

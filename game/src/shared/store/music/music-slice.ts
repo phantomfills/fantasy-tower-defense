@@ -1,27 +1,21 @@
 import { createProducer } from "@rbxts/reflex";
-import { Possible } from "shared/modules/utils/possible";
 
 interface MusicState {
-	trackId: Possible<string>;
+	trackId: string | undefined;
 }
 
 const initialState: MusicState = {
-	trackId: {
-		exists: false,
-	},
+	trackId: undefined,
 };
 
 export const musicSlice = createProducer(initialState, {
 	setTrackId: (state, trackId: string) => ({
 		...state,
-		trackId: {
-			exists: true,
-			value: trackId,
-		},
+		trackId,
 	}),
 
 	clearTrackId: (state) => ({
 		...state,
-		trackId: { exists: false },
+		trackId: undefined,
 	}),
 });
