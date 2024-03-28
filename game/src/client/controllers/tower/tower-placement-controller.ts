@@ -160,6 +160,8 @@ export class TowerPlacementController implements OnStart {
 				maid: maid,
 			},
 		};
+
+		producer.clearTowerId();
 	}
 
 	private clearTower() {
