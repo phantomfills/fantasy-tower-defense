@@ -1,11 +1,8 @@
 import Maid from "@rbxts/maid";
+import { CollectionService } from "@rbxts/services";
+import { TowerModel } from "shared/modules/tower/tower-model";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
-
-export interface TowerModel extends Model {
-	humanoidRootPart: BasePart & {
-		rootAttachment: Attachment;
-	};
-}
+import { tags } from "shared/modules/utils/tags";
 
 export type GenericClientTower = ClientTower<TowerModel>;
 
@@ -15,6 +12,8 @@ export class ClientTower<T extends TowerModel> {
 	constructor(private readonly model: T, private readonly id: string, private readonly cframe: CFrame) {
 		this.maid = new Maid();
 		this.maid.GiveTask(this.model);
+
+		CollectionService.AddTag(this.model, tags.TOWER);
 
 		this.snapToCFrame(cframe);
 	}

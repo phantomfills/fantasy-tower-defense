@@ -1,4 +1,5 @@
-import { Debris, TweenService, Workspace } from "@rbxts/services";
+import { CollectionService, Debris, TweenService, Workspace } from "@rbxts/services";
+import { tags } from "shared/modules/utils/tags";
 
 export function createArrow(fromPosition: Vector3, toPosition: Vector3, color?: Color3) {
 	const distance = fromPosition.sub(toPosition).Magnitude;
@@ -13,6 +14,8 @@ export function createArrow(fromPosition: Vector3, toPosition: Vector3, color?: 
 	arrow.Transparency = 0.25;
 	arrow.PivotTo(new CFrame(fromPosition, toPosition).mul(offset));
 	arrow.Parent = Workspace.CurrentCamera;
+
+	CollectionService.AddTag(arrow, tags.PROJECTILE);
 
 	const arrowTransparencyTweenInfo = new TweenInfo(0.15, Enum.EasingStyle.Sine, Enum.EasingDirection.Out);
 	const arrowTransparencyTweenEndProps = {

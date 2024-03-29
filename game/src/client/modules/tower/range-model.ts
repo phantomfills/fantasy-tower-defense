@@ -1,4 +1,4 @@
-export function createRangeModel(range: number, position: Vector3): Model {
+export function createRangeModel(range: number, position: Vector3, enabled: boolean = true): Model {
 	const rangeIndicatorModel = new Instance("Model");
 
 	// Humanoid is required for the highlight to work with transparency - buggy Roblox instances
@@ -10,7 +10,7 @@ export function createRangeModel(range: number, position: Vector3): Model {
 	rangeIndicator.Size = new Vector3(0.1, range * 2, range * 2);
 	rangeIndicator.Anchored = true;
 	rangeIndicator.CanCollide = false;
-	rangeIndicator.Color = Color3.fromRGB(150, 150, 150);
+	rangeIndicator.Color = enabled ? Color3.fromRGB(0, 173, 255) : Color3.fromRGB(255, 0, 0);
 	rangeIndicator.Transparency = 0.5;
 	rangeIndicator.CFrame = new CFrame(position).mul(CFrame.Angles(0, 0, math.rad(90)));
 	rangeIndicator.CastShadow = false;

@@ -1,14 +1,16 @@
 import { Controller, OnStart } from "@flamework/core";
 import { Possible, possible } from "shared/modules/utils/possible";
-import { TowerModel } from "client/modules/tower/client-tower";
+import { TowerModel } from "shared/modules/tower/tower-model";
 import { TowerType } from "shared/modules/tower/tower-type";
-import { UserInputService, Workspace, RunService } from "@rbxts/services";
+import { UserInputService, Workspace, RunService, CollectionService } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
 import { Events } from "client/network";
 import { producer } from "client/store";
 import Maid from "@rbxts/maid";
-import { createRangeModel } from "client/modules/tower/range-model";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { tags } from "shared/modules/utils/tags";
+import { selectIsValidPlacementPosition } from "shared/store/map";
+import { RangeIndicator } from "client/modules/tower/range-indicator";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -22,9 +24,13 @@ export class TowerPlacementController implements OnStart {
 		updatePlacementConnection: RBXScriptConnection;
 		maid: Maid;
 	}>;
+	private possibleRangeIndicator: Possible<RangeIndicator>;
 
 	constructor() {
 		this.possibleTowerPlacement = {
+			exists: false,
+		};
+		this.possibleRangeIndicator = {
 			exists: false,
 		};
 	}
@@ -79,7 +85,18 @@ export class TowerPlacementController implements OnStart {
 	}
 
 	private getTowerPlacementCFrame(towerPrefabModel: TowerModel): Possible<CFrame> {
-		const possibleTowerPlacementRaycast = this.getTowerPlacementRaycastResultWithFilter([towerPrefabModel]);
+		const towers = CollectionService.GetTagged(tags.TOWER);
+		const enemies = CollectionService.GetTagged(tags.ENEMY);
+		const projectiles = CollectionService.GetTagged(tags.PROJECTILE);
+		const characters = CollectionService.GetTagged(tags.CHARACTER);
+
+		const possibleTowerPlacementRaycast = this.getTowerPlacementRaycastResultWithFilter([
+			...towers,
+			...enemies,
+			...projectiles,
+			...characters,
+			towerPrefabModel,
+		]);
 		if (!possibleTowerPlacementRaycast.exists)
 			return {
 				exists: false,
@@ -103,21 +120,38 @@ export class TowerPlacementController implements OnStart {
 		const towerPlacement = possibleTowerPlacement.value;
 		const towerPrefabModel = towerPlacement.model;
 
-		const possibleTowerPlacementRaycast = this.getTowerPlacementRaycastResultWithFilter([towerPrefabModel]);
-		if (!possibleTowerPlacementRaycast.exists) return;
+		const possibleTowerPlacementCFrame = this.getTowerPlacementCFrame(towerPrefabModel);
+		if (!possibleTowerPlacementCFrame.exists) return;
 
-		const towerPlacementRaycast = possibleTowerPlacementRaycast.value;
+		const cframe = possibleTowerPlacementCFrame.value;
 
-		const position = towerPlacementRaycast.Position;
-		const cframe = new CFrame(position);
+		this.possibleTowerPlacement = {
+			exists: true,
+			value: {
+				...towerPlacement,
+				cframe: cframe,
+			},
+		};
 
-		towerPlacement.cframe = cframe;
+		const cframeWithRotation = cframe.mul(CFrame.Angles(0, math.rad(towerPlacement.rotation), 0));
 
 		snapToCFrameWithAttachmentOffset(
 			towerPrefabModel,
 			towerPrefabModel.humanoidRootPart.rootAttachment,
-			cframe.mul(CFrame.Angles(0, math.rad(towerPlacement.rotation), 0)),
+			towerPrefabModel.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(cframeWithRotation, 0.75), // Use lerp to smooth out the movement
 		);
+
+		if (!this.possibleRangeIndicator.exists) return;
+		const rangeIndicator = this.possibleRangeIndicator.value;
+
+		const isValidPlacementPosition = producer.getState(
+			selectIsValidPlacementPosition(cframe.Position, [towerPrefabModel]),
+		);
+
+		const enabled = rangeIndicator.getEnabled();
+		if (enabled === isValidPlacementPosition) return;
+
+		rangeIndicator.setEnabled(isValidPlacementPosition);
 	}
 
 	setTower(towerType: TowerType, towerPrefabModel: TowerModel) {
@@ -131,8 +165,15 @@ export class TowerPlacementController implements OnStart {
 		const towerModel = towerPrefabModel.Clone();
 		towerModel.Parent = Workspace;
 
-		const rangeIndicator = createRangeModel(range, towerModel.humanoidRootPart.rootAttachment.WorldPosition);
-		rangeIndicator.Parent = towerModel;
+		const isValidPlacementPosition = producer.getState(
+			selectIsValidPlacementPosition(towerModel.humanoidRootPart.rootAttachment.WorldPosition, [towerModel]),
+		);
+
+		const rangeIndicator = new RangeIndicator(range, isValidPlacementPosition, towerModel);
+		this.possibleRangeIndicator = {
+			exists: true,
+			value: rangeIndicator,
+		};
 
 		producer.setTowerPlacement(towerType);
 

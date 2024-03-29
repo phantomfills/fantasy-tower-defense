@@ -17,6 +17,7 @@ import { selectMoney } from "shared/store/money";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { towerAttack } from "server/events";
+import { selectIsValidPlacementPosition } from "shared/store/map";
 
 const MILLISECONDS_IN_SECOND = 1000;
 
@@ -49,6 +50,9 @@ function sellTower(id: string): void {
 export class TowerService implements OnStart, OnTick {
 	onStart(): void {
 		Events.placeTower.connect((player, _type, cframe) => {
+			const isValidPlacementPosition = producer.getState(selectIsValidPlacementPosition(cframe.Position));
+			if (!isValidPlacementPosition) return;
+
 			const userId = tostring(player.UserId);
 
 			const tower = createTower(_type, cframe, 0, userId, getCurrentTimeInMilliseconds());

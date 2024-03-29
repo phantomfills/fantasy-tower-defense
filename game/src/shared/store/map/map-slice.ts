@@ -7,6 +7,9 @@ interface Map {
 	name: string;
 	model: Model;
 	path: PathWaypoint[];
+	placementArea: Folder & {
+		ground: Folder;
+	};
 }
 
 type MapState = {
@@ -41,11 +44,14 @@ if (!assertAllInstancesArePathWaypoints(path)) {
 	throw "Not all children are path waypoints!";
 }
 
+const placementArea = Workspace.gameMap.placementArea;
+
 const initialState: MapState = {
 	map: {
 		name: "Tutorial",
 		model: Workspace.gameMap,
 		path,
+		placementArea,
 	},
 	lives: 2000,
 };

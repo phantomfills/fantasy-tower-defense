@@ -1,7 +1,8 @@
 import Maid from "@rbxts/maid";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
-import { RunService, Workspace } from "@rbxts/services";
+import { CollectionService, RunService, Workspace } from "@rbxts/services";
 import { possible } from "shared/modules/utils/possible";
+import { tags } from "shared/modules/utils/tags";
 
 const ENEMY_ON_SCREEN_BUFFER_PIXELS = 50;
 
@@ -37,6 +38,7 @@ export class ClientEnemy {
 		this.id = id;
 		this.model = model;
 
+		CollectionService.AddTag(this.model, tags.ENEMY);
 		this.model.SetAttribute("id", id);
 
 		this.maid = new Maid();

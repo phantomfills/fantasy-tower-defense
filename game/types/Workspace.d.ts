@@ -33,8 +33,14 @@ interface Workspace extends Model {
 				waypointAttachment: Attachment;
 			};
 		};
-		baseplate: Part & {
-			Texture: Texture;
+		baseplate: Part;
+		SpawnLocation: SpawnLocation;
+		placementArea: Folder & {
+			ground: Folder & {
+				baseplate: Part & {
+					Texture: Texture;
+				};
+			};
 		};
 	};
 	Camera: Camera & {

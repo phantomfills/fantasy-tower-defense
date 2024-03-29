@@ -1,4 +1,4 @@
-import { TowerModel } from "../client-tower";
+import { TowerModel } from "shared/modules/tower/tower-model";
 
 export interface BowArcherModel extends TowerModel {
 	rightArm: BasePart & {
