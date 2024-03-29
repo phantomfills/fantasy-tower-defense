@@ -1,21 +1,10 @@
 import { getTowerModel } from "shared/modules/tower/tower-type-to-model-map";
-import { ClientTower, TowerModel } from "../client-tower";
+import { ClientTower } from "../client-tower";
 import { Workspace } from "@rbxts/services";
+import { createArrow } from "./arrow";
+import { BowArcherModel } from "./archer-model";
 
-interface ArcherModel extends TowerModel {
-	rightArm: BasePart & {
-		bow: BasePart & {
-			bottomBeam: Beam;
-			topBeam: Beam;
-			middle: Attachment;
-		};
-	};
-	leftArm: BasePart & {
-		bowDrawAttachment: Attachment;
-	};
-}
-
-export class ClientArcher2 extends ClientTower<ArcherModel> {
+export class ClientArcher2 extends ClientTower<BowArcherModel> {
 	private readonly animator: Animator;
 	private readonly idleAnimationTrack: AnimationTrack;
 	private readonly attackAnimationTrack: AnimationTrack;
@@ -80,10 +69,11 @@ export class ClientArcher2 extends ClientTower<ArcherModel> {
 		super.attack(towardsPosition);
 
 		this.idleAnimationTrack.Stop();
-
 		this.attackAnimationTrack.Play();
 
 		this.connectBeamsToBow();
+
+		createArrow(this.getModel().rightArm.bow.middle.WorldPosition, this.getPositionWithTowerRootY(towardsPosition));
 
 		this.attackAnimationTrack.Stopped.Once(() => {
 			this.idleAnimationTrack.Play();

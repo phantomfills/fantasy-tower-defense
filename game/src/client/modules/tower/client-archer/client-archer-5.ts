@@ -1,8 +1,10 @@
 import { getTowerModel } from "shared/modules/tower/tower-type-to-model-map";
-import { ClientTower, TowerModel } from "../client-tower";
+import { ClientTower } from "../client-tower";
 import { Workspace } from "@rbxts/services";
+import { CrossbowArcherModel } from "./archer-model";
+import { createArrow } from "./arrow";
 
-export class ClientArcher5 extends ClientTower<TowerModel> {
+export class ClientArcher5 extends ClientTower<CrossbowArcherModel> {
 	private readonly animator: Animator;
 	private readonly idleAnimationTrack: AnimationTrack;
 	private readonly attackAnimationTrack: AnimationTrack;
@@ -41,8 +43,13 @@ export class ClientArcher5 extends ClientTower<TowerModel> {
 		super.attack(towardsPosition);
 
 		this.idleAnimationTrack.Stop();
-
 		this.attackAnimationTrack.Play();
+
+		createArrow(
+			this.getModel().rightArm.crossbow.Position,
+			this.getPositionWithTowerRootY(towardsPosition),
+			Color3.fromRGB(255, 0, 212),
+		);
 
 		this.attackAnimationTrack.Stopped.Once(() => {
 			this.idleAnimationTrack.Play();

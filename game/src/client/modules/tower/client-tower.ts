@@ -24,12 +24,28 @@ export class ClientTower<T extends TowerModel> {
 	}
 
 	attack(towardsPosition: Vector3) {
-		const cframeWithTowerY = new Vector3(towardsPosition.X, this.cframe.Position.Y, towardsPosition.Z);
-		this.snapToCFrame(CFrame.lookAt(this.cframe.Position, cframeWithTowerY));
+		const positionWithTowerY = this.getPositionWithTowerY(towardsPosition);
+		this.snapToCFrame(CFrame.lookAt(this.getCFrame().Position, positionWithTowerY));
+	}
+
+	getPositionWithTowerY(position: Vector3) {
+		return new Vector3(position.X, this.getCFrame().Position.Y, position.Z);
+	}
+
+	getPositionWithTowerRootY(position: Vector3) {
+		return new Vector3(position.X, this.getRootCFrame().Position.Y, position.Z);
 	}
 
 	getModel() {
 		return this.model;
+	}
+
+	getCFrame() {
+		return this.cframe;
+	}
+
+	getRootCFrame() {
+		return this.getModel().humanoidRootPart.GetPivot();
 	}
 
 	getId() {
