@@ -19,8 +19,6 @@ interface EnemyTooltipProps {
 }
 
 export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
-	const rem = useRem();
-
 	const { maxHealth, traits } = describeEnemyFromType(_type);
 	const healthPercent = health / maxHealth;
 
@@ -38,7 +36,6 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 				textColor={Color3.fromRGB(255, 255, 255)}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				textAlignmentY={Enum.TextYAlignment.Center}
-				textSize={rem(2)}
 			>
 				<uistroke Thickness={2} Color={Color3.fromRGB(27, 27, 27)} />
 			</Label>
@@ -82,7 +79,6 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 						textColor={Color3.fromRGB(255, 255, 255)}
 						textAlignmentX={Enum.TextXAlignment.Left}
 						zIndex={4}
-						textSize={rem(2)}
 					>
 						<uistroke Thickness={2} Color={Color3.fromRGB(27, 27, 27)} />
 					</Label>
@@ -123,7 +119,6 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 							textColor={Color3.fromRGB(255, 255, 255)}
 							textAlignmentX={Enum.TextXAlignment.Center}
 							textAlignmentY={Enum.TextYAlignment.Center}
-							textSize={rem(1.5)}
 						>
 							<uistroke Thickness={2} Color={Color3.fromRGB(27, 27, 27)} />
 						</Label>
@@ -164,7 +159,6 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 							textColor={Color3.fromRGB(255, 255, 255)}
 							textAlignmentX={Enum.TextXAlignment.Center}
 							textAlignmentY={Enum.TextYAlignment.Center}
-							textSize={rem(1.5)}
 						>
 							<uistroke Thickness={2} Color={Color3.fromRGB(27, 27, 27)} />
 						</Label>

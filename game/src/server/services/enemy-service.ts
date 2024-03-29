@@ -3,6 +3,7 @@ import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
+import { holdFor } from "shared/modules/utils/wait-util";
 import {
 	Enemy,
 	getEnemyId,
@@ -17,10 +18,14 @@ function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
 	if (enemy.enemyType === "MULTIPLIER_DUMMY") {
 		const pathCompletionAlpha = producer.getState(selectEnemyPathCompletionAlpha(id));
 
-		for (const _ of $range(0, 2)) {
-			const spawnedEnemy = createEnemy("DIVIDED_DUMMY", enemy.path, pathCompletionAlpha);
-			producer.addEnemy(spawnedEnemy, createId());
-		}
+		(async () => {
+			for (const _ of $range(0, 10)) {
+				const spawnedEnemy = createEnemy("DIVIDED_DUMMY", enemy.path, pathCompletionAlpha);
+				producer.addEnemy(spawnedEnemy, createId());
+
+				holdFor(0.05);
+			}
+		})();
 	}
 
 	producer.removeEnemy(id);

@@ -1,9 +1,8 @@
 import Maid from "@rbxts/maid";
-import { CollectionService } from "@rbxts/services";
+import { CollectionService, Debris } from "@rbxts/services";
 import { TowerModel } from "shared/modules/tower/tower-model";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
 import { tags } from "shared/modules/utils/tags";
-
 export type GenericClientTower = ClientTower<TowerModel>;
 
 export class ClientTower<T extends TowerModel> {
