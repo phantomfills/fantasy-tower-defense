@@ -10,7 +10,7 @@ import { selectNoEnemiesExist } from "shared/store/enemy";
 import { selectGameOver, selectMap } from "shared/store/map";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 0;
-const ROUND_BONUS = 1_000;
+const ROUND_BONUS = 500;
 const ROUND_BONUS_MULTIPLIER = 2;
 
 function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number): number {
@@ -130,6 +130,28 @@ const level: Level = [
 	],
 	[
 		{
+			enemyType: "STEALTH_DUMMY",
+			count: 5,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+		{
+			enemyType: "MULTIPLIER_DUMMY",
+			count: 5,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "MULTIPLIER_DUMMY",
+			count: 12,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
 			enemyType: "TRAINING_DUMMY",
 			count: 20,
 			enemySpawnInterval: 500,
@@ -183,7 +205,13 @@ const level: Level = [
 			enemyType: "STEALTH_DUMMY",
 			count: 15,
 			enemySpawnInterval: 500,
-			delayToNextGroup: 5_000,
+			delayToNextGroup: 1_000,
+		},
+		{
+			enemyType: "MULTIPLIER_DUMMY",
+			count: 30,
+			enemySpawnInterval: 500,
+			delayToNextGroup: 3_000,
 		},
 		{
 			enemyType: "GUARD_DUMMY",
@@ -258,17 +286,23 @@ export class RoundService implements OnStart {
 				}
 				case 8: {
 					producer.setDialog(
-						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Archers are level 4 or higher to counter them!",
+						"Multipliers are coming! They will turn into more enemies when they are killed! We need lots of defense to take them down. Stay vigilant!",
 					);
 					break;
 				}
-				case 9: {
+				case 10: {
+					producer.setDialog(
+						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Archers are level 2 or higher to counter them!",
+					);
+					break;
+				}
+				case 11: {
 					producer.setDialog(
 						"Who are they? Are they protecting something? Just kidding. I know everything, I am the narrator, you will just have to find out.",
 					);
 					break;
 				}
-				case 10: {
+				case 12: {
 					producer.setTrackId(tracks.light_show);
 					producer.setDialog(
 						"The Dummy Tank is here! It has a lot of health, but it is very slow! Good luck taking it down.",
@@ -295,7 +329,8 @@ export class RoundService implements OnStart {
 
 			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
 
-			if (roundNumber === 10) {
+			if (roundNumber === 12) {
+				producer.setDialog("You have completed the tutorial! Congratulations!");
 				producer.setTrackId(tracks.victory);
 			}
 		}
