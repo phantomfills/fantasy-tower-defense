@@ -17,7 +17,7 @@ export class ClientMultiplierDummy extends ClientEnemy {
 
 		const walkAnimation = new Instance("Animation");
 		walkAnimation.Parent = animator;
-		walkAnimation.AnimationId = "rbxassetid://16910914862";
+		walkAnimation.AnimationId = "rbxassetid://16769024725";
 
 		const animation = animator.LoadAnimation(walkAnimation);
 		animation.Play();

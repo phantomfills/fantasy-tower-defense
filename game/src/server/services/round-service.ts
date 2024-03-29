@@ -137,7 +137,7 @@ const level: Level = [
 		},
 		{
 			enemyType: "MULTIPLIER_DUMMY",
-			count: 5,
+			count: 1,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
@@ -145,7 +145,7 @@ const level: Level = [
 	[
 		{
 			enemyType: "MULTIPLIER_DUMMY",
-			count: 12,
+			count: 3,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
@@ -209,7 +209,7 @@ const level: Level = [
 		},
 		{
 			enemyType: "MULTIPLIER_DUMMY",
-			count: 30,
+			count: 3,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 3_000,
 		},
@@ -245,6 +245,8 @@ export class RoundService implements OnStart {
 			producer.clearEnemies();
 		});
 
+		producer.setTrackId(tracks.chill_jazz);
+
 		holdFor(10_000);
 
 		producer.setDialog("Welcome to the tutorial!");
@@ -274,7 +276,7 @@ export class RoundService implements OnStart {
 				}
 				case 4: {
 					producer.setDialog(
-						"Armored enemies are on the way! They're really strong, so upgrading or placing more Archers is essential.",
+						"Armored enemies are on the way; they're really strong, so upgrading or placing more Archers is essential.",
 					);
 					break;
 				}
