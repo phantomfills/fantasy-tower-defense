@@ -1,5 +1,3 @@
-// TODO: add "splitter" / "mystery" enemy
-
 // TODO: add "tick" component to dialog
 // TODO: create tutorial-action-slice on server
 // TODO: "tick" should only be enabled when action has been completed. sometimes certain dialog will come without any actions so tick will be clickable anyway

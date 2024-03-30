@@ -53,6 +53,11 @@ hash = "47bfd927d86ade64846d4bf0e29e05e0bdee89d14b933da1973158b740c14262"
 id = 16726141326
 packable = false
 
+[inputs."assets/images/tick.png"]
+hash = "c38e1304b7a4063ba241e3a067c2b440e786bd47a5bee8068c629b0400ce3ced"
+id = 16936766390
+packable = false
+
 [inputs."assets/images/x_button.png"]
 hash = "048777d63602f018f506985f4068550215a23778232219458138e6a813112ff0"
 id = 16936306265

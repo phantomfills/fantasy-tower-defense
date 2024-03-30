@@ -12,6 +12,7 @@ return {
 		r_button = "rbxassetid://16726141209",
 		shield = "rbxassetid://16781363004",
 		stripes = "rbxassetid://16726141326",
+		tick = "rbxassetid://16936766390",
 		x_button = "rbxassetid://16936306265",
 	},
 }

@@ -101,7 +101,7 @@ export function App() {
 					);
 				})}
 
-				{<Dialog visible={dialog.exists} text={dialog.exists ? dialog.value : ""} key="dialog" />}
+				{<Dialog text={dialog.exists ? dialog.value : ""} key="dialog" />}
 
 				<MatchInfo key="match-info">
 					<LifeCounter lives={lives} key="life-counter" />

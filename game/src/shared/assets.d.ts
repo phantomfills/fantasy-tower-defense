@@ -11,6 +11,7 @@ interface Images {
 	x_button: string;
 	eye: string;
 	shield: string;
+	tick: string;
 }
 
 export declare const images: Images;

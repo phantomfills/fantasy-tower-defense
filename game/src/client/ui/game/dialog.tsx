@@ -1,4 +1,4 @@
-import Roact, { useEffect } from "@rbxts/roact";
+import Roact, { useEffect, useState } from "@rbxts/roact";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";
@@ -6,15 +6,34 @@ import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { useTypewriter } from "../hooks/use-typewriter";
 import { lerpBinding, Spring, useMotor } from "@rbxts/pretty-react-hooks";
+import { images } from "shared/assets";
 
-export interface DialogProps {
-	text: string;
-	visible: boolean;
+interface TickProps {
+	size: UDim2;
+	position: UDim2;
+	onClick: () => void;
 }
 
-export function Dialog({ text, visible }: DialogProps) {
+function Tick({ size, position, onClick }: TickProps) {
+	return (
+		<imagebutton
+			Image={images.tick}
+			Size={size}
+			Position={position}
+			Event={{ MouseButton1Click: onClick }}
+			BackgroundTransparency={1}
+		/>
+	);
+}
+
+interface DialogProps {
+	text: string;
+}
+
+export function Dialog({ text }: DialogProps) {
 	const rem = useRem();
 	const typewriter = useTypewriter(text, 20);
+	const [visible, setVisible] = useState(true);
 
 	const [dialogAppearTransition, setDialogAppearTransition] = useMotor(0);
 
@@ -47,6 +66,11 @@ export function Dialog({ text, visible }: DialogProps) {
 				font={fonts.inter.regular}
 				textColor={Color3.fromRGB(255, 255, 255)}
 				textWrapped={true}
+			/>
+			<Tick
+				size={new UDim2(0, 20, 0, 20)}
+				position={new UDim2(1, -30, 1, -30)}
+				onClick={() => setVisible(false)}
 			/>
 		</Frame>
 	);
