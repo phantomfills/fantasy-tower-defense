@@ -30,7 +30,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 	return (
 		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 0, 0, 0)} clipsDescendants={false}>
 			<Label
-				size={new UDim2(1, 0, 0.3, 0)}
+				size={new UDim2(1, 0, 0.35, 0)}
 				text={enemyDisplayName}
 				font={fonts.inter.bold}
 				textColor={Color3.fromRGB(255, 255, 255)}
@@ -73,7 +73,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 						ImageTransparency={0}
 					/>
 					<Label
-						size={new UDim2(0.88, 0, 0.9, 0)}
+						size={new UDim2(0.88, 0, 1, 0)}
 						text={`${abbreviatedHealth} / ${abbreviatedMaxHealth}`}
 						font={fonts.inter.bold}
 						textColor={Color3.fromRGB(255, 255, 255)}
@@ -112,8 +112,8 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 							ScaleType={Enum.ScaleType.Fit}
 						/>
 						<Label
-							size={new UDim2(0.7, 0, 1, 0)}
-							position={new UDim2(0.3, 0, 0, 0)}
+							size={new UDim2(0.5, 0, 1, 0)}
+							position={new UDim2(0.4, 0, 0, 0)}
 							text={"Stealth"}
 							font={fonts.inter.bold}
 							textColor={Color3.fromRGB(255, 255, 255)}
@@ -152,8 +152,8 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 							ScaleType={Enum.ScaleType.Fit}
 						/>
 						<Label
-							size={new UDim2(0.7, 0, 1, 0)}
-							position={new UDim2(0.3, 0, 0, 0)}
+							size={new UDim2(0.6, 0, 1, 0)}
+							position={new UDim2(0.35, 0, 0, 0)}
 							text={"Reinforced"}
 							font={fonts.inter.bold}
 							textColor={Color3.fromRGB(255, 255, 255)}
@@ -179,7 +179,7 @@ function EnemyTooltipBillboard({ position, _type, health }: EnemyTooltipBillboar
 	return (
 		<billboardgui
 			StudsOffsetWorldSpace={position}
-			Size={new UDim2(0, 135, 0, 50)}
+			Size={new UDim2(0, 150, 0, 60)}
 			AlwaysOnTop={true}
 			ClipsDescendants={false}
 		>
