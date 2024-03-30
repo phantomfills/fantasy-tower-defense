@@ -93,8 +93,11 @@ export function getTowerMaxLevelFromType(_type: TowerType): number {
 	return towerTypeToStatsMap[_type].levels.size() - 1;
 }
 
-export function getTowerUpgradeCost(_type: TowerType, level: number): number {
-	return towerTypeToStatsMap[_type].levels[level] ? towerTypeToStatsMap[_type].levels[level].cost : 0;
+export function getTowerUpgradeCost(_type: TowerType, level: number): number | undefined {
+	const towerLevel = towerTypeToStatsMap[_type].levels[level];
+	if (!towerLevel) return;
+
+	return towerLevel.cost;
 }
 
 export function getTotalCostForTowerUpToLevel(_type: TowerType, level: number): number {
@@ -110,16 +113,16 @@ export function getSellPriceForTower(_type: TowerType, level: number, sellbackRa
 	return sellPrice;
 }
 
-export function getUpgradeTitle(_type: TowerType, level: number): string {
+export function getUpgradeTitle(_type: TowerType, level: number): string | undefined {
 	const nextStats = towerTypeToStatsMap[_type].levels[level];
-	if (!nextStats) return "YOU MAXED THIS TOWER!";
+	if (!nextStats) return;
 
-	return `Lv. ${level} - ${nextStats.title}`;
+	return nextStats.title;
 }
 
-export function getUpgradeDescription(_type: TowerType, level: number): string {
+export function getUpgradeDescription(_type: TowerType, level: number): string | undefined {
 	const nextStats = towerTypeToStatsMap[_type].levels[level];
-	if (!nextStats) return "INFINITE POWER!!";
+	if (!nextStats) return;
 
 	return nextStats.description;
 }

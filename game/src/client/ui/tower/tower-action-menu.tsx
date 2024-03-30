@@ -1,28 +1,11 @@
 import Roact from "@rbxts/roact";
 import { Frame } from "../utils/frame";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
-import { getTowerDisplayNameFromType } from "shared/modules/tower/tower-type-to-display-name-map";
 import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";
 import { fonts } from "../constants/fonts";
-import { useSelector } from "@rbxts/react-reflex";
-import { getPossibleTowerFromId } from "shared/store/tower";
-import {
-	describeTowerFromType,
-	getSellPriceForTower,
-	getTowerUpgradeCost,
-	getUpgradeCost,
-	getUpgradeDescription,
-	getUpgradeTitle,
-} from "shared/modules/tower/tower-type-to-tower-stats-map";
-import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { images } from "shared/assets";
 import { Trait } from "shared/modules/attack/immunity";
-import { Players } from "@rbxts/services";
-import { selectMoney } from "shared/store/money";
-
-const player = Players.LocalPlayer;
-const userId = tostring(player.UserId);
 
 interface TowerActionButtonProps {
 	name: string;
@@ -73,6 +56,7 @@ interface Action {
 
 interface TowerActionMenuProps {
 	name: string;
+	money: number;
 	upgradeTitle: string;
 	upgradeDescription: string;
 	upgradeCost: number;
@@ -92,12 +76,10 @@ export function TowerActionMenu({
 	upgradeTitle,
 	upgradeDescription,
 	upgradeCost,
+	money,
 	close,
 	traits,
 }: TowerActionMenuProps) {
-	const possibleMoney = useSelector(selectMoney(userId));
-	const money = possibleMoney.exists ? possibleMoney.value : 0;
-
 	const enoughMoney = money >= upgradeCost;
 
 	const rem = useRem();
@@ -105,7 +87,7 @@ export function TowerActionMenu({
 	return (
 		<Frame
 			size={new UDim2(0.2, 0, 0.65, 0)}
-			position={new UDim2(0, 0, 0.175, 0)}
+			position={new UDim2(0.8, 0, 0.175, 0)}
 			backgroundTransparency={0.5}
 			backgroundColor={new Color3(0, 0, 0)}
 		>
@@ -127,7 +109,7 @@ export function TowerActionMenu({
 			/>
 			<TowerActionButton
 				size={new UDim2(1, -30, 0.1, 0)}
-				position={new UDim2(0, 15, 0.15, 0)}
+				position={new UDim2(0, 15, 0.275, -10)}
 				color={enoughMoney ? Color3.fromRGB(5, 227, 97) : Color3.fromRGB(227, 0, 0)}
 				name={actions.upgrade.name}
 				action={actions.upgrade.call}
@@ -141,9 +123,17 @@ export function TowerActionMenu({
 				action={actions.sell.call}
 				autoButtonColor={true}
 			/>
+			<Label
+				size={new UDim2(1, -30, 0.1, 0)}
+				position={new UDim2(0, 15, 0.15, -5)}
+				font={fonts.inter.bold}
+				text={upgradeTitle}
+				textColor={new Color3(255, 255, 255)}
+				textSize={rem(2)}
+			/>
 			<Frame
-				size={new UDim2(1, -30, 0.55, 0)}
-				position={new UDim2(0, 15, 0.275, 0)}
+				size={new UDim2(1, -30, 0.45, 0)}
+				position={new UDim2(0, 15, 0.375, 0)}
 				backgroundTransparency={0.8}
 				backgroundColor={new Color3(0, 0, 0)}
 			>
@@ -157,8 +147,8 @@ export function TowerActionMenu({
 				<Label
 					size={new UDim2(1, 0, 1, 0)}
 					textSize={rem(2)}
-					font={fonts.inter.bold}
-					text={`${upgradeTitle}\n\n${upgradeDescription}`}
+					font={fonts.inter.regular}
+					text={upgradeDescription}
 					textColor={new Color3(255, 255, 255)}
 					textAlignmentX={Enum.TextXAlignment.Left}
 					textAlignmentY={Enum.TextYAlignment.Top}
@@ -187,59 +177,5 @@ export function TowerActionMenu({
 				)}
 			</Frame>
 		</Frame>
-	);
-}
-
-interface TowerActionMenuFromIdProps {
-	actions: {
-		upgrade: () => void;
-		sell: () => void;
-	};
-	close: () => void;
-	towerId: string;
-}
-
-export function TowerActionMenuFromId({ towerId, actions, close }: TowerActionMenuFromIdProps) {
-	const possibleTower = useSelector(getPossibleTowerFromId(towerId));
-	if (!possibleTower.exists) {
-		return <></>;
-	}
-
-	const tower = possibleTower.value;
-	const { towerType, level } = tower;
-	const towerDisplayName = getTowerDisplayNameFromType(towerType);
-
-	const towerUpgradeCost = getTowerUpgradeCost(towerType, level + 1);
-	const towerUpgradeCostMessage = towerUpgradeCost === 0 ? "Maxed baby!" : `Upgrade: $${towerUpgradeCost}`;
-
-	const towerSellPrice = getSellPriceForTower(towerType, level, SELLBACK_RATE);
-
-	const upgradeTitle = getUpgradeTitle(towerType, level + 1);
-	const upgradeDescription = getUpgradeDescription(towerType, level + 1);
-	const upgradeCost = getUpgradeCost(towerType, level + 1);
-
-	const stats = describeTowerFromType(towerType, level);
-	const traits = stats.traits;
-
-	return (
-		<TowerActionMenu
-			name={towerDisplayName}
-			level={level}
-			actions={{
-				upgrade: {
-					name: towerUpgradeCostMessage,
-					call: actions.upgrade,
-				},
-				sell: {
-					name: `Sell: $${towerSellPrice}`,
-					call: actions.sell,
-				},
-			}}
-			close={close}
-			upgradeTitle={upgradeTitle}
-			upgradeDescription={upgradeDescription}
-			upgradeCost={upgradeCost}
-			traits={traits}
-		/>
 	);
 }

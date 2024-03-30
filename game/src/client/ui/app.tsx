@@ -12,7 +12,7 @@ import { CashCounter } from "./game/cash-counter";
 import { selectEnemyFocusDetails, selectFocusEnemyId } from "client/store/enemy-focus";
 import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
 import { getPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
-import { TowerActionMenuFromId } from "./tower/tower-action-menu";
+import { TowerActionMenuFromId } from "./tower/tower-action-menu-from-id";
 import { Events } from "client/network";
 import { selectMoney } from "shared/store/money";
 import { Players } from "@rbxts/services";

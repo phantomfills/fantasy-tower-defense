@@ -6,6 +6,7 @@ export = (target: Frame) => {
 	const towerActionMenu = (
 		<TowerActionMenu
 			name="Batman"
+			money={5000}
 			level={1}
 			actions={{
 				upgrade: {
