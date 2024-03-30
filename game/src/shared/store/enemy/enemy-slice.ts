@@ -1,3 +1,4 @@
+import Object from "@rbxts/object-utils";
 import { createProducer } from "@rbxts/reflex";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
@@ -80,5 +81,13 @@ export const enemySlice = createProducer(initialState, {
 		return updatedState;
 	},
 
-	clearEnemies: (_) => ({}),
+	clearEnemies: (state) => {
+		const updatedState: EnemyState = {};
+
+		for (const [id, enemy] of pairs(state)) {
+			updatedState[id] = { ...enemy, health: 0, dead: true };
+		}
+
+		return updatedState;
+	},
 });
