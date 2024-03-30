@@ -38,6 +38,10 @@ export function App() {
 	const enemyDetailViewType = useSelector(selectEnemyDetailViewType);
 	const lives = useSelector(selectLives);
 
+	useEffect(() => {
+		print(dialog.exists);
+	}, [dialog]);
+
 	return (
 		<>
 			<Music />
@@ -101,7 +105,7 @@ export function App() {
 					);
 				})}
 
-				{<Dialog text={dialog.exists ? dialog.value : ""} key="dialog" />}
+				{<Dialog visibleByDefault={dialog.exists} text={dialog.exists ? dialog.value : ""} key="dialog" />}
 
 				<MatchInfo key="match-info">
 					<LifeCounter lives={lives} key="life-counter" />

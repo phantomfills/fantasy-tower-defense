@@ -28,14 +28,19 @@ function Tick({ size, position, onClick }: TickProps) {
 
 interface DialogProps {
 	text: string;
+	visibleByDefault: boolean;
 }
 
-export function Dialog({ text }: DialogProps) {
+export function Dialog({ text, visibleByDefault }: DialogProps) {
 	const rem = useRem();
 	const typewriter = useTypewriter(text, 20);
-	const [visible, setVisible] = useState(true);
+	const [visible, setVisible] = useState(visibleByDefault);
 
 	const [dialogAppearTransition, setDialogAppearTransition] = useMotor(0);
+
+	useEffect(() => {
+		setVisible(visibleByDefault);
+	}, [visibleByDefault, text]);
 
 	useEffect(() => {
 		if (!visible) {
