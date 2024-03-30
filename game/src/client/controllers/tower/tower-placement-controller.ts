@@ -11,6 +11,7 @@ import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-
 import { tags } from "shared/modules/utils/tags";
 import { selectIsValidPlacementPosition } from "shared/store/map";
 import { RangeIndicator } from "client/modules/tower/range-indicator";
+import { removeShadows } from "client/modules/rig/remove-shadows";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -163,6 +164,7 @@ export class TowerPlacementController implements OnStart {
 		const { range } = describeTowerFromType(towerType, 0);
 
 		const towerModel = towerPrefabModel.Clone();
+		removeShadows(towerModel);
 		towerModel.Parent = Workspace;
 
 		const isValidPlacementPosition = producer.getState(

@@ -3,6 +3,7 @@ import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-c
 import { CollectionService, RunService, Workspace } from "@rbxts/services";
 import { possible } from "shared/modules/utils/possible";
 import { tags } from "shared/modules/utils/tags";
+import { removeShadows } from "../rig/remove-shadows";
 
 const ENEMY_ON_SCREEN_BUFFER_PIXELS = 50;
 
@@ -40,6 +41,7 @@ export class ClientEnemy {
 
 		CollectionService.AddTag(this.model, tags.ENEMY);
 		this.model.SetAttribute("id", id);
+		removeShadows(model);
 
 		this.maid = new Maid();
 		this.targetCFrame = new CFrame();
@@ -112,7 +114,7 @@ export class ClientEnemy {
 				this.snapToCFrame(
 					this.model.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(
 						this.targetCFrame.add(this.positionOffset),
-						0.5,
+						0.25,
 					),
 				);
 			}),

@@ -1,14 +1,18 @@
 import Maid from "@rbxts/maid";
-import { CollectionService, Debris } from "@rbxts/services";
+import { CollectionService } from "@rbxts/services";
 import { TowerModel } from "shared/modules/tower/tower-model";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
 import { tags } from "shared/modules/utils/tags";
+import { removeShadows } from "../rig/remove-shadows";
+
 export type GenericClientTower = ClientTower<TowerModel>;
 
 export class ClientTower<T extends TowerModel> {
 	private maid: Maid;
 
 	constructor(private readonly model: T, private readonly id: string, private readonly cframe: CFrame) {
+		removeShadows(model);
+
 		this.maid = new Maid();
 		this.maid.GiveTask(this.model);
 
