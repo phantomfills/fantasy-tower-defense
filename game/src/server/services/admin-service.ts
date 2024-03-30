@@ -3,6 +3,7 @@ import { Players } from "@rbxts/services";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
 import { isEnemyType } from "shared/modules/enemy/enemy-type";
+import { isTrack, tracks } from "shared/modules/music/tracks";
 import { createId } from "shared/modules/utils/id-utils";
 import { selectMap } from "shared/store/map";
 
@@ -59,6 +60,32 @@ function processPlayerMessage(userId: string, message: string) {
 		}
 		case "clearEnemies": {
 			producer.clearEnemies();
+			break;
+		}
+		case "addLives": {
+			const livesString = splitMessage[1];
+			const lives = tonumber(livesString);
+			if (lives === undefined) return;
+
+			producer.incrementLives(lives);
+
+			break;
+		}
+		case "setMusic": {
+			const trackName = splitMessage[1];
+			if (!isTrack(trackName)) return;
+
+			producer.setTrackId(tracks[trackName]);
+
+			break;
+		}
+		case "setMusicId": {
+			const trackId = splitMessage[1];
+			producer.setTrackId(trackId);
+			break;
+		}
+		case "clearTowers": {
+			producer.clearTowers();
 			break;
 		}
 	}

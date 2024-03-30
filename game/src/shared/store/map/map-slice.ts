@@ -61,4 +61,9 @@ export const mapSlice = createProducer(initialState, {
 		...state,
 		lives: math.max(state.lives - lives, 0),
 	}),
+
+	incrementLives: (state, lives: number) => ({
+		...state,
+		lives: state.lives + lives,
+	}),
 });

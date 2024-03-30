@@ -4,3 +4,7 @@ export const tracks = {
 	light_show: "rbxassetid://1838391039",
 	victory: "rbxassetid://4879566787",
 } as const;
+
+export function isTrack(track: string): track is keyof typeof tracks {
+	return track in tracks;
+}

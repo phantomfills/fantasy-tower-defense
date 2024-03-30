@@ -43,4 +43,6 @@ export const towerSlice = createProducer(initialState, {
 		const tower = possibleTower.value;
 		return { ...state, towers: { ...state.towers, [id]: { ...tower, lastAttackTimestamp: timestamp } } };
 	},
+
+	clearTowers: (state) => ({ ...state, towers: {} }),
 });
