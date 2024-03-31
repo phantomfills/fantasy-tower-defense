@@ -2,7 +2,7 @@ import { Controller, OnStart } from "@flamework/core";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { TowerModel } from "shared/modules/tower/tower-model";
 import { TowerType } from "shared/modules/tower/tower-type";
-import { UserInputService, Workspace, RunService, CollectionService } from "@rbxts/services";
+import { UserInputService, Workspace, RunService, CollectionService, Debris } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
 import { Events } from "client/network";
 import { producer } from "client/store";
@@ -14,6 +14,8 @@ import { RangeIndicator } from "client/modules/tower/range-indicator";
 import { removeShadows } from "client/modules/rig/remove-shadows";
 import { TowerActionController } from "./tower-action-controller";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import { createSound } from "client/modules/utils/sound";
+import { sounds } from "shared/modules/sounds/sounds";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 const EXIT_DOUBLE_TAP_THRESHOLD = 500;
@@ -172,9 +174,7 @@ export class TowerPlacementController implements OnStart {
 		if (!this.possibleRangeIndicator.exists) return;
 		const rangeIndicator = this.possibleRangeIndicator.value;
 
-		const isValidPlacementPosition = producer.getState(
-			selectIsValidPlacementPosition(cframe.Position, [towerPrefabModel]),
-		);
+		const isValidPlacementPosition = producer.getState(selectIsValidPlacementPosition(cframe.Position));
 
 		const enabled = rangeIndicator.getEnabled();
 		if (enabled === isValidPlacementPosition) return;
@@ -195,7 +195,7 @@ export class TowerPlacementController implements OnStart {
 		towerModel.Parent = Workspace;
 
 		const isValidPlacementPosition = producer.getState(
-			selectIsValidPlacementPosition(towerModel.humanoidRootPart.rootAttachment.WorldPosition, [towerModel]),
+			selectIsValidPlacementPosition(towerModel.humanoidRootPart.rootAttachment.WorldPosition),
 		);
 
 		const rangeIndicator = new RangeIndicator(range, isValidPlacementPosition, towerModel);
@@ -259,6 +259,14 @@ export class TowerPlacementController implements OnStart {
 		const towerType = towerPlacement.type;
 		const towerCFrame = towerPlacement.cframe;
 		const towerRotation = towerPlacement.rotation;
+
+		const isValidPlacementPosition = producer.getState(selectIsValidPlacementPosition(towerCFrame.Position));
+		if (isValidPlacementPosition) {
+			const placeSound = createSound(sounds.tower_place, { volume: 0.2 });
+			placeSound.Play();
+
+			Debris.AddItem(placeSound, 2);
+		}
 
 		Events.placeTower.fire(towerType, towerCFrame.mul(CFrame.Angles(0, math.rad(towerRotation), 0)));
 

@@ -7,6 +7,9 @@ import { fonts } from "../constants/fonts";
 import { images } from "shared/assets";
 import { Trait } from "shared/modules/attack/immunity";
 import { KeyCode, useKeyPress } from "@rbxts/pretty-react-hooks";
+import { createSound } from "client/modules/utils/sound";
+import { sounds } from "shared/modules/sounds/sounds";
+import { Debris } from "@rbxts/services";
 
 interface TowerActionButtonProps {
 	name: string;
@@ -121,7 +124,14 @@ export function TowerActionMenu({
 				position={new UDim2(0, 15, 0.275, -10)}
 				color={enoughMoney ? Color3.fromRGB(5, 227, 97) : Color3.fromRGB(227, 0, 0)}
 				name={actions.upgrade.name}
-				action={actions.upgrade.call}
+				action={() => {
+					const buySound = createSound(sounds.buy_upgrade, { volume: 0.2 });
+					buySound.Play();
+
+					Debris.AddItem(buySound, 2);
+
+					actions.upgrade.call();
+				}}
 				keybind={"E"}
 				autoButtonColor={enoughMoney}
 			/>
@@ -130,7 +140,14 @@ export function TowerActionMenu({
 				position={new UDim2(0, 15, 0.85, 0)}
 				color={Color3.fromRGB(227, 0, 0)}
 				name={actions.sell.name}
-				action={actions.sell.call}
+				action={() => {
+					const sellSound = createSound(sounds.sell_tower, { volume: 0.2 });
+					sellSound.Play();
+
+					Debris.AddItem(sellSound, 2);
+
+					actions.sell.call();
+				}}
 				keybind={"Backspace"}
 				autoButtonColor={true}
 			/>

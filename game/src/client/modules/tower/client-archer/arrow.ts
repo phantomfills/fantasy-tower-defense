@@ -7,7 +7,7 @@ export function createArrow(fromPosition: Vector3, toPosition: Vector3, color?: 
 
 	const arrow = new Instance("Part");
 	arrow.Color = color || Color3.fromRGB(255, 255, 255);
-	arrow.Size = new Vector3(0.1, 0.1, distance);
+	arrow.Size = new Vector3(0.05, 0.05, distance);
 	arrow.Material = Enum.Material.Neon;
 	arrow.Anchored = true;
 	arrow.CanCollide = false;

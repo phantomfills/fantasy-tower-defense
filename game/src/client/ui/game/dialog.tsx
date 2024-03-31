@@ -4,9 +4,11 @@ import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";
 import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
-import { useTypewriter } from "../hooks/use-typewriter";
 import { lerpBinding, Spring, useMotor } from "@rbxts/pretty-react-hooks";
 import { images } from "shared/assets";
+import { createSound } from "client/modules/utils/sound";
+import { sounds } from "shared/modules/sounds/sounds";
+import { Debris } from "@rbxts/services";
 
 interface TickProps {
 	size: UDim2;
@@ -20,7 +22,16 @@ function Tick({ size, position, onClick }: TickProps) {
 			Image={images.tick}
 			Size={size}
 			Position={position}
-			Event={{ MouseButton1Click: onClick }}
+			Event={{
+				MouseButton1Click: () => {
+					const tickSound = createSound(sounds.dialog_tick, { volume: 0.2 });
+					tickSound.Play();
+
+					Debris.AddItem(tickSound, 2);
+
+					onClick();
+				},
+			}}
 			BackgroundTransparency={1}
 		/>
 	);
@@ -36,7 +47,6 @@ interface DialogProps {
 
 export function Dialog({ text, visible, totalTicksRequired, numberTicked, onTick }: DialogProps) {
 	const rem = useRem();
-	const typewriter = useTypewriter(text, 20);
 
 	const [dialogAppearTransition, setDialogAppearTransition] = useMotor(0);
 
@@ -45,6 +55,11 @@ export function Dialog({ text, visible, totalTicksRequired, numberTicked, onTick
 			setDialogAppearTransition(new Spring(0, { dampingRatio: 0.6, frequency: 3 }));
 			return;
 		}
+
+		const dialogSound = createSound(sounds.dialog_appear, { volume: 0.2 });
+		dialogSound.Play();
+
+		Debris.AddItem(dialogSound, 2);
 
 		setDialogAppearTransition(new Spring(1, { dampingRatio: 0.6, frequency: 3 }));
 	}, [visible]);
@@ -60,7 +75,7 @@ export function Dialog({ text, visible, totalTicksRequired, numberTicked, onTick
 			<OneThickWhiteStroke />
 			<uicorner CornerRadius={new UDim(0, 8)} />
 			<Label
-				text={typewriter}
+				text={text}
 				size={new UDim2(1, -20, 1, -20)}
 				position={new UDim2(0, 10, 0, 10)}
 				textAlignmentX={Enum.TextXAlignment.Left}

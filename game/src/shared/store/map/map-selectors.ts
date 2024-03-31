@@ -21,17 +21,14 @@ export function selectIsValidPlacementPart(hitPart: BasePart): (state: SharedSta
 	};
 }
 
-export function selectIsValidPlacementPosition(
-	position: Vector3,
-	ignore?: Instance[],
-): (state: SharedState) => boolean {
+export function selectIsValidPlacementPosition(position: Vector3): (state: SharedState) => boolean {
 	return (state) => {
 		const raycastParams = new RaycastParams();
-		raycastParams.FilterDescendantsInstances = ignore ?? [];
-		raycastParams.FilterType = Enum.RaycastFilterType.Exclude;
+		raycastParams.FilterDescendantsInstances = [state.map.map.placementArea];
+		raycastParams.FilterType = Enum.RaycastFilterType.Include;
 
 		const possibleRaycastResult = possible<RaycastResult>(
-			Workspace.Raycast(position.add(new Vector3(0, 0.5, 0)), new Vector3(0, -0.6, 0), raycastParams),
+			Workspace.Raycast(position.add(new Vector3(0, 0.5, 0)), new Vector3(0, -0.51, 0), raycastParams),
 		);
 		if (!possibleRaycastResult.exists) return false;
 
