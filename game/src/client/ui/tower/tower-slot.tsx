@@ -61,9 +61,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 				Text=""
 				AutoButtonColor={false}
 				Event={{
-					MouseEnter: () => {
-						setHovering(true);
-					},
+					MouseEnter: () => setHovering(true),
 					MouseLeave: () => {
 						setClicking(false);
 						setHovering(false);
@@ -72,9 +70,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 						setClicking(true);
 						callback();
 					},
-					MouseButton1Up: () => {
-						setClicking(false);
-					},
+					MouseButton1Up: () => setClicking(false),
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} DominantAxis={Enum.DominantAxis.Height} />

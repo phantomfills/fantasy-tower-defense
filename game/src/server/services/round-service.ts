@@ -10,7 +10,7 @@ import { selectDialogComplete } from "shared/store/dialog";
 import { selectNoEnemiesExist } from "shared/store/enemy";
 import { selectGameOver, selectMap } from "shared/store/map";
 
-const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 0;
+const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
 const ROUND_BONUS = 500;
 const ROUND_BONUS_MULTIPLIER = 2;
 
@@ -275,6 +275,8 @@ export class RoundService implements OnStart {
 			RunService.Heartbeat.Wait();
 		}
 
+		holdFor(1_000);
+
 		unsubscribe();
 	}
 
@@ -310,11 +312,11 @@ export class RoundService implements OnStart {
 					);
 					break;
 				}
-				case 2: {
+				case 3: {
 					this.setDialog("I saw some quicker enemies in the distance, be prepared!");
 					break;
 				}
-				case 4: {
+				case 5: {
 					this.setDialog(
 						"Armored enemies are on the way; they're really strong, so upgrading or placing more Archers is essential.",
 					);
@@ -322,11 +324,11 @@ export class RoundService implements OnStart {
 				}
 				case 6: {
 					this.setDialog(
-						"Stealth enemies are coming! They are invisible to towers without the 'stealth' trait! Archer gains this trait with its level 3 upgrade!",
+						"Stealth enemies are coming in a few rounds! They are invisible to towers without the 'stealth' trait! Archer gains this trait with its level 3 upgrade!",
 					);
 					break;
 				}
-				case 8: {
+				case 9: {
 					this.setDialog(
 						"Multipliers are coming! They will turn into more enemies when they are killed! We need lots of defense to take them down. Stay vigilant!",
 					);
@@ -334,7 +336,7 @@ export class RoundService implements OnStart {
 				}
 				case 10: {
 					this.setDialog(
-						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Archers are level 2 or higher to counter them!",
+						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Archers are level 2 or higher, or they will not deal any damage!",
 					);
 					break;
 				}

@@ -124,7 +124,10 @@ export class TowerActionController implements OnStart, OnTick {
 		UserInputService.InputBegan.Connect((input) => {
 			if (!this.enabled) return;
 
-			if (input.UserInputType === Enum.UserInputType.MouseButton1) {
+			if (
+				input.UserInputType === Enum.UserInputType.MouseButton1 ||
+				input.UserInputType === Enum.UserInputType.Touch
+			) {
 				const possibleClientTower = this.getHoveringTower();
 				if (!possibleClientTower.exists) return;
 

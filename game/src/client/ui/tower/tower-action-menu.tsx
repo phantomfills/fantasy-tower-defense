@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import Roact, { useEffect } from "@rbxts/roact";
 import { Frame } from "../utils/frame";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { Label } from "../utils/label";
@@ -6,6 +6,7 @@ import { useRem } from "../hooks/use-rem";
 import { fonts } from "../constants/fonts";
 import { images } from "shared/assets";
 import { Trait } from "shared/modules/attack/immunity";
+import { KeyCode, useKeyPress } from "@rbxts/pretty-react-hooks";
 
 interface TowerActionButtonProps {
 	name: string;
@@ -13,11 +14,19 @@ interface TowerActionButtonProps {
 	position: UDim2;
 	color: Color3;
 	autoButtonColor?: boolean;
+	keybind: KeyCode;
 	action: () => void;
 }
 
-function TowerActionButton({ name, size, position, color, autoButtonColor, action }: TowerActionButtonProps) {
+function TowerActionButton({ name, size, position, color, autoButtonColor, keybind, action }: TowerActionButtonProps) {
 	const rem = useRem();
+	const keyDown = useKeyPress([keybind]);
+
+	useEffect(() => {
+		if (!keyDown) return;
+
+		action();
+	}, [keyDown]);
 
 	return (
 		<textbutton
@@ -30,8 +39,8 @@ function TowerActionButton({ name, size, position, color, autoButtonColor, actio
 		>
 			<Label
 				size={new UDim2(1, 0, 1, 0)}
-				textSize={rem(2)}
-				text={name}
+				textSize={rem(1.5)}
+				text={`(${keybind}) ${name}`}
 				font={fonts.inter.bold}
 				backgroundTransparency={1}
 				textColor={Color3.fromRGB(255, 255, 255)}
@@ -86,8 +95,8 @@ export function TowerActionMenu({
 
 	return (
 		<Frame
-			size={new UDim2(0.2, 0, 0.65, 0)}
-			position={new UDim2(0.8, 0, 0.175, 0)}
+			size={new UDim2(0.15, 0, 0.5, 0)}
+			position={new UDim2(0.85, 0, 0.25, 0)}
 			backgroundTransparency={0.5}
 			backgroundColor={new Color3(0, 0, 0)}
 		>
@@ -113,6 +122,7 @@ export function TowerActionMenu({
 				color={enoughMoney ? Color3.fromRGB(5, 227, 97) : Color3.fromRGB(227, 0, 0)}
 				name={actions.upgrade.name}
 				action={actions.upgrade.call}
+				keybind={"E"}
 				autoButtonColor={enoughMoney}
 			/>
 			<TowerActionButton
@@ -121,6 +131,7 @@ export function TowerActionMenu({
 				color={Color3.fromRGB(227, 0, 0)}
 				name={actions.sell.name}
 				action={actions.sell.call}
+				keybind={"Backspace"}
 				autoButtonColor={true}
 			/>
 			<Label
@@ -129,7 +140,7 @@ export function TowerActionMenu({
 				font={fonts.inter.bold}
 				text={upgradeTitle}
 				textColor={new Color3(255, 255, 255)}
-				textSize={rem(2)}
+				textSize={rem(1.5)}
 			/>
 			<Frame
 				size={new UDim2(1, -30, 0.45, 0)}
@@ -146,7 +157,7 @@ export function TowerActionMenu({
 				/>
 				<Label
 					size={new UDim2(1, 0, 1, 0)}
-					textSize={rem(2)}
+					textSize={rem(1.5)}
 					font={fonts.inter.regular}
 					text={upgradeDescription}
 					textColor={new Color3(255, 255, 255)}
@@ -155,7 +166,7 @@ export function TowerActionMenu({
 					textWrapped={true}
 				/>
 			</Frame>
-			<Frame size={new UDim2(0, 50, 0, 50)} position={new UDim2(1, 5, 0, 0)}>
+			<Frame size={new UDim2(0, 50, 0, 50)} position={new UDim2(0, -55, 0, 0)}>
 				<uigridlayout
 					CellSize={new UDim2(1, 0, 1, 0)}
 					CellPadding={new UDim2(0, 5, 0, 5)}

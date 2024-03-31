@@ -37,7 +37,7 @@ export function EnemyDamageIndicator({ damage, position, spawnTime }: EnemyDamag
 			StudsOffsetWorldSpace={position.add(
 				new Vector3(
 					xOffset,
-					lerp(1.5 + yOffset, 2.75, math.min(1, timeSinceSpawn / DAMAGE_INDICATOR_ANIMATION_TIME) + yOffset),
+					lerp(1.5 + yOffset, 4 + yOffset, math.min(1, timeSinceSpawn / DAMAGE_INDICATOR_ANIMATION_TIME)),
 					zOffset,
 				),
 			)}

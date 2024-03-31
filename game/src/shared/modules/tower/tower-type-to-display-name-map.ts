@@ -1,7 +1,7 @@
 import { TowerType } from "./tower-type";
 
 const towerTypeToDisplayNameMap: Record<TowerType, string> = {
-	ARCHER: "Vanessa, Archer",
+	ARCHER: "Archer",
 };
 
 export function getTowerDisplayNameFromType(_type: TowerType): string {

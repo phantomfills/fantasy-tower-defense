@@ -13,8 +13,10 @@ import { selectIsValidPlacementPosition } from "shared/store/map";
 import { RangeIndicator } from "client/modules/tower/range-indicator";
 import { removeShadows } from "client/modules/rig/remove-shadows";
 import { TowerActionController } from "./tower-action-controller";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
+const EXIT_DOUBLE_TAP_THRESHOLD = 500;
 
 @Controller({})
 export class TowerPlacementController implements OnStart {
@@ -27,6 +29,7 @@ export class TowerPlacementController implements OnStart {
 		maid: Maid;
 	}>;
 	private possibleRangeIndicator: Possible<RangeIndicator>;
+	private lastTapTime: number;
 
 	constructor(private towerActionController: TowerActionController) {
 		this.possibleTowerPlacement = {
@@ -35,6 +38,7 @@ export class TowerPlacementController implements OnStart {
 		this.possibleRangeIndicator = {
 			exists: false,
 		};
+		this.lastTapTime = getCurrentTimeInMilliseconds();
 	}
 
 	onStart() {
@@ -53,12 +57,26 @@ export class TowerPlacementController implements OnStart {
 
 					const towerPlacement = possibleTowerPlacement.value;
 					towerPlacement.rotation += 90;
+
+					break;
 				}
 			}
 
 			switch (input.UserInputType) {
 				case Enum.UserInputType.MouseButton1: {
 					this.placeTower();
+					break;
+				}
+				case Enum.UserInputType.Touch: {
+					const currentTime = getCurrentTimeInMilliseconds();
+
+					if (currentTime - this.lastTapTime < EXIT_DOUBLE_TAP_THRESHOLD) {
+						this.placeTower();
+						return;
+					}
+					this.lastTapTime = currentTime;
+
+					break;
 				}
 			}
 		});
@@ -115,7 +133,7 @@ export class TowerPlacementController implements OnStart {
 		};
 	}
 
-	private updateTowerPlacementCFrame() {
+	private updateTowerPlacementCFrame(snap: boolean = true) {
 		const possibleTowerPlacement = this.possibleTowerPlacement;
 		if (!possibleTowerPlacement.exists) return;
 
@@ -137,11 +155,19 @@ export class TowerPlacementController implements OnStart {
 
 		const cframeWithRotation = cframe.mul(CFrame.Angles(0, math.rad(towerPlacement.rotation), 0));
 
-		snapToCFrameWithAttachmentOffset(
-			towerPrefabModel,
-			towerPrefabModel.humanoidRootPart.rootAttachment,
-			towerPrefabModel.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(cframeWithRotation, 0.75), // Use lerp to smooth out the movement
-		);
+		if (snap) {
+			snapToCFrameWithAttachmentOffset(
+				towerPrefabModel,
+				towerPrefabModel.humanoidRootPart.rootAttachment,
+				cframeWithRotation,
+			);
+		} else {
+			snapToCFrameWithAttachmentOffset(
+				towerPrefabModel,
+				towerPrefabModel.humanoidRootPart.rootAttachment,
+				towerPrefabModel.humanoidRootPart.rootAttachment.WorldCFrame.Lerp(cframeWithRotation, 0.25), // Use lerp to smooth out the movement
+			);
+		}
 
 		if (!this.possibleRangeIndicator.exists) return;
 		const rangeIndicator = this.possibleRangeIndicator.value;
@@ -183,7 +209,7 @@ export class TowerPlacementController implements OnStart {
 		const towerPlacementCFrame = possibleTowerPlacementCFrame.value;
 
 		const updateTowerPlacementConnection = RunService.RenderStepped.Connect(() =>
-			this.updateTowerPlacementCFrame(),
+			this.updateTowerPlacementCFrame(false),
 		);
 
 		const maid = new Maid();
@@ -204,6 +230,8 @@ export class TowerPlacementController implements OnStart {
 				maid: maid,
 			},
 		};
+
+		this.updateTowerPlacementCFrame();
 
 		producer.clearTowerId();
 		this.towerActionController.disable();
