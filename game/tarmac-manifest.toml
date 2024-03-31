@@ -54,8 +54,8 @@ id = 16726141326
 packable = false
 
 [inputs."assets/images/tick.png"]
-hash = "c38e1304b7a4063ba241e3a067c2b440e786bd47a5bee8068c629b0400ce3ced"
-id = 16936766390
+hash = "452b30a2c418f967ec587b77f2df6ddd06243042487e2cc5dd68c94b84376abc"
+id = 16952739879
 packable = false
 
 [inputs."assets/images/x_button.png"]

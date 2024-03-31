@@ -12,6 +12,7 @@ import { tags } from "shared/modules/utils/tags";
 import { selectIsValidPlacementPosition } from "shared/store/map";
 import { RangeIndicator } from "client/modules/tower/range-indicator";
 import { removeShadows } from "client/modules/rig/remove-shadows";
+import { TowerActionController } from "./tower-action-controller";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 
@@ -27,7 +28,7 @@ export class TowerPlacementController implements OnStart {
 	}>;
 	private possibleRangeIndicator: Possible<RangeIndicator>;
 
-	constructor() {
+	constructor(private towerActionController: TowerActionController) {
 		this.possibleTowerPlacement = {
 			exists: false,
 		};
@@ -205,6 +206,7 @@ export class TowerPlacementController implements OnStart {
 		};
 
 		producer.clearTowerId();
+		this.towerActionController.disable();
 	}
 
 	private clearTower() {
@@ -217,6 +219,8 @@ export class TowerPlacementController implements OnStart {
 		this.possibleTowerPlacement = {
 			exists: false,
 		};
+
+		this.towerActionController.enable();
 	}
 
 	private placeTower() {

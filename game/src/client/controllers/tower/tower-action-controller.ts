@@ -15,6 +15,7 @@ const MAX_TOWER_HOVER_DISTANCE = 100;
 export class TowerActionController implements OnStart, OnTick {
 	private highlight: Possible<Highlight>;
 	private rangeIndicator: Possible<Model>;
+	private enabled: boolean;
 
 	constructor(readonly clientTowerRenderController: ClientTowerRenderController) {
 		this.highlight = {
@@ -23,6 +24,15 @@ export class TowerActionController implements OnStart, OnTick {
 		this.rangeIndicator = {
 			exists: false,
 		};
+		this.enabled = true;
+	}
+
+	enable() {
+		this.enabled = true;
+	}
+
+	disable() {
+		this.enabled = false;
 	}
 
 	private getHoveringTower(): Possible<GenericClientTower> {
@@ -112,6 +122,8 @@ export class TowerActionController implements OnStart, OnTick {
 
 	onStart(): void {
 		UserInputService.InputBegan.Connect((input) => {
+			if (!this.enabled) return;
+
 			if (input.UserInputType === Enum.UserInputType.MouseButton1) {
 				const possibleClientTower = this.getHoveringTower();
 				if (!possibleClientTower.exists) return;
@@ -171,6 +183,11 @@ export class TowerActionController implements OnStart, OnTick {
 	}
 
 	onTick(): void {
+		if (!this.enabled) {
+			this.destroyHighlight();
+			return;
+		}
+
 		const possibleClientTower = this.getHoveringTower();
 		if (!possibleClientTower.exists) {
 			this.destroyHighlight();

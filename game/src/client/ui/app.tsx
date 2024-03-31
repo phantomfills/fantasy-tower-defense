@@ -1,4 +1,4 @@
-import Roact, { useEffect } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { Panel } from "./utils/panel";
 import { TowerLoadout } from "./tower/tower-loadout";
 import { LifeCounter } from "./game/life-counter";
@@ -9,7 +9,7 @@ import { getPossibleTowerPlacement, getTowerLoadout } from "client/store/tower-l
 import { TowerSlot } from "./tower/tower-slot";
 import { MatchInfo } from "./game/match-info";
 import { CashCounter } from "./game/cash-counter";
-import { selectEnemyFocusDetails, selectFocusEnemyId } from "client/store/enemy-focus";
+import { selectFocusEnemyId } from "client/store/enemy-focus";
 import { EnemyTooltipFromId } from "./enemy/enemy-tooltip-from-id";
 import { getPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
 import { TowerActionMenuFromId } from "./tower/tower-action-menu-from-id";
@@ -21,7 +21,12 @@ import Object from "@rbxts/object-utils";
 import { EnemyDamageIndicator } from "./enemy/enemy-damage-indicator";
 import { producer } from "client/store";
 import { Music } from "./music/music";
-import { selectDialogText } from "shared/store/dialog";
+import {
+	selectDialogComplete,
+	selectDialogText,
+	selectNumberOfPlayersWhoCompletedDialog,
+	selectTotalNumberOfPlayersWhoMustCompleteDialog,
+} from "shared/store/dialog";
 import { Dialog } from "./game/dialog";
 import { selectEnemyDetailViewType } from "client/store/settings";
 import { EnemyTooltipBillboardFromId } from "./enemy/enemy-tooltip";
@@ -37,10 +42,9 @@ export function App() {
 	const dialog = useSelector(selectDialogText);
 	const enemyDetailViewType = useSelector(selectEnemyDetailViewType);
 	const lives = useSelector(selectLives);
-
-	useEffect(() => {
-		print(dialog.exists);
-	}, [dialog]);
+	const dialogComplete = useSelector(selectDialogComplete);
+	const numberOfPlayersWhoCompletedDialog = useSelector(selectNumberOfPlayersWhoCompletedDialog);
+	const totalNumberOfPlayersWhoMustCompleteDialog = useSelector(selectTotalNumberOfPlayersWhoMustCompleteDialog);
 
 	return (
 		<>
@@ -105,7 +109,16 @@ export function App() {
 					);
 				})}
 
-				{<Dialog visibleByDefault={dialog.exists} text={dialog.exists ? dialog.value : ""} key="dialog" />}
+				{
+					<Dialog
+						visible={!dialogComplete}
+						text={dialog.exists ? dialog.value : ""}
+						totalTicksRequired={totalNumberOfPlayersWhoMustCompleteDialog}
+						numberTicked={numberOfPlayersWhoCompletedDialog}
+						onTick={() => Events.completeDialog.fire()}
+						key="dialog"
+					/>
+				}
 
 				<MatchInfo key="match-info">
 					<LifeCounter lives={lives} key="life-counter" />

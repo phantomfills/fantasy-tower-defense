@@ -17,7 +17,7 @@ export function createArrow(fromPosition: Vector3, toPosition: Vector3, color?: 
 
 	CollectionService.AddTag(arrow, tags.PROJECTILE);
 
-	const arrowTransparencyTweenInfo = new TweenInfo(0.15, Enum.EasingStyle.Sine, Enum.EasingDirection.Out);
+	const arrowTransparencyTweenInfo = new TweenInfo(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out);
 	const arrowTransparencyTweenEndProps = {
 		Transparency: 1,
 	};
@@ -28,5 +28,5 @@ export function createArrow(fromPosition: Vector3, toPosition: Vector3, color?: 
 	);
 	arrowTransparencyTween.Play();
 
-	Debris.AddItem(arrow, 0.5);
+	Debris.AddItem(arrow, 2);
 }

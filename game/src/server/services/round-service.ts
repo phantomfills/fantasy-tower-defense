@@ -1,11 +1,12 @@
 import { Service, OnStart } from "@flamework/core";
-import { RunService } from "@rbxts/services";
+import { Players, RunService } from "@rbxts/services";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { tracks } from "shared/modules/music/tracks";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
+import { selectDialogComplete } from "shared/store/dialog";
 import { selectNoEnemiesExist } from "shared/store/enemy";
 import { selectGameOver, selectMap } from "shared/store/map";
 
@@ -239,24 +240,54 @@ type RoundResult =
 
 @Service({})
 export class RoundService implements OnStart {
+	private setDialog(message: string) {
+		const playerDialogCompletionState: Record<string, boolean> = {};
+
+		Players.GetPlayers().forEach((player) => {
+			const userId = tostring(player.UserId);
+			playerDialogCompletionState[userId] = false;
+		});
+
+		producer.setDialog(message, playerDialogCompletionState);
+
+		let stopYielding = false;
+
+		const dialogComplete = producer.getState(selectDialogComplete);
+		if (dialogComplete) {
+			stopYielding = true;
+		}
+
+		const unsubscribe = producer.subscribe(selectDialogComplete, (dialogComplete) => {
+			if (!dialogComplete) return;
+			stopYielding = true;
+		});
+
+		while (!stopYielding) {
+			RunService.Heartbeat.Wait();
+		}
+
+		unsubscribe();
+	}
+
 	onStart() {
 		producer.subscribe(selectGameOver, (gameOver) => {
 			if (!gameOver) return;
 			producer.clearEnemies();
 		});
 
-		producer.setTrackId(tracks.chill_jazz);
+		while (Players.GetPlayers().size() === 0) {
+			RunService.Heartbeat.Wait();
+		}
 
-		holdFor(10_000);
+		holdFor(5_000);
 
-		producer.setDialog("Welcome to the tutorial!");
-		holdFor(10_000);
-		producer.setDialog(
+		producer.setTrackId(tracks.cyber_trance);
+
+		this.setDialog("Welcome to the tutorial!");
+		this.setDialog(
 			"Click on the tower button at the bottom, and move the tower to a location where its gray circle reaches the path, then click again to place it!",
 		);
-		holdFor(10_000);
-		producer.setDialog("Click on a tower to upgrade it!");
-		holdFor(10_000);
+		this.setDialog("Click on a tower to upgrade it!");
 
 		for (let roundIndex = 0; roundIndex < level.size(); roundIndex++) {
 			const round = level[roundIndex];
@@ -264,49 +295,49 @@ export class RoundService implements OnStart {
 
 			switch (roundNumber) {
 				case 1: {
-					producer.setTrackId(tracks.techno);
-					producer.setDialog(
+					producer.setTrackId(tracks.trance_machine);
+					this.setDialog(
 						"You will gain money for each enemy you defeat. Use it to build more towers, or upgrade existing ones!",
 					);
 					break;
 				}
 				case 2: {
-					producer.setDialog("I saw some quicker enemies in the distance, be prepared!");
+					this.setDialog("I saw some quicker enemies in the distance, be prepared!");
 					break;
 				}
 				case 4: {
-					producer.setDialog(
+					this.setDialog(
 						"Armored enemies are on the way; they're really strong, so upgrading or placing more Archers is essential.",
 					);
 					break;
 				}
 				case 6: {
-					producer.setDialog(
+					this.setDialog(
 						"Stealth enemies are coming! They are invisible to towers without the 'stealth' trait! Archer gains this trait with its level 3 upgrade!",
 					);
 					break;
 				}
 				case 8: {
-					producer.setDialog(
+					this.setDialog(
 						"Multipliers are coming! They will turn into more enemies when they are killed! We need lots of defense to take them down. Stay vigilant!",
 					);
 					break;
 				}
 				case 10: {
-					producer.setDialog(
+					this.setDialog(
 						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Archers are level 2 or higher to counter them!",
 					);
 					break;
 				}
 				case 11: {
-					producer.setDialog(
+					this.setDialog(
 						"Who are they? Are they protecting something? Just kidding. I know everything, I am the narrator, you will just have to find out.",
 					);
 					break;
 				}
 				case 12: {
 					producer.setTrackId(tracks.light_show);
-					producer.setDialog(
+					this.setDialog(
 						"The Dummy Tank is here! It has a lot of health, but it is very slow! Good luck taking it down.",
 					);
 					break;
@@ -332,7 +363,7 @@ export class RoundService implements OnStart {
 			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
 
 			if (roundNumber === 12) {
-				producer.setDialog("You have completed the tutorial! Congratulations!");
+				this.setDialog("You have completed the tutorial! Congratulations!");
 				producer.setTrackId(tracks.victory);
 			}
 		}

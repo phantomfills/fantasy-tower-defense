@@ -1,4 +1,4 @@
-import Roact, { useEffect, useState } from "@rbxts/roact";
+import Roact, { useEffect } from "@rbxts/roact";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";
@@ -28,19 +28,17 @@ function Tick({ size, position, onClick }: TickProps) {
 
 interface DialogProps {
 	text: string;
-	visibleByDefault: boolean;
+	visible: boolean;
+	totalTicksRequired: number;
+	numberTicked: number;
+	onTick: () => void;
 }
 
-export function Dialog({ text, visibleByDefault }: DialogProps) {
+export function Dialog({ text, visible, totalTicksRequired, numberTicked, onTick }: DialogProps) {
 	const rem = useRem();
 	const typewriter = useTypewriter(text, 20);
-	const [visible, setVisible] = useState(visibleByDefault);
 
 	const [dialogAppearTransition, setDialogAppearTransition] = useMotor(0);
-
-	useEffect(() => {
-		setVisible(visibleByDefault);
-	}, [visibleByDefault, text]);
 
 	useEffect(() => {
 		if (!visible) {
@@ -72,11 +70,16 @@ export function Dialog({ text, visibleByDefault }: DialogProps) {
 				textColor={Color3.fromRGB(255, 255, 255)}
 				textWrapped={true}
 			/>
-			<Tick
-				size={new UDim2(0, 20, 0, 20)}
-				position={new UDim2(1, -30, 1, -30)}
-				onClick={() => setVisible(false)}
+			<Label
+				size={new UDim2(1, -30, 0, 20)}
+				position={new UDim2(0, -5, 1, -30)}
+				font={fonts.inter.bold}
+				text={`(${numberTicked}/${totalTicksRequired})`}
+				textSize={rem(2)}
+				textAlignmentX={Enum.TextXAlignment.Right}
+				textColor={Color3.fromRGB(255, 255, 255)}
 			/>
+			<Tick size={new UDim2(0, 20, 0, 20)} position={new UDim2(1, -30, 1, -30)} onClick={() => onTick()} />
 		</Frame>
 	);
 }
