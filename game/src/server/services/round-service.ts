@@ -23,6 +23,15 @@ function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBo
 	return roundBonus;
 }
 
+function getRoundBonusForRoundWithPlayerCount(
+	round: number,
+	initialRoundBonus: number,
+	roundBonusMultiplier: number,
+	playerCount: number,
+) {
+	return math.floor(getRoundBonusForRound(round, initialRoundBonus, roundBonusMultiplier) / playerCount);
+}
+
 interface Group {
 	enemyType: EnemyType;
 	count: number;
@@ -344,7 +353,13 @@ export class RoundService implements OnStart {
 				}
 			}
 
-			const roundBonus = getRoundBonusForRound(roundNumber, ROUND_BONUS, ROUND_BONUS_MULTIPLIER);
+			const playerCount = Players.GetPlayers().size();
+			const roundBonus = getRoundBonusForRoundWithPlayerCount(
+				roundNumber,
+				ROUND_BONUS,
+				ROUND_BONUS_MULTIPLIER,
+				playerCount,
+			);
 
 			let roundCompleted = false;
 
