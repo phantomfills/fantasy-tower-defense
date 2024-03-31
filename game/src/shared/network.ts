@@ -25,6 +25,7 @@ interface SharedEvents {
 
 interface ServerToClientEvents extends SharedEvents {
 	towerAttack: Networking.Unreliable<(attack: Attack) => void>;
+	playSound(soundId: string): void;
 }
 
 interface ClientToServerEvents extends SharedEvents {

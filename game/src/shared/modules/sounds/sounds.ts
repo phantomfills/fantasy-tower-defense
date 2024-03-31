@@ -7,4 +7,5 @@ export const sounds = {
 	place_tower: "rbxassetid://7433801607",
 	buy_upgrade: "rbxassetid://4612383453",
 	sell_tower: "rbxassetid://8026768430",
+	victory: "rbxassetid://4879566787",
 } as const;

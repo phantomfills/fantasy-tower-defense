@@ -1,9 +1,11 @@
 import { Service, OnStart } from "@flamework/core";
 import { Players, RunService } from "@rbxts/services";
 import { createEnemy } from "server/modules/enemy/enemy-factory";
+import { Events } from "server/network";
 import { producer } from "server/store";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { tracks } from "shared/modules/music/tracks";
+import { sounds } from "shared/modules/sounds/sounds";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { selectDialogComplete } from "shared/store/dialog";
@@ -380,8 +382,11 @@ export class RoundService implements OnStart {
 			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
 
 			if (roundNumber === 12) {
+				producer.clearTrackId();
+
+				Events.playSound.broadcast(sounds.victory);
+
 				this.setDialog("You have completed the tutorial! Congratulations!");
-				producer.setTrackId(tracks.victory);
 			}
 		}
 	}
