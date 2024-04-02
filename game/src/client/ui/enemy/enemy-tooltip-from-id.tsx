@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { FollowMouse } from "../utils/follow-mouse";
 import { EnemyTooltip } from "./enemy-tooltip";
 import { useSelector } from "@rbxts/react-reflex";

@@ -1,9 +1,7 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { Frame } from "../utils/frame";
 
-interface MatchInfoProps {
-	children?: Roact.Children;
-}
+interface MatchInfoProps extends React.PropsWithChildren {}
 
 export function MatchInfo({ children }: MatchInfoProps) {
 	return (

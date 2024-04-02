@@ -1,7 +1,6 @@
 import { Controller, OnStart } from "@flamework/core";
 import { createRoot } from "@rbxts/react-roblox";
-import { StrictMode } from "@rbxts/roact";
-import Roact from "@rbxts/roact";
+import React, { StrictMode } from "@rbxts/react";
 import { Players } from "@rbxts/services";
 import { App } from "client/ui/app";
 import { possible } from "shared/modules/utils/possible";
@@ -12,7 +11,7 @@ const LOCAL_PLAYER = Players.LocalPlayer;
 
 @Controller({})
 export class AppController implements OnStart {
-	async onStart() {
+	onStart() {
 		const possiblePlayerGui = possible<Instance>(LOCAL_PLAYER.WaitForChild("PlayerGui"));
 		if (!possiblePlayerGui.exists) return;
 
@@ -22,8 +21,8 @@ export class AppController implements OnStart {
 		const appElement = (
 			<StrictMode>
 				<ErrorBoundary
-					fallback={(exception) => (
-						<textlabel Text={`Error loading UI: ${error} \n Rejoin?`} Size={new UDim2(1, 0, 1, 0)} />
+					fallback={(err) => (
+						<textlabel Text={`Error loading UI: ${err}\nRejoin?`} Size={new UDim2(1, 0, 1, 0)} />
 					)}
 				>
 					<RootProvider>

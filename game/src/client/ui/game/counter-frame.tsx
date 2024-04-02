@@ -1,10 +1,8 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { Frame } from "../utils/frame";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 
-interface CounterFrameProps extends Roact.PropsWithChildren {
-	children?: Roact.Children;
-}
+interface CounterFrameProps extends React.PropsWithChildren {}
 
 export function CounterFrame({ children }: CounterFrameProps) {
 	return (

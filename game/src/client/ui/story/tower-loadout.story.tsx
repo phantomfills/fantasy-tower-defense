@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { TowerLoadout } from "../tower/tower-loadout";
 import { createRoot } from "@rbxts/react-roblox";
 import { TowerSlot } from "../tower/tower-slot";

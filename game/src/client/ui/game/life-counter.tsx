@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { BeatingHeart } from "./beating-heart";
 import { fonts } from "../constants/fonts";
 import { Label } from "../utils/label";

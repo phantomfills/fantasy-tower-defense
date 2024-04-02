@@ -1,9 +1,7 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { Frame } from "../utils/frame";
 
-interface TowerLoadoutProps extends Roact.PropsWithChildren {
-	children?: Roact.Children;
-}
+interface TowerLoadoutProps extends React.PropsWithChildren {}
 
 export function TowerLoadout({ children }: TowerLoadoutProps) {
 	return (

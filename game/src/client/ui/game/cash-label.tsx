@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { images } from "shared/assets";
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";

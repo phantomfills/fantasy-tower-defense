@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { CashLabel } from "../game/cash-label";
 import { CounterFrame } from "./counter-frame";
 import { useRem } from "../hooks/use-rem";

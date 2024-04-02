@@ -1,4 +1,4 @@
-import Roact, { useEffect } from "@rbxts/roact";
+import React, { useEffect } from "@rbxts/react";
 import { Frame } from "../utils/frame";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { Label } from "../utils/label";
@@ -189,19 +189,23 @@ export function TowerActionMenu({
 					CellPadding={new UDim2(0, 5, 0, 5)}
 					FillDirection={Enum.FillDirection.Horizontal}
 				/>
-				{traits.includes("STEALTH") && (
+				{traits.includes("STEALTH") ? (
 					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
 						<OneThickWhiteStroke />
 						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.eye} />
 						<uicorner CornerRadius={new UDim(0, 5)} />
 					</Frame>
+				) : (
+					<></>
 				)}
-				{traits.includes("REINFORCED") && (
+				{traits.includes("REINFORCED") ? (
 					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
 						<OneThickWhiteStroke />
 						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.shield} />
 						<uicorner CornerRadius={new UDim(0, 5)} />
 					</Frame>
+				) : (
+					<></>
 				)}
 			</Frame>
 		</Frame>

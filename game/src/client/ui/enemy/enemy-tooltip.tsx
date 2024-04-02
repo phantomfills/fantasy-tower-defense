@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
@@ -7,7 +7,6 @@ import { getEnemyDisplayName } from "shared/modules/enemy/enemy-type-to-display-
 import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { images } from "shared/assets";
-import { useRem } from "../hooks/use-rem";
 import { selectEnemyFromId } from "shared/store/enemy";
 import { useSelector } from "@rbxts/react-reflex";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";

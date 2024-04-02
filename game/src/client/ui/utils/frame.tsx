@@ -1,13 +1,12 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 
-interface FrameProps extends Roact.PropsWithChildren {
-	size?: UDim2 | Roact.Binding<UDim2>;
-	position?: UDim2 | Roact.Binding<UDim2>;
+interface FrameProps extends React.PropsWithChildren {
+	size?: UDim2 | React.Binding<UDim2>;
+	position?: UDim2 | React.Binding<UDim2>;
 	anchorPoint?: Vector2;
-	children?: Roact.Children;
 	backgroundTransparency?: number;
-	backgroundColor?: Color3 | Roact.Binding<Color3>;
-	rotation?: number | Roact.Binding<number>;
+	backgroundColor?: Color3 | React.Binding<Color3>;
+	rotation?: number | React.Binding<number>;
 	zIndex?: number;
 	clipsDescendants?: boolean;
 }

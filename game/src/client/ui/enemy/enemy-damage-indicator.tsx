@@ -1,4 +1,4 @@
-import Roact = require("@rbxts/roact");
+import React from "@rbxts/react";
 import { fonts } from "../constants/fonts";
 import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";

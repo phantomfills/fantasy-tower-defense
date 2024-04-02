@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { Panel } from "./utils/panel";
 import { TowerLoadout } from "./tower/tower-loadout";
 import { LifeCounter } from "./game/life-counter";
@@ -68,17 +68,14 @@ export function App() {
 					</FollowMouse>
 				)}
 
-				{possibleEnemyFocusId.exists ? (
-					enemyDetailViewType === "HOVER" ? (
+				{possibleEnemyFocusId.exists &&
+					(enemyDetailViewType === "HOVER" ? (
 						<EnemyTooltipFromId id={possibleEnemyFocusId.value} key="enemy-tooltip" />
 					) : (
 						enemyDetailViewType === "CLOSEST" && (
 							<EnemyTooltipBillboardFromId id={possibleEnemyFocusId.value} key="enemy-tooltip" />
 						)
-					)
-				) : (
-					<></>
-				)}
+					))}
 
 				{possibleTowerFocusId.exists && (
 					<TowerActionMenuFromId
@@ -98,27 +95,23 @@ export function App() {
 					/>
 				)}
 
-				{Object.values(enemyDamageIndicators).map(({ damage, position, spawnTime }, index) => {
-					return (
-						<EnemyDamageIndicator
-							key={`enemy-damage-indicator-${index}`}
-							damage={damage}
-							position={position}
-							spawnTime={spawnTime}
-						/>
-					);
-				})}
-
-				{
-					<Dialog
-						visible={!dialogComplete}
-						text={dialog.exists ? dialog.value : ""}
-						totalTicksRequired={totalNumberOfPlayersWhoMustCompleteDialog}
-						numberTicked={numberOfPlayersWhoCompletedDialog}
-						onTick={() => Events.completeDialog.fire()}
-						key="dialog"
+				{Object.values(enemyDamageIndicators).map(({ damage, position, spawnTime }, index) => (
+					<EnemyDamageIndicator
+						key={`enemy-damage-indicator-${index}`}
+						damage={damage}
+						position={position}
+						spawnTime={spawnTime}
 					/>
-				}
+				))}
+
+				<Dialog
+					visible={!dialogComplete}
+					text={dialog.exists ? dialog.value : ""}
+					totalTicksRequired={totalNumberOfPlayersWhoMustCompleteDialog}
+					numberTicked={numberOfPlayersWhoCompletedDialog}
+					onTick={() => Events.completeDialog.fire()}
+					key="dialog"
+				/>
 
 				<MatchInfo key="match-info">
 					<LifeCounter lives={lives} key="life-counter" />

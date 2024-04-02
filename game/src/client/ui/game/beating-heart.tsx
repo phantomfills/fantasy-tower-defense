@@ -1,5 +1,5 @@
+import React from "@rbxts/react";
 import { Spring, lerpBinding, useInterval, useMotor } from "@rbxts/pretty-react-hooks";
-import Roact from "@rbxts/roact";
 import { setTimeout } from "@rbxts/set-timeout";
 import { images } from "shared/assets";
 import { Frame } from "../utils/frame";

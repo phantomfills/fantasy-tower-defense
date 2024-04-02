@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { MatchInfo } from "../game/match-info";
 import { LifeCounter } from "../game/life-counter";
 import { createRoot } from "@rbxts/react-roblox";

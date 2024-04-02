@@ -1,5 +1,5 @@
+import React from "@rbxts/react";
 import { createRoot } from "@rbxts/react-roblox";
-import Roact from "@rbxts/roact";
 import { EnemyTooltip } from "../enemy/enemy-tooltip";
 import { Frame } from "../utils/frame";
 

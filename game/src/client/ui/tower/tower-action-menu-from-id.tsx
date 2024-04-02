@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { getTowerDisplayNameFromType } from "shared/modules/tower/tower-type-to-display-name-map";
 import { useSelector } from "@rbxts/react-reflex";
 import { getPossibleTowerFromId } from "shared/store/tower";

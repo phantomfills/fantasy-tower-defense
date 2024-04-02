@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { LifeCounter } from "../game/life-counter";
 import { createRoot } from "@rbxts/react-roblox";
 import { Frame } from "../utils/frame";

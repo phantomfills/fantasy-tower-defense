@@ -1,11 +1,11 @@
-import Roact from "@rbxts/roact";
+import React, { ReactComponent } from "@rbxts/react";
 
 interface ReactErrorInfo {
 	readonly componentStack: string;
 }
 
 interface ErrorBoundaryProps {
-	readonly fallback: (error: unknown) => Roact.Element;
+	readonly fallback: (error: unknown) => React.Element;
 }
 
 interface ErrorBoundaryState {
@@ -13,7 +13,8 @@ interface ErrorBoundaryState {
 	readonly message?: unknown;
 }
 
-export class ErrorBoundary extends Roact.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+@ReactComponent
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
 	public readonly state: ErrorBoundaryState = { hasError: false };
 
 	constructor(props: ErrorBoundaryProps) {
@@ -34,6 +35,6 @@ export class ErrorBoundary extends Roact.Component<ErrorBoundaryProps, ErrorBoun
 			return this.props.fallback(this.state.message);
 		}
 
-		return this.props.children as Roact.Element | undefined;
+		return this.props.children as React.Element | undefined;
 	}
 }

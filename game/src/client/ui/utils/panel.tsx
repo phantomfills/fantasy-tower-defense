@@ -1,8 +1,6 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 
-interface PanelProps extends Roact.PropsWithChildren {
-	children?: Roact.Children;
-}
+interface PanelProps extends React.PropsWithChildren {}
 
 export function Panel({ children }: PanelProps) {
 	return (

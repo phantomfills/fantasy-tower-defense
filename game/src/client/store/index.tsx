@@ -1,7 +1,7 @@
+import React from "@rbxts/react";
 import { InferState, combineProducers, createBroadcastReceiver } from "@rbxts/reflex";
 import { towerLoadoutSlice } from "./tower-loadout";
 import { ReflexProvider } from "@rbxts/react-reflex";
-import Roact from "@rbxts/roact";
 import { Events } from "client/network";
 import { slices } from "shared/store";
 import { enemyFocusSlice } from "./enemy-focus";
@@ -20,7 +20,7 @@ export const producer = combineProducers({
 	settings: settingsSlice,
 });
 
-export function RootProvider(props: Roact.PropsWithChildren) {
+export function RootProvider(props: React.PropsWithChildren) {
 	return <ReflexProvider producer={producer}>{props.children}</ReflexProvider>;
 }
 

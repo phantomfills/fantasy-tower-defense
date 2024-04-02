@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { TowerActionMenu } from "../tower/tower-action-menu";
 import { createRoot } from "@rbxts/react-roblox";
 

@@ -1,8 +1,7 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 
-interface LabelProps extends Roact.PropsWithChildren {
+interface LabelProps extends React.PropsWithChildren {
 	text?: string;
-	children?: Roact.Children;
 	backgroundTransparency?: number;
 	font: Font;
 	size?: UDim2;

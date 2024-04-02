@@ -1,4 +1,4 @@
-import Roact, { useEffect } from "@rbxts/roact";
+import React, { useEffect } from "@rbxts/react";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";

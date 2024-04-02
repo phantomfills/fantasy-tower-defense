@@ -1,10 +1,9 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { Frame } from "./frame";
 import { useMouse } from "@rbxts/pretty-react-hooks";
 
-interface FollowMouseProps extends Roact.PropsWithChildren {
+interface FollowMouseProps extends React.PropsWithChildren {
 	size: UDim2;
-	children?: Roact.Children;
 	zIndex?: number;
 }
 
