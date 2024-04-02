@@ -300,7 +300,9 @@ export class RoundService implements OnStart {
 		this.setDialog(
 			"Click on the tower button at the bottom, and move the tower to a location where its gray circle reaches the path, then click again to place it!",
 		);
+		producer.setPlayersCanPlaceTower(true);
 		this.setDialog("Click on a tower to upgrade it!");
+		producer.setPlayersCanUpgradeTower(true);
 
 		for (let roundIndex = 0; roundIndex < level.size(); roundIndex++) {
 			const round = level[roundIndex];

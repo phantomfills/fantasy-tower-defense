@@ -18,6 +18,7 @@ import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { towerAttack } from "server/events";
 import { selectIsValidPlacementPosition } from "shared/store/map";
+import { selectPlayersCanPlaceTower, selectPlayersCanUpgradeTower } from "shared/store/dialog";
 
 const MILLISECONDS_IN_SECOND = 1000;
 
@@ -50,6 +51,9 @@ function sellTower(id: string): void {
 export class TowerService implements OnStart, OnTick {
 	onStart(): void {
 		Events.placeTower.connect((player, _type, cframe) => {
+			const playersCanPlaceTower = producer.getState(selectPlayersCanPlaceTower);
+			if (!playersCanPlaceTower) return;
+
 			const isValidPlacementPosition = producer.getState(selectIsValidPlacementPosition(cframe.Position));
 			if (!isValidPlacementPosition) return;
 
@@ -66,6 +70,9 @@ export class TowerService implements OnStart, OnTick {
 		});
 
 		Events.upgradeTower.connect((player, id) => {
+			const playersCanUpgradeTower = producer.getState(selectPlayersCanUpgradeTower);
+			if (!playersCanUpgradeTower) return;
+
 			const userId = tostring(player.UserId);
 
 			const possibleTower = producer.getState(getPossibleTowerFromId(id));

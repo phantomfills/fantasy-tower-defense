@@ -7,6 +7,8 @@ interface PlayerDialogCompletionState {
 interface DialogState {
 	dialog: Dialog;
 	dialogComplete: PlayerDialogCompletionState;
+	playersCanPlaceTower: boolean;
+	playersCanUpgradeTower: boolean;
 }
 
 type Dialog =
@@ -23,6 +25,8 @@ const initialState: DialogState = {
 		open: false,
 	},
 	dialogComplete: {},
+	playersCanPlaceTower: false,
+	playersCanUpgradeTower: false,
 };
 
 export const dialogSlice = createProducer(initialState, {
@@ -49,5 +53,15 @@ export const dialogSlice = createProducer(initialState, {
 			...state.dialogComplete,
 			[userId]: true,
 		},
+	}),
+
+	setPlayersCanPlaceTower: (state, canPlaceTower: boolean) => ({
+		...state,
+		playersCanPlaceTower: canPlaceTower,
+	}),
+
+	setPlayersCanUpgradeTower: (state, canUpgradeTower: boolean) => ({
+		...state,
+		playersCanUpgradeTower: canUpgradeTower,
 	}),
 });

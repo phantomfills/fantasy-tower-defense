@@ -21,3 +21,11 @@ export function selectNumberOfPlayersWhoCompletedDialog(state: SharedState): num
 export function selectTotalNumberOfPlayersWhoMustCompleteDialog(state: SharedState): number {
 	return Object.values(state.dialog.dialogComplete).size();
 }
+
+export function selectPlayersCanPlaceTower(state: SharedState): boolean {
+	return state.dialog.playersCanPlaceTower;
+}
+
+export function selectPlayersCanUpgradeTower(state: SharedState): boolean {
+	return state.dialog.playersCanUpgradeTower;
+}

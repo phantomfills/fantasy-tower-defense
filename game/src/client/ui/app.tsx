@@ -25,6 +25,8 @@ import {
 	selectDialogComplete,
 	selectDialogText,
 	selectNumberOfPlayersWhoCompletedDialog,
+	selectPlayersCanPlaceTower,
+	selectPlayersCanUpgradeTower,
 	selectTotalNumberOfPlayersWhoMustCompleteDialog,
 } from "shared/store/dialog";
 import { Dialog } from "./game/dialog";
@@ -45,22 +47,26 @@ export function App() {
 	const dialogComplete = useSelector(selectDialogComplete);
 	const numberOfPlayersWhoCompletedDialog = useSelector(selectNumberOfPlayersWhoCompletedDialog);
 	const totalNumberOfPlayersWhoMustCompleteDialog = useSelector(selectTotalNumberOfPlayersWhoMustCompleteDialog);
+	const playersCanPlaceTower = useSelector(selectPlayersCanPlaceTower);
+	const playersCanUpgradeTower = useSelector(selectPlayersCanUpgradeTower);
 
 	return (
 		<>
 			<Music />
 			<Panel key="app">
-				<TowerLoadout key="tower-loadout">
-					{towers.map((tower, index) => (
-						<TowerSlot
-							number={tower.number}
-							icon={tower.icon}
-							cost={tower.cost}
-							callback={tower.callback}
-							key={`tower-slot-${index}`}
-						/>
-					))}
-				</TowerLoadout>
+				{playersCanPlaceTower && (
+					<TowerLoadout key="tower-loadout">
+						{towers.map((tower, index) => (
+							<TowerSlot
+								number={tower.number}
+								icon={tower.icon}
+								cost={tower.cost}
+								callback={tower.callback}
+								key={`tower-slot-${index}`}
+							/>
+						))}
+					</TowerLoadout>
+				)}
 
 				{possibleTowerPlacement.exists && (
 					<FollowMouse size={new UDim2(0.075, 0, 0.04, 0)} zIndex={5} key="tower-placement-message-container">
@@ -77,7 +83,7 @@ export function App() {
 						)
 					))}
 
-				{possibleTowerFocusId.exists && (
+				{playersCanUpgradeTower && possibleTowerFocusId.exists && (
 					<TowerActionMenuFromId
 						towerId={possibleTowerFocusId.value}
 						actions={{

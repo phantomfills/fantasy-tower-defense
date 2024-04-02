@@ -8,6 +8,7 @@ import { getPossibleTowerFromId, getPossibleTowerLevelFromId, towerDoesNotExistF
 import { getPossibleTowerId, getTowerIsNotFocused } from "client/store/tower-action-menu/tower-action-selectors";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { createRangeModel } from "client/modules/tower/range-model";
+import { selectPlayersCanUpgradeTower } from "shared/store/dialog";
 
 const MAX_TOWER_HOVER_DISTANCE = 100;
 
@@ -139,6 +140,9 @@ export class TowerActionController implements OnStart, OnTick {
 		});
 
 		producer.subscribe(getPossibleTowerId, (possibleTowerId) => {
+			const playersCanUpgradeTower = producer.getState(selectPlayersCanUpgradeTower);
+			if (!playersCanUpgradeTower) return;
+
 			if (!possibleTowerId.exists) {
 				this.destroyRangeIndicator();
 				return;
