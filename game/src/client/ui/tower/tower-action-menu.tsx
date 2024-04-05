@@ -125,12 +125,14 @@ export function TowerActionMenu({
 				color={enoughMoney ? Color3.fromRGB(5, 227, 97) : Color3.fromRGB(227, 0, 0)}
 				name={actions.upgrade.name}
 				action={() => {
-					const buySound = createSound(sounds.buy_upgrade, { volume: 0.2 });
-					buySound.Play();
+					const actionSound = enoughMoney ? sounds.buy_upgrade : sounds.error;
 
-					Debris.AddItem(buySound, 2);
+					const sound = createSound(actionSound, { volume: 0.2 });
+					sound.Play();
 
-					actions.upgrade.call();
+					Debris.AddItem(sound, 2);
+
+					if (enoughMoney) actions.upgrade.call();
 				}}
 				keybind={"E"}
 				autoButtonColor={enoughMoney}

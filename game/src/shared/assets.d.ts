@@ -12,6 +12,8 @@ interface Images {
 	eye: string;
 	shield: string;
 	tick: string;
+	white_square: string;
+	dummy_defect_icon: string;
 }
 
 export declare const images: Images;

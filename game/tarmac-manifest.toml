@@ -8,6 +8,11 @@ hash = "9d8c8804a144d6e1fce007b0b9b3922865f18ea5e0c4e64a03250fae27f91349"
 id = 16726140587
 packable = false
 
+[inputs."assets/images/dummy_defect_icon.png"]
+hash = "69ce197de01eac7c9b1fcfc42ae715a3288581b02c3a5693529e943eb0dd6d36"
+id = 17002095380
+packable = false
+
 [inputs."assets/images/eye.png"]
 hash = "b5d4433e2073c715b3a9a9e31fd2bff369972e5a3b0bd8de808e383b3bbc3e70"
 id = 16781146299
@@ -56,6 +61,11 @@ packable = false
 [inputs."assets/images/tick.png"]
 hash = "452b30a2c418f967ec587b77f2df6ddd06243042487e2cc5dd68c94b84376abc"
 id = 16952739879
+packable = false
+
+[inputs."assets/images/white_square.png"]
+hash = "891009b75370b0983a6e91cb9e2694d7fd455eb9d36c09ceada04420b9ec181c"
+id = 16988006592
 packable = false
 
 [inputs."assets/images/x_button.png"]

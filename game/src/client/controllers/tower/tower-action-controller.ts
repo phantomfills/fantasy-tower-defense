@@ -4,10 +4,6 @@ import { UserInputService, Workspace } from "@rbxts/services";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { GenericClientTower } from "client/modules/tower/client-tower";
 import { producer } from "client/store";
-import { getPossibleTowerFromId, getPossibleTowerLevelFromId, towerDoesNotExistFromId } from "shared/store/tower";
-import { getPossibleTowerId, getTowerIsNotFocused } from "client/store/tower-action-menu/tower-action-selectors";
-import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
-import { createRangeModel } from "client/modules/tower/range-model";
 import { selectPlayersCanUpgradeTower } from "shared/store/dialog";
 
 const MAX_TOWER_HOVER_DISTANCE = 100;
@@ -15,14 +11,10 @@ const MAX_TOWER_HOVER_DISTANCE = 100;
 @Controller({})
 export class TowerActionController implements OnStart, OnTick {
 	private highlight: Possible<Highlight>;
-	private rangeIndicator: Possible<Model>;
 	private enabled: boolean;
 
 	constructor(readonly clientTowerRenderController: ClientTowerRenderController) {
 		this.highlight = {
-			exists: false,
-		};
-		this.rangeIndicator = {
 			exists: false,
 		};
 		this.enabled = true;
@@ -100,29 +92,11 @@ export class TowerActionController implements OnStart, OnTick {
 		};
 	}
 
-	private destroyRangeIndicator() {
-		if (!this.rangeIndicator.exists) return;
-
-		this.rangeIndicator.value.Destroy();
-		this.rangeIndicator = {
-			exists: false,
-		};
-	}
-
-	private createRangeIndicator(parent: Instance, range: number, position: Vector3) {
-		this.destroyRangeIndicator();
-
-		const rangeIndicatorModel = createRangeModel(range, position);
-		rangeIndicatorModel.Parent = parent;
-
-		this.rangeIndicator = {
-			exists: true,
-			value: rangeIndicatorModel,
-		};
-	}
-
 	onStart(): void {
 		UserInputService.InputBegan.Connect((input) => {
+			const playersCanUpgradeTower = producer.getState(selectPlayersCanUpgradeTower);
+			if (!playersCanUpgradeTower) return;
+
 			if (!this.enabled) return;
 
 			if (
@@ -137,55 +111,6 @@ export class TowerActionController implements OnStart, OnTick {
 
 				producer.setTowerId(id);
 			}
-		});
-
-		producer.subscribe(getPossibleTowerId, (possibleTowerId) => {
-			const playersCanUpgradeTower = producer.getState(selectPlayersCanUpgradeTower);
-			if (!playersCanUpgradeTower) return;
-
-			if (!possibleTowerId.exists) {
-				this.destroyRangeIndicator();
-				return;
-			}
-
-			const towerId = possibleTowerId.value;
-
-			const possibleTower = producer.getState(getPossibleTowerFromId(towerId));
-			if (!possibleTower.exists) return;
-
-			const { towerType, level } = possibleTower.value;
-			const towerStats = describeTowerFromType(towerType, level);
-
-			const possibleClientTower = this.clientTowerRenderController.getClientTowerFromId(towerId);
-			if (!possibleClientTower.exists) return;
-
-			const clientTower = possibleClientTower.value;
-			const model = clientTower.getModel();
-
-			const rootPosition = model.humanoidRootPart.rootAttachment.WorldPosition;
-			this.createRangeIndicator(Workspace, towerStats.range, rootPosition);
-
-			const towerLevelSelector = getPossibleTowerLevelFromId(towerId);
-
-			const unsubscribeLevelSelector = producer.subscribe(towerLevelSelector, (possibleLevel) => {
-				if (!possibleLevel.exists) return;
-
-				const level = possibleLevel.value;
-				const towerStats = describeTowerFromType(towerType, level);
-				this.createRangeIndicator(Workspace, towerStats.range, rootPosition);
-			});
-
-			const unsubscribeTowerDoesNotExist = producer.once(towerDoesNotExistFromId(towerId), () => {
-				producer.clearTowerId();
-			});
-
-			producer.once(getTowerIsNotFocused(towerId), () => {
-				if (!producer.getState(getPossibleTowerId).exists) {
-					this.destroyRangeIndicator();
-				}
-				unsubscribeLevelSelector();
-				unsubscribeTowerDoesNotExist();
-			});
 		});
 	}
 

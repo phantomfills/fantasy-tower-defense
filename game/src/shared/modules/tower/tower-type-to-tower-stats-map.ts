@@ -17,6 +17,70 @@ interface TowerStats {
 }
 
 const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
+	DUMMY_DEFECT: {
+		levels: [
+			{
+				damage: 5,
+				range: 10,
+				cooldown: 1,
+				health: 50,
+				cost: 300,
+				title: "Dummy Defect",
+				description: "Shoots at enemies with a basic pistol.",
+				traits: [],
+			},
+			{
+				damage: 10,
+				range: 10,
+				cooldown: 1,
+				health: 60,
+				cost: 250,
+				title: "Focused Aim",
+				description: "Deals more damage to enemies.",
+				traits: [],
+			},
+			{
+				damage: 10,
+				range: 12,
+				cooldown: 1,
+				health: 75,
+				cost: 400,
+				title: "Cool Shades",
+				description: "Increases range. Can detect stealth enemies.",
+				traits: ["STEALTH"],
+			},
+			{
+				damage: 15,
+				range: 13,
+				cooldown: 0.75,
+				health: 90,
+				cost: 500,
+				title: "Power Shot",
+				description: "Shoots faster, sees further and deals more damage. Can also penetrate armor.",
+				traits: ["STEALTH", "REINFORCED"],
+			},
+			{
+				damage: 15,
+				range: 13,
+				cooldown: 0.375,
+				health: 100,
+				cost: 900,
+				title: "Dual Wield",
+				description: "Fires from two pistols at once, increasing cooldown speed.",
+				traits: ["STEALTH", "REINFORCED"],
+			},
+			{
+				damage: 20,
+				range: 15,
+				cooldown: 0.25,
+				health: 110,
+				cost: 1_500,
+				title: "Dummy Destroyer",
+				description: "Fires rapidly and deals massive damage to enemies.",
+				traits: ["STEALTH", "REINFORCED"],
+			},
+		],
+	},
 	ARCHER: {
 		levels: [
 			{

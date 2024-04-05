@@ -3,4 +3,5 @@ export const tags = {
 	ENEMY: "Enemy",
 	PROJECTILE: "Projectile",
 	CHARACTER: "Character",
+	CAKE: "Cake",
 } as const;

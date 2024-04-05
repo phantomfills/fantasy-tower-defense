@@ -91,6 +91,30 @@
 								"$path": "assets/archer/level-5.rbxm"
 							}
 						}
+					},
+					"dummy_defect": {
+						"$className": "Folder",
+						"models": {
+							"$className": "Folder",
+							"level_0": {
+								"$path": "assets/dummy-defect/level-0.rbxm"
+							},
+							"level_1": {
+								"$path": "assets/dummy-defect/level-1.rbxm"
+							},
+							"level_2": {
+								"$path": "assets/dummy-defect/level-2.rbxm"
+							},
+							"level_3": {
+								"$path": "assets/dummy-defect/level-3.rbxm"
+							},
+							"level_4": {
+								"$path": "assets/dummy-defect/level-4.rbxm"
+							},
+							"level_5": {
+								"$path": "assets/dummy-defect/level-5.rbxm"
+							}
+						}
 					}
 				}
 			},

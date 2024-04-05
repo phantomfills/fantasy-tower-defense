@@ -7,12 +7,24 @@ import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { useRem } from "../hooks/use-rem";
+import { createSound } from "client/modules/utils/sound";
+import { sounds } from "shared/modules/sounds/sounds";
+import { Debris } from "@rbxts/services";
 
 export interface TowerSlotProps {
 	number: number;
 	callback: () => void;
 	icon: string;
 	cost: number;
+}
+
+function runCallbackWithTowerSlotSound(callback: () => void) {
+	const towerSlotSound = createSound(sounds.tower_slot_click, { volume: 0.2 });
+	towerSlotSound.Play();
+
+	Debris.AddItem(towerSlotSound, 2);
+
+	callback();
 }
 
 export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
@@ -29,7 +41,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 	useEffect(() => {
 		if (!numberPressed) return;
 
-		callback();
+		runCallbackWithTowerSlotSound(callback);
 	}, [numberPressed]);
 
 	useEffect(() => {
@@ -68,7 +80,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					},
 					MouseButton1Down: () => {
 						setClicking(true);
-						callback();
+						runCallbackWithTowerSlotSound(callback);
 					},
 					MouseButton1Up: () => setClicking(false),
 				}}
@@ -78,14 +90,14 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					value={cost}
 					size={new UDim2(1, 0, 0.4, 0)}
 					position={new UDim2(0, 0, 0.6, 0)}
-					zIndex={3}
+					zIndex={4}
 					textSize={rem(3)}
 				/>
 				<imagelabel
 					Image={icon}
 					Size={new UDim2(1, 0, 1, 0)}
 					BackgroundTransparency={1}
-					ZIndex={1}
+					ZIndex={3}
 					Position={lerpBinding(buttonHoverTransition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
 				/>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />

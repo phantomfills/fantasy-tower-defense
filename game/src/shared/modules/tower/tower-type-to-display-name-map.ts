@@ -1,6 +1,7 @@
 import { TowerType } from "./tower-type";
 
 const towerTypeToDisplayNameMap: Record<TowerType, string> = {
+	DUMMY_DEFECT: "Dummy Defect",
 	ARCHER: "Archer",
 };
 

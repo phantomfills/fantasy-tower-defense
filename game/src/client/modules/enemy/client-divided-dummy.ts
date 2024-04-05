@@ -1,5 +1,7 @@
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { ClientEnemy } from "./client-enemy";
+import { createDeathParticles } from "./particles";
+import { playDummyPopSound } from "./dummy-pop-sound";
 
 export class ClientDividedDummy extends ClientEnemy {
 	constructor(id: string, cframe: CFrame) {
@@ -23,5 +25,12 @@ export class ClientDividedDummy extends ClientEnemy {
 		animation.Play();
 
 		super.start();
+	}
+
+	destroy(): void {
+		createDeathParticles(this.getModel().humanoidRootPart.Position, 2, new Color3(0.98, 1, 0));
+		playDummyPopSound(this.getModel().humanoidRootPart.Position);
+
+		super.destroy();
 	}
 }

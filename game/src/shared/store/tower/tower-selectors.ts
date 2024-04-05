@@ -15,7 +15,7 @@ function selectTower(id: string): (state: SharedState) => Tower | undefined {
 	return (state) => state.tower.towers[id];
 }
 
-export function getPossibleTowerFromId(id: string): (state: SharedState) => Possible<Tower> {
+export function selectPossibleTowerFromId(id: string): (state: SharedState) => Possible<Tower> {
 	return createSelector(selectTower(id), (tower) => {
 		return tower ? { exists: true, value: tower } : { exists: false };
 	});

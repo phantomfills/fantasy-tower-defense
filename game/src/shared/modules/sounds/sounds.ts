@@ -8,4 +8,9 @@ export const sounds = {
 	buy_upgrade: "rbxassetid://4612383453",
 	sell_tower: "rbxassetid://8026768430",
 	victory: "rbxassetid://4879566787",
+	tower_slot_click: "rbxassetid://452267918",
+	error: "rbxassetid://852135845",
+	dummy_pop: "rbxassetid://9113263444",
+	pistol_fire: "rbxassetid://2641656639",
+	scream: "rbxassetid://5567523008",
 } as const;

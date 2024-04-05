@@ -7,14 +7,10 @@ interface MoneyState {
 const initialState: MoneyState = {};
 
 export const moneySlice = createProducer(initialState, {
-	initializeMoney: (state, userId: string, amount: number) => {
-		print(userId, amount);
-
-		return {
-			...state,
-			[userId]: amount,
-		};
-	},
+	initializeMoney: (state, userId: string, amount: number) => ({
+		...state,
+		[userId]: amount,
+	}),
 
 	awardBonus: (state, userId: string, amount: number) => {
 		const userMoney = state[userId];

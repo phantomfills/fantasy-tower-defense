@@ -1,14 +1,14 @@
 import { createSelector } from "@rbxts/reflex";
 import { RootState } from "..";
 
-export const getPossibleTowerId = createSelector(
+export const selectPossibleTowerId = createSelector(
 	(state: RootState) => state.towerAction.towerId,
 	(towerId) => {
 		return towerId;
 	},
 );
 
-export const getTowerIsNotFocused = (id: string) =>
+export const selectTowerIsNotFocused = (id: string) =>
 	createSelector(
 		(state: RootState) => state.towerAction.towerId,
 		(towerId) => {

@@ -1,7 +1,7 @@
 import React from "@rbxts/react";
 import { getTowerDisplayNameFromType } from "shared/modules/tower/tower-type-to-display-name-map";
 import { useSelector } from "@rbxts/react-reflex";
-import { getPossibleTowerFromId } from "shared/store/tower";
+import { selectPossibleTowerFromId } from "shared/store/tower";
 import {
 	describeTowerFromType,
 	getSellPriceForTower,
@@ -31,7 +31,7 @@ export function TowerActionMenuFromId({ towerId, actions, close }: TowerActionMe
 	const possibleMoney = useSelector(selectMoney(userId));
 	if (!possibleMoney.exists) return <></>;
 
-	const possibleTower = useSelector(getPossibleTowerFromId(towerId));
+	const possibleTower = useSelector(selectPossibleTowerFromId(towerId));
 	if (!possibleTower.exists) return <></>;
 
 	const tower = possibleTower.value;

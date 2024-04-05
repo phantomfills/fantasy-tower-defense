@@ -18,14 +18,8 @@ function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
 	if (enemy.enemyType === "MULTIPLIER_DUMMY") {
 		const pathCompletionAlpha = producer.getState(selectEnemyPathCompletionAlpha(id));
 
-		(async () => {
-			for (const _ of $range(0, 10)) {
-				const spawnedEnemy = createEnemy("DIVIDED_DUMMY", enemy.path, pathCompletionAlpha);
-				producer.addEnemy(spawnedEnemy, createId());
-
-				holdFor(0.05);
-			}
-		})();
+		const spawnedEnemy = createEnemy("DIVIDED_DUMMY", enemy.path, pathCompletionAlpha);
+		producer.addEnemy(spawnedEnemy, createId());
 	}
 
 	producer.removeEnemy(id);

@@ -3,6 +3,7 @@ return {
 	images = {
 		archer = "rbxassetid://16726140525",
 		cash = "rbxassetid://16726140587",
+		dummy_defect_icon = "rbxassetid://17002095380",
 		eye = "rbxassetid://16781146299",
 		heart = "rbxassetid://16726140716",
 		heart_glow = "rbxassetid://16726140894",
@@ -13,6 +14,7 @@ return {
 		shield = "rbxassetid://16781363004",
 		stripes = "rbxassetid://16726141326",
 		tick = "rbxassetid://16952739879",
+		white_square = "rbxassetid://16988006592",
 		x_button = "rbxassetid://16936306265",
 	},
 }

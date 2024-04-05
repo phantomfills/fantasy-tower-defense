@@ -2,7 +2,7 @@ import { OnStart, OnTick, Service } from "@flamework/core";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { producer } from "server/store";
-import { getPossibleTowerFromId, selectTowers } from "shared/store/tower";
+import { selectPossibleTowerFromId, selectTowers } from "shared/store/tower";
 import { selectEnemies, selectEnemyCFrameFromId, selectFirstAttackableEnemyInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { createBasicAttack } from "shared/modules/attack";
@@ -35,7 +35,7 @@ function deductMoneyFromUser(userId: string, amount: number): void {
 }
 
 function sellTower(id: string): void {
-	const possibleTower = producer.getState(getPossibleTowerFromId(id));
+	const possibleTower = producer.getState(selectPossibleTowerFromId(id));
 	if (!possibleTower.exists) return;
 
 	const tower = possibleTower.value;
@@ -75,7 +75,7 @@ export class TowerService implements OnStart, OnTick {
 
 			const userId = tostring(player.UserId);
 
-			const possibleTower = producer.getState(getPossibleTowerFromId(id));
+			const possibleTower = producer.getState(selectPossibleTowerFromId(id));
 			if (!possibleTower.exists) return;
 
 			const tower = possibleTower.value;
@@ -93,7 +93,7 @@ export class TowerService implements OnStart, OnTick {
 		});
 
 		Events.sellTower.connect((player, id) => {
-			const possibleTower = producer.getState(getPossibleTowerFromId(id));
+			const possibleTower = producer.getState(selectPossibleTowerFromId(id));
 			if (!possibleTower.exists) return;
 
 			const tower = possibleTower.value;

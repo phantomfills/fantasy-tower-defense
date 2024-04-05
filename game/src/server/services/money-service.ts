@@ -4,7 +4,7 @@ import { producer } from "server/store";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getEnemyId, selectEnemies, selectEnemyIsDead } from "shared/store/enemy";
 
-const STARTING_CASH = 2_000;
+const STARTING_CASH = 800;
 
 function initializeMoney(userId: string, amount: number) {
 	producer.initializeMoney(userId, amount);
@@ -14,12 +14,12 @@ function initializeMoney(userId: string, amount: number) {
 export class MoneyService implements OnStart {
 	onStart() {
 		producer.observe(selectEnemies, getEnemyId, ({ enemyType }, id) => {
-			const { maxHealth } = describeEnemyFromType(enemyType);
+			const { money } = describeEnemyFromType(enemyType);
 
 			const unsubscribe = producer.subscribe(selectEnemyIsDead(id), (isDead) => {
 				if (!isDead) return;
 
-				producer.awardBonusToAll(maxHealth);
+				producer.awardBonusToAll(money);
 				unsubscribe();
 			});
 

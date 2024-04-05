@@ -20,6 +20,11 @@ export function createTower(
 	} as const;
 
 	switch (towerType) {
+		case "DUMMY_DEFECT": {
+			return {
+				...towerTemplate,
+			};
+		}
 		case "ARCHER": {
 			return {
 				...towerTemplate,
