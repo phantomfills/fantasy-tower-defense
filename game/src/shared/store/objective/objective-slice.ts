@@ -17,5 +17,13 @@ const uncompletedObjectives: User = {
 };
 
 export const objectiveSlice = createProducer(initialState, {
-	initPlayer: (state, userId: string) => ({ ...state, [userId]: uncompletedObjectives }),
+	initPlayerObjectives: (state, userId: string) => ({ ...state, [userId]: uncompletedObjectives }),
+
+	completeObjectiveForPlayer: (state, userId: string, objective: Objective) => ({
+		...state,
+		[userId]: {
+			...state[userId],
+			[objective]: true,
+		},
+	}),
 });
