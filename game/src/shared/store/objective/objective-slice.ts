@@ -26,4 +26,12 @@ export const objectiveSlice = createProducer(initialState, {
 			[objective]: true,
 		},
 	}),
+
+	completeObjectiveForAllPlayers: (state, objective: Objective) => {
+		const newState = { ...state };
+		for (const [userId] of pairs(newState)) {
+			newState[userId][objective] = true;
+		}
+		return newState;
+	},
 });

@@ -58,6 +58,8 @@ export class Cake extends BaseComponent<{}, CakeInstance> implements OnStart {
 			const possiblePrimaryPart = possible<BasePart>(character.PrimaryPart);
 			if (!possiblePrimaryPart.exists) return;
 
+			producer.completeObjectiveForPlayer(userId, "EAT_CAKE");
+
 			const primaryPart = possiblePrimaryPart.value;
 
 			const explosion = new Instance("Explosion");

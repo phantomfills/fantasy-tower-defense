@@ -22,7 +22,9 @@ export function CashLabel({ value, size, position, zIndex, textSize }: CashLabel
 				Position={new UDim2(0.05, 0, 0, 0)}
 				BackgroundTransparency={1}
 				ZIndex={zIndex}
-			/>
+			>
+				<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Height} />
+			</imagelabel>
 			<Label
 				size={new UDim2(0.55, 0, 0.8, 0)}
 				position={new UDim2(0.45, 0, 0.1, 0)}

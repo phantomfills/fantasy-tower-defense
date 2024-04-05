@@ -35,6 +35,7 @@ import { EnemyTooltipBillboardFromId } from "./enemy/enemy-tooltip";
 import { selectLives } from "shared/store/map";
 import { createPortal } from "@rbxts/react-roblox";
 import { RangePartFromId } from "./tower/range-part";
+import { Objectives } from "./game/objectives";
 
 export function App() {
 	const towers = useSelector(selectTowerLoadout);
@@ -128,6 +129,8 @@ export function App() {
 					<LifeCounter lives={lives} key="life-counter" />
 					<CashCounter value={money.exists ? money.value : 0} key="money-counter" />
 				</MatchInfo>
+
+				<Objectives />
 			</Panel>
 		</>
 	);

@@ -386,8 +386,8 @@ export class RoundService implements OnStart {
 			if (roundNumber === 12) {
 				producer.clearTrackId();
 
+				producer.completeObjectiveForAllPlayers("COMPLETE_LEVEL");
 				Events.playSound.broadcast(sounds.victory);
-
 				this.setDialog("You have completed the tutorial! Congratulations!");
 			}
 		}
