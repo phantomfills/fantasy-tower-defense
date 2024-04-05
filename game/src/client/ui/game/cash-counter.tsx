@@ -12,7 +12,7 @@ export function CashCounter({ value }: CashCounterProps) {
 
 	return (
 		<CounterFrame>
-			<uicorner CornerRadius={new UDim(0.1, 0)} />
+			<uicorner CornerRadius={new UDim(0, 3)} />
 			<CashLabel value={value} size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 0, 0, 0)} textSize={rem(3)} />
 		</CounterFrame>
 	);

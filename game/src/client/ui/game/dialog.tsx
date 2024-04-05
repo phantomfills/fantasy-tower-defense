@@ -73,7 +73,7 @@ export function Dialog({ text, visible, totalTicksRequired, numberTicked, onTick
 			anchorPoint={new Vector2(0.5, 0.5)}
 		>
 			<OneThickWhiteStroke />
-			<uicorner CornerRadius={new UDim(0, 8)} />
+			<uicorner CornerRadius={new UDim(0, 3)} />
 			<Label
 				text={text}
 				size={new UDim2(1, -20, 1, -20)}

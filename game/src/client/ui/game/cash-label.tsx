@@ -3,6 +3,7 @@ import { images } from "shared/assets";
 import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
+import { formatNumberWithCommas } from "client/modules/number/format-number-with-commas";
 
 export interface CashLabelProps {
 	value: number;
@@ -28,7 +29,7 @@ export function CashLabel({ value, size, position, zIndex, textSize }: CashLabel
 				textColor={Color3.fromRGB(255, 255, 255)}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				font={fonts.inter.bold}
-				text={tostring(value)}
+				text={formatNumberWithCommas(value)}
 				textSize={textSize}
 				zIndex={zIndex}
 			/>

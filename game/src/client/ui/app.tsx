@@ -5,7 +5,7 @@ import { LifeCounter } from "./game/life-counter";
 import { FollowMouse } from "./utils/follow-mouse";
 import { TowerPlacementMessage } from "./tower/tower-placement-message";
 import { useSelector } from "@rbxts/react-reflex";
-import { getTowerLoadout } from "client/store/tower-loadout";
+import { selectPossibleTowerPlacement, selectTowerLoadout } from "client/store/tower-loadout";
 import { TowerSlot } from "./tower/tower-slot";
 import { MatchInfo } from "./game/match-info";
 import { CashCounter } from "./game/cash-counter";
@@ -34,11 +34,10 @@ import { selectEnemyDetailViewType } from "client/store/settings";
 import { EnemyTooltipBillboardFromId } from "./enemy/enemy-tooltip";
 import { selectLives } from "shared/store/map";
 import { createPortal } from "@rbxts/react-roblox";
-import { RangePart, RangePartFromId } from "./tower/range-part";
-import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { RangePartFromId } from "./tower/range-part";
 
 export function App() {
-	const towers = useSelector(getTowerLoadout);
+	const towers = useSelector(selectTowerLoadout);
 	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
 	const possibleTowerFocusId = useSelector(selectPossibleTowerId);
 	const enemyDamageIndicators = useSelector(getEnemyDamageIndicators);
@@ -51,6 +50,7 @@ export function App() {
 	const totalNumberOfPlayersWhoMustCompleteDialog = useSelector(selectTotalNumberOfPlayersWhoMustCompleteDialog);
 	const playersCanPlaceTower = useSelector(selectPlayersCanPlaceTower);
 	const playersCanUpgradeTower = useSelector(selectPlayersCanUpgradeTower);
+	const possibleTowerPlacement = useSelector(selectPossibleTowerPlacement);
 
 	return (
 		<>
@@ -103,6 +103,8 @@ export function App() {
 						/>
 					</>
 				)}
+
+				{possibleTowerPlacement.exists && <TowerPlacementMessage />}
 
 				{Object.values(enemyDamageIndicators).map(({ damage, position, spawnTime }, index) => (
 					<EnemyDamageIndicator

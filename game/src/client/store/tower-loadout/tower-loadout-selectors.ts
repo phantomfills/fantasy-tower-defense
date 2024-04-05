@@ -1,9 +1,9 @@
 import { RootState } from "..";
 
-export function getTowerLoadout(state: RootState) {
+export function selectTowerLoadout(state: RootState) {
 	return state.towerLoadout.towers;
 }
 
-export function getPossibleTowerPlacement(state: RootState) {
+export function selectPossibleTowerPlacement(state: RootState) {
 	return state.towerLoadout.possibleTowerPlacement;
 }

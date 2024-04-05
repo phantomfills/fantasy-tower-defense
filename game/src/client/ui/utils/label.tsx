@@ -2,6 +2,7 @@ import React from "@rbxts/react";
 
 interface LabelProps extends React.PropsWithChildren {
 	text?: string;
+	backgroundColor?: Color3;
 	backgroundTransparency?: number;
 	font: Font;
 	size?: UDim2;
@@ -17,6 +18,7 @@ interface LabelProps extends React.PropsWithChildren {
 export function Label({
 	text,
 	children,
+	backgroundColor,
 	backgroundTransparency,
 	font,
 	size,
@@ -32,6 +34,7 @@ export function Label({
 		<textlabel
 			Text={text}
 			FontFace={font}
+			BackgroundColor3={backgroundColor}
 			BackgroundTransparency={backgroundTransparency !== undefined ? backgroundTransparency : 1}
 			Size={size}
 			Position={position}
@@ -42,6 +45,7 @@ export function Label({
 			TextYAlignment={textAlignmentY}
 			TextSize={textSize}
 			TextWrapped={textWrapped}
+			BorderSizePixel={0}
 		>
 			{children}
 		</textlabel>
