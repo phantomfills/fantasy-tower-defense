@@ -3,6 +3,8 @@ import { Workspace } from "@rbxts/services";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { possible } from "shared/modules/utils/possible";
 
+export type Objective = "COMPLETE_LEVEL" | "EAT_CAKE";
+
 interface Map {
 	name: string;
 	model: Model;
@@ -14,6 +16,7 @@ interface Map {
 
 type MapState = {
 	map: Map;
+	objectives: Objective[];
 	lives: number;
 };
 
@@ -53,6 +56,7 @@ const initialState: MapState = {
 		path,
 		placementArea,
 	},
+	objectives: ["COMPLETE_LEVEL", "EAT_CAKE"],
 	lives: 2000,
 };
 
