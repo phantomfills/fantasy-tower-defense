@@ -63,6 +63,12 @@
 						},
 						"dividedDummy": {
 							"$path": "assets/divided-dummy.rbxm"
+						},
+						"impostor": {
+							"$path": "assets/impostor.rbxm"
+						},
+						"critical_sports_car": {
+							"$path": "assets/critical_sports_car.rbxm"
 						}
 					}
 				},

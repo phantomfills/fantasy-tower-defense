@@ -9,6 +9,8 @@ const enemyTypeToDisplayNameMap: Record<EnemyType, string> = {
 	DIVIDED_DUMMY: "Divided Dummy",
 	GUARD_DUMMY: "Guard Dummy",
 	DUMMY_TANK: "Dummy Tank",
+	IMPOSTOR: "Impostor",
+	CRITICAL_SPORTS_CAR: "Critical Sports Car",
 };
 
 export function getEnemyDisplayName(enemyType: EnemyType): string {

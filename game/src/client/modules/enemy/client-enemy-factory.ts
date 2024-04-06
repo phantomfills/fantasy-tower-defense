@@ -8,6 +8,8 @@ import { ClientDummyTank } from "./client-dummy-tank";
 import { ClientGuardDummy } from "./client-guard-dummy";
 import { ClientMultiplierDummy } from "./client-multiplier-dummy";
 import { ClientDividedDummy } from "./client-divided-dummy";
+import { ClientImpostor } from "./client-impostor";
+import { ClientCriticalSportsCar } from "./client-critical-sports-car";
 
 export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFrame): ClientEnemy {
 	switch (enemyType) {
@@ -34,6 +36,12 @@ export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFra
 		}
 		case "DIVIDED_DUMMY": {
 			return new ClientDividedDummy(id, cframe);
+		}
+		case "IMPOSTOR": {
+			return new ClientImpostor(id, cframe);
+		}
+		case "CRITICAL_SPORTS_CAR": {
+			return new ClientCriticalSportsCar(id, cframe);
 		}
 	}
 }

@@ -57,6 +57,18 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 		money: 3_500,
 		traits: [],
 	},
+	IMPOSTOR: {
+		maxHealth: 420,
+		speed: 16,
+		money: 100,
+		traits: [],
+	},
+	CRITICAL_SPORTS_CAR: {
+		maxHealth: 100,
+		speed: 25,
+		money: 100,
+		traits: ["REINFORCED"],
+	},
 };
 
 export function describeEnemyFromType(enemyType: EnemyType): EnemyStats {

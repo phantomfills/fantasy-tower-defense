@@ -7,6 +7,8 @@ export const ENEMY_TYPE = [
 	"DIVIDED_DUMMY",
 	"GUARD_DUMMY",
 	"DUMMY_TANK",
+	"IMPOSTOR",
+	"CRITICAL_SPORTS_CAR",
 ] as const;
 
 export type EnemyType = (typeof ENEMY_TYPE)[number];

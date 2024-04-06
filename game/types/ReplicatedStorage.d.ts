@@ -15,6 +15,17 @@ interface ReplicatedStorage extends Instance {
 				["path-utils"]: ModuleScript;
 				["snap-to-cframe"]: ModuleScript;
 			};
+			money: Folder & {
+				["sellback-rate"]: ModuleScript;
+			};
+			enemy: Folder & {
+				["enemy-type-to-enemy-stats-map"]: ModuleScript;
+				["enemy-type-to-display-name-map"]: ModuleScript;
+				["enemy-type"]: ModuleScript;
+			};
+			sounds: Folder & {
+				sounds: ModuleScript;
+			};
 			tower: Folder & {
 				["tower-type-to-display-name-map"]: ModuleScript;
 				["tower-model"]: ModuleScript;
@@ -22,19 +33,16 @@ interface ReplicatedStorage extends Instance {
 				["tower-type"]: ModuleScript;
 				["tower-type-to-model-map"]: ModuleScript;
 			};
-			sounds: Folder & {
-				sounds: ModuleScript;
+			command: Folder & {
+				["admin-guard"]: ModuleScript;
+				["game-type"]: ModuleScript;
+				["enemy-type"]: ModuleScript;
 			};
-			money: Folder & {
-				["sellback-rate"]: ModuleScript;
+			game: Folder & {
+				["objective-type-to-name-map"]: ModuleScript;
 			};
 			music: Folder & {
 				tracks: ModuleScript;
-			};
-			enemy: Folder & {
-				["enemy-type-to-enemy-stats-map"]: ModuleScript;
-				["enemy-type-to-display-name-map"]: ModuleScript;
-				["enemy-type"]: ModuleScript;
 			};
 			attack: ModuleScript & {
 				["attack-factory"]: ModuleScript;
@@ -49,6 +57,10 @@ interface ReplicatedStorage extends Instance {
 			map: ModuleScript & {
 				["map-selectors"]: ModuleScript;
 				["map-slice"]: ModuleScript;
+			};
+			objective: ModuleScript & {
+				["objective-slice"]: ModuleScript;
+				["objective-selectors"]: ModuleScript;
 			};
 			tower: ModuleScript & {
 				["tower-slice"]: ModuleScript;
@@ -125,6 +137,10 @@ interface ReplicatedStorage extends Instance {
 						head: MeshPart & {
 							["head 🡪 cap"]: Weld;
 							cap: Part & {
+								Mesh: SpecialMesh;
+							};
+							["head 🡪 bandana"]: Weld;
+							bandana: Part & {
 								Mesh: SpecialMesh;
 							};
 							face: Decal;
@@ -528,6 +544,49 @@ interface ReplicatedStorage extends Instance {
 		};
 		enemies: Folder & {
 			models: Folder & {
+				impostor: Model & {
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+					};
+					VIISOOOOOR: MeshPart;
+					right: Part;
+					left: Part & {
+						["amon gus"]: Model & {
+							Knife: Model & {
+								Blade: UnionOperation & {
+									Weld: ManualWeld;
+								};
+								Guard: UnionOperation & {
+									Weld: ManualWeld;
+								};
+								Handle: UnionOperation & {
+									Weld: Weld;
+								};
+							};
+						};
+						Model: Model;
+					};
+					Part: Part;
+				};
+				multiplierDummy: Model & {
+					rightArm: MeshPart;
+					head: MeshPart;
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
 				armoredDummy: Model & {
 					rightArm: MeshPart & {
 						rightArmPiece: Model;
@@ -580,22 +639,378 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
-				trainingDummy: Model & {
+				critical_sports_car: Model & {
+					["2021 Koenigsegg Jesko // Rosh"]: Model & {
+						Wheels: Model & {
+							RR: Part & {
+								SuspensionFixed: Model;
+								SQ: Sound;
+								Smoke: ParticleEmitter;
+								WheelFixed: Model & {
+									Caliper: MeshPart;
+								};
+								Parts: Model & {
+									Dosc: MeshPart;
+									Tire: MeshPart;
+								};
+							};
+							RL: Part & {
+								SuspensionFixed: Model;
+								SQ: Sound;
+								Smoke: ParticleEmitter;
+								WheelFixed: Model & {
+									Caliper: MeshPart;
+								};
+								Parts: Model & {
+									Dosc: MeshPart;
+									Tire: MeshPart;
+								};
+							};
+							FR: Part & {
+								SuspensionFixed: Model;
+								SQ: Sound;
+								Smoke: ParticleEmitter;
+								WheelFixed: Model & {
+									Caliper: MeshPart;
+								};
+								Parts: Model & {
+									Dosc: MeshPart;
+									Tire: MeshPart;
+								};
+							};
+							FL: Part & {
+								SuspensionFixed: Model;
+								SQ: Sound;
+								Smoke: ParticleEmitter;
+								WheelFixed: Model & {
+									Caliper: MeshPart;
+								};
+								Parts: Model & {
+									Dosc: MeshPart;
+									Tire: MeshPart;
+								};
+							};
+						};
+						[" "]: Model & {
+							[" "]: Model & {
+								LeftLowerArm: MeshPart & {
+									LeftElbowRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+									LeftWristRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								LeftFoot: MeshPart & {
+									LeftAnkleRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+								};
+								RightHand: MeshPart & {
+									RightWristRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									RightGripAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+								};
+								HumanoidRootPart: Part & {
+									RootRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+								};
+								Shirt: Shirt;
+								Pants: Pants;
+								RightLowerLeg: MeshPart & {
+									RightKneeRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									RightAnkleRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+								};
+								RightFoot: MeshPart & {
+									OriginalSize: Vector3Value;
+									RightAnkleRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								LeftLowerLeg: MeshPart & {
+									OriginalSize: Vector3Value;
+									LeftAnkleRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									LeftKneeRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								LowerTorso: MeshPart & {
+									OriginalSize: Vector3Value;
+									WaistCenterAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									RootRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									RightHipRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									WaistBackAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									WaistRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									LeftHipRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									WaistFrontAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								Head: Part & {
+									FaceFrontAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									HatAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+									NeckRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									HairAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									["Dead Face"]: Decal;
+									Mesh: SpecialMesh & {
+										OriginalSize: Vector3Value;
+									};
+									FaceCenterAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								UpperTorso: MeshPart & {
+									RightCollarAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									BodyBackAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									NeckRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									LeftCollarAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									["blood stab wound"]: Decal;
+									OriginalSize: Vector3Value;
+									LeftShoulderRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									BodyFrontAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									WaistRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									RightShoulderRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									NeckAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								LeftUpperArm: MeshPart & {
+									LeftElbowRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									LeftShoulderRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+									LeftShoulderAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								RightLowerArm: MeshPart & {
+									RightWristRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+									RightElbowRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								LeftHand: MeshPart & {
+									LeftGripAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+									LeftWristRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								["Body Colors"]: BodyColors;
+								LeftUpperLeg: MeshPart & {
+									OriginalSize: Vector3Value;
+									LeftHipRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									LeftKneeRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								Humanoid: Humanoid;
+								RightUpperLeg: MeshPart & {
+									RightKneeRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									OriginalSize: Vector3Value;
+									RightHipRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+								};
+								RightUpperArm: MeshPart & {
+									OriginalSize: Vector3Value;
+									RightElbowRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									RightShoulderRigAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									RightShoulderAttachment: Attachment & {
+										OriginalPosition: Vector3Value;
+									};
+									siGN: Model;
+								};
+							};
+						};
+						Model: Model;
+						Body: Model & {
+							["Interior A"]: MeshPart;
+							Fogs: Model & {
+								Daytime: MeshPart;
+							};
+							["Interior A L"]: MeshPart;
+							["Black L"]: MeshPart;
+							["Mirror L"]: MeshPart;
+							Textured: MeshPart;
+							["Black R"]: MeshPart;
+							["CF R"]: MeshPart;
+							Exhaust: Model & {
+								BFLight2: Part & {
+									Mesh: SpecialMesh;
+									SpotLight: SpotLight;
+								};
+								Backfire3: Part & {
+									Backfire2: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+									Fire: ParticleEmitter;
+									Backfire1: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+								};
+								Backfire1: Part & {
+									Backfire2: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+									Fire: ParticleEmitter;
+									Backfire1: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+								};
+								BFLight5: Part & {
+									Mesh: SpecialMesh;
+									SpotLight: SpotLight;
+								};
+								BFLight1: Part & {
+									SpotLight: SpotLight;
+									Mesh: SpecialMesh;
+								};
+								BFLight4: Part & {
+									Mesh: SpecialMesh;
+									SpotLight: SpotLight;
+								};
+								BFLight3: Part & {
+									SpotLight: SpotLight;
+									Mesh: SpecialMesh;
+								};
+								BFLight6: Part & {
+									Mesh: SpecialMesh;
+									SpotLight: SpotLight;
+								};
+								Backfire2: Part & {
+									Backfire2: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+									Fire: ParticleEmitter;
+									Backfire1: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+								};
+								Backfire4: Part & {
+									Backfire2: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+									Fire: ParticleEmitter;
+									Backfire1: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+								};
+								Backfire6: Part & {
+									Backfire2: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+									Fire: ParticleEmitter;
+									Backfire1: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+								};
+								Backfire5: Part & {
+									Backfire2: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+									Fire: ParticleEmitter;
+									Backfire1: Sound & {
+										ChorusSoundEffect: ChorusSoundEffect;
+									};
+								};
+							};
+							["Badge L"]: MeshPart;
+							["Interior A R"]: MeshPart;
+							DRLs: MeshPart;
+							["Paint R"]: MeshPart;
+							["CF L"]: MeshPart;
+							Underbody: MeshPart;
+							["Koenigsegg Badge"]: MeshPart;
+							Grille: MeshPart;
+							Badges: MeshPart;
+							["Window(s) R"]: MeshPart;
+							["Paint L"]: MeshPart;
+							["Window(s) L"]: MeshPart;
+							["Mirror R"]: MeshPart;
+						};
+					};
 					rightArm: MeshPart;
 					head: MeshPart;
-					leftArm: MeshPart;
 					rightLeg: MeshPart;
+					leftArm: MeshPart;
 					torso: MeshPart & {
 						["Left Shoulder"]: Motor6D;
 						["Right Shoulder"]: Motor6D;
 						Neck: Motor6D;
 						["Right Hip"]: Motor6D;
-						target: Decal;
 						["Left Hip"]: Motor6D;
 					};
 					humanoidRootPart: Part & {
 						rootAttachment: Attachment;
-						RootJoint: Motor6D;
 					};
 					leftLeg: MeshPart;
 				};
@@ -623,7 +1038,7 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
-				multiplierDummy: Model & {
+				trainingDummy: Model & {
 					rightArm: MeshPart;
 					head: MeshPart;
 					leftArm: MeshPart;
@@ -642,7 +1057,7 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
-				guardDummy: Model & {
+				dummyTank: Model & {
 					rightArm: MeshPart;
 					head: MeshPart;
 					leftArm: MeshPart;
@@ -679,7 +1094,7 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
-				dummyTank: Model & {
+				guardDummy: Model & {
 					rightArm: MeshPart;
 					head: MeshPart;
 					leftArm: MeshPart;
