@@ -114,7 +114,7 @@ export function TowerActionMenu({
 			<OneThickWhiteStroke />
 			<Label
 				size={new UDim2(1, 0, 0.15, 0)}
-				textSize={rem(2.5)}
+				textSize={rem(2.25)}
 				font={fonts.inter.bold}
 				text={`${name} Lv. ${level}`}
 				textColor={new Color3(255, 255, 255)}
@@ -159,7 +159,7 @@ export function TowerActionMenu({
 				font={fonts.inter.bold}
 				text={upgradeTitle}
 				textColor={new Color3(255, 255, 255)}
-				textSize={rem(1.5)}
+				textSize={rem(1.75)}
 			/>
 			<Frame
 				size={new UDim2(1, -30, 0.45, 0)}

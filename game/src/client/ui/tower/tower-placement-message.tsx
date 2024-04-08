@@ -4,9 +4,16 @@ import { Label } from "../utils/label";
 import { fonts } from "../constants/fonts";
 import { useRem } from "../hooks/use-rem";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
+import { useSelector } from "@rbxts/react-reflex";
+import { selectPossibleTowerPlacement } from "client/store/tower-loadout";
 
 export function TowerPlacementMessage() {
 	const rem = useRem();
+
+	const possibleTowerPlacement = useSelector(selectPossibleTowerPlacement);
+	if (!possibleTowerPlacement.exists) {
+		return <></>;
+	}
 
 	return (
 		<Frame size={new UDim2(0.5, 0, 0.15, 0)} position={new UDim2(0.25, 0, 0.1, 0)}>

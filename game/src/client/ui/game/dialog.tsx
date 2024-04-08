@@ -9,6 +9,14 @@ import { images } from "shared/assets";
 import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
 import { Debris } from "@rbxts/services";
+import { useSelector } from "@rbxts/react-reflex";
+import {
+	selectDialogComplete,
+	selectDialogText,
+	selectNumberOfPlayersWhoCompletedDialog,
+	selectTotalNumberOfPlayersWhoMustCompleteDialog,
+} from "shared/store/dialog";
+import { Events } from "client/network";
 
 interface TickProps {
 	size: UDim2;
@@ -37,21 +45,17 @@ function Tick({ size, position, onClick }: TickProps) {
 	);
 }
 
-interface DialogProps {
-	text: string;
-	visible: boolean;
-	totalTicksRequired: number;
-	numberTicked: number;
-	onTick: () => void;
-}
+export function Dialog() {
+	const possibleText = useSelector(selectDialogText);
+	const dialogComplete = useSelector(selectDialogComplete);
+	const numberTicked = useSelector(selectNumberOfPlayersWhoCompletedDialog);
+	const totalTicksRequired = useSelector(selectTotalNumberOfPlayersWhoMustCompleteDialog);
 
-export function Dialog({ text, visible, totalTicksRequired, numberTicked, onTick }: DialogProps) {
 	const rem = useRem();
-
 	const [dialogAppearTransition, setDialogAppearTransition] = useMotor(0);
 
 	useEffect(() => {
-		if (!visible) {
+		if (dialogComplete) {
 			setDialogAppearTransition(new Spring(0, { dampingRatio: 0.6, frequency: 3 }));
 			return;
 		}
@@ -62,7 +66,11 @@ export function Dialog({ text, visible, totalTicksRequired, numberTicked, onTick
 		Debris.AddItem(dialogSound, 2);
 
 		setDialogAppearTransition(new Spring(1, { dampingRatio: 0.6, frequency: 3 }));
-	}, [visible]);
+	}, [dialogComplete]);
+
+	if (!possibleText.exists) return <></>;
+
+	const text = possibleText.value;
 
 	return (
 		<Frame
@@ -94,7 +102,11 @@ export function Dialog({ text, visible, totalTicksRequired, numberTicked, onTick
 				textAlignmentX={Enum.TextXAlignment.Right}
 				textColor={Color3.fromRGB(255, 255, 255)}
 			/>
-			<Tick size={new UDim2(0, 20, 0, 20)} position={new UDim2(1, -30, 1, -30)} onClick={() => onTick()} />
+			<Tick
+				size={new UDim2(0, 20, 0, 20)}
+				position={new UDim2(1, -30, 1, -30)}
+				onClick={() => Events.completeDialog.fire()}
+			/>
 		</Frame>
 	);
 }

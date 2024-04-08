@@ -1,15 +1,18 @@
 import React from "@rbxts/react";
 import { useSelector } from "@rbxts/react-reflex";
+import { createPortal } from "@rbxts/react-roblox";
+import { Workspace } from "@rbxts/services";
+import { selectPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { selectPossibleTowerFromId } from "shared/store/tower";
 
-interface RangePartProps {
+interface RangeModelProps {
 	position: Vector3;
 	range: number;
 	legal: boolean;
 }
 
-export function RangePart({ position, range, legal }: RangePartProps) {
+export function RangeModel({ position, range, legal }: RangeModelProps) {
 	return (
 		<model>
 			<humanoid />
@@ -28,18 +31,17 @@ export function RangePart({ position, range, legal }: RangePartProps) {
 	);
 }
 
-interface RangePartFromIdProps {
-	towerId: string;
-}
+export function RangeIndicator() {
+	const possibleTowerFocusId = useSelector(selectPossibleTowerId);
+	const possibleTowerFocus = useSelector(
+		selectPossibleTowerFromId(possibleTowerFocusId.exists ? possibleTowerFocusId.value : ""),
+	);
+	if (!possibleTowerFocus.exists) return <></>;
 
-export function RangePartFromId({ towerId }: RangePartFromIdProps) {
-	const possibleTower = useSelector(selectPossibleTowerFromId(towerId));
-	if (!possibleTower.exists) {
-		return <></>;
-	}
+	const towerFocus = possibleTowerFocus.value;
 
-	const { towerType, level, cframe } = possibleTower.value;
+	const { towerType, level, cframe } = towerFocus;
 	const { range } = describeTowerFromType(towerType, level);
 
-	return <RangePart position={cframe.Position} range={range} legal={true} />;
+	return createPortal(<RangeModel position={cframe.Position} range={range} legal={true} />, Workspace, "range-part");
 }

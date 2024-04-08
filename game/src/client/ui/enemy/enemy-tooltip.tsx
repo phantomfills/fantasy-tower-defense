@@ -11,6 +11,8 @@ import { selectEnemyFromId } from "shared/store/enemy";
 import { useSelector } from "@rbxts/react-reflex";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 import { abbreviateNumber } from "client/modules/number/abbreviate-number";
+import { selectFocusEnemyId } from "client/store/enemy-focus";
+import { producer } from "client/store";
 
 interface EnemyTooltipProps {
 	_type: EnemyType;
@@ -187,12 +189,13 @@ function EnemyTooltipBillboard({ position, _type, health }: EnemyTooltipBillboar
 	);
 }
 
-interface EnemyTooltipBillboardFromIdProps {
-	id: string;
-}
+export function EnemyTooltipBillboardFromId() {
+	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
+	if (!possibleEnemyFocusId.exists) {
+		return <></>;
+	}
 
-export function EnemyTooltipBillboardFromId({ id }: EnemyTooltipBillboardFromIdProps) {
-	const possibleEnemy = useSelector(selectEnemyFromId(id));
+	const possibleEnemy = producer.getState(selectEnemyFromId(possibleEnemyFocusId.value));
 	if (!possibleEnemy.exists) {
 		return <></>;
 	}

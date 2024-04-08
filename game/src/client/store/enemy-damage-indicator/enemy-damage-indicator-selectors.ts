@@ -1,5 +1,5 @@
 import { RootState } from "..";
 
-export function getEnemyDamageIndicators(state: RootState) {
+export function selectEnemyDamageIndicators(state: RootState) {
 	return state.enemyDamageIndicator;
 }

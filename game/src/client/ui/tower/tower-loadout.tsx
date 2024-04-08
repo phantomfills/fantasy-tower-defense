@@ -1,9 +1,16 @@
 import React from "@rbxts/react";
 import { Frame } from "../utils/frame";
+import { useSelector } from "@rbxts/react-reflex";
+import { selectPlayersCanPlaceTower } from "shared/store/dialog";
+import { selectTowerLoadout } from "client/store/tower-loadout";
+import { TowerSlot } from "./tower-slot";
 
-interface TowerLoadoutProps extends React.PropsWithChildren {}
+export function TowerLoadout() {
+	const playersCanPlaceTower = useSelector(selectPlayersCanPlaceTower);
+	const towerLoadout = useSelector(selectTowerLoadout);
 
-export function TowerLoadout({ children }: TowerLoadoutProps) {
+	if (!playersCanPlaceTower || !towerLoadout) return <></>;
+
 	return (
 		<Frame position={new UDim2(0, 0, 0.8, -5)} size={new UDim2(1, 0, 0.2, 0)} zIndex={1}>
 			<uigridlayout
@@ -12,7 +19,15 @@ export function TowerLoadout({ children }: TowerLoadoutProps) {
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}
 			/>
-			{children}
+			{towerLoadout.map((tower, index) => (
+				<TowerSlot
+					number={tower.number}
+					icon={tower.icon}
+					cost={tower.cost}
+					callback={tower.callback}
+					key={`tower-slot-${index}`}
+				/>
+			))}
 		</Frame>
 	);
 }

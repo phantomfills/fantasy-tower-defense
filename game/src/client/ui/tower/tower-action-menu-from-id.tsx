@@ -14,24 +14,24 @@ import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { selectMoney } from "shared/store/money";
 import { TowerActionMenu } from "./tower-action-menu";
 import { Players } from "@rbxts/services";
+import { selectPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
+import { producer } from "client/store";
+import { Events } from "client/network";
+import { selectPlayersCanUpgradeTower } from "shared/store/dialog";
 
 const player = Players.LocalPlayer;
 const userId = tostring(player.UserId);
 
-interface TowerActionMenuFromIdProps {
-	actions: {
-		upgrade: () => void;
-		sell: () => void;
-	};
-	close: () => void;
-	towerId: string;
-}
-
-export function TowerActionMenuFromId({ towerId, actions, close }: TowerActionMenuFromIdProps) {
+export function TowerActionMenuFromId() {
 	const possibleMoney = useSelector(selectMoney(userId));
-	if (!possibleMoney.exists) return <></>;
+	const possibleTowerFocusId = useSelector(selectPossibleTowerId);
+	const playersCanUpgradeTower = useSelector(selectPlayersCanUpgradeTower);
+	if (!possibleMoney.exists || !possibleTowerFocusId.exists || !playersCanUpgradeTower) return <></>;
 
-	const possibleTower = useSelector(selectPossibleTowerFromId(towerId));
+	const money = possibleMoney.value;
+	const towerId = possibleTowerFocusId.value;
+
+	const possibleTower = producer.getState(selectPossibleTowerFromId(towerId));
 	if (!possibleTower.exists) return <></>;
 
 	const tower = possibleTower.value;
@@ -53,19 +53,25 @@ export function TowerActionMenuFromId({ towerId, actions, close }: TowerActionMe
 	return (
 		<TowerActionMenu
 			name={towerDisplayName}
-			money={possibleMoney.value}
+			money={money}
 			level={level}
 			actions={{
 				upgrade: {
 					name: towerUpgradeCostMessage,
-					call: actions.upgrade,
+					call: () => {
+						Events.upgradeTower.fire(towerId);
+					},
 				},
 				sell: {
 					name: `Sell: $${towerSellPrice}`,
-					call: actions.sell,
+					call: () => {
+						Events.sellTower.fire(towerId);
+					},
 				},
 			}}
-			close={close}
+			close={() => {
+				producer.clearTowerId();
+			}}
 			upgradeTitle={upgradeTitle !== undefined ? `Lv. ${level + 1} - ${upgradeTitle}` : "YOU MAXED THIS TOWER!"}
 			upgradeDescription={upgradeDescription ?? "INFINITE POWER!"}
 			upgradeCost={upgradeCost}
