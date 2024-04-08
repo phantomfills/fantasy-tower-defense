@@ -13,8 +13,8 @@ import { selectNoEnemiesExist } from "shared/store/enemy";
 import { selectGameOver, selectMap } from "shared/store/map";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
-const ROUND_BONUS = 150;
-const ROUND_BONUS_MULTIPLIER = 1.5;
+const ROUND_BONUS = 100;
+const ROUND_BONUS_MULTIPLIER = 1.25;
 
 function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number): number {
 	const additionalBonusMultiplier = roundBonusMultiplier - 1;

@@ -57,7 +57,7 @@ const initialState: MapState = {
 		placementArea,
 	},
 	objectives: ["COMPLETE_LEVEL", "EAT_CAKE"],
-	lives: 2000,
+	lives: 1000,
 };
 
 export const mapSlice = createProducer(initialState, {
