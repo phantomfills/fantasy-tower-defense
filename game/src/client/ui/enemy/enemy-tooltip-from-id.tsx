@@ -14,7 +14,7 @@ export function EnemyTooltipFromId({ id }: EnemyTooltipFromIdProps) {
 
 	return (
 		<FollowMouse size={new UDim2(0, 175, 0, 50)} zIndex={5}>
-			<EnemyTooltip _type={enemyDetails.value._type} health={enemyDetails.value.health} />
+			<EnemyTooltip enemyType={enemyDetails.value.enemyType} health={enemyDetails.value.health} />
 		</FollowMouse>
 	);
 }

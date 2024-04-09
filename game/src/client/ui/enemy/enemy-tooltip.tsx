@@ -15,18 +15,18 @@ import { selectFocusEnemyId } from "client/store/enemy-focus";
 import { producer } from "client/store";
 
 interface EnemyTooltipProps {
-	_type: EnemyType;
+	enemyType: EnemyType;
 	health: number;
 }
 
-export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
-	const { maxHealth, traits } = describeEnemyFromType(_type);
+export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
+	const { maxHealth, traits } = describeEnemyFromType(enemyType);
 	const healthPercent = health / maxHealth;
 
 	const abbreviatedHealth = abbreviateNumber(health);
 	const abbreviatedMaxHealth = abbreviateNumber(maxHealth);
 
-	const enemyDisplayName = getEnemyDisplayName(_type);
+	const enemyDisplayName = getEnemyDisplayName(enemyType);
 
 	return (
 		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 0, 0, 0)} clipsDescendants={false}>
@@ -92,7 +92,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 						size={new UDim2(0.5, 0, 1, 0)}
 						position={new UDim2(0, 0, 1, 5)}
 						backgroundColor={Color3.fromRGB(45, 45, 45)}
-						backgroundTransparency={0}
+						backgroundTransparency={0.5}
 					>
 						<imagelabel
 							Size={new UDim2(1, 0, 1, 0)}
@@ -132,7 +132,7 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 						size={new UDim2(0.65, 0, 1, 0)}
 						position={new UDim2(0, 0, 1, 5)}
 						backgroundColor={Color3.fromRGB(45, 45, 45)}
-						backgroundTransparency={0}
+						backgroundTransparency={0.5}
 					>
 						<imagelabel
 							Size={new UDim2(1, 0, 1, 0)}
@@ -176,7 +176,7 @@ interface EnemyTooltipBillboardFrameProps extends EnemyTooltipProps {
 	position: Vector3;
 }
 
-function EnemyTooltipBillboardFrame({ position, _type, health }: EnemyTooltipBillboardFrameProps) {
+function EnemyTooltipBillboardFrame({ position, enemyType, health }: EnemyTooltipBillboardFrameProps) {
 	return (
 		<billboardgui
 			StudsOffsetWorldSpace={position}
@@ -184,7 +184,7 @@ function EnemyTooltipBillboardFrame({ position, _type, health }: EnemyTooltipBil
 			AlwaysOnTop={true}
 			ClipsDescendants={false}
 		>
-			<EnemyTooltip _type={_type} health={health} />
+			<EnemyTooltip enemyType={enemyType} health={health} />
 		</billboardgui>
 	);
 }
@@ -203,5 +203,5 @@ export function EnemyTooltipBillboard() {
 	const { pathCompletionAlpha, enemyType, health, path } = possibleEnemy.value;
 	const position = getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha).Position;
 
-	return <EnemyTooltipBillboardFrame position={position} _type={enemyType} health={health} />;
+	return <EnemyTooltipBillboardFrame position={position} enemyType={enemyType} health={health} />;
 }

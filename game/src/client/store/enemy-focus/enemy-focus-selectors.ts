@@ -9,7 +9,7 @@ export function selectFocusEnemyId(state: RootState) {
 
 export function selectEnemyFocusDetails(
 	id: string,
-): (state: RootState) => Possible<{ _type: EnemyType; health: number; position: Vector3 }> {
+): (state: RootState) => Possible<{ enemyType: EnemyType; health: number; position: Vector3 }> {
 	return (state: RootState) => {
 		const enemy = state.enemy[id];
 		if (!enemy) return { exists: false };
@@ -17,7 +17,7 @@ export function selectEnemyFocusDetails(
 		return {
 			exists: true,
 			value: {
-				_type: enemy.enemyType,
+				enemyType: enemy.enemyType,
 				health: enemy.health,
 				position: getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha).Position,
 			},
