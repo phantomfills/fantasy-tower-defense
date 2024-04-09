@@ -15,19 +15,19 @@ export function App() {
 	return (
 		<>
 			<Music />
-			<Panel key="app">
-				<TowerLoadout key="tower-loadout" />
+			<Panel>
+				<TowerLoadout />
 
-				<TowerPlacementMessage key="tower-placement-message" />
+				<TowerPlacementMessage />
 
-				<TowerActionMenu key="tower-action-menu" />
-				<RangeIndicator key="range-part" />
+				<TowerActionMenu />
+				<RangeIndicator />
 
-				<EnemyTooltipBillboard key="enemy-tooltip" />
+				<EnemyTooltipBillboard />
 				<EnemyDamageIndicators />
 
 				<Dialog />
-				<MatchInfo key="match-info" />
+				<MatchInfo />
 				<Objectives />
 			</Panel>
 		</>
