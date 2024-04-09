@@ -1,9 +1,9 @@
 import { Service, OnStart } from "@flamework/core";
 import { Players, RunService } from "@rbxts/services";
-import { createEnemy } from "server/modules/enemy/enemy-factory";
+import { createAttackingEnemy, createNonAttackingEnemy } from "server/modules/enemy/enemy-factory";
 import { Events } from "server/network";
 import { producer } from "server/store";
-import { EnemyType } from "shared/modules/enemy/enemy-type";
+import { EnemyType, isNonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { tracks } from "shared/modules/music/tracks";
 import { sounds } from "shared/modules/sounds/sounds";
 import { createId } from "shared/modules/utils/id-utils";
@@ -402,8 +402,15 @@ export class RoundService implements OnStart {
 				const gameOver = producer.getState(selectGameOver);
 				if (gameOver) return { type: "error", message: "Game over - cancelling round" };
 
-				const enemy = createEnemy(group.enemyType, path);
-				producer.addEnemy(enemy, createId());
+				const { enemyType } = group;
+
+				if (isNonAttackingEnemyType(enemyType)) {
+					const enemy = createNonAttackingEnemy(enemyType, path);
+					producer.addEnemy(enemy, createId());
+				} else {
+					const enemy = createAttackingEnemy(enemyType, path);
+					producer.addEnemy(enemy, createId());
+				}
 
 				holdFor(group.enemySpawnInterval);
 			}

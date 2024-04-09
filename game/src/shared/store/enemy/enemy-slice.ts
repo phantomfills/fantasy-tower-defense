@@ -1,18 +1,28 @@
 import { createProducer } from "@rbxts/reflex";
-import { EnemyType } from "shared/modules/enemy/enemy-type";
+import { AttackingEnemyType, EnemyType, NonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { getPathLength } from "shared/modules/utils/path-utils";
 
-export interface Enemy {
-	enemyType: EnemyType;
+type BaseEnemyProps = {
 	path: PathWaypoint[];
 	health: number;
 	spawnTimestamp: number;
 	pathCompletionAlpha: number;
 	initialPathCompletionAlpha?: number;
 	dead: boolean;
-}
+};
+
+type NonAttackingEnemy = BaseEnemyProps & {
+	enemyType: NonAttackingEnemyType;
+};
+
+type AttackingEnemy = BaseEnemyProps & {
+	enemyType: AttackingEnemyType;
+	random: number;
+};
+
+export type Enemy = NonAttackingEnemy | AttackingEnemy;
 
 export type EnemyState = Record<string, Enemy>;
 

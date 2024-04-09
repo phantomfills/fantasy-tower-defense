@@ -1,10 +1,14 @@
-import { EnemyType } from "shared/modules/enemy/enemy-type";
+import { AttackingEnemyType, EnemyType, NonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { Enemy } from "shared/store/enemy";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 
-export function createEnemy(enemyType: EnemyType, path: PathWaypoint[], initialPathCompletionAlpha?: number): Enemy {
+export function createNonAttackingEnemy(
+	enemyType: NonAttackingEnemyType,
+	path: PathWaypoint[],
+	initialPathCompletionAlpha?: number,
+): Enemy {
 	const enemyStats = describeEnemyFromType(enemyType);
 
 	const enemyTemplate: Enemy = {
@@ -39,13 +43,35 @@ export function createEnemy(enemyType: EnemyType, path: PathWaypoint[], initialP
 		case "GUARD_DUMMY": {
 			return enemyTemplate;
 		}
-		case "DUMMY_TANK": {
-			return enemyTemplate;
-		}
 		case "IMPOSTOR": {
 			return enemyTemplate;
 		}
 		case "CRITICAL_SPORTS_CAR": {
+			return enemyTemplate;
+		}
+	}
+}
+
+export function createAttackingEnemy(
+	enemyType: AttackingEnemyType,
+	path: PathWaypoint[],
+	initialPathCompletionAlpha?: number,
+): Enemy {
+	const enemyStats = describeEnemyFromType(enemyType);
+
+	const enemyTemplate: Enemy = {
+		enemyType: enemyType,
+		random: math.random() * 2147483648,
+		health: enemyStats.maxHealth,
+		path,
+		spawnTimestamp: getCurrentTimeInMilliseconds(),
+		pathCompletionAlpha: 0,
+		initialPathCompletionAlpha,
+		dead: false,
+	};
+
+	switch (enemyType) {
+		case "DUMMY_TANK": {
 			return enemyTemplate;
 		}
 	}

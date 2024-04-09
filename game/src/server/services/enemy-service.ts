@@ -1,5 +1,5 @@
 import { OnStart, OnTick, Service } from "@flamework/core";
-import { createEnemy } from "server/modules/enemy/enemy-factory";
+import { createNonAttackingEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
@@ -18,7 +18,7 @@ function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
 	if (enemy.enemyType === "MULTIPLIER_DUMMY") {
 		const pathCompletionAlpha = producer.getState(selectEnemyPathCompletionAlpha(id));
 
-		const spawnedEnemy = createEnemy("DIVIDED_DUMMY", enemy.path, pathCompletionAlpha);
+		const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", enemy.path, pathCompletionAlpha);
 		producer.addEnemy(spawnedEnemy, createId());
 	}
 

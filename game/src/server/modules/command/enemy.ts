@@ -1,6 +1,6 @@
 import { Command, Commander, CommanderType, CommandInteraction, Guard } from "@rbxts/commander";
-import { EnemyType } from "shared/modules/enemy/enemy-type";
-import { createEnemy } from "../enemy/enemy-factory";
+import { EnemyType, isNonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
+import { createAttackingEnemy, createNonAttackingEnemy } from "../enemy/enemy-factory";
 import { producer } from "server/store";
 import { selectMap } from "shared/store/map";
 import { createId } from "shared/modules/utils/id-utils";
@@ -34,8 +34,13 @@ class Enemy {
 
 		(async () => {
 			for (const _ of $range(1, count)) {
-				const enemy = createEnemy(enemyType, path);
-				producer.addEnemy(enemy, createId());
+				if (isNonAttackingEnemyType(enemyType)) {
+					const enemy = createNonAttackingEnemy(enemyType, path);
+					producer.addEnemy(enemy, createId());
+				} else {
+					const enemy = createAttackingEnemy(enemyType, path);
+					producer.addEnemy(enemy, createId());
+				}
 
 				holdFor(200);
 			}
