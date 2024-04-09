@@ -1,10 +1,10 @@
 import React from "@rbxts/react";
-import { TowerActionMenu } from "../tower/tower-action-menu";
+import { TowerActionMenuFrame } from "../tower/tower-action-menu-frame";
 import { createRoot } from "@rbxts/react-roblox";
 
 export = (target: Frame) => {
 	const towerActionMenu = (
-		<TowerActionMenu
+		<TowerActionMenuFrame
 			name="Batman"
 			money={5000}
 			level={1}

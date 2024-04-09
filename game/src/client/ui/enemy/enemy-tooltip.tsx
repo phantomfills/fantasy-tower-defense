@@ -172,11 +172,11 @@ export function EnemyTooltip({ _type, health }: EnemyTooltipProps) {
 	);
 }
 
-interface EnemyTooltipBillboardProps extends EnemyTooltipProps {
+interface EnemyTooltipBillboardFrameProps extends EnemyTooltipProps {
 	position: Vector3;
 }
 
-function EnemyTooltipBillboard({ position, _type, health }: EnemyTooltipBillboardProps) {
+function EnemyTooltipBillboardFrame({ position, _type, health }: EnemyTooltipBillboardFrameProps) {
 	return (
 		<billboardgui
 			StudsOffsetWorldSpace={position}
@@ -189,7 +189,7 @@ function EnemyTooltipBillboard({ position, _type, health }: EnemyTooltipBillboar
 	);
 }
 
-export function EnemyTooltipBillboardFromId() {
+export function EnemyTooltipBillboard() {
 	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
 	if (!possibleEnemyFocusId.exists) {
 		return <></>;
@@ -203,5 +203,5 @@ export function EnemyTooltipBillboardFromId() {
 	const { pathCompletionAlpha, enemyType, health, path } = possibleEnemy.value;
 	const position = getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha).Position;
 
-	return <EnemyTooltipBillboard position={position} _type={enemyType} health={health} />;
+	return <EnemyTooltipBillboardFrame position={position} _type={enemyType} health={health} />;
 }

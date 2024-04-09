@@ -3,10 +3,10 @@ import { Panel } from "./utils/panel";
 import { TowerLoadout } from "./tower/tower-loadout";
 import { TowerPlacementMessage } from "./tower/tower-placement-message";
 import { MatchInfo } from "./game/match-info";
-import { TowerActionMenuFromId } from "./tower/tower-action-menu-from-id";
+import { TowerActionMenu } from "./tower/tower-action-menu";
 import { Music } from "./music/music";
 import { Dialog } from "./game/dialog";
-import { EnemyTooltipBillboardFromId } from "./enemy/enemy-tooltip";
+import { EnemyTooltipBillboard } from "./enemy/enemy-tooltip";
 import { RangeIndicator } from "./tower/range-part";
 import { Objectives } from "./game/objectives";
 import { EnemyDamageIndicators } from "./enemy/enemy-damage-indicators";
@@ -20,10 +20,10 @@ export function App() {
 
 				<TowerPlacementMessage key="tower-placement-message" />
 
-				<TowerActionMenuFromId key="tower-action-menu" />
+				<TowerActionMenu key="tower-action-menu" />
 				<RangeIndicator key="range-part" />
 
-				<EnemyTooltipBillboardFromId key="enemy-tooltip" />
+				<EnemyTooltipBillboard key="enemy-tooltip" />
 				<EnemyDamageIndicators />
 
 				<Dialog />

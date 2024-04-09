@@ -14,7 +14,7 @@ const userId = tostring(player.UserId);
 
 export function Objectives() {
 	const possibleObjectives = useSelector(selectPlayerObjectives(userId));
-	if (!possibleObjectives.exists) return;
+	if (!possibleObjectives.exists) return <></>;
 
 	const objectives = possibleObjectives.value;
 

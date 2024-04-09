@@ -1,215 +1,81 @@
-import React, { useEffect } from "@rbxts/react";
-import { Frame } from "../utils/frame";
-import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
-import { Label } from "../utils/label";
-import { useRem } from "../hooks/use-rem";
-import { fonts } from "../constants/fonts";
-import { images } from "shared/assets";
-import { Trait } from "shared/modules/attack/immunity";
-import { KeyCode, useKeyPress } from "@rbxts/pretty-react-hooks";
-import { createSound } from "client/modules/utils/sound";
-import { sounds } from "shared/modules/sounds/sounds";
-import { Debris } from "@rbxts/services";
+import React from "@rbxts/react";
+import { getTowerDisplayNameFromType } from "shared/modules/tower/tower-type-to-display-name-map";
+import { useSelector } from "@rbxts/react-reflex";
+import { selectPossibleTowerFromId } from "shared/store/tower";
+import {
+	describeTowerFromType,
+	getSellPriceForTower,
+	getTowerUpgradeCost,
+	getUpgradeCost,
+	getUpgradeDescription,
+	getUpgradeTitle,
+} from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
+import { selectMoney } from "shared/store/money";
+import { TowerActionMenuFrame } from "./tower-action-menu-frame";
+import { Players } from "@rbxts/services";
+import { selectPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
+import { producer } from "client/store";
+import { Events } from "client/network";
+import { selectPlayersCanUpgradeTower } from "shared/store/dialog";
 
-interface TowerActionButtonProps {
-	name: string;
-	size: UDim2;
-	position: UDim2;
-	color: Color3;
-	autoButtonColor?: boolean;
-	keybind: KeyCode;
-	action: () => void;
-}
+const player = Players.LocalPlayer;
+const userId = tostring(player.UserId);
 
-function TowerActionButton({ name, size, position, color, autoButtonColor, keybind, action }: TowerActionButtonProps) {
-	const rem = useRem();
-	const keyDown = useKeyPress([keybind]);
+export function TowerActionMenu() {
+	const possibleMoney = useSelector(selectMoney(userId));
+	const possibleTowerFocusId = useSelector(selectPossibleTowerId);
+	const playersCanUpgradeTower = useSelector(selectPlayersCanUpgradeTower);
+	if (!possibleMoney.exists || !possibleTowerFocusId.exists || !playersCanUpgradeTower) return <></>;
 
-	useEffect(() => {
-		if (!keyDown) return;
+	const money = possibleMoney.value;
+	const towerId = possibleTowerFocusId.value;
 
-		action();
-	}, [keyDown]);
+	const possibleTower = producer.getState(selectPossibleTowerFromId(towerId));
+	if (!possibleTower.exists) return <></>;
 
-	return (
-		<textbutton
-			Size={size}
-			Position={position}
-			Text=""
-			BackgroundColor3={color}
-			Event={{ MouseButton1Click: action }}
-			AutoButtonColor={autoButtonColor}
-		>
-			<Label
-				size={new UDim2(1, 0, 1, 0)}
-				textSize={rem(1.5)}
-				text={`(${keybind}) ${name}`}
-				font={fonts.inter.bold}
-				backgroundTransparency={1}
-				textColor={Color3.fromRGB(255, 255, 255)}
-			/>
-			<OneThickWhiteStroke />
-			<imagelabel
-				Size={new UDim2(1, 0, 1, 0)}
-				BackgroundTransparency={1}
-				Image={images.stripes}
-				ImageTransparency={0.8}
-				ScaleType={Enum.ScaleType.Tile}
-			/>
-			<uicorner CornerRadius={new UDim(0, 8)} />
-		</textbutton>
-	);
-}
+	const tower = possibleTower.value;
+	const { towerType, level } = tower;
+	const towerDisplayName = getTowerDisplayNameFromType(towerType);
 
-interface Action {
-	name: string;
-	call: () => void;
-}
+	const towerUpgradeCost = getTowerUpgradeCost(towerType, level + 1);
+	const towerUpgradeCostMessage = towerUpgradeCost !== undefined ? `Upgrade: $${towerUpgradeCost}` : "Maxed baby!";
 
-interface TowerActionMenuProps {
-	name: string;
-	money: number;
-	upgradeTitle: string;
-	upgradeDescription: string;
-	upgradeCost: number;
-	level: number;
-	close: () => void;
-	traits: Trait[];
-	actions: {
-		upgrade: Action;
-		sell: Action;
-	};
-}
+	const towerSellPrice = getSellPriceForTower(towerType, level, SELLBACK_RATE);
 
-export function TowerActionMenu({
-	name,
-	level,
-	actions,
-	upgradeTitle,
-	upgradeDescription,
-	upgradeCost,
-	money,
-	close,
-	traits,
-}: TowerActionMenuProps) {
-	const enoughMoney = money >= upgradeCost;
+	const upgradeTitle = getUpgradeTitle(towerType, level + 1);
+	const upgradeDescription = getUpgradeDescription(towerType, level + 1);
+	const upgradeCost = getUpgradeCost(towerType, level + 1);
 
-	const rem = useRem();
+	const stats = describeTowerFromType(towerType, level);
+	const traits = stats.traits;
 
 	return (
-		<Frame
-			size={new UDim2(0.15, 0, 0.5, 0)}
-			position={new UDim2(0.85, 0, 0.25, 0)}
-			backgroundTransparency={0.5}
-			backgroundColor={new Color3(0, 0, 0)}
-		>
-			<imagebutton
-				Size={new UDim2(0, 20, 0, 20)}
-				Position={new UDim2(1, -30, 0, 10)}
-				BackgroundTransparency={1}
-				Image={images.x_button}
-				Event={{ MouseButton1Click: close }}
-			/>
-			<uicorner CornerRadius={new UDim(0, 8)} />
-			<OneThickWhiteStroke />
-			<Label
-				size={new UDim2(1, 0, 0.15, 0)}
-				textSize={rem(2.25)}
-				font={fonts.inter.bold}
-				text={`${name} Lv. ${level}`}
-				textColor={new Color3(255, 255, 255)}
-			/>
-			<TowerActionButton
-				size={new UDim2(1, -30, 0.1, 0)}
-				position={new UDim2(0, 15, 0.275, -10)}
-				color={enoughMoney ? Color3.fromRGB(5, 227, 97) : Color3.fromRGB(227, 0, 0)}
-				name={actions.upgrade.name}
-				action={() => {
-					const actionSound = enoughMoney ? sounds.buy_upgrade : sounds.error;
-
-					const sound = createSound(actionSound, { volume: 0.2 });
-					sound.Play();
-
-					Debris.AddItem(sound, 2);
-
-					if (enoughMoney) actions.upgrade.call();
-				}}
-				keybind={"E"}
-				autoButtonColor={enoughMoney}
-			/>
-			<TowerActionButton
-				size={new UDim2(1, -30, 0.1, 0)}
-				position={new UDim2(0, 15, 0.85, 0)}
-				color={Color3.fromRGB(227, 0, 0)}
-				name={actions.sell.name}
-				action={() => {
-					const sellSound = createSound(sounds.sell_tower, { volume: 0.2 });
-					sellSound.Play();
-
-					Debris.AddItem(sellSound, 2);
-
-					actions.sell.call();
-				}}
-				keybind={"Backspace"}
-				autoButtonColor={true}
-			/>
-			<Label
-				size={new UDim2(1, -30, 0.1, 0)}
-				position={new UDim2(0, 15, 0.15, -5)}
-				font={fonts.inter.bold}
-				text={upgradeTitle}
-				textColor={new Color3(255, 255, 255)}
-				textSize={rem(1.75)}
-			/>
-			<Frame
-				size={new UDim2(1, -30, 0.45, 0)}
-				position={new UDim2(0, 15, 0.375, 0)}
-				backgroundTransparency={0.8}
-				backgroundColor={new Color3(0, 0, 0)}
-			>
-				<OneThickWhiteStroke />
-				<uicorner CornerRadius={new UDim(0, 8)} />
-				<uipadding
-					PaddingTop={new UDim(0.1, 0)}
-					PaddingLeft={new UDim(0.1, 0)}
-					PaddingRight={new UDim(0.1, 0)}
-				/>
-				<Label
-					size={new UDim2(1, 0, 1, 0)}
-					textSize={rem(1.5)}
-					font={fonts.inter.regular}
-					text={upgradeDescription}
-					textColor={new Color3(255, 255, 255)}
-					textAlignmentX={Enum.TextXAlignment.Left}
-					textAlignmentY={Enum.TextYAlignment.Top}
-					textWrapped={true}
-				/>
-			</Frame>
-			<Frame size={new UDim2(0, 50, 0, 50)} position={new UDim2(0, -55, 0, 0)}>
-				<uigridlayout
-					CellSize={new UDim2(1, 0, 1, 0)}
-					CellPadding={new UDim2(0, 5, 0, 5)}
-					FillDirection={Enum.FillDirection.Horizontal}
-				/>
-				{traits.includes("STEALTH") ? (
-					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
-						<OneThickWhiteStroke />
-						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.eye} />
-						<uicorner CornerRadius={new UDim(0, 5)} />
-					</Frame>
-				) : (
-					<></>
-				)}
-				{traits.includes("REINFORCED") ? (
-					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
-						<OneThickWhiteStroke />
-						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.shield} />
-						<uicorner CornerRadius={new UDim(0, 5)} />
-					</Frame>
-				) : (
-					<></>
-				)}
-			</Frame>
-		</Frame>
+		<TowerActionMenuFrame
+			name={towerDisplayName}
+			money={money}
+			level={level}
+			actions={{
+				upgrade: {
+					name: towerUpgradeCostMessage,
+					call: () => {
+						Events.upgradeTower.fire(towerId);
+					},
+				},
+				sell: {
+					name: `Sell: $${towerSellPrice}`,
+					call: () => {
+						Events.sellTower.fire(towerId);
+					},
+				},
+			}}
+			close={() => {
+				producer.clearTowerId();
+			}}
+			upgradeTitle={upgradeTitle !== undefined ? `Lv. ${level + 1} - ${upgradeTitle}` : "YOU MAXED THIS TOWER!"}
+			upgradeDescription={upgradeDescription ?? "INFINITE POWER!"}
+			upgradeCost={upgradeCost}
+			traits={traits}
+		/>
 	);
 }
