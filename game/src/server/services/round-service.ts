@@ -308,6 +308,8 @@ export class RoundService implements OnStart {
 			const round = level[roundIndex];
 			const roundNumber = roundIndex + 1;
 
+			producer.addProgressToObjectiveForAllPlayers("COMPLETE_ROUNDS", 1);
+
 			switch (roundNumber) {
 				case 1: {
 					producer.setTrackId(tracks.trance_machine);
@@ -386,7 +388,6 @@ export class RoundService implements OnStart {
 			if (roundNumber === 12) {
 				producer.clearTrackId();
 
-				producer.completeObjectiveForAllPlayers("COMPLETE_LEVEL");
 				Events.playSound.broadcast(sounds.victory);
 				this.setDialog("You have completed the tutorial! Congratulations!");
 			}

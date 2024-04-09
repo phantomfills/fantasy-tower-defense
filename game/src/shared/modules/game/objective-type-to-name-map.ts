@@ -1,6 +1,6 @@
-import { Objective } from "shared/store/map";
+import { E_AllObjectives } from "shared/store/map";
 
-export const objectiveTypeToNameMap: Record<Objective, string> = {
-	COMPLETE_LEVEL: "Complete Level",
-	EAT_CAKE: "Eat Cake",
+export const objectiveTypeToNameMap: Record<E_AllObjectives, string> = {
+	COMPLETE_ROUNDS: "Complete rounds",
+	EAT_CAKE: "Eat cake",
 };

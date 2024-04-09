@@ -27,12 +27,20 @@ export function Objectives() {
 				CellPadding={new UDim2(0, 0, 0, 5)}
 			/>
 			{Object.keys(objectives).map((objective) => {
-				const complete = objectives[objective];
+				const objectiveStatus = objectives[objective];
+
+				const objectiveProgressText = typeIs(objectiveStatus, "boolean")
+					? objectiveStatus
+						? "Complete"
+						: "Incomplete"
+					: `(${objectiveStatus.progress}/${objectiveStatus.maxProgress})`;
+				const objectiveText = `${objectiveTypeToNameMap[objective]}: ${objectiveProgressText}`;
+
 				return (
 					<Frame key={objective} backgroundColor={Color3.fromRGB(0, 0, 0)} backgroundTransparency={0.6}>
 						<uipadding PaddingLeft={new UDim(0, 5)} />
 						<Label
-							text={`${objectiveTypeToNameMap[objective]}: ${complete ? "Complete" : "Incomplete"}`}
+							text={objectiveText}
 							size={new UDim2(1, 0, 1, 0)}
 							font={fonts.inter.regular}
 							textAlignmentX={Enum.TextXAlignment.Left}
