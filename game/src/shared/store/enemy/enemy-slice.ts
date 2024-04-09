@@ -1,4 +1,3 @@
-import Object from "@rbxts/object-utils";
 import { createProducer } from "@rbxts/reflex";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
