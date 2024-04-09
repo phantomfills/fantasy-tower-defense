@@ -89,7 +89,9 @@ export function selectClosestEnemyIdToPosition(position: Vector3): (state: Share
 		const enemyIds = Object.keys(enemies);
 		if (enemyIds.size() === 0) return { exists: false };
 
-		const enemyIdsByDistanceToPosition = enemyIds.sort((previousEnemyId, currentEnemyId) => {
+		const aliveEnemyIds = enemyIds.filter((enemyId) => !enemies[enemyId].dead);
+
+		const enemyIdsByDistanceToPosition = aliveEnemyIds.sort((previousEnemyId, currentEnemyId) => {
 			const previousEnemy = enemies[previousEnemyId];
 			const previousEnemyPosition = getCFrameFromPathCompletionAlpha(
 				previousEnemy.path,
