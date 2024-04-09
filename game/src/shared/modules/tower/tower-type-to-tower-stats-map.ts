@@ -191,9 +191,9 @@ export function getUpgradeDescription(_type: TowerType, level: number): string |
 	return nextStats.description;
 }
 
-export function getUpgradeCost(_type: TowerType, level: number): number {
+export function getUpgradeCost(_type: TowerType, level: number): number | undefined {
 	const nextStats = towerTypeToStatsMap[_type].levels[level];
-	if (!nextStats) return 0;
+	if (!nextStats) return;
 
 	return nextStats.cost;
 }

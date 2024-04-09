@@ -56,7 +56,7 @@ function TowerActionButton({ name, size, position, color, autoButtonColor, keybi
 				ImageTransparency={0.8}
 				ScaleType={Enum.ScaleType.Tile}
 			/>
-			<uicorner CornerRadius={new UDim(0, 8)} />
+			<uicorner CornerRadius={new UDim(0, 10)} />
 		</textbutton>
 	);
 }
@@ -104,16 +104,17 @@ export function TowerActionMenuFrame({
 			backgroundColor={new Color3(0, 0, 0)}
 		>
 			<imagebutton
-				Size={new UDim2(0, 20, 0, 20)}
-				Position={new UDim2(1, -30, 0, 10)}
+				Size={new UDim2(0, 15, 0, 15)}
+				Position={new UDim2(1, -25, 0, 10)}
 				BackgroundTransparency={1}
 				Image={images.x_button}
 				Event={{ MouseButton1Click: close }}
 			/>
-			<uicorner CornerRadius={new UDim(0, 8)} />
+			<uicorner CornerRadius={new UDim(0, 3)} />
 			<OneThickWhiteStroke />
 			<Label
 				size={new UDim2(1, 0, 0.15, 0)}
+				position={new UDim2(0, 0, 0.025, 0)}
 				textSize={rem(2.25)}
 				font={fonts.inter.bold}
 				text={`${name} Lv. ${level}`}
@@ -168,7 +169,7 @@ export function TowerActionMenuFrame({
 				backgroundColor={new Color3(0, 0, 0)}
 			>
 				<OneThickWhiteStroke />
-				<uicorner CornerRadius={new UDim(0, 8)} />
+				<uicorner CornerRadius={new UDim(0, 3)} />
 				<uipadding
 					PaddingTop={new UDim(0.1, 0)}
 					PaddingLeft={new UDim(0.1, 0)}
@@ -195,7 +196,7 @@ export function TowerActionMenuFrame({
 					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
 						<OneThickWhiteStroke />
 						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.eye} />
-						<uicorner CornerRadius={new UDim(0, 5)} />
+						<uicorner CornerRadius={new UDim(0, 3)} />
 					</Frame>
 				) : (
 					<></>
@@ -204,7 +205,7 @@ export function TowerActionMenuFrame({
 					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
 						<OneThickWhiteStroke />
 						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.shield} />
-						<uicorner CornerRadius={new UDim(0, 5)} />
+						<uicorner CornerRadius={new UDim(0, 3)} />
 					</Frame>
 				) : (
 					<></>

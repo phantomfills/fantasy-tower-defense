@@ -100,7 +100,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 					ZIndex={3}
 					Position={lerpBinding(buttonHoverTransition, new UDim2(0, 0, 0, 0), new UDim2(0, 0, -0.1, 0))}
 				/>
-				<uicorner CornerRadius={new UDim(0, 8)} />
+				<uicorner CornerRadius={new UDim(0, 10)} />
 				<OneThickWhiteStroke />
 				<Frame
 					size={new UDim2(0.4, 0, 0.4, 0)}

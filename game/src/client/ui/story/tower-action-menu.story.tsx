@@ -5,7 +5,7 @@ import { createRoot } from "@rbxts/react-roblox";
 export = (target: Frame) => {
 	const towerActionMenu = (
 		<TowerActionMenuFrame
-			name="Batman"
+			name="Dummy Defect"
 			money={5000}
 			level={1}
 			actions={{

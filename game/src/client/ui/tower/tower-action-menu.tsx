@@ -45,7 +45,7 @@ export function TowerActionMenu() {
 
 	const upgradeTitle = getUpgradeTitle(towerType, level + 1);
 	const upgradeDescription = getUpgradeDescription(towerType, level + 1);
-	const upgradeCost = getUpgradeCost(towerType, level + 1);
+	const upgradeCost = getUpgradeCost(towerType, level + 1) ?? math.huge;
 
 	const stats = describeTowerFromType(towerType, level);
 	const traits = stats.traits;
