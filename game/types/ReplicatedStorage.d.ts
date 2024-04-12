@@ -587,6 +587,42 @@ interface ReplicatedStorage extends Instance {
 					};
 					leftLeg: MeshPart;
 				};
+				korblox_deathspeaker: Model & {
+					rightArm: MeshPart;
+					leftArm: MeshPart;
+					torso: MeshPart & {
+						rightArm: Motor6D;
+						head: Motor6D;
+						leftArm: Motor6D;
+					};
+					humanoidRootPart: MeshPart & {
+						rootAttachment: Attachment;
+						torso: Motor6D;
+					};
+					head: Part & {
+						Mesh: SpecialMesh;
+					};
+				};
+				circuit_breaker: Model & {
+					rightArm: MeshPart;
+					leftArm: MeshPart;
+					head: Part & {
+						Mesh: SpecialMesh;
+					};
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						rightArm: Motor6D;
+						head: Motor6D;
+						leftArm: Motor6D;
+						rightLeg: Motor6D;
+						leftLeg: Motor6D;
+					};
+					humanoidRootPart: MeshPart & {
+						rootAttachment: Attachment;
+						torso: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
 				armoredDummy: Model & {
 					rightArm: MeshPart & {
 						rightArmPiece: Model;

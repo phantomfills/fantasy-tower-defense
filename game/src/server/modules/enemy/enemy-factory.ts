@@ -49,6 +49,12 @@ export function createNonAttackingEnemy(
 		case "CRITICAL_SPORTS_CAR": {
 			return enemyTemplate;
 		}
+		case "KORBLOX_DEATHSPEAKER": {
+			return enemyTemplate;
+		}
+		case "CIRCUIT_BREAKER": {
+			return enemyTemplate;
+		}
 	}
 }
 

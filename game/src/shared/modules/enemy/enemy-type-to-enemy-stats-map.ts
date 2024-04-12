@@ -69,6 +69,18 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 		money: 420,
 		traits: ["REINFORCED"],
 	},
+	KORBLOX_DEATHSPEAKER: {
+		maxHealth: 1_500,
+		speed: 1,
+		money: 1_000,
+		traits: ["STEALTH"],
+	},
+	CIRCUIT_BREAKER: {
+		maxHealth: 225,
+		speed: 3,
+		money: 175,
+		traits: ["REINFORCED"],
+	},
 };
 
 export function describeEnemyFromType(enemyType: EnemyType): EnemyStats {

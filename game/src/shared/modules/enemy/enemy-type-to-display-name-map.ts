@@ -11,6 +11,8 @@ const enemyTypeToDisplayNameMap: Record<EnemyType, string> = {
 	DUMMY_TANK: "Dummy Tank",
 	IMPOSTOR: "Impostor",
 	CRITICAL_SPORTS_CAR: "Critical Sports Car",
+	KORBLOX_DEATHSPEAKER: "Korblox Deathspeaker",
+	CIRCUIT_BREAKER: "Circuit Breaker",
 };
 
 export function getEnemyDisplayName(enemyType: EnemyType): string {

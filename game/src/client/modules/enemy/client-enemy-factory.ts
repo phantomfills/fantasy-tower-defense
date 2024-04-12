@@ -10,6 +10,8 @@ import { ClientMultiplierDummy } from "./client-multiplier-dummy";
 import { ClientDividedDummy } from "./client-divided-dummy";
 import { ClientImpostor } from "./client-impostor";
 import { ClientCriticalSportsCar } from "./client-critical-sports-car";
+import { ClientKorbloxDeathspeaker } from "./client-korblox-deathspeaker";
+import { ClientCircuitBreaker } from "./client-circuit-breaker";
 
 export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFrame): ClientEnemy {
 	switch (enemyType) {
@@ -42,6 +44,12 @@ export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFra
 		}
 		case "CRITICAL_SPORTS_CAR": {
 			return new ClientCriticalSportsCar(id, cframe);
+		}
+		case "KORBLOX_DEATHSPEAKER": {
+			return new ClientKorbloxDeathspeaker(id, cframe);
+		}
+		case "CIRCUIT_BREAKER": {
+			return new ClientCircuitBreaker(id, cframe);
 		}
 	}
 }

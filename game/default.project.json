@@ -64,6 +64,12 @@
 						"dividedDummy": {
 							"$path": "assets/divided-dummy.rbxm"
 						},
+						"korblox_deathspeaker": {
+							"$path": "assets/korblox-deathspeaker.rbxm"
+						},
+						"circuit_breaker": {
+							"$path": "assets/circuit-breaker.rbxm"
+						},
 						"impostor": {
 							"$path": "assets/impostor.rbxm"
 						},
@@ -132,6 +138,7 @@
 			"$className": "StarterPlayer",
 			"$properties": {
 				"CameraMinZoomDistance": 10,
+				"CameraMaxZoomDistance": 40,
 				"EnableMouseLockOption": false,
 				"CharacterUseJumpPower": false,
 				"CharacterJumpHeight": 7.2
