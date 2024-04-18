@@ -7,6 +7,7 @@ import { Enemy } from "./enemy-slice";
 import { createSelector } from "@rbxts/reflex";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
+import { isAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 
 export function selectNoEnemiesExist(state: SharedState) {
 	return Object.keys(state.enemy).size() === 0;
@@ -177,5 +178,13 @@ export function selectEnemyHealth(enemyId: string): (state: SharedState) => Poss
 		if (!enemy.exists) return { exists: false };
 
 		return { exists: true, value: enemy.value.health };
+	});
+}
+
+export function selectAttackingEnemyIds(state: SharedState) {
+	const enemies = Object.keys(state.enemy);
+	return enemies.filter((enemyId) => {
+		const enemy = state.enemy[enemyId];
+		return isAttackingEnemyType(enemy.enemyType);
 	});
 }

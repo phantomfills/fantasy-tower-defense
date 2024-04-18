@@ -2,6 +2,7 @@ import { Possible } from "shared/modules/utils/possible";
 import { SharedState } from "..";
 import { Tower } from "./tower-slice";
 import { createSelector } from "@rbxts/reflex";
+import Object from "@rbxts/object-utils";
 
 export function selectTowers(state: SharedState) {
 	return state.tower.towers;
@@ -30,5 +31,22 @@ function selectTowerLevel(id: string): (state: SharedState) => number | undefine
 export function getPossibleTowerLevelFromId(id: string): (state: SharedState) => Possible<number> {
 	return createSelector(selectTowerLevel(id), (level): Possible<number> => {
 		return level !== undefined ? { exists: true, value: level } : { exists: false };
+	});
+}
+
+export function selectClosestTowerIdToPosition(position: Vector3): (state: SharedState) => Possible<string> {
+	return createSelector(selectTowers, (towers) => {
+		const towersByDistance = Object.keys(towers).sort((prevTowerId, towerId) => {
+			const prevTower = towers[prevTowerId];
+			if (!prevTower) return false;
+
+			const tower = towers[towerId];
+			if (!tower) return true;
+
+			return position.sub(prevTower.cframe.Position).Magnitude < position.sub(tower.cframe.Position).Magnitude;
+		});
+
+		if (towersByDistance.size() === 0) return { exists: false };
+		return { exists: true, value: towersByDistance[0] };
 	});
 }

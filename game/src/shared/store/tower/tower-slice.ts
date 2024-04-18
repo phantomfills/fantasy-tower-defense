@@ -9,6 +9,7 @@ export interface Tower {
 	level: number;
 	owner: string;
 	lastAttackTimestamp: number;
+	health: number;
 }
 
 export type TowerState = {
@@ -42,6 +43,14 @@ export const towerSlice = createProducer(initialState, {
 
 		const tower = possibleTower.value;
 		return { ...state, towers: { ...state.towers, [id]: { ...tower, lastAttackTimestamp: timestamp } } };
+	},
+
+	damageTower: (state, id: string, damage: number) => {
+		const possibleTower = possible<Tower>(state.towers[id]);
+		if (!possibleTower.exists) throw `Tower with id ${id} does not exist`;
+
+		const tower = possibleTower.value;
+		return { ...state, towers: { ...state.towers, [id]: { ...tower, health: tower.health - damage } } };
 	},
 
 	clearTowers: (state) => ({ ...state, towers: {} }),

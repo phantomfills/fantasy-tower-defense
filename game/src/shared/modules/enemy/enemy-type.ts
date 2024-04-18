@@ -1,3 +1,5 @@
+import { AttackingEnemy, Enemy } from "shared/store/enemy";
+
 export const ALL_NON_ATTACKING_ENEMY_TYPES = [
 	"TRAINING_DUMMY",
 	"ARMORED_DUMMY",
@@ -26,4 +28,8 @@ export function isNonAttackingEnemyType(enemyType: EnemyType): enemyType is NonA
 
 export function isAttackingEnemyType(enemyType: EnemyType): enemyType is AttackingEnemyType {
 	return ALL_ATTACKING_ENEMY_TYPES.includes(enemyType as AttackingEnemyType);
+}
+
+export function isAttackingEnemy(enemy: Enemy): enemy is AttackingEnemy {
+	return isAttackingEnemyType(enemy.enemyType);
 }

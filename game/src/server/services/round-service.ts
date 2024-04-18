@@ -49,15 +49,7 @@ const level: Level = [
 	[
 		{
 			enemyType: "TRAINING_DUMMY",
-			count: 4,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "TRAINING_DUMMY",
-			count: 7,
+			count: 3,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},
@@ -67,11 +59,19 @@ const level: Level = [
 			enemyType: "TRAINING_DUMMY",
 			count: 5,
 			enemySpawnInterval: 500,
+			delayToNextGroup: 0,
+		},
+	],
+	[
+		{
+			enemyType: "TRAINING_DUMMY",
+			count: 4,
+			enemySpawnInterval: 500,
 			delayToNextGroup: 1_000,
 		},
 		{
 			enemyType: "SPEEDSTER_DUMMY",
-			count: 3,
+			count: 2,
 			enemySpawnInterval: 500,
 			delayToNextGroup: 0,
 		},

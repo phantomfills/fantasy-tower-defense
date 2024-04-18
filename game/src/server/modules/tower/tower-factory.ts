@@ -1,4 +1,5 @@
 import { TowerType } from "shared/modules/tower/tower-type";
+import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { Tower } from "shared/store/tower/tower-slice";
 
 export function createTower(
@@ -17,6 +18,7 @@ export function createTower(
 			exists: false,
 		},
 		lastAttackTimestamp: currentTimestamp,
+		health: describeTowerFromType(towerType, level).health,
 	} as const;
 
 	switch (towerType) {

@@ -1,4 +1,4 @@
-import { AttackingEnemyType, EnemyType, NonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
+import { AttackingEnemyType, NonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { Enemy } from "shared/store/enemy";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
@@ -18,6 +18,7 @@ export function createNonAttackingEnemy(
 		spawnTimestamp: getCurrentTimeInMilliseconds(),
 		pathCompletionAlpha: 0,
 		initialPathCompletionAlpha,
+		pauses: [],
 		dead: false,
 	};
 
@@ -67,12 +68,13 @@ export function createAttackingEnemy(
 
 	const enemyTemplate: Enemy = {
 		enemyType: enemyType,
-		random: math.random() * 2147483648,
+		rng: math.random() * 2147483648,
 		health: enemyStats.maxHealth,
 		path,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),
 		pathCompletionAlpha: 0,
 		initialPathCompletionAlpha,
+		pauses: [],
 		dead: false,
 	};
 

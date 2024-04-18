@@ -106,7 +106,13 @@ export class TowerService implements OnStart, OnTick {
 	onTick() {
 		const towers = producer.getState(selectTowers);
 
-		for (const [id, { lastAttackTimestamp, towerType, level }] of pairs(towers)) {
+		for (const [id, { lastAttackTimestamp, towerType, level, health }] of pairs(towers)) {
+			// Destroy tower if health is 0 or less
+			if (health < 0) {
+				sellTower(id);
+				continue;
+			}
+
 			const { cooldown, damage, traits } = describeTowerFromType(towerType, level);
 			const cooldownMilliseconds = cooldown * MILLISECONDS_IN_SECOND;
 			const currentTimestamp = getCurrentTimeInMilliseconds();
