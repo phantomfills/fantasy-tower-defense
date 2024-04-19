@@ -68,7 +68,6 @@ export function createAttackingEnemy(
 
 	const enemyTemplate: Enemy = {
 		enemyType: enemyType,
-		rng: math.random() * 2147483648,
 		health: enemyStats.maxHealth,
 		path,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),

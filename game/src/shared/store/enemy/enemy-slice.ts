@@ -25,7 +25,6 @@ export type NonAttackingEnemy = BaseEnemyProps & {
 
 export type AttackingEnemy = BaseEnemyProps & {
 	enemyType: AttackingEnemyType;
-	rng: number;
 };
 
 export type Enemy = NonAttackingEnemy | AttackingEnemy;

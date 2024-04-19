@@ -59,13 +59,11 @@ export class EnemyService implements OnStart, OnTick {
 			const enemy = possibleEnemyId.value;
 			if (!isAttackingEnemy(enemy)) continue;
 
-			const numberRange: [number, number] = [0, 10];
-			const random = math.random(numberRange[0], numberRange[1]);
+			const numberRange: [number, number] = [0, 5];
 
-			const enemyRng = new Random(enemy.rng);
-			const enemyRandom = enemyRng.NextInteger(numberRange[0], numberRange[1]);
+			const enemyRandom = math.random(numberRange[0], numberRange[1]);
 
-			if (enemyRandom !== random) continue;
+			if (enemyRandom !== 0) continue;
 
 			const possibleClosestTowerId = producer.getState(
 				selectClosestTowerIdToPosition(
@@ -75,21 +73,23 @@ export class EnemyService implements OnStart, OnTick {
 			if (!possibleClosestTowerId.exists) continue;
 
 			const towerId = possibleClosestTowerId.value;
-			producer.damageTower(towerId, 50);
+			producer.damageTower(towerId, 15);
 			producer.addPause(enemyId, {
 				startTime: getCurrentTimeInMilliseconds(),
-				pauseFor: 3000,
+				pauseFor: 1500,
 			});
 		}
 	}
 
 	onTick(): void {
-		producer.enemyTick(getCurrentTimeInMilliseconds());
+		const currentTime = getCurrentTimeInMilliseconds();
+
+		producer.enemyTick(currentTime);
 
 		const nextEnemyAttackCycle = this.lastEnemyAttackCycle + 1000;
-		if (getCurrentTimeInMilliseconds() < nextEnemyAttackCycle) return;
+		if (currentTime < nextEnemyAttackCycle) return;
 
-		this.lastEnemyAttackCycle = getCurrentTimeInMilliseconds();
+		this.lastEnemyAttackCycle = currentTime;
 
 		this.randomlyAttackTower();
 	}

@@ -18,7 +18,8 @@ export function createTower(
 			exists: false,
 		},
 		lastAttackTimestamp: currentTimestamp,
-		health: describeTowerFromType(towerType, level).health,
+		lastHealTimestamp: currentTimestamp,
+		health: describeTowerFromType(towerType, level).maxHealth,
 	} as const;
 
 	switch (towerType) {

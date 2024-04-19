@@ -1,15 +1,15 @@
 import { createProducer } from "@rbxts/reflex";
 import { TowerType } from "shared/modules/tower/tower-type";
-import { Attack } from "shared/modules/attack";
-import { Possible, possible } from "shared/modules/utils/possible";
+import { possible } from "shared/modules/utils/possible";
 
 export interface Tower {
 	towerType: TowerType;
 	cframe: CFrame;
 	level: number;
 	owner: string;
-	lastAttackTimestamp: number;
 	health: number;
+	lastAttackTimestamp: number;
+	lastHealTimestamp: number;
 }
 
 export type TowerState = {
@@ -51,6 +51,22 @@ export const towerSlice = createProducer(initialState, {
 
 		const tower = possibleTower.value;
 		return { ...state, towers: { ...state.towers, [id]: { ...tower, health: tower.health - damage } } };
+	},
+
+	healTower: (state, id: string, heal: number) => {
+		const possibleTower = possible<Tower>(state.towers[id]);
+		if (!possibleTower.exists) throw `Tower with id ${id} does not exist`;
+
+		const tower = possibleTower.value;
+		return { ...state, towers: { ...state.towers, [id]: { ...tower, health: tower.health + heal } } };
+	},
+
+	setLastHealTimestamp: (state, id: string, timestamp: number) => {
+		const possibleTower = possible<Tower>(state.towers[id]);
+		if (!possibleTower.exists) throw `Tower with id ${id} does not exist`;
+
+		const tower = possibleTower.value;
+		return { ...state, towers: { ...state.towers, [id]: { ...tower, lastHealTimestamp: timestamp } } };
 	},
 
 	clearTowers: (state) => ({ ...state, towers: {} }),

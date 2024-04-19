@@ -79,6 +79,8 @@ interface TowerActionMenuFrameProps {
 		upgrade: Action;
 		sell: Action;
 	};
+	health: number;
+	maxHealth: number;
 }
 
 export function TowerActionMenuFrame({
@@ -91,6 +93,8 @@ export function TowerActionMenuFrame({
 	money,
 	close,
 	traits,
+	health,
+	maxHealth,
 }: TowerActionMenuFrameProps) {
 	const enoughMoney = money >= upgradeCost;
 
@@ -109,6 +113,14 @@ export function TowerActionMenuFrame({
 				BackgroundTransparency={1}
 				Image={images.x_button}
 				Event={{ MouseButton1Click: close }}
+			/>
+			<Label
+				text={`${health}/${maxHealth}`}
+				size={new UDim2(1, 0, 0.1, 0)}
+				position={new UDim2(0, 0, 0.025, 0)}
+				textSize={rem(2.25)}
+				font={fonts.inter.bold}
+				textColor={new Color3(255, 255, 255)}
 			/>
 			<uicorner CornerRadius={new UDim(0, 3)} />
 			<OneThickWhiteStroke />

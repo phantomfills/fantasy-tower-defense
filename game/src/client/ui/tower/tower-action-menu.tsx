@@ -35,7 +35,7 @@ export function TowerActionMenu() {
 	if (!possibleTower.exists) return <></>;
 
 	const tower = possibleTower.value;
-	const { towerType, level } = tower;
+	const { towerType, level, health } = tower;
 	const towerDisplayName = getTowerDisplayNameFromType(towerType);
 
 	const towerUpgradeCost = getTowerUpgradeCost(towerType, level + 1);
@@ -47,8 +47,7 @@ export function TowerActionMenu() {
 	const upgradeDescription = getUpgradeDescription(towerType, level + 1);
 	const upgradeCost = getUpgradeCost(towerType, level + 1) ?? math.huge;
 
-	const stats = describeTowerFromType(towerType, level);
-	const traits = stats.traits;
+	const { maxHealth, traits } = describeTowerFromType(towerType, level);
 
 	return (
 		<TowerActionMenuFrame
@@ -76,6 +75,8 @@ export function TowerActionMenu() {
 			upgradeDescription={upgradeDescription ?? "INFINITE POWER!"}
 			upgradeCost={upgradeCost}
 			traits={traits}
+			health={health}
+			maxHealth={maxHealth}
 		/>
 	);
 }

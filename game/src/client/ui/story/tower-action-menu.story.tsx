@@ -29,6 +29,8 @@ export = (target: Frame) => {
 			upgradeTitle="Bat Signal"
 			upgradeDescription="Shine the bat signal to call for help!"
 			upgradeCost={2000}
+			health={100}
+			maxHealth={100}
 		/>
 	);
 

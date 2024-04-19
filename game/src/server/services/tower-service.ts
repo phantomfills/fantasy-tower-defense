@@ -21,6 +21,7 @@ import { selectIsValidPlacementPosition } from "shared/store/map";
 import { selectPlayersCanPlaceTower, selectPlayersCanUpgradeTower } from "shared/store/dialog";
 
 const MILLISECONDS_IN_SECOND = 1000;
+const HEAL_RATE_PER_SECOND = 0.01;
 
 function userHasMoney(userId: string, amount: number): boolean {
 	const possibleUserMoney = producer.getState(selectMoney(userId));
@@ -106,16 +107,22 @@ export class TowerService implements OnStart, OnTick {
 	onTick() {
 		const towers = producer.getState(selectTowers);
 
-		for (const [id, { lastAttackTimestamp, towerType, level, health }] of pairs(towers)) {
-			// Destroy tower if health is 0 or less
-			if (health < 0) {
+		for (const [id, { lastAttackTimestamp, lastHealTimestamp, towerType, level, health }] of pairs(towers)) {
+			if (health <= 0) {
 				sellTower(id);
 				continue;
 			}
 
-			const { cooldown, damage, traits } = describeTowerFromType(towerType, level);
+			const { cooldown, damage, traits, maxHealth } = describeTowerFromType(towerType, level);
 			const cooldownMilliseconds = cooldown * MILLISECONDS_IN_SECOND;
+
 			const currentTimestamp = getCurrentTimeInMilliseconds();
+			if (currentTimestamp - lastHealTimestamp > 1000 && health !== maxHealth) {
+				const healAmount = math.min(math.ceil(maxHealth * HEAL_RATE_PER_SECOND), maxHealth - health);
+				producer.healTower(id, healAmount);
+				producer.setLastHealTimestamp(id, currentTimestamp);
+			}
+
 			if (currentTimestamp - lastAttackTimestamp < cooldownMilliseconds) continue;
 
 			const enemies = producer.getState(selectEnemies);
