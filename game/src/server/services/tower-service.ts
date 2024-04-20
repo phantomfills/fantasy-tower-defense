@@ -5,7 +5,7 @@ import { producer } from "server/store";
 import { selectPossibleTowerFromId, selectTowers } from "shared/store/tower";
 import { selectEnemies, selectEnemyCFrameFromId, selectFirstAttackableEnemyInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
-import { createBasicAttack } from "shared/modules/attack";
+import { createBasicTowerAttack } from "shared/modules/attack";
 import {
 	describeTowerFromType,
 	getSellPriceForTower,
@@ -152,7 +152,7 @@ export class TowerService implements OnStart, OnTick {
 
 			const attackId = createId();
 
-			const attack = createBasicAttack(
+			const attack = createBasicTowerAttack(
 				attackId,
 				firstEnemyInRangeId,
 				enemyPosition,

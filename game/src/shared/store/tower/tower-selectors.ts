@@ -50,3 +50,9 @@ export function selectClosestTowerIdToPosition(position: Vector3): (state: Share
 		return { exists: true, value: towersByDistance[0] };
 	});
 }
+
+export function selectTowerPosition(id: string): (state: SharedState) => Possible<Vector3> {
+	return createSelector(selectTower(id), (tower) => {
+		return tower ? { exists: true, value: tower.cframe.Position } : { exists: false };
+	});
+}

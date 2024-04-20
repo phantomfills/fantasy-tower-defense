@@ -1,9 +1,9 @@
-import { ClientEnemy } from "./client-enemy";
+import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { createDeathParticles } from "./particles";
 import { playDummyPopSound } from "./dummy-pop-sound";
 
-export class ClientKorbloxDeathspeaker extends ClientEnemy {
+export class ClientKorbloxDeathspeaker extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
 		const korbloxDeathspeakerModel = ReplicatedStorage.assets.enemies.models.korblox_deathspeaker.Clone();
 		korbloxDeathspeakerModel.Parent = Workspace;

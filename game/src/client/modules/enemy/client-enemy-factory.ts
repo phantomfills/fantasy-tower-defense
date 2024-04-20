@@ -1,5 +1,5 @@
 import { EnemyType } from "shared/modules/enemy/enemy-type";
-import { ClientEnemy } from "./client-enemy";
+import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { ClientTrainingDummy } from "./client-training-dummy";
 import { ClientArmoredDummy } from "./client-armored-dummy";
 import { ClientSpeedsterDummy } from "./client-speedster-dummy";
@@ -13,7 +13,7 @@ import { ClientCriticalSportsCar } from "./client-critical-sports-car";
 import { ClientKorbloxDeathspeaker } from "./client-korblox-deathspeaker";
 import { ClientCircuitBreaker } from "./client-circuit-breaker";
 
-export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFrame): ClientEnemy {
+export function createClientEnemy(enemyType: EnemyType, id: string, cframe: CFrame): ClientEnemy<EnemyModel> {
 	switch (enemyType) {
 		case "TRAINING_DUMMY": {
 			return new ClientTrainingDummy(id, cframe);

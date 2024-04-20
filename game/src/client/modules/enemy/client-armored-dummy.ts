@@ -1,9 +1,9 @@
-import { ClientEnemy } from "./client-enemy";
+import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { createDeathParticles } from "./particles";
 import { playDummyPopSound } from "./dummy-pop-sound";
 
-export class ClientArmoredDummy extends ClientEnemy {
+export class ClientArmoredDummy extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
 		const dummyModel = ReplicatedStorage.assets.enemies.models.armoredDummy.Clone();
 		dummyModel.Parent = Workspace;

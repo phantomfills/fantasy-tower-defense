@@ -1,38 +1,46 @@
 import { Controller, OnStart } from "@flamework/core";
 import Object from "@rbxts/object-utils";
-import { ClientEnemy } from "client/modules/enemy/client-enemy";
+import { instanceOf } from "@rbxts/react/src/prop-types";
+import { ClientDummyTank, ThrowBoulder } from "client/modules/enemy/client-dummy-tank";
+import { ClientEnemy, EnemyModel } from "client/modules/enemy/client-enemy";
 import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
+import { Events } from "client/network";
 import { producer } from "client/store";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { selectEnemies } from "shared/store/enemy";
+import { selectTowerPosition } from "shared/store/tower";
 
 @Controller({})
 export class EnemyController implements OnStart {
-	private clientEnemies: ClientEnemy[];
+	private clientEnemies: ClientEnemy<EnemyModel>[];
 
 	constructor() {
 		this.clientEnemies = [];
 	}
 
-	private addEnemy(enemy: ClientEnemy) {
+	private addEnemy(enemy: ClientEnemy<EnemyModel>) {
 		this.clientEnemies.push(enemy);
 	}
 
-	private removeEnemy(enemy: ClientEnemy) {
+	private removeEnemy(enemy: ClientEnemy<EnemyModel>) {
 		const index = this.clientEnemies.indexOf(enemy);
 		this.clientEnemies.remove(index);
 	}
 
-	private updateEnemyByAnimation(clientEnemy: ClientEnemy, path: PathWaypoint[], pathCompletionAlpha: number) {
+	private updateEnemyByAnimation(
+		clientEnemy: ClientEnemy<EnemyModel>,
+		path: PathWaypoint[],
+		pathCompletionAlpha: number,
+	) {
 		const cframe = getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha);
 		clientEnemy.setTargetCFrame(cframe);
 	}
 
-	getClientEnemyFromId(id: string): Possible<ClientEnemy> {
-		const possibleClientEnemy = possible<ClientEnemy>(
-			this.clientEnemies.find((clientEnemy: ClientEnemy) => {
+	getClientEnemyFromId(id: string): Possible<ClientEnemy<EnemyModel>> {
+		const possibleClientEnemy = possible<ClientEnemy<EnemyModel>>(
+			this.clientEnemies.find((clientEnemy) => {
 				return clientEnemy.getId() === id;
 			}),
 		);
@@ -50,6 +58,27 @@ export class EnemyController implements OnStart {
 	}
 
 	onStart() {
+		Events.enemyAttack.connect((attack) => {
+			const { towerId, enemyId, damage, attackType } = attack;
+
+			const possibleClientEnemy = this.getClientEnemyFromId(enemyId);
+			if (!possibleClientEnemy.exists) return;
+
+			const clientEnemy = possibleClientEnemy.value;
+
+			const possibleTowerPosition = producer.getState(selectTowerPosition(towerId));
+			if (!possibleTowerPosition.exists) return;
+
+			const towerPosition = possibleTowerPosition.value;
+
+			switch (attackType) {
+				case "BOULDER_THROW": {
+					if (!(clientEnemy instanceof ClientDummyTank)) return;
+					clientEnemy.throwBoulder(towerPosition);
+				}
+			}
+		});
+
 		producer.subscribe(selectEnemies, (enemies, lastEnemies) => {
 			for (const [id, enemy] of pairs(enemies)) {
 				const enemyLastUpdate = possible<string>(
@@ -61,6 +90,7 @@ export class EnemyController implements OnStart {
 						id,
 						getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha),
 					);
+					clientEnemy.start();
 					this.addEnemy(clientEnemy);
 				}
 				const possibleClientEnemy = this.getClientEnemyFromId(id);

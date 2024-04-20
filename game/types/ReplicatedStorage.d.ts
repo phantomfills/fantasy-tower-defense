@@ -12,6 +12,7 @@ interface ReplicatedStorage extends Instance {
 				possible: ModuleScript;
 				["number-to-key-map"]: ModuleScript;
 				["id-utils"]: ModuleScript;
+				["get-formatted-value"]: ModuleScript;
 				["path-utils"]: ModuleScript;
 				["snap-to-cframe"]: ModuleScript;
 			};
@@ -541,6 +542,9 @@ interface ReplicatedStorage extends Instance {
 					};
 				};
 			};
+		};
+		projectiles: Folder & {
+			boulder: MeshPart;
 		};
 		enemies: Folder & {
 			models: Folder & {
@@ -1094,7 +1098,11 @@ interface ReplicatedStorage extends Instance {
 					leftLeg: MeshPart;
 				};
 				dummyTank: Model & {
-					rightArm: MeshPart;
+					rightArm: MeshPart & {
+						boulderJoint: Motor6D;
+						boulderAttachment: Attachment;
+						boulder: MeshPart;
+					};
 					head: MeshPart;
 					leftArm: MeshPart;
 					rightLeg: MeshPart;

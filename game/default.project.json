@@ -36,6 +36,12 @@
 			},
 			"assets": {
 				"$className": "Folder",
+				"projectiles": {
+					"$className": "Folder",
+					"boulder": {
+						"$path": "assets/boulder.rbxm"
+					}
+				},
 				"enemies": {
 					"$className": "Folder",
 					"models": {

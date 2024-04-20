@@ -1,7 +1,7 @@
 import { Networking } from "@flamework/networking";
 import { TowerType } from "./modules/tower/tower-type";
 import { BroadcastAction } from "@rbxts/reflex";
-import { Attack } from "./modules/attack";
+import { EnemyAttack, TowerAttack } from "./modules/attack";
 
 /**
  * Stores the precision multiplier for syncing enemy positions to client.
@@ -24,7 +24,8 @@ interface SharedEvents {
 }
 
 interface ServerToClientEvents extends SharedEvents {
-	towerAttack: Networking.Unreliable<(attack: Attack) => void>;
+	towerAttack: Networking.Unreliable<(attack: TowerAttack) => void>;
+	enemyAttack: Networking.Unreliable<(attack: EnemyAttack) => void>;
 	playSound(soundId: string): void;
 }
 

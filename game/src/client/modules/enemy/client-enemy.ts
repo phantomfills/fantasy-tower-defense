@@ -27,15 +27,16 @@ function getRandomPositionOffset(random: Random): LuaTuple<[number, number]> {
 	return $tuple(positionOffsetX, positionOffsetZ);
 }
 
-export class ClientEnemy {
-	private readonly model: EnemyModel;
+export class ClientEnemy<T extends EnemyModel> {
+	private readonly model: T;
 	private id: string;
 	private targetCFrame: CFrame;
 	private maid: Maid;
 	private random: Random;
 	private positionOffset: Vector3;
+	private locked: boolean = false;
 
-	constructor(model: EnemyModel, id: string, cframe: CFrame) {
+	constructor(model: T, id: string, cframe: CFrame) {
 		this.id = id;
 		this.model = model;
 
@@ -55,15 +56,13 @@ export class ClientEnemy {
 
 		const [positionOffsetX, positionOffsetZ] = getRandomPositionOffset(this.random);
 		this.positionOffset = new Vector3(positionOffsetX, 0, positionOffsetZ);
-
-		this.start();
 	}
 
 	getId(): string {
 		return this.id;
 	}
 
-	getModel(): EnemyModel {
+	getModel() {
 		return this.model;
 	}
 
@@ -71,7 +70,7 @@ export class ClientEnemy {
 		snapToCFrameWithAttachmentOffset(this.model, this.model.humanoidRootPart.rootAttachment, cframe);
 	}
 
-	private getTargetCFrame(): CFrame {
+	getTargetCFrame(): CFrame {
 		return this.targetCFrame;
 	}
 
@@ -84,11 +83,17 @@ export class ClientEnemy {
 		this.targetCFrame = cframe;
 	}
 
+	setLocked(locked: boolean) {
+		this.locked = locked;
+	}
+
 	start() {
 		let wasOnScreenLastFrame: boolean = false;
 
 		this.maid.GiveTask(
 			RunService.RenderStepped.Connect(() => {
+				if (this.locked) return;
+
 				const possibleCamera = possible<Camera>(Workspace.CurrentCamera);
 				if (!possibleCamera.exists) return;
 

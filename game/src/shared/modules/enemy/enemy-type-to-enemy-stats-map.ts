@@ -52,9 +52,9 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 		traits: ["REINFORCED"],
 	},
 	DUMMY_TANK: {
-		maxHealth: 2_000,
+		maxHealth: 5_000,
 		speed: 0.5,
-		money: 1_000,
+		money: 1_350,
 		traits: [],
 	},
 	IMPOSTOR: {

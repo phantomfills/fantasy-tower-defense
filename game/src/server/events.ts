@@ -1,4 +1,5 @@
 import { Signal } from "@rbxts/beacon";
-import { Attack } from "shared/modules/attack";
+import { EnemyAttack, TowerAttack } from "shared/modules/attack";
 
-export const towerAttack = new Signal<Attack>();
+export const towerAttack = new Signal<TowerAttack>();
+export const enemyAttack = new Signal<EnemyAttack>();

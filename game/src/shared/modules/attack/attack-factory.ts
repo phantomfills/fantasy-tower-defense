@@ -1,4 +1,27 @@
-export interface Attack {
+type E_EnemyAttack = "BOULDER_THROW";
+
+export interface EnemyAttack {
+	enemyId: string;
+	towerId: string;
+	damage: number;
+	attackType: E_EnemyAttack;
+}
+
+export function createBasicEnemyAttack(
+	enemyId: string,
+	towerId: string,
+	damage: number,
+	attackType: E_EnemyAttack,
+): EnemyAttack {
+	return {
+		enemyId,
+		towerId,
+		damage,
+		attackType,
+	};
+}
+
+export interface TowerAttack {
 	enemyId: string;
 	enemyPosition: Vector3;
 	towerId: string;
@@ -6,13 +29,13 @@ export interface Attack {
 	id: string;
 }
 
-export function createBasicAttack(
+export function createBasicTowerAttack(
 	id: string,
 	enemyId: string,
 	enemyPosition: Vector3,
 	towerId: string,
 	damage: number,
-): Attack {
+): TowerAttack {
 	return {
 		enemyId,
 		enemyPosition,

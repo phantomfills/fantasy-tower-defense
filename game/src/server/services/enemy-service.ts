@@ -1,6 +1,8 @@
 import { OnStart, OnTick, Service } from "@flamework/core";
+import { enemyAttack } from "server/events";
 import { createNonAttackingEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
+import { EnemyAttack } from "shared/modules/attack";
 import { isAttackingEnemy, isAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
@@ -59,7 +61,7 @@ export class EnemyService implements OnStart, OnTick {
 			const enemy = possibleEnemyId.value;
 			if (!isAttackingEnemy(enemy)) continue;
 
-			const numberRange: [number, number] = [0, 99];
+			const numberRange: [number, number] = [0, 19];
 
 			const enemyRandom = math.random(numberRange[0], numberRange[1]);
 
@@ -73,11 +75,14 @@ export class EnemyService implements OnStart, OnTick {
 			if (!possibleClosestTowerId.exists) continue;
 
 			const towerId = possibleClosestTowerId.value;
-			producer.damageTower(towerId, 50);
-			producer.addPause(enemyId, {
-				startTime: getCurrentTimeInMilliseconds(),
-				pauseFor: 2000,
-			});
+			const attack: EnemyAttack = {
+				attackType: "BOULDER_THROW",
+				damage: 150,
+				enemyId,
+				towerId,
+			};
+
+			enemyAttack.Fire(attack);
 		}
 	}
 
