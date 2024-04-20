@@ -59,7 +59,7 @@ export class EnemyService implements OnStart, OnTick {
 			const enemy = possibleEnemyId.value;
 			if (!isAttackingEnemy(enemy)) continue;
 
-			const numberRange: [number, number] = [0, 5];
+			const numberRange: [number, number] = [0, 99];
 
 			const enemyRandom = math.random(numberRange[0], numberRange[1]);
 
@@ -73,10 +73,10 @@ export class EnemyService implements OnStart, OnTick {
 			if (!possibleClosestTowerId.exists) continue;
 
 			const towerId = possibleClosestTowerId.value;
-			producer.damageTower(towerId, 15);
+			producer.damageTower(towerId, 50);
 			producer.addPause(enemyId, {
 				startTime: getCurrentTimeInMilliseconds(),
-				pauseFor: 1500,
+				pauseFor: 2000,
 			});
 		}
 	}

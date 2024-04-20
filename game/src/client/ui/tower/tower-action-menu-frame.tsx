@@ -115,9 +115,9 @@ export function TowerActionMenuFrame({
 				Event={{ MouseButton1Click: close }}
 			/>
 			<Label
-				text={`${health}/${maxHealth}`}
+				text={`(${health}/${maxHealth} HP)`}
 				size={new UDim2(1, 0, 0.1, 0)}
-				position={new UDim2(0, 0, 0.025, 0)}
+				position={new UDim2(0, 0, -0.1, 0)}
 				textSize={rem(2.25)}
 				font={fonts.inter.bold}
 				textColor={new Color3(255, 255, 255)}

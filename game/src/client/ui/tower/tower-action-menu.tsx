@@ -18,6 +18,7 @@ import { selectPossibleTowerId } from "client/store/tower-action-menu/tower-acti
 import { producer } from "client/store";
 import { Events } from "client/network";
 import { selectPlayersCanUpgradeTower } from "shared/store/dialog";
+import { getFormattedValue } from "shared/modules/utils/get-formatted-value";
 
 const player = Players.LocalPlayer;
 const userId = tostring(player.UserId);
@@ -49,6 +50,8 @@ export function TowerActionMenu() {
 
 	const { maxHealth, traits } = describeTowerFromType(towerType, level);
 
+	const formattedHealth = getFormattedValue(health);
+
 	return (
 		<TowerActionMenuFrame
 			name={towerDisplayName}
@@ -75,7 +78,7 @@ export function TowerActionMenu() {
 			upgradeDescription={upgradeDescription ?? "INFINITE POWER!"}
 			upgradeCost={upgradeCost}
 			traits={traits}
-			health={health}
+			health={formattedHealth}
 			maxHealth={maxHealth}
 		/>
 	);

@@ -21,7 +21,8 @@ import { selectIsValidPlacementPosition } from "shared/store/map";
 import { selectPlayersCanPlaceTower, selectPlayersCanUpgradeTower } from "shared/store/dialog";
 
 const MILLISECONDS_IN_SECOND = 1000;
-const HEAL_RATE_PER_SECOND = 0.01;
+const HEAL_TICK = 2000;
+const HEAL_RATE_PER_TICK = 0.01;
 
 function userHasMoney(userId: string, amount: number): boolean {
 	const possibleUserMoney = producer.getState(selectMoney(userId));
@@ -117,8 +118,8 @@ export class TowerService implements OnStart, OnTick {
 			const cooldownMilliseconds = cooldown * MILLISECONDS_IN_SECOND;
 
 			const currentTimestamp = getCurrentTimeInMilliseconds();
-			if (currentTimestamp - lastHealTimestamp > 1000 && health !== maxHealth) {
-				const healAmount = math.min(math.ceil(maxHealth * HEAL_RATE_PER_SECOND), maxHealth - health);
+			if (currentTimestamp - lastHealTimestamp > HEAL_TICK && health < maxHealth) {
+				const healAmount = math.min(maxHealth * HEAL_RATE_PER_TICK, maxHealth - health);
 				producer.healTower(id, healAmount);
 				producer.setLastHealTimestamp(id, currentTimestamp);
 			}
