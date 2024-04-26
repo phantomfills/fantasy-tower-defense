@@ -3,6 +3,7 @@ import { enemyAttack, towerAttack } from "server/events";
 import { Events } from "server/network";
 import { producer } from "server/store";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import { holdFor } from "shared/modules/utils/wait-util";
 import { towerDoesNotExistFromId } from "shared/store/tower";
 
 @Service({})
@@ -21,7 +22,7 @@ export class AttackService implements OnStart {
 					});
 					Events.enemyAttack.broadcast(attack);
 
-					task.wait(3);
+					holdFor(2500);
 
 					const towerDoesNotExist = producer.getState(towerDoesNotExistFromId(towerId));
 					if (towerDoesNotExist) return;
