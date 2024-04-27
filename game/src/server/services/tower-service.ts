@@ -16,7 +16,7 @@ import Object from "@rbxts/object-utils";
 import { selectMoney } from "shared/store/money";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
-import { towerAttack } from "server/events";
+import { attackEnemy } from "server/events";
 import { selectIsValidPlacementPosition } from "shared/store/map";
 import { selectPlayersCanPlaceTower, selectPlayersCanUpgradeTower } from "shared/store/dialog";
 
@@ -159,7 +159,7 @@ export class TowerService implements OnStart, OnTick {
 				id,
 				math.min(effectiveDamage, firstEnemyInRange.health),
 			);
-			towerAttack.Fire(attack);
+			attackEnemy.Fire(attack);
 		}
 	}
 }

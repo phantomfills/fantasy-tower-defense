@@ -59,7 +59,7 @@ export class EnemyController implements OnStart {
 
 	onStart() {
 		Events.enemyAttack.connect((attack) => {
-			const { towerId, enemyId, damage, attackType } = attack;
+			const { towerId, enemyId, attackType } = attack;
 
 			const possibleClientEnemy = this.getClientEnemyFromId(enemyId);
 			if (!possibleClientEnemy.exists) return;

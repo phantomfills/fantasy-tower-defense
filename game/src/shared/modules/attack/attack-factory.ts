@@ -1,4 +1,4 @@
-type E_EnemyAttack = "BOULDER_THROW";
+export type E_EnemyAttack = "BOULDER_THROW";
 
 export interface EnemyAttack {
 	enemyId: string;

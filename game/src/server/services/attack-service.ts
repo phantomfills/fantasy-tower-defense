@@ -1,5 +1,5 @@
 import { Service, OnStart } from "@flamework/core";
-import { enemyAttack, towerAttack } from "server/events";
+import { attackTower, attackEnemy } from "server/events";
 import { Events } from "server/network";
 import { producer } from "server/store";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
@@ -9,7 +9,7 @@ import { towerDoesNotExistFromId } from "shared/store/tower";
 @Service({})
 export class AttackService implements OnStart {
 	onStart() {
-		enemyAttack.Connect((attack) => {
+		attackTower.Connect((attack) => {
 			const currentTime = getCurrentTimeInMilliseconds();
 
 			const { towerId, enemyId, damage, attackType } = attack;
@@ -32,7 +32,7 @@ export class AttackService implements OnStart {
 			}
 		});
 
-		towerAttack.Connect((attack) => {
+		attackEnemy.Connect((attack) => {
 			const { enemyId, damage } = attack;
 			producer.dealDamageToEnemy(enemyId, damage);
 			Events.towerAttack.broadcast(attack);

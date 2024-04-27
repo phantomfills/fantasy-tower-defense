@@ -1,9 +1,11 @@
 import { OnStart, OnTick, Service } from "@flamework/core";
-import { enemyAttack } from "server/events";
+import { attackTower } from "server/events";
 import { createNonAttackingEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
 import { EnemyAttack } from "shared/modules/attack";
+import { describeEnemyAttackFromType } from "shared/modules/enemy/enemy-attack-to-config-map";
 import { isAttackingEnemy, isAttackingEnemyType } from "shared/modules/enemy/enemy-type";
+import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
@@ -61,28 +63,34 @@ export class EnemyService implements OnStart, OnTick {
 			const enemy = possibleEnemyId.value;
 			if (!isAttackingEnemy(enemy)) continue;
 
-			const numberRange: [number, number] = [0, 19];
+			const { attacks } = describeEnemyFromType(enemy.enemyType);
 
-			const enemyRandom = math.random(numberRange[0], numberRange[1]);
+			attacks.forEach((attackType) => {
+				const { damage, chanceUpperBound } = describeEnemyAttackFromType(attackType);
 
-			if (enemyRandom !== 0) continue;
+				const numberRange: [number, number] = [0, chanceUpperBound];
 
-			const possibleClosestTowerId = producer.getState(
-				selectClosestTowerIdToPosition(
-					getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha).Position,
-				),
-			);
-			if (!possibleClosestTowerId.exists) continue;
+				const enemyRandom = math.random(numberRange[0], numberRange[1]);
 
-			const towerId = possibleClosestTowerId.value;
-			const attack: EnemyAttack = {
-				attackType: "BOULDER_THROW",
-				damage: 150,
-				enemyId,
-				towerId,
-			};
+				if (enemyRandom !== 0) return;
 
-			enemyAttack.Fire(attack);
+				const possibleClosestTowerId = producer.getState(
+					selectClosestTowerIdToPosition(
+						getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha).Position,
+					),
+				);
+				if (!possibleClosestTowerId.exists) return;
+
+				const towerId = possibleClosestTowerId.value;
+				const enemyAttack: EnemyAttack = {
+					attackType: "BOULDER_THROW",
+					damage: damage,
+					enemyId,
+					towerId,
+				};
+
+				attackTower.Fire(enemyAttack);
+			});
 		}
 	}
 

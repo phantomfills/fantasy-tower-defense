@@ -355,7 +355,7 @@ export class RoundService implements OnStart {
 				case 12: {
 					producer.setTrackId(tracks.light_show);
 					this.setDialog(
-						"The Dummy Tank is here! It has a lot of health, but it is very slow! Good luck taking it down.",
+						"The Dummy Tank is here! It has a lot of health, but it is very slow! Might be a little unorthodox, but place lower level troops to bait his attacks!",
 					);
 					break;
 				}
