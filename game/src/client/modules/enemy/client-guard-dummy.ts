@@ -2,6 +2,7 @@ import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { createDeathParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
+import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
 
 export class ClientGuardDummy extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
@@ -17,12 +18,12 @@ export class ClientGuardDummy extends ClientEnemy<EnemyModel> {
 		const animator = new Instance("Animator");
 		animator.Parent = animationController;
 
-		const walkAnimation = new Instance("Animation");
-		walkAnimation.Parent = animator;
-		walkAnimation.AnimationId = "rbxassetid://16779246486";
-
-		const animation = animator.LoadAnimation(walkAnimation);
-		animation.Play();
+		const walkAnimation = createAnimationTrack({
+			id: "rbxassetid://16769024725",
+			parent: animator,
+			animator,
+		});
+		walkAnimation.Play();
 
 		super.start();
 	}

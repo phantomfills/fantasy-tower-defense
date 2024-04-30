@@ -9,6 +9,7 @@ import {
 	ThrowsBoulderModel,
 } from "./shared-functionality/vfx/attack-animations/throw-boulder";
 import { holdFor } from "shared/modules/utils/wait-util";
+import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
 
 interface DummyTankModel extends ThrowsBoulderModel {}
 
@@ -28,30 +29,33 @@ export class ClientDummyTank extends ClientEnemy<DummyTankModel> implements Thro
 		const animator = new Instance("Animator");
 		animator.Parent = animationController;
 
-		const walkAnimation = new Instance("Animation");
-		walkAnimation.Parent = animator;
-		walkAnimation.AnimationId = "rbxassetid://16779246486";
-
-		const retrieveAnimation = new Instance("Animation");
-		retrieveAnimation.Parent = animator;
-		retrieveAnimation.AnimationId = "rbxassetid://17224693246";
-
-		const windUpAnimation = new Instance("Animation");
-		windUpAnimation.Parent = animator;
-		windUpAnimation.AnimationId = "rbxassetid://17224827704";
-
-		const throwAnimation = new Instance("Animation");
-		throwAnimation.Parent = animator;
-		throwAnimation.AnimationId = "rbxassetid://17224863625";
-
 		dummyModel.rightArm.boulder.Transparency = 1;
 
 		super(dummyModel, id, cframe);
 
-		this.walkAnimation = animator.LoadAnimation(walkAnimation);
-		this.retrieveAnimation = animator.LoadAnimation(retrieveAnimation);
-		this.windUpAnimation = animator.LoadAnimation(windUpAnimation);
-		this.throwAnimation = animator.LoadAnimation(throwAnimation);
+		this.walkAnimation = createAnimationTrack({
+			id: "rbxassetid://16779246486",
+			parent: animator,
+			animator,
+		});
+
+		this.retrieveAnimation = createAnimationTrack({
+			id: "rbxassetid://17224693246",
+			parent: animator,
+			animator,
+		});
+
+		this.windUpAnimation = createAnimationTrack({
+			id: "rbxassetid://17224827704",
+			parent: animator,
+			animator,
+		});
+
+		this.throwAnimation = createAnimationTrack({
+			id: "rbxassetid://17224827704",
+			parent: animator,
+			animator,
+		});
 	}
 
 	start() {
