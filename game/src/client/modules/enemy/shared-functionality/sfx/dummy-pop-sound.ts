@@ -1,5 +1,5 @@
 import { sounds } from "shared/modules/sounds/sounds";
-import { createSound } from "../utils/sound";
+import { createSound } from "../../../utils/sound";
 import { Debris, Workspace } from "@rbxts/services";
 
 export function playDummyPopSound(position: Vector3) {

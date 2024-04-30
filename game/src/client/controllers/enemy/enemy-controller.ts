@@ -1,7 +1,6 @@
 import { Controller, OnStart } from "@flamework/core";
 import Object from "@rbxts/object-utils";
-import { instanceOf } from "@rbxts/react/src/prop-types";
-import { ClientDummyTank, ThrowBoulder } from "client/modules/enemy/client-dummy-tank";
+import { ClientDummyTank } from "client/modules/enemy/client-dummy-tank";
 import { ClientEnemy, EnemyModel } from "client/modules/enemy/client-enemy";
 import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
 import { Events } from "client/network";

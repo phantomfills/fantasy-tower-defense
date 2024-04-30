@@ -1,22 +1,18 @@
-import { ClientEnemy, EnemyModel } from "./client-enemy";
+import { ClientEnemy } from "./client-enemy";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
-import { createDeathParticles } from "./particles";
-import { playDummyPopSound } from "./dummy-pop-sound";
-import { playBoulderAnimation } from "./boulder-animation";
+import { createDeathParticles } from "./shared-functionality/vfx/particles";
+import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
+import {
+	playBoulderProjectileAnimation,
+	playBoulderThrowAnimation,
+	ThrowsBoulder,
+	ThrowsBoulderModel,
+} from "./shared-functionality/vfx/attack-animations/throw-boulder";
 import { holdFor } from "shared/modules/utils/wait-util";
 
-export interface ThrowBoulder {
-	throwBoulder(position: Vector3): void;
-}
+interface DummyTankModel extends ThrowsBoulderModel {}
 
-interface DummyTankModel extends EnemyModel {
-	rightArm: BasePart & {
-		boulder: BasePart;
-		boulderAttachment: Attachment;
-	};
-}
-
-export class ClientDummyTank extends ClientEnemy<DummyTankModel> implements ThrowBoulder {
+export class ClientDummyTank extends ClientEnemy<DummyTankModel> implements ThrowsBoulder {
 	private readonly walkAnimation: AnimationTrack;
 	private readonly retrieveAnimation: AnimationTrack;
 	private readonly windUpAnimation: AnimationTrack;
@@ -64,37 +60,21 @@ export class ClientDummyTank extends ClientEnemy<DummyTankModel> implements Thro
 		super.start();
 	}
 
-	throwBoulder(position: Vector3) {
-		this.setLocked(true);
-
-		this.walkAnimation.Stop();
-		this.retrieveAnimation.Play();
-
+	throwBoulder(towerPosition: Vector3) {
 		const model = this.getModel();
+		const rightArm = model.rightArm;
 
-		const enemyPosition = this.getTargetCFrame().Position;
-		const towerPosition = position;
-		const newCframe = new CFrame(enemyPosition, towerPosition);
-		this.snapToCFrame(newCframe);
-
-		this.retrieveAnimation.Stopped.Once(() => {
-			model.rightArm.boulder.Transparency = 0;
-			this.windUpAnimation.Play();
-		});
-
-		this.windUpAnimation.Stopped.Once(() => {
-			this.throwAnimation.Play();
-
-			(async () => {
-				holdFor(200);
-				model.rightArm.boulder.Transparency = 1;
-				playBoulderAnimation(model.rightArm.boulderAttachment.WorldPosition, position);
-			})();
-		});
-
-		this.throwAnimation.Stopped.Once(() => {
-			this.setLocked(false);
-			this.walkAnimation.Play();
+		playBoulderThrowAnimation({
+			towerPosition,
+			setLocked: (locked: boolean) => this.setLocked(locked),
+			snapToCframe: (cframe: CFrame) => this.snapToCFrame(cframe),
+			walkAnimation: this.walkAnimation,
+			retrieveAnimation: this.retrieveAnimation,
+			windUpAnimation: this.windUpAnimation,
+			throwAnimation: this.throwAnimation,
+			boulder: rightArm.boulder,
+			boulderAttachment: rightArm.boulderAttachment,
+			currentCFrame: this.getTargetCFrame(),
 		});
 	}
 

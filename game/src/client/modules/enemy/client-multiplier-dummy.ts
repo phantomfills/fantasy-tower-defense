@@ -1,7 +1,7 @@
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { ClientEnemy, EnemyModel } from "./client-enemy";
-import { createDeathParticles } from "./particles";
-import { playDummyPopSound } from "./dummy-pop-sound";
+import { createDeathParticles } from "./shared-functionality/vfx/particles";
+import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
 
 export class ClientMultiplierDummy extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
