@@ -1,14 +1,15 @@
 import { ClientEnemy, EnemyModel } from "./client-enemy";
-import { ReplicatedStorage, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 import { createDeathParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
 import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
+import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
 
 export class ClientArmoredDummy extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
-		const dummyModel = ReplicatedStorage.assets.enemies.models.armoredDummy.Clone();
-		dummyModel.Parent = Workspace;
-		super(dummyModel, id, cframe);
+		const armoredDummyModel = getEnemyModelFromType("ARMORED_DUMMY");
+		armoredDummyModel.Parent = Workspace;
+		super(armoredDummyModel, id, cframe);
 	}
 
 	start() {

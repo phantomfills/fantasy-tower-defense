@@ -1,11 +1,12 @@
 import { ClientEnemy, EnemyModel } from "./client-enemy";
-import { ReplicatedStorage, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 import { createDeathParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
+import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
 
 export class ClientCriticalSportsCar extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
-		const criticalSportsCarModel = ReplicatedStorage.assets.enemies.models.critical_sports_car.Clone();
+		const criticalSportsCarModel = getEnemyModelFromType("CRITICAL_SPORTS_CAR");
 		criticalSportsCarModel.Parent = Workspace;
 		super(criticalSportsCarModel, id, cframe);
 	}

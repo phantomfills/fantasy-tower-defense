@@ -1,14 +1,15 @@
-import { ReplicatedStorage, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { createDeathParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
 import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
+import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
 
 export class ClientMultiplierDummy extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
-		const dummyModel = ReplicatedStorage.assets.enemies.models.multiplierDummy.Clone();
-		dummyModel.Parent = Workspace;
-		super(dummyModel, id, cframe);
+		const multiplierDummy = getEnemyModelFromType("MULTIPLIER_DUMMY");
+		multiplierDummy.Parent = Workspace;
+		super(multiplierDummy, id, cframe);
 	}
 
 	start() {

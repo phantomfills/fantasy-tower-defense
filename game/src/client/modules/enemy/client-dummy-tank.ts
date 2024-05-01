@@ -1,37 +1,34 @@
 import { ClientEnemy } from "./client-enemy";
-import { ReplicatedStorage, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 import { createDeathParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
 import {
-	playBoulderProjectileAnimation,
 	playBoulderThrowAnimation,
 	ThrowsBoulder,
 	ThrowsBoulderModel,
 } from "./shared-functionality/vfx/attack-animations/throw-boulder";
-import { holdFor } from "shared/modules/utils/wait-util";
 import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
+import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
 
-interface DummyTankModel extends ThrowsBoulderModel {}
-
-export class ClientDummyTank extends ClientEnemy<DummyTankModel> implements ThrowsBoulder {
+export class ClientDummyTank extends ClientEnemy<ThrowsBoulderModel> implements ThrowsBoulder {
 	private readonly walkAnimation: AnimationTrack;
 	private readonly retrieveAnimation: AnimationTrack;
 	private readonly windUpAnimation: AnimationTrack;
 	private readonly throwAnimation: AnimationTrack;
 
 	constructor(id: string, cframe: CFrame) {
-		const dummyModel = ReplicatedStorage.assets.enemies.models.dummyTank.Clone();
-		dummyModel.Parent = Workspace;
+		const dummyTankModel = getEnemyModelFromType("DUMMY_TANK");
+		dummyTankModel.Parent = Workspace;
 
 		const animationController = new Instance("AnimationController");
-		animationController.Parent = dummyModel;
+		animationController.Parent = dummyTankModel;
 
 		const animator = new Instance("Animator");
 		animator.Parent = animationController;
 
-		dummyModel.rightArm.boulder.Transparency = 1;
+		dummyTankModel.rightArm.boulder.Transparency = 1;
 
-		super(dummyModel, id, cframe);
+		super(dummyTankModel, id, cframe);
 
 		this.walkAnimation = createAnimationTrack({
 			id: "rbxassetid://16779246486",
