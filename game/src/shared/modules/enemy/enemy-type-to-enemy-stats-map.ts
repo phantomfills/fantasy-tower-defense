@@ -1,12 +1,12 @@
 import { E_EnemyAttack } from "../attack";
-import { Trait } from "../attack/immunity";
+import { E_Trait } from "../attack/trait";
 import { EnemyType } from "./enemy-type";
 
 interface EnemyStats {
 	maxHealth: number;
 	speed: number;
 	money: number;
-	traits: Trait[];
+	traits: E_Trait[];
 	attacks: E_EnemyAttack[];
 }
 

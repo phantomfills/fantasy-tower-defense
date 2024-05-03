@@ -1,5 +1,5 @@
 import { TowerType } from "./tower-type";
-import { Trait } from "../attack/immunity";
+import { E_Trait } from "../attack/trait";
 
 interface TowerLevel {
 	damage: number;
@@ -9,7 +9,7 @@ interface TowerLevel {
 	cost: number;
 	title: string;
 	description: string;
-	traits: Trait[];
+	traits: E_Trait[];
 }
 
 interface TowerStats {

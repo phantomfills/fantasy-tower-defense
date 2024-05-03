@@ -5,7 +5,7 @@ import { Label } from "../utils/label";
 import { useRem } from "../hooks/use-rem";
 import { fonts } from "../constants/fonts";
 import { images } from "shared/assets";
-import { Trait } from "shared/modules/attack/immunity";
+import { E_Trait } from "shared/modules/attack/trait";
 import { KeyCode, useKeyPress } from "@rbxts/pretty-react-hooks";
 import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
@@ -74,7 +74,7 @@ interface TowerActionMenuFrameProps {
 	upgradeCost: number;
 	level: number;
 	close: () => void;
-	traits: Trait[];
+	traits: E_Trait[];
 	actions: {
 		upgrade: Action;
 		sell: Action;
