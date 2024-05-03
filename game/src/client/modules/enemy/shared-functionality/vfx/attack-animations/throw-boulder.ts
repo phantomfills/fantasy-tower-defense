@@ -10,6 +10,10 @@ export interface ThrowsBoulder {
 	throwBoulder(towerPosition: Vector3): void;
 }
 
+export function isThrowsBoulder(enemy: unknown): enemy is ThrowsBoulder {
+	return (enemy as ThrowsBoulder).throwBoulder !== undefined;
+}
+
 export interface ThrowsBoulderModel extends EnemyModel {
 	rightArm: BasePart & {
 		boulder: BasePart;

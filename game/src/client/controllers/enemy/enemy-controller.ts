@@ -3,6 +3,7 @@ import Object from "@rbxts/object-utils";
 import { ClientDummyTank } from "client/modules/enemy/client-dummy-tank";
 import { ClientEnemy, EnemyModel } from "client/modules/enemy/client-enemy";
 import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
+import { isThrowsBoulder } from "client/modules/enemy/shared-functionality/vfx/attack-animations/throw-boulder";
 import { Events } from "client/network";
 import { producer } from "client/store";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
@@ -72,8 +73,9 @@ export class EnemyController implements OnStart {
 
 			switch (attackType) {
 				case "BOULDER_THROW": {
-					if (!(clientEnemy instanceof ClientDummyTank)) return;
+					if (!isThrowsBoulder(clientEnemy)) return;
 					clientEnemy.throwBoulder(towerPosition);
+					break;
 				}
 			}
 		});
