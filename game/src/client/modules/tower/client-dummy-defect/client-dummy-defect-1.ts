@@ -1,4 +1,3 @@
-import { TowerModel } from "shared/modules/tower/tower-model";
 import { ClientTower } from "../client-tower";
 import { getTowerModel } from "shared/modules/tower/tower-type-to-model-map";
 import { Workspace } from "@rbxts/services";
