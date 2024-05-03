@@ -19,6 +19,7 @@ import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-
 import { attackEnemy } from "server/events";
 import { selectIsValidPlacementPosition } from "shared/store/map";
 import { selectPlayersCanPlaceTower, selectPlayersCanUpgradeTower } from "shared/store/dialog";
+import { calculateEffectiveTowerDamageIfEnemyIsReinforced } from "shared/modules/attack/trait";
 
 const MILLISECONDS_IN_SECOND = 1000;
 const HEAL_TICK = 2000;
@@ -136,11 +137,7 @@ export class TowerService implements OnStart, OnTick {
 
 			const enemyTraits = describeEnemyFromType(firstEnemyInRange.enemyType).traits;
 
-			const effectiveDamage = enemyTraits.includes("REINFORCED")
-				? traits.includes("REINFORCED")
-					? damage
-					: 0
-				: damage;
+			const effectiveDamage = calculateEffectiveTowerDamageIfEnemyIsReinforced(damage, enemyTraits, traits);
 
 			const possibleEnemyCFrame = producer.getState(selectEnemyCFrameFromId(firstEnemyInRangeId));
 			if (!possibleEnemyCFrame.exists) continue;

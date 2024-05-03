@@ -8,6 +8,7 @@ import { createSelector } from "@rbxts/reflex";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { isAttackingEnemyType } from "shared/modules/enemy/enemy-type";
+import { doTowerAndEnemyHaveStealth } from "shared/modules/attack/trait";
 
 export function selectNoEnemiesExist(state: SharedState) {
 	return Object.keys(state.enemy).size() === 0;
@@ -148,9 +149,10 @@ export function selectFirstAttackableEnemyInTowerRange(
 			if (!possibleEnemy.exists) return false;
 
 			const { enemyType } = possibleEnemy.value;
-			const { traits } = describeEnemyFromType(enemyType);
+			const enemyStats = describeEnemyFromType(enemyType);
+			const enemyTraits = enemyStats.traits;
 
-			return traits.includes("STEALTH") ? towerStats.traits.includes("STEALTH") : true;
+			return doTowerAndEnemyHaveStealth(enemyTraits, towerStats.traits);
 		});
 
 		if (attackableEnemiesInTowerRange.isEmpty()) return { exists: false };
