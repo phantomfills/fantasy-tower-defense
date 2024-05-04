@@ -1,6 +1,6 @@
 import { ClientEnemy } from "./client-enemy";
 import { Workspace } from "@rbxts/services";
-import { createDeathParticles } from "./shared-functionality/vfx/particles";
+import { createPopParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
 import {
 	playBoulderThrowAnimation,
@@ -82,7 +82,7 @@ export class ClientDummyTank extends ClientEnemy<ThrowsBoulderModel> implements 
 	destroy(): void {
 		const position = this.getModel().humanoidRootPart.Position;
 
-		createDeathParticles(position, 25);
+		createPopParticles(position, 25);
 		playDummyPopSound(position);
 
 		super.destroy();

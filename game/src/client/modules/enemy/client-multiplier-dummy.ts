@@ -1,6 +1,6 @@
 import { Workspace } from "@rbxts/services";
 import { ClientEnemy, EnemyModel } from "./client-enemy";
-import { createDeathParticles } from "./shared-functionality/vfx/particles";
+import { createPopParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
 import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
@@ -32,7 +32,7 @@ export class ClientMultiplierDummy extends ClientEnemy<EnemyModel> {
 	destroy(): void {
 		const position = this.getModel().humanoidRootPart.Position;
 
-		createDeathParticles(position, 5, new Color3(0, 0.8, 1));
+		createPopParticles(position, 5, new Color3(0, 0.8, 1));
 		playDummyPopSound(position);
 
 		super.destroy();

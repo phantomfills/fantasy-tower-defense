@@ -1,7 +1,7 @@
 import { Debris, Workspace } from "@rbxts/services";
 import { images } from "shared/assets";
 
-export function createDeathParticles(position: Vector3, count: number = 5, color: Color3 = Color3.fromRGB(27, 42, 53)) {
+export function createPopParticles(position: Vector3, count: number = 5, color: Color3 = Color3.fromRGB(27, 42, 53)) {
 	const particlePart = new Instance("Part");
 	particlePart.Size = new Vector3(1, 1, 1);
 	particlePart.Position = position;
