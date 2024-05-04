@@ -80,8 +80,10 @@ export class ClientDummyTank extends ClientEnemy<ThrowsBoulderModel> implements 
 	}
 
 	destroy(): void {
-		createDeathParticles(this.getModel().humanoidRootPart.Position, 25);
-		playDummyPopSound(this.getModel().humanoidRootPart.Position);
+		const position = this.getModel().humanoidRootPart.Position;
+
+		createDeathParticles(position, 25);
+		playDummyPopSound(position);
 
 		super.destroy();
 	}

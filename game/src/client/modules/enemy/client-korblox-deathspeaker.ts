@@ -30,8 +30,10 @@ export class ClientKorbloxDeathspeaker extends ClientEnemy<EnemyModel> {
 	}
 
 	destroy(): void {
-		createDeathParticles(this.getModel().humanoidRootPart.Position, 15, Color3.fromRGB(0, 0, 255));
-		playDummyPopSound(this.getModel().humanoidRootPart.Position);
+		const position = this.getModel().humanoidRootPart.Position;
+
+		createDeathParticles(position, 15, Color3.fromRGB(0, 0, 255));
+		playDummyPopSound(position);
 
 		super.destroy();
 	}

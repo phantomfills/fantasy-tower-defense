@@ -30,8 +30,10 @@ export class ClientMultiplierDummy extends ClientEnemy<EnemyModel> {
 	}
 
 	destroy(): void {
-		createDeathParticles(this.getModel().humanoidRootPart.Position, 5, new Color3(0, 0.8, 1));
-		playDummyPopSound(this.getModel().humanoidRootPart.Position);
+		const position = this.getModel().humanoidRootPart.Position;
+
+		createDeathParticles(position, 5, new Color3(0, 0.8, 1));
+		playDummyPopSound(position);
 
 		super.destroy();
 	}

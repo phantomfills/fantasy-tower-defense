@@ -30,8 +30,10 @@ export class ClientArmoredDummy extends ClientEnemy<EnemyModel> {
 	}
 
 	destroy(): void {
-		createDeathParticles(this.getModel().humanoidRootPart.Position);
-		playDummyPopSound(this.getModel().humanoidRootPart.Position);
+		const position = this.getModel().humanoidRootPart.Position;
+
+		createDeathParticles(position);
+		playDummyPopSound(position);
 
 		super.destroy();
 	}

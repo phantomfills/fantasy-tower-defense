@@ -12,8 +12,10 @@ export class ClientCriticalSportsCar extends ClientEnemy<EnemyModel> {
 	}
 
 	destroy(): void {
-		createDeathParticles(this.getModel().humanoidRootPart.Position, 100, Color3.fromRGB(255, 255, 255));
-		playDummyPopSound(this.getModel().humanoidRootPart.Position);
+		const position = this.getModel().humanoidRootPart.Position;
+
+		createDeathParticles(position, 100, Color3.fromRGB(255, 255, 255));
+		playDummyPopSound(position);
 
 		super.destroy();
 	}
