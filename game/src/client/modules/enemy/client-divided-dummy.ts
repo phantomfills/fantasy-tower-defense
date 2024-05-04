@@ -32,7 +32,7 @@ export class ClientDividedDummy extends ClientEnemy<EnemyModel> {
 	destroy(): void {
 		const position = this.getModel().humanoidRootPart.Position;
 
-		createPopParticles(position, 2, new Color3(0.98, 1, 0));
+		createPopParticles(position, 2, Color3.fromRGB(255, 255, 0));
 		playDummyPopSound(position);
 
 		super.destroy();

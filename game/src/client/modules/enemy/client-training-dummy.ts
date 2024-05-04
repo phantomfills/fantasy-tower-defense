@@ -4,6 +4,7 @@ import { createPopParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
 import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
+import { createBasicDummyDeathEffects } from "./shared-functionality/dummy-utils";
 
 export class ClientTrainingDummy extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
@@ -31,9 +32,7 @@ export class ClientTrainingDummy extends ClientEnemy<EnemyModel> {
 
 	destroy(): void {
 		const position = this.getModel().humanoidRootPart.Position;
-
-		createPopParticles(position);
-		playDummyPopSound(position);
+		createBasicDummyDeathEffects(position);
 
 		super.destroy();
 	}
