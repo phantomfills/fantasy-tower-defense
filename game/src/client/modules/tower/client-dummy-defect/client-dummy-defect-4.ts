@@ -8,7 +8,6 @@ import { createBulletTrail } from "./bullet-trail";
 import { createAnimationTrack } from "client/modules/animation-utils";
 
 export class ClientDummyDefect4 extends ClientTower<DummyDefectDualPistolModel> {
-	private animator: Animator;
 	private attackAnimationTrack1: AnimationTrack;
 	private attackAnimationTrack2: AnimationTrack;
 	private attackAnimationFlag: boolean;
@@ -22,28 +21,27 @@ export class ClientDummyDefect4 extends ClientTower<DummyDefectDualPistolModel> 
 		const animationController = new Instance("AnimationController");
 		animationController.Parent = dummyDefectModel;
 
-		this.animator = new Instance("Animator");
-		this.animator.Name = "animator";
-		this.animator.Parent = animationController;
+		const animator = new Instance("Animator");
+		animator.Parent = animationController;
 
 		const idle = createAnimationTrack({
 			id: "rbxassetid://16995791208",
-			parent: this.animator,
-			animator: this.animator,
+			parent: animator,
+			animator,
 		});
 		idle.Play();
 
 		const attack1 = createAnimationTrack({
 			id: "rbxassetid://16995813016",
-			parent: this.animator,
-			animator: this.animator,
+			parent: animator,
+			animator,
 		});
 		this.attackAnimationTrack1 = attack1;
 
 		const attack2 = createAnimationTrack({
 			id: "rbxassetid://16995826343",
-			parent: this.animator,
-			animator: this.animator,
+			parent: animator,
+			animator,
 		});
 		this.attackAnimationTrack2 = attack2;
 

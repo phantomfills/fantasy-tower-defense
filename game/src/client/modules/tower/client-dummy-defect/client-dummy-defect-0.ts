@@ -8,7 +8,6 @@ import { DummyDefectPistolModel } from "./dummy-defect-model";
 import { createAnimationTrack } from "client/modules/animation-utils";
 
 export class ClientDummyDefect0 extends ClientTower<DummyDefectPistolModel> {
-	private animator: Animator;
 	private attackAnimationTrack: AnimationTrack;
 	private attackSound: Sound;
 
@@ -20,21 +19,20 @@ export class ClientDummyDefect0 extends ClientTower<DummyDefectPistolModel> {
 		const animationController = new Instance("AnimationController");
 		animationController.Parent = dummyDefectModel;
 
-		this.animator = new Instance("Animator");
-		this.animator.Name = "animator";
-		this.animator.Parent = animationController;
+		const animator = new Instance("Animator");
+		animator.Parent = animationController;
 
 		const idle = createAnimationTrack({
 			id: "rbxassetid://16995618427",
-			parent: this.animator,
-			animator: this.animator,
+			parent: animator,
+			animator,
 		});
 		idle.Play();
 
 		const attack = createAnimationTrack({
 			id: "rbxassetid://16995667475",
-			parent: this.animator,
-			animator: this.animator,
+			parent: animator,
+			animator,
 		});
 		this.attackAnimationTrack = attack;
 
