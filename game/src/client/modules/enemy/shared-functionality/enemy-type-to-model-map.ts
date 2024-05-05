@@ -1,10 +1,11 @@
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { EnemyModel } from "../client-enemy";
 import { ReplicatedStorage } from "@rbxts/services";
+import { DeepReadonly } from "@rbxts/reflex";
 
 const enemyModels = ReplicatedStorage.assets.enemies.models;
 
-const ENEMY_MODELS = {
+const enemyTypeToModelMap = {
 	TRAINING_DUMMY: enemyModels.trainingDummy,
 	SPEEDSTER_DUMMY: enemyModels.speedsterDummy,
 	ARMORED_DUMMY: enemyModels.armoredDummy,
@@ -17,8 +18,8 @@ const ENEMY_MODELS = {
 	CRITICAL_SPORTS_CAR: enemyModels.critical_sports_car,
 	CIRCUIT_BREAKER: enemyModels.circuit_breaker,
 	IMPOSTOR: enemyModels.impostor,
-} as const satisfies Readonly<Record<EnemyType, EnemyModel>>;
+} as const satisfies DeepReadonly<Record<EnemyType, EnemyModel>>;
 
-export function getEnemyModelFromType<T extends EnemyType>(enemyType: T): (typeof ENEMY_MODELS)[T] {
-	return ENEMY_MODELS[enemyType];
+export function getEnemyModelFromType<T extends EnemyType>(enemyType: T): (typeof enemyTypeToModelMap)[T] {
+	return enemyTypeToModelMap[enemyType].Clone() as (typeof enemyTypeToModelMap)[T];
 }

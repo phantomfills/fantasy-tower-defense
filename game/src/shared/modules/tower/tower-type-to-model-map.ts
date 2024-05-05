@@ -30,5 +30,5 @@ export function getTowerModel<T extends TowerType, U extends number>(
 	towerType: T,
 	level: U,
 ): (typeof towerTypeToModelsMap)[T][U] {
-	return towerTypeToModelsMap[towerType][level].Clone();
+	return towerTypeToModelsMap[towerType][level].Clone() as (typeof towerTypeToModelsMap)[T][U];
 }
