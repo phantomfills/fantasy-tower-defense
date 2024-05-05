@@ -5,6 +5,7 @@ import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
 import { DummyDefectDualPistolModel } from "./dummy-defect-model";
 import { createBulletTrail } from "./bullet-trail";
+import { createAnimationTrack } from "client/modules/animation-utils";
 
 export class ClientDummyDefect5 extends ClientTower<DummyDefectDualPistolModel> {
 	private animator: Animator;
@@ -25,13 +26,25 @@ export class ClientDummyDefect5 extends ClientTower<DummyDefectDualPistolModel> 
 		this.animator.Name = "animator";
 		this.animator.Parent = animationController;
 
-		const idle = this.getAnimationTrack("rbxassetid://16995791208");
+		const idle = createAnimationTrack({
+			id: "rbxassetid://16995791208",
+			parent: this.animator,
+			animator: this.animator,
+		});
 		idle.Play();
 
-		const attack1 = this.getAnimationTrack("rbxassetid://16995813016");
+		const attack1 = createAnimationTrack({
+			id: "rbxassetid://16995813016",
+			parent: this.animator,
+			animator: this.animator,
+		});
 		this.attackAnimationTrack1 = attack1;
 
-		const attack2 = this.getAnimationTrack("rbxassetid://16995826343");
+		const attack2 = createAnimationTrack({
+			id: "rbxassetid://16995826343",
+			parent: this.animator,
+			animator: this.animator,
+		});
 		this.attackAnimationTrack2 = attack2;
 
 		this.attackAnimationFlag = false;
@@ -48,16 +61,6 @@ export class ClientDummyDefect5 extends ClientTower<DummyDefectDualPistolModel> 
 			return this.attackAnimationTrack1;
 		}
 		return this.attackAnimationTrack2;
-	}
-
-	private getAnimationTrack(animationId: string) {
-		const animation = new Instance("Animation");
-		animation.AnimationId = animationId;
-		animation.Parent = this.animator;
-
-		const track = this.animator.LoadAnimation(animation);
-
-		return track;
 	}
 
 	attack(towardsPosition: Vector3) {

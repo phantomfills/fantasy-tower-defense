@@ -5,6 +5,7 @@ import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
 import { DummyDefectPistolModel } from "./dummy-defect-model";
 import { createBulletTrail } from "./bullet-trail";
+import { createAnimationTrack } from "client/modules/animation-utils";
 
 export class ClientDummyDefect1 extends ClientTower<DummyDefectPistolModel> {
 	private animator: Animator;
@@ -23,23 +24,21 @@ export class ClientDummyDefect1 extends ClientTower<DummyDefectPistolModel> {
 		this.animator.Name = "animator";
 		this.animator.Parent = animationController;
 
-		const idle = this.getAnimationTrack("rbxassetid://16995618427");
+		const idle = createAnimationTrack({
+			id: "rbxassetid://16995618427",
+			parent: this.animator,
+			animator: this.animator,
+		});
 		idle.Play();
 
-		const attack = this.getAnimationTrack("rbxassetid://16995667475");
+		const attack = createAnimationTrack({
+			id: "rbxassetid://16995667475",
+			parent: this.animator,
+			animator: this.animator,
+		});
 		this.attackAnimationTrack = attack;
 
 		this.attackSound = createSound(sounds.pistol_fire, { volume: 0.2, parent: this.getModel().humanoidRootPart });
-	}
-
-	private getAnimationTrack(animationId: string) {
-		const animation = new Instance("Animation");
-		animation.AnimationId = animationId;
-		animation.Parent = this.animator;
-
-		const track = this.animator.LoadAnimation(animation);
-
-		return track;
 	}
 
 	attack(towardsPosition: Vector3) {

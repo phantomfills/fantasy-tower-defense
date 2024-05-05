@@ -7,7 +7,7 @@ import {
 	ThrowsBoulder,
 	ThrowsBoulderModel,
 } from "./shared-functionality/vfx/attack-animations/throw-boulder";
-import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
+import { createAnimationTrack } from "../animation-utils";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
 
 export class ClientDummyTank extends ClientEnemy<ThrowsBoulderModel> implements ThrowsBoulder {

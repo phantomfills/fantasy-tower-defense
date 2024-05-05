@@ -2,7 +2,7 @@ import { Workspace } from "@rbxts/services";
 import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { createPopParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
-import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
+import { createAnimationTrack } from "../animation-utils";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
 
 export class ClientDividedDummy extends ClientEnemy<EnemyModel> {

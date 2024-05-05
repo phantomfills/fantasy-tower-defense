@@ -1,6 +1,6 @@
 import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { Workspace } from "@rbxts/services";
-import { createAnimationTrack } from "./shared-functionality/vfx/animation-utils";
+import { createAnimationTrack } from "../animation-utils";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
 import { createBasicDummyDeathEffects } from "./shared-functionality/dummy-utils";
 
