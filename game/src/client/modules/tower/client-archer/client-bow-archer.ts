@@ -66,7 +66,7 @@ export class ClientBowArcher extends ClientTower<BowArcherModel> {
 		topBeam.Attachment0 = drawAttachment;
 	}
 
-	attack(towardsPosition: Vector3): void {
+	attack(towardsPosition: Vector3) {
 		super.attack(towardsPosition);
 
 		this.idleAnimationTrack.Stop();

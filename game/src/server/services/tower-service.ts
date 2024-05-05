@@ -33,11 +33,11 @@ function userHasMoney(userId: string, amount: number): boolean {
 	return userMoney >= amount;
 }
 
-function deductMoneyFromUser(userId: string, amount: number): void {
+function deductMoneyFromUser(userId: string, amount: number) {
 	producer.removeMoney(userId, amount);
 }
 
-function sellTower(id: string): void {
+function sellTower(id: string) {
 	const possibleTower = producer.getState(selectPossibleTowerFromId(id));
 	if (!possibleTower.exists) return;
 
@@ -52,7 +52,7 @@ function sellTower(id: string): void {
 
 @Service({})
 export class TowerService implements OnStart, OnTick {
-	onStart(): void {
+	onStart() {
 		Events.placeTower.connect((player, _type, cframe) => {
 			const playersCanPlaceTower = producer.getState(selectPlayersCanPlaceTower);
 			if (!playersCanPlaceTower) return;

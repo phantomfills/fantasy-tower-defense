@@ -11,7 +11,7 @@ export class ClientCriticalSportsCar extends ClientEnemy<EnemyModel> {
 		super(criticalSportsCarModel, id, cframe);
 	}
 
-	destroy(): void {
+	destroy() {
 		const position = this.getModel().humanoidRootPart.Position;
 
 		createPopParticles(position, 100, Color3.fromRGB(255, 255, 255));

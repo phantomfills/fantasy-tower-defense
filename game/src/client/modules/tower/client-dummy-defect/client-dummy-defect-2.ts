@@ -42,7 +42,7 @@ export class ClientDummyDefect2 extends ClientTower<DummyDefectPistolModel> {
 		return track;
 	}
 
-	attack(towardsPosition: Vector3): void {
+	attack(towardsPosition: Vector3) {
 		super.attack(towardsPosition);
 
 		createBulletTrail(

@@ -79,7 +79,7 @@ export class ClientDummyTank extends ClientEnemy<ThrowsBoulderModel> implements 
 		});
 	}
 
-	destroy(): void {
+	destroy() {
 		const position = this.getModel().humanoidRootPart.Position;
 
 		createPopParticles(position, 25);

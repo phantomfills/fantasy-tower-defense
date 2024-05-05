@@ -43,7 +43,7 @@ export class ClientCrossbowArcher extends ClientTower<CrossbowArcherModel> {
 		return track;
 	}
 
-	attack(towardsPosition: Vector3): void {
+	attack(towardsPosition: Vector3) {
 		super.attack(towardsPosition);
 
 		this.idleAnimationTrack.Stop();

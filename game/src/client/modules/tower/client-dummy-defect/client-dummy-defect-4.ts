@@ -60,7 +60,7 @@ export class ClientDummyDefect4 extends ClientTower<DummyDefectDualPistolModel> 
 		return track;
 	}
 
-	attack(towardsPosition: Vector3): void {
+	attack(towardsPosition: Vector3) {
 		super.attack(towardsPosition);
 
 		if (this.attackAnimationFlag) {

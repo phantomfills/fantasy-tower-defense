@@ -29,7 +29,7 @@ export class ClientMultiplierDummy extends ClientEnemy<EnemyModel> {
 		super.start();
 	}
 
-	destroy(): void {
+	destroy() {
 		const position = this.getModel().humanoidRootPart.Position;
 
 		createPopParticles(position, 5, new Color3(0, 0.8, 1));

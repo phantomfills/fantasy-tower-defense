@@ -94,7 +94,7 @@ export class EnemyService implements OnStart, OnTick {
 		}
 	}
 
-	onTick(): void {
+	onTick() {
 		const currentTime = getCurrentTimeInMilliseconds();
 
 		producer.enemyTick(currentTime);

@@ -11,7 +11,7 @@ export class ClientImpostor extends ClientEnemy<EnemyModel> {
 		super(impostorModel, id, cframe);
 	}
 
-	destroy(): void {
+	destroy() {
 		const position = this.getModel().humanoidRootPart.Position;
 
 		createPopParticles(position, 100, Color3.fromRGB(255, 0, 0));

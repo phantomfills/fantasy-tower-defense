@@ -29,7 +29,7 @@ export class ClientKorbloxDeathspeaker extends ClientEnemy<EnemyModel> {
 		super.start();
 	}
 
-	destroy(): void {
+	destroy() {
 		const position = this.getModel().humanoidRootPart.Position;
 
 		createPopParticles(position, 15, Color3.fromRGB(0, 0, 255));

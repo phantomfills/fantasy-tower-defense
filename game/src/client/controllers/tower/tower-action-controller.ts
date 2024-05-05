@@ -92,7 +92,7 @@ export class TowerActionController implements OnStart, OnTick {
 		};
 	}
 
-	onStart(): void {
+	onStart() {
 		UserInputService.InputBegan.Connect((input) => {
 			const playersCanUpgradeTower = producer.getState(selectPlayersCanUpgradeTower);
 			if (!playersCanUpgradeTower) return;
@@ -114,7 +114,7 @@ export class TowerActionController implements OnStart, OnTick {
 		});
 	}
 
-	onTick(): void {
+	onTick() {
 		if (!this.enabled) {
 			this.destroyHighlight();
 			return;

@@ -30,7 +30,7 @@ export class ClientSpeedsterDummy extends ClientEnemy<EnemyModel> {
 		super.start();
 	}
 
-	destroy(): void {
+	destroy() {
 		const position = this.getModel().humanoidRootPart.Position;
 		createBasicDummyDeathEffects(position);
 

@@ -51,7 +51,7 @@ export class ClientTowerRenderController implements OnStart {
 		return this.clientTowers;
 	}
 
-	onStart(): void {
+	onStart() {
 		producer.observe(selectTowers, getTowerId, ({ towerType, level, cframe }, id) => {
 			const clientTower = createClientTower(towerType, level, id, cframe);
 			this.addTower(clientTower);
