@@ -38,19 +38,19 @@ export class ClientDummyTank extends ClientEnemy<ThrowsBoulderModel> implements 
 		});
 
 		this.retrieveAnimation = createAnimationTrack({
-			id: "rbxassetid://17224693246",
+			id: animations.dummy_tank_retrieve,
 			parent: animator,
 			animator,
 		});
 
 		this.windUpAnimation = createAnimationTrack({
-			id: "rbxassetid://17224827704",
+			id: animations.dummy_tank_wind_up,
 			parent: animator,
 			animator,
 		});
 
 		this.throwAnimation = createAnimationTrack({
-			id: "rbxassetid://17224827704",
+			id: animations.dummy_tank_throw,
 			parent: animator,
 			animator,
 		});
