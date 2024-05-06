@@ -19,7 +19,7 @@ export class ClientArmoredDummy extends ClientEnemy<EnemyModel> {
 		animator.Parent = animationController;
 
 		const walkAnimation = createAnimationTrack({
-			id: "rbxassetid://17093123019",
+			id: "rbxassetid://16769024725",
 			parent: animator,
 			animator,
 		});
