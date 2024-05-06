@@ -16,7 +16,7 @@ export interface DummyDefectPistolModel extends TowerModel {
 
 export class SinglePistolDummyDefect extends ClientTower<DummyDefectPistolModel> {
 	private attackAnimationTrack: AnimationTrack;
-	private attackSound: Sound;
+	private attackSounds: Sound[];
 
 	constructor(model: DummyDefectPistolModel, id: string, cframe: CFrame) {
 		super(model, id, cframe);
@@ -41,7 +41,11 @@ export class SinglePistolDummyDefect extends ClientTower<DummyDefectPistolModel>
 		});
 		this.attackAnimationTrack = attack;
 
-		this.attackSound = createSound(sounds.pistol_fire, { volume: 0.2, parent: model.humanoidRootPart });
+		this.attackSounds = [
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.35, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.5, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.65, parent: model.humanoidRootPart }),
+		];
 	}
 
 	attack(towardsPosition: Vector3) {
@@ -53,6 +57,6 @@ export class SinglePistolDummyDefect extends ClientTower<DummyDefectPistolModel>
 		);
 
 		this.attackAnimationTrack.Play();
-		this.attackSound.Play();
+		this.attackSounds[math.random(0, this.attackSounds.size() - 1)].Play();
 	}
 }

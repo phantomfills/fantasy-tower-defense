@@ -17,7 +17,7 @@ export class DualPistolDummyDefect extends ClientTower<DummyDefectDualPistolMode
 	private attackAnimationTrack1: AnimationTrack;
 	private attackAnimationTrack2: AnimationTrack;
 	private attackAnimationFlag: boolean;
-	private attackSound: Sound;
+	private attackSounds: Sound[];
 
 	constructor(model: DummyDefectDualPistolModel, id: string, cframe: CFrame) {
 		super(model, id, cframe);
@@ -51,7 +51,11 @@ export class DualPistolDummyDefect extends ClientTower<DummyDefectDualPistolMode
 
 		this.attackAnimationFlag = false;
 
-		this.attackSound = createSound(sounds.pistol_fire, { volume: 0.2, parent: model.humanoidRootPart });
+		this.attackSounds = [
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 0.8, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.2, parent: model.humanoidRootPart }),
+		];
 	}
 
 	private toggleAttackAnimationFlag() {
@@ -83,7 +87,7 @@ export class DualPistolDummyDefect extends ClientTower<DummyDefectDualPistolMode
 		const currentAnimationTrack = this.getCurrentAttackAnimationTrack();
 		currentAnimationTrack.Play();
 
-		this.attackSound.Play();
+		this.attackSounds[math.random(0, this.attackSounds.size() - 1)].Play();
 
 		this.toggleAttackAnimationFlag();
 	}
