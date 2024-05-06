@@ -4,6 +4,7 @@ import { createPopParticles } from "./shared-functionality/vfx/particles";
 import { playDummyPopSound } from "./shared-functionality/sfx/dummy-pop-sound";
 import { createAnimationTrack } from "../animation-utils";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
+import { animations } from "./shared-functionality/vfx/animations";
 
 export class ClientDividedDummy extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
@@ -20,7 +21,7 @@ export class ClientDividedDummy extends ClientEnemy<EnemyModel> {
 		animator.Parent = animationController;
 
 		const walkAnimation = createAnimationTrack({
-			id: "rbxassetid://16769024725",
+			id: animations.quick_walk,
 			parent: animator,
 			animator,
 		});

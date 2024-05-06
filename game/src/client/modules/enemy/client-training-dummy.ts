@@ -3,6 +3,7 @@ import { Workspace } from "@rbxts/services";
 import { createAnimationTrack } from "../animation-utils";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
 import { createBasicDummyDeathEffects } from "./shared-functionality/dummy-utils";
+import { animations } from "./shared-functionality/vfx/animations";
 
 export class ClientTrainingDummy extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
@@ -19,7 +20,7 @@ export class ClientTrainingDummy extends ClientEnemy<EnemyModel> {
 		animator.Parent = animationController;
 
 		const walkAnimation = createAnimationTrack({
-			id: "rbxassetid://16769024725",
+			id: animations.default_walk,
 			parent: animator,
 			animator,
 		});

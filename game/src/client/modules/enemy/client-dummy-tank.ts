@@ -9,6 +9,7 @@ import {
 } from "./shared-functionality/vfx/attack-animations/throw-boulder";
 import { createAnimationTrack } from "../animation-utils";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
+import { animations } from "./shared-functionality/vfx/animations";
 
 export class ClientDummyTank extends ClientEnemy<ThrowsBoulderModel> implements ThrowsBoulder {
 	private readonly walkAnimation: AnimationTrack;
@@ -31,7 +32,7 @@ export class ClientDummyTank extends ClientEnemy<ThrowsBoulderModel> implements 
 		super(dummyTankModel, id, cframe);
 
 		this.walkAnimation = createAnimationTrack({
-			id: "rbxassetid://16779246486",
+			id: animations.slow_walk,
 			parent: animator,
 			animator,
 		});
