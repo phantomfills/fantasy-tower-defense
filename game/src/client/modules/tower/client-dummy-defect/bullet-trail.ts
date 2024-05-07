@@ -1,4 +1,4 @@
-import { CollectionService, Debris, TweenService, Workspace } from "@rbxts/services";
+import { CollectionService, Debris, Workspace } from "@rbxts/services";
 import { tags } from "shared/modules/utils/tags";
 
 export function createBulletTrail(fromPosition: Vector3, toPosition: Vector3) {
