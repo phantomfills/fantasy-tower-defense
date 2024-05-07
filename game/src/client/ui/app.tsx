@@ -10,25 +10,28 @@ import { EnemyTooltipBillboard } from "./enemy/enemy-tooltip";
 import { RangeIndicator } from "./tower/range-part";
 import { Objectives } from "./game/objectives";
 import { EnemyDamageIndicators } from "./enemy/enemy-damage-indicators";
+import { Frame } from "./utils/frame";
 
 export function App() {
 	return (
 		<>
 			<Music />
 			<Panel>
-				<TowerLoadout />
+				<Frame size={new UDim2(1, -10, 1, -10)} position={new UDim2(0, 5, 0, 5)}>
+					<TowerLoadout />
 
-				<TowerPlacementMessage />
+					<TowerPlacementMessage />
 
-				<TowerActionMenu />
-				<RangeIndicator />
+					<TowerActionMenu />
+					<RangeIndicator />
 
-				<EnemyTooltipBillboard />
-				<EnemyDamageIndicators />
+					<EnemyTooltipBillboard />
+					<EnemyDamageIndicators />
 
-				<Dialog />
-				<MatchInfo />
-				<Objectives />
+					<Dialog />
+					<MatchInfo />
+					<Objectives />
+				</Frame>
 			</Panel>
 		</>
 	);

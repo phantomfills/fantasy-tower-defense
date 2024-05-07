@@ -64,12 +64,15 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 
 	return (
 		<Frame>
+			<uilistlayout
+				VerticalAlignment={Enum.VerticalAlignment.Bottom}
+				HorizontalAlignment={Enum.HorizontalAlignment.Center}
+			/>
 			<textbutton
 				Size={lerpBinding(buttonSizeTransition, new UDim2(1, 0, 1, 0), new UDim2(0.8, 0, 0.8, 0))}
 				BackgroundColor3={new Color3(0.1, 0.1, 0.1)}
 				BackgroundTransparency={0.2}
 				AnchorPoint={new Vector2(0.5, 0.5)}
-				Position={lerpBinding(buttonHoverTransition, new UDim2(0.5, 0, 0.5, 0), new UDim2(0.5, 0, 0.4, 0))}
 				Text=""
 				AutoButtonColor={false}
 				Event={{
