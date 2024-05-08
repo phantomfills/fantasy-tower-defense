@@ -32,3 +32,36 @@ export function createPopParticles(position: Vector3, count: number = 5, color: 
 
 	Debris.AddItem(particlePart, 1);
 }
+
+export function createSmokeParticles(position: Vector3, count: number = 5, color: Color3 = Color3.fromRGB(50, 50, 50)) {
+	const particlePart = new Instance("Part");
+	particlePart.Size = new Vector3(1, 1, 1);
+	particlePart.Position = position;
+	particlePart.Anchored = true;
+	particlePart.CanCollide = false;
+	particlePart.Transparency = 1;
+	particlePart.Parent = Workspace;
+
+	const particleAttachment = new Instance("Attachment");
+	particleAttachment.Parent = particlePart;
+
+	const particleEmitter = new Instance("ParticleEmitter");
+	particleEmitter.Color = new ColorSequence(color);
+	particleEmitter.Texture = images.smoke;
+	particleEmitter.Size = new NumberSequence(0.2);
+	particleEmitter.SpreadAngle = new Vector2(25, 25);
+	particleEmitter.RotSpeed = new NumberRange(15);
+	particleEmitter.Acceleration = new Vector3(0, -1.75, 0);
+	particleEmitter.Lifetime = new NumberRange(0.15, 0.75);
+	particleEmitter.Speed = new NumberRange(1.25, 1.75);
+	particleEmitter.Transparency = new NumberSequence([
+		new NumberSequenceKeypoint(0, 0.75),
+		new NumberSequenceKeypoint(1, 1),
+	]);
+	particleEmitter.Enabled = false;
+	particleEmitter.Parent = particleAttachment;
+
+	particleEmitter.Emit(count);
+
+	Debris.AddItem(particlePart, 1);
+}

@@ -12,6 +12,7 @@ return {
 		q_button = "rbxassetid://16726141133",
 		r_button = "rbxassetid://16726141209",
 		shield = "rbxassetid://16781363004",
+		smoke = "rbxassetid://17426961906",
 		stripes = "rbxassetid://16726141326",
 		tick = "rbxassetid://16952739879",
 		white_square = "rbxassetid://16988006592",

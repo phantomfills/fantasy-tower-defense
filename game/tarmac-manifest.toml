@@ -53,6 +53,11 @@ hash = "13d3ac1dff3338ea04490fc6a7e9d1aea93e8af7c9ee60da2fd7b79a5a65f369"
 id = 16781363004
 packable = false
 
+[inputs."assets/images/smoke.png"]
+hash = "202ab25396ca439c6e918023241b86cfecab592cf37722968a911d9144dd0575"
+id = 17426961906
+packable = false
+
 [inputs."assets/images/stripes.png"]
 hash = "47bfd927d86ade64846d4bf0e29e05e0bdee89d14b933da1973158b740c14262"
 id = 16726141326

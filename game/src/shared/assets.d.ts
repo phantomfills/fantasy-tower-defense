@@ -14,6 +14,7 @@ interface Images {
 	tick: string;
 	white_square: string;
 	dummy_defect_icon: string;
+	smoke: string;
 }
 
 export declare const images: Images;

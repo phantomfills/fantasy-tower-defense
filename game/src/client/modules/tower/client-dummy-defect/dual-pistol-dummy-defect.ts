@@ -5,6 +5,8 @@ import { createAnimationTrack } from "client/modules/animation-utils";
 import { createBulletTrail } from "./bullet-trail";
 import { sounds } from "shared/modules/sounds/sounds";
 import { getPositionWithY } from "./position-with-y";
+import { createSmokeParticles } from "client/modules/enemy/shared-functionality/vfx/particles";
+import { holdForPromise } from "shared/modules/utils/wait-util";
 
 interface DummyDefectDualPistolModel extends DummyDefectPistolModel {
 	leftArm: BasePart & {
@@ -73,7 +75,9 @@ export class DualPistolDummyDefect extends ClientTower<DummyDefectDualPistolMode
 	attack(towardsPosition: Vector3) {
 		super.attack(towardsPosition);
 
-		const tipPosition = this.getModel().rightArm.pistol.tipAttachment.WorldPosition;
+		const arm = this.attackAnimationFlag ? this.getModel().rightArm : this.getModel().leftArm;
+
+		const tipPosition = arm.pistol.tipAttachment.WorldPosition;
 		const enemyPositionWithTipY = getPositionWithY(towardsPosition, tipPosition.Y);
 
 		if (this.attackAnimationFlag) {
@@ -81,6 +85,7 @@ export class DualPistolDummyDefect extends ClientTower<DummyDefectDualPistolMode
 		} else {
 			createBulletTrail(tipPosition, enemyPositionWithTipY);
 		}
+		holdForPromise(175).andThenCall(createSmokeParticles, tipPosition, 2);
 
 		const currentAnimationTrack = this.getCurrentAttackAnimationTrack();
 		currentAnimationTrack.Play();
