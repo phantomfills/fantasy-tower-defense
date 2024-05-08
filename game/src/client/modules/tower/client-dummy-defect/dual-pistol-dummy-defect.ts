@@ -4,6 +4,7 @@ import { createSound } from "client/modules/utils/sound";
 import { createAnimationTrack } from "client/modules/animation-utils";
 import { createBulletTrail } from "./bullet-trail";
 import { sounds } from "shared/modules/sounds/sounds";
+import { getPositionWithY } from "./position-with-y";
 
 interface DummyDefectDualPistolModel extends DummyDefectPistolModel {
 	leftArm: BasePart & {
@@ -72,16 +73,13 @@ export class DualPistolDummyDefect extends ClientTower<DummyDefectDualPistolMode
 	attack(towardsPosition: Vector3) {
 		super.attack(towardsPosition);
 
+		const tipPosition = this.getModel().rightArm.pistol.tipAttachment.WorldPosition;
+		const enemyPositionWithTipY = getPositionWithY(towardsPosition, tipPosition.Y);
+
 		if (this.attackAnimationFlag) {
-			createBulletTrail(
-				this.getModel().rightArm.pistol.tipAttachment.WorldPosition,
-				this.getPositionWithTowerRootY(towardsPosition),
-			);
+			createBulletTrail(tipPosition, enemyPositionWithTipY);
 		} else {
-			createBulletTrail(
-				this.getModel().leftArm.pistol.tipAttachment.WorldPosition,
-				this.getPositionWithTowerRootY(towardsPosition),
-			);
+			createBulletTrail(tipPosition, enemyPositionWithTipY);
 		}
 
 		const currentAnimationTrack = this.getCurrentAttackAnimationTrack();
