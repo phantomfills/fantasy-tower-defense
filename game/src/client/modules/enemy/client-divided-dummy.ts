@@ -21,7 +21,7 @@ export class ClientDividedDummy extends ClientEnemy<EnemyModel> {
 		animator.Parent = animationController;
 
 		const walkAnimation = createAnimationTrack({
-			id: animations.quick_walk,
+			id: animations.default_run,
 			parent: animator,
 			animator,
 		});

@@ -1,6 +1,6 @@
 export const animations = {
 	default_walk: "rbxassetid://16769024725",
-	quick_walk: "rbxassetid://16769451847",
+	default_run: "rbxassetid://17426816754",
 	slow_walk: "rbxassetid://16779246486",
 	float: "rbxassetid://16775949590",
 	dummy_tank_retrieve: "rbxassetid://17224693246",
