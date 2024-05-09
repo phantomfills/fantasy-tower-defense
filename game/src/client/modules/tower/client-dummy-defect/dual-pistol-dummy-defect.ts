@@ -75,7 +75,8 @@ export class DualPistolDummyDefect extends ClientTower<DummyDefectDualPistolMode
 	attack(towardsPosition: Vector3) {
 		super.attack(towardsPosition);
 
-		const arm = this.attackAnimationFlag ? this.getModel().rightArm : this.getModel().leftArm;
+		const model = this.getModel();
+		const arm = this.attackAnimationFlag ? model.rightArm : model.leftArm;
 
 		const tipPosition = arm.pistol.tipAttachment.WorldPosition;
 		const enemyPositionWithTipY = getPositionWithY(towardsPosition, tipPosition.Y);
