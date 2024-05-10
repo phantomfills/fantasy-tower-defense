@@ -26,6 +26,7 @@ export class ClientDividedDummy extends ClientEnemy<EnemyModel> {
 			animator,
 		});
 		walkAnimation.Play();
+		walkAnimation.AdjustSpeed(1.75);
 
 		super.start();
 	}
