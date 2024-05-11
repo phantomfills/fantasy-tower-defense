@@ -24,7 +24,7 @@ const initialState: ObjectiveState = {};
 const uncompletedObjectives: UserObjectiveCompletionStatus = {
 	COMPLETE_ROUNDS: {
 		progress: 0,
-		maxProgress: 10,
+		maxProgress: 12,
 	},
 	EAT_CAKE: false,
 };
