@@ -84,7 +84,7 @@ export class EnemyService implements OnStart, OnTick {
 				const towerId = possibleClosestTowerId.value;
 				const enemyAttack: EnemyAttack = {
 					attackType: "BOULDER_THROW",
-					damage: damage,
+					damage,
 					enemyId,
 					towerId,
 				};
