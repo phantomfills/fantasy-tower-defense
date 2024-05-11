@@ -26,18 +26,28 @@ export function Objectives() {
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 				CellPadding={new UDim2(0, 0, 0, 5)}
 			/>
+			<Label
+				text="Objectives"
+				textColor={Color3.fromRGB(255, 255, 255)}
+				font={fonts.inter.bold}
+				backgroundColor={Color3.fromRGB(0, 0, 0)}
+				backgroundTransparency={0.5}
+			>
+				<OneThickWhiteStroke />
+				<uicorner CornerRadius={new UDim(0, 3)} />
+			</Label>
 			{Object.keys(objectives).map((objective) => {
 				const objectiveStatus = objectives[objective];
 
 				const objectiveProgressText = typeIs(objectiveStatus, "boolean")
 					? objectiveStatus
-						? "Complete"
+						? "Completed"
 						: "Incomplete"
 					: `(${objectiveStatus.progress}/${objectiveStatus.maxProgress})`;
 				const objectiveText = `${objectiveTypeToNameMap[objective]}: ${objectiveProgressText}`;
 
 				return (
-					<Frame key={objective} backgroundColor={Color3.fromRGB(0, 0, 0)} backgroundTransparency={0.6}>
+					<Frame key={objective} backgroundColor={Color3.fromRGB(0, 0, 0)} backgroundTransparency={0.85}>
 						<uipadding PaddingLeft={new UDim(0, 5)} />
 						<Label
 							text={objectiveText}
