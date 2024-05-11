@@ -7,8 +7,8 @@ interface EnemyAttackConfig {
 
 const enemyAttackToConfigMap: Record<E_EnemyAttack, EnemyAttackConfig> = {
 	BOULDER_THROW: {
-		chanceUpperBound: 20,
-		damage: 500,
+		chanceUpperBound: 15,
+		damage: 100,
 	},
 };
 
