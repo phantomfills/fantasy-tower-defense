@@ -61,9 +61,9 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 		attacks: [],
 	},
 	DUMMY_TANK: {
-		maxHealth: 5_000,
-		speed: 0.75,
-		money: 3_000,
+		maxHealth: 10_000,
+		speed: 0.35,
+		money: 2_500,
 		traits: [],
 		attacks: ["BOULDER_THROW"],
 	},
