@@ -13,8 +13,8 @@ import { selectNoEnemiesExist } from "shared/store/enemy";
 import { selectGameOver, selectMap } from "shared/store/map";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
-const ROUND_BONUS = 100;
-const ROUND_BONUS_MULTIPLIER = 1.25;
+const ROUND_BONUS = 500;
+const ROUND_BONUS_MULTIPLIER = 1.2;
 
 function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number): number {
 	const additionalBonusMultiplier = roundBonusMultiplier - 1;
@@ -296,13 +296,21 @@ export class RoundService implements OnStart {
 
 		producer.setTrackId(tracks.cyber_trance);
 
-		this.setDialog("Welcome to the tutorial!");
+		this.setDialog("Are you ready to start the tutorial? Tick the box to continue!");
 		producer.setPlayersCanPlaceTower(true);
 		this.setDialog(
-			"Click on the tower button at the bottom, and move the tower to a location where its gray circle reaches the path, then click again to place it!",
+			"Click on the tower button at the bottom, and move the Defect to a location where its circle reaches the path and it is blue, then click again to place it!",
 		);
 		producer.setPlayersCanUpgradeTower(true);
-		this.setDialog("Click on a tower to upgrade it!");
+		this.setDialog(
+			"Click on a tower to view its stats. If you have enough money, click on the upgrade button to upgrade it!",
+		);
+		this.setDialog(
+			"If you need to sell a tower, click on the sell button on the tower's stats panel! You do only get 50% of the money back, though!",
+		);
+		this.setDialog(
+			"Move nearer to enemies to see a tooltip with their stats! The tooltip will appear on the closest enemy to you!",
+		);
 
 		for (let roundIndex = 0; roundIndex < level.size(); roundIndex++) {
 			const round = level[roundIndex];
@@ -317,40 +325,44 @@ export class RoundService implements OnStart {
 					break;
 				}
 				case 3: {
-					this.setDialog("I saw some quicker enemies in the distance, be prepared!");
+					this.setDialog("Quicker dummies are approaching, be prepared!");
 					break;
 				}
 				case 5: {
 					this.setDialog(
-						"Armored enemies are on the way; they're really strong, so upgrading or placing more Defects is essential.",
+						"Armored dummies are on the way; they're really strong, so upgrading or placing more Defects is essential.",
 					);
 					break;
 				}
 				case 6: {
 					this.setDialog(
-						"Stealth enemies are coming in a few rounds! They are invisible to towers without the 'stealth' trait! Defect gains this trait with its level 2 upgrade!",
+						"Stealth dummies are coming in a few rounds! They are invisible to towers without the 'stealth' trait! Defect gains this trait with its level 2 upgrade!",
 					);
 					break;
 				}
 				case 9: {
 					this.setDialog(
-						"Multipliers are coming! They will turn into more enemies when they are killed! We need lots of defense to take them down. Stay vigilant!",
+						"Multipliers are approaching! They will turn into Divided Dummies when they are killed! We need lots of firepower to take them down. Stay vigilant!",
 					);
 					break;
 				}
 				case 10: {
 					this.setDialog(
-						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Defects are level 3 or higher, or they will not deal any damage!",
+						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming in a few rounds. Make sure your Defects are level 3 or higher, or they will not deal any damage!",
 					);
 					break;
 				}
 				case 11: {
-					this.setDialog("Who are they? Are they protecting something?");
+					this.setDialog(
+						"Guard dummies have been spotted! Are they protecting something? We need to take them down!",
+					);
 					break;
 				}
 				case 12: {
 					producer.setTrackId(tracks.light_show);
-					this.setDialog("The Dummy Tank is here! Place low level troops near to it to bait its attacks!");
+					this.setDialog(
+						"The Dummy Tank is here! It will throw huge boulders at your troops that can kill them! You earn 50% money back if your troop is killed. Place low level troops near to the tank to stop it from attacking your main damage dealers!",
+					);
 					break;
 				}
 			}
