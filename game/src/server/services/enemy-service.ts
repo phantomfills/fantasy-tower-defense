@@ -71,7 +71,6 @@ export class EnemyService implements OnStart, OnTick {
 				const numberRange: [number, number] = [0, chanceUpperBound];
 
 				const enemyRandom = math.random(numberRange[0], numberRange[1]);
-
 				if (enemyRandom !== 0) return;
 
 				const possibleClosestTowerId = producer.getState(
