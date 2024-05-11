@@ -178,7 +178,7 @@ interface EnemyTooltipBillboardFrameProps extends EnemyTooltipProps {
 	position: Vector3;
 }
 
-const ENEMY_TOOLTIP_BILLBOARD_RENDER_DISTANCE = 50;
+const ENEMY_TOOLTIP_BILLBOARD_RENDER_DISTANCE = 40;
 
 function EnemyTooltipBillboardFrame({ position, enemyType, health }: EnemyTooltipBillboardFrameProps) {
 	return (
