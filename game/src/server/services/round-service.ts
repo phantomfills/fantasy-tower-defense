@@ -308,8 +308,6 @@ export class RoundService implements OnStart {
 			const round = level[roundIndex];
 			const roundNumber = roundIndex + 1;
 
-			producer.addProgressToObjectiveForAllPlayers("COMPLETE_ROUNDS", 1);
-
 			switch (roundNumber) {
 				case 1: {
 					producer.setTrackId(tracks.trance_machine);
@@ -324,13 +322,13 @@ export class RoundService implements OnStart {
 				}
 				case 5: {
 					this.setDialog(
-						"Armored enemies are on the way; they're really strong, so upgrading or placing more Archers is essential.",
+						"Armored enemies are on the way; they're really strong, so upgrading or placing more Defects is essential.",
 					);
 					break;
 				}
 				case 6: {
 					this.setDialog(
-						"Stealth enemies are coming in a few rounds! They are invisible to towers without the 'stealth' trait! Archer gains this trait with its level 3 upgrade!",
+						"Stealth enemies are coming in a few rounds! They are invisible to towers without the 'stealth' trait! Defect gains this trait with its level 2 upgrade!",
 					);
 					break;
 				}
@@ -342,21 +340,17 @@ export class RoundService implements OnStart {
 				}
 				case 10: {
 					this.setDialog(
-						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Archers are level 2 or higher, or they will not deal any damage!",
+						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming next round. Make sure your Defects are level 3 or higher, or they will not deal any damage!",
 					);
 					break;
 				}
 				case 11: {
-					this.setDialog(
-						"Who are they? Are they protecting something? Just kidding. I know everything, I am the narrator, you will just have to find out.",
-					);
+					this.setDialog("Who are they? Are they protecting something?");
 					break;
 				}
 				case 12: {
 					producer.setTrackId(tracks.light_show);
-					this.setDialog(
-						"The Dummy Tank is here! It has a lot of health, but it is very slow! Might be a little unorthodox, but place lower level troops to bait his attacks!",
-					);
+					this.setDialog("The Dummy Tank is here! Place low level troops near to it to bait its attacks!");
 					break;
 				}
 			}
@@ -384,6 +378,8 @@ export class RoundService implements OnStart {
 			if (gameOver) break;
 
 			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
+
+			producer.addProgressToObjectiveForAllPlayers("COMPLETE_ROUNDS", 1);
 
 			if (roundNumber === 12) {
 				producer.clearTrackId();
