@@ -13,6 +13,8 @@ import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-util
 import { abbreviateNumber } from "client/modules/number/abbreviate-number";
 import { selectFocusEnemyId } from "client/store/enemy-focus";
 import { producer } from "client/store";
+import { Workspace } from "@rbxts/services";
+import { possible } from "shared/modules/utils/possible";
 
 interface EnemyTooltipProps {
 	enemyType: EnemyType;
@@ -176,6 +178,8 @@ interface EnemyTooltipBillboardFrameProps extends EnemyTooltipProps {
 	position: Vector3;
 }
 
+const ENEMY_TOOLTIP_BILLBOARD_RENDER_DISTANCE = 50;
+
 function EnemyTooltipBillboardFrame({ position, enemyType, health }: EnemyTooltipBillboardFrameProps) {
 	return (
 		<billboardgui
@@ -202,6 +206,17 @@ export function EnemyTooltipBillboard() {
 
 	const { pathCompletionAlpha, enemyType, health, path } = possibleEnemy.value;
 	const position = getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha).Position;
+
+	const possibleCamera = possible<Camera>(Workspace.CurrentCamera);
+	if (!possibleCamera.exists) {
+		return <></>;
+	}
+
+	const camera = possibleCamera.value;
+	const cameraPosition = camera.CFrame.Position;
+	if (position.sub(cameraPosition).Magnitude > ENEMY_TOOLTIP_BILLBOARD_RENDER_DISTANCE) {
+		return <></>;
+	}
 
 	return <EnemyTooltipBillboardFrame position={position} enemyType={enemyType} health={health} />;
 }
