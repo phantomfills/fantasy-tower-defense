@@ -53,7 +53,7 @@ export class EnemyService implements OnStart, OnTick {
 		});
 	}
 
-	randomlyAttackTower() {
+	triggerRandomChanceForTowerAttack() {
 		const attackingEnemies = producer.getState(selectAttackingEnemyIds);
 
 		for (const enemyId of attackingEnemies) {
@@ -104,6 +104,6 @@ export class EnemyService implements OnStart, OnTick {
 
 		this.lastEnemyAttackCycle = currentTime;
 
-		this.randomlyAttackTower();
+		this.triggerRandomChanceForTowerAttack();
 	}
 }
