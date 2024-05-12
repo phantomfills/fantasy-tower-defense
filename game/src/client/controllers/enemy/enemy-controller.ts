@@ -1,6 +1,5 @@
 import { Controller, OnStart } from "@flamework/core";
 import Object from "@rbxts/object-utils";
-import { ClientDummyTank } from "client/modules/enemy/client-dummy-tank";
 import { ClientEnemy, EnemyModel } from "client/modules/enemy/client-enemy";
 import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
 import { isThrowsBoulder } from "client/modules/enemy/shared-functionality/vfx/attack-animations/throw-boulder";
