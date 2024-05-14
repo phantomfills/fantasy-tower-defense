@@ -9,7 +9,7 @@ import { Dialog } from "./game/dialog";
 import { EnemyTooltipBillboard } from "./enemy/enemy-tooltip";
 import { RangeIndicator } from "./tower/range-part";
 import { Objectives } from "./game/objectives";
-import { EnemyDamageIndicators } from "./enemy/enemy-damage-indicators";
+import { DamageIndicators } from "./enemy/enemy-damage-indicators";
 import { Frame } from "./utils/frame";
 
 export function App() {
@@ -26,7 +26,7 @@ export function App() {
 					<RangeIndicator />
 
 					<EnemyTooltipBillboard />
-					<EnemyDamageIndicators />
+					<DamageIndicators />
 
 					<Dialog />
 					<MatchInfo />

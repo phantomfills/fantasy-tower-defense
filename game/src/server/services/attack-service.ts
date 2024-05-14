@@ -2,6 +2,7 @@ import { Service, OnStart } from "@flamework/core";
 import { attackTower, attackEnemy } from "server/events";
 import { Events } from "server/network";
 import { producer } from "server/store";
+import { describeEnemyAttackFromType } from "shared/modules/enemy/enemy-attack-to-config-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { towerDoesNotExistFromId } from "shared/store/tower";
@@ -13,6 +14,7 @@ export class AttackService implements OnStart {
 			const currentTime = getCurrentTimeInMilliseconds();
 
 			const { towerId, enemyId, damage, attackType } = attack;
+			const attackConfig = describeEnemyAttackFromType(attackType);
 
 			switch (attackType) {
 				case "BOULDER_THROW": {
@@ -22,7 +24,8 @@ export class AttackService implements OnStart {
 					});
 					Events.enemyAttack.broadcast(attack);
 
-					holdFor(2500);
+					const delay = attackConfig.delay ?? 0;
+					holdFor(delay);
 
 					const towerDoesNotExist = producer.getState(towerDoesNotExistFromId(towerId));
 					if (towerDoesNotExist) return;

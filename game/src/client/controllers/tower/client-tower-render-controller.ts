@@ -5,7 +5,6 @@ import { Controller, OnStart } from "@flamework/core";
 import { producer } from "client/store";
 import { Tower, getPossibleTowerLevelFromId, selectTowers } from "shared/store/tower";
 import { Events } from "client/network";
-import { EnemyController } from "../enemy/enemy-controller";
 
 function getTowerId(_: Tower, id: string) {
 	return id;

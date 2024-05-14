@@ -5,7 +5,7 @@ import { useRem } from "../hooks/use-rem";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { abbreviateNumber } from "client/modules/number/abbreviate-number";
 
-interface EnemyDamageIndicatorProps {
+interface DamageIndicatorProps {
 	damage: number;
 	position: Vector3;
 	spawnTime: number;
@@ -17,7 +17,7 @@ function lerp(number: number, goal: number, alpha: number) {
 	return number + (goal - number) * alpha;
 }
 
-export function EnemyDamageIndicator({ damage, position, spawnTime }: EnemyDamageIndicatorProps) {
+export function DamageIndicator({ damage, position, spawnTime }: DamageIndicatorProps) {
 	const rem = useRem();
 
 	const currentTime = getCurrentTimeInMilliseconds();

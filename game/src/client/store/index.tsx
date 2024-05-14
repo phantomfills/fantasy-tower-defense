@@ -6,7 +6,7 @@ import { Events } from "client/network";
 import { slices } from "shared/store";
 import { enemyFocusSlice } from "./enemy-focus";
 import { towerActionSlice } from "./tower-action-menu";
-import { enemyDamageIndicatorSlice } from "./enemy-damage-indicator";
+import { damageIndicatorSlice } from "./damage-indicator";
 import { settingsSlice } from "./settings";
 
 export type RootState = InferState<typeof producer>;
@@ -16,7 +16,7 @@ export const producer = combineProducers({
 	towerLoadout: towerLoadoutSlice,
 	enemyFocus: enemyFocusSlice,
 	towerAction: towerActionSlice,
-	enemyDamageIndicator: enemyDamageIndicatorSlice,
+	damageIndicator: damageIndicatorSlice,
 	settings: settingsSlice,
 });
 

@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import { createProducer } from "@rbxts/reflex";
 
-interface EnemyDamageIndicatorState {
+interface DamageIndicatorState {
 	[attackId: string]:
 		| {
 				damage: number;
@@ -11,9 +11,9 @@ interface EnemyDamageIndicatorState {
 		| undefined;
 }
 
-const initialState: EnemyDamageIndicatorState = {};
+const initialState: DamageIndicatorState = {};
 
-export const enemyDamageIndicatorSlice = createProducer(initialState, {
+export const damageIndicatorSlice = createProducer(initialState, {
 	addDamageIndicator: (
 		state,
 		attackId: string,
