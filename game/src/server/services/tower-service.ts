@@ -130,7 +130,9 @@ export class TowerService implements OnStart, OnTick {
 			const enemies = producer.getState(selectEnemies);
 			if (Object.keys(enemies).isEmpty()) continue;
 
-			const possibleFirstEnemyInRangeId = producer.getState(selectFirstAttackableEnemyInTowerRange(id));
+			const possibleFirstEnemyInRangeId = producer.getState(
+				selectFirstAttackableEnemyInTowerRange(id, getCurrentTimeInMilliseconds()),
+			);
 			if (!possibleFirstEnemyInRangeId.exists) continue;
 
 			const [firstEnemyInRangeId, firstEnemyInRange] = possibleFirstEnemyInRangeId.value;
@@ -139,7 +141,9 @@ export class TowerService implements OnStart, OnTick {
 
 			const effectiveDamage = calculateEffectiveTowerDamageIfEnemyIsReinforced(damage, enemyTraits, traits);
 
-			const possibleEnemyCFrame = producer.getState(selectEnemyCFrameFromId(firstEnemyInRangeId));
+			const possibleEnemyCFrame = producer.getState(
+				selectEnemyCFrameFromId(firstEnemyInRangeId, getCurrentTimeInMilliseconds()),
+			);
 			if (!possibleEnemyCFrame.exists) continue;
 
 			producer.setLastAtackTimestamp(id, currentTimestamp);

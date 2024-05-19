@@ -9,12 +9,18 @@ import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { images } from "shared/assets";
 import { selectEnemyFromId } from "shared/store/enemy";
 import { useSelector } from "@rbxts/react-reflex";
-import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
+import {
+	getCFrameFromPathCompletionAlpha,
+	getPathCompletionAlpha,
+	getPathLength,
+} from "shared/modules/utils/path-utils";
 import { abbreviateNumber } from "client/modules/number/abbreviate-number";
 import { selectFocusEnemyId } from "client/store/enemy-focus";
 import { producer } from "client/store";
 import { Workspace } from "@rbxts/services";
 import { possible } from "shared/modules/utils/possible";
+import { selectMap } from "shared/store/map";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 
 interface EnemyTooltipProps {
 	enemyType: EnemyType;
@@ -194,6 +200,7 @@ function EnemyTooltipBillboardFrame({ position, enemyType, health }: EnemyToolti
 }
 
 export function EnemyTooltipBillboard() {
+	const path = useSelector(selectMap).path;
 	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
 	if (!possibleEnemyFocusId.exists) {
 		return <></>;
@@ -204,7 +211,17 @@ export function EnemyTooltipBillboard() {
 		return <></>;
 	}
 
-	const { pathCompletionAlpha, enemyType, health, path } = possibleEnemy.value;
+	const enemy = possibleEnemy.value;
+	const { speed } = describeEnemyFromType(enemy.enemyType);
+
+	const pathCompletionAlpha = getPathCompletionAlpha(
+		speed,
+		getPathLength(path),
+		enemy.spawnTimestamp,
+		getCurrentTimeInMilliseconds(),
+	);
+
+	const { enemyType, health } = possibleEnemy.value;
 	const position = getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha).Position;
 
 	const possibleCamera = possible<Camera>(Workspace.CurrentCamera);

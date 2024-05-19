@@ -403,8 +403,6 @@ export class RoundService implements OnStart {
 	}
 
 	private async spawnRound(round: Round): Promise<RoundResult> {
-		const path = producer.getState(selectMap).path;
-
 		for (const group of round) {
 			for (let i = 0; i < group.count; i++) {
 				const gameOver = producer.getState(selectGameOver);
@@ -413,10 +411,10 @@ export class RoundService implements OnStart {
 				const { enemyType } = group;
 
 				if (isNonAttackingEnemyType(enemyType)) {
-					const enemy = createNonAttackingEnemy(enemyType, path);
+					const enemy = createNonAttackingEnemy(enemyType);
 					producer.addEnemy(enemy, createId());
 				} else {
-					const enemy = createAttackingEnemy(enemyType, path);
+					const enemy = createAttackingEnemy(enemyType);
 					producer.addEnemy(enemy, createId());
 				}
 

@@ -35,10 +35,10 @@ class Enemy {
 		(async () => {
 			for (const _ of $range(1, count)) {
 				if (isNonAttackingEnemyType(enemyType)) {
-					const enemy = createNonAttackingEnemy(enemyType, path);
+					const enemy = createNonAttackingEnemy(enemyType);
 					producer.addEnemy(enemy, createId());
 				} else {
-					const enemy = createAttackingEnemy(enemyType, path);
+					const enemy = createAttackingEnemy(enemyType);
 					producer.addEnemy(enemy, createId());
 				}
 

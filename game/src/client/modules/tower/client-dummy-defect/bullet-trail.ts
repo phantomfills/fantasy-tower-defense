@@ -32,6 +32,7 @@ export function createBulletTrail(fromPosition: Vector3, toPosition: Vector3) {
 	trail.Transparency = new NumberSequence([new NumberSequenceKeypoint(0, 0), new NumberSequenceKeypoint(1, 1)]);
 	trail.Parent = bulletTrail;
 
+	// Wait for 25ms because Roblox glitches trails
 	holdFor(25);
 
 	const bulletTween = TweenService.Create(bulletTrail, new TweenInfo(BULLET_ANIMATION_DURATION / 1000), {

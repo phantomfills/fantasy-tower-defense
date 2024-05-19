@@ -2,6 +2,7 @@ import { Controller, OnTick } from "@flamework/core";
 import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { producer } from "client/store";
 import { selectEnemyDetailViewType } from "client/store/settings";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { selectClosestEnemyIdToPosition } from "shared/store/enemy";
 
@@ -64,7 +65,9 @@ export class EnemyFocusController implements OnTick {
 
 		const characterPosition = character.GetPivot().Position;
 
-		const closestEnemy = producer.getState(selectClosestEnemyIdToPosition(characterPosition));
+		const closestEnemy = producer.getState(
+			selectClosestEnemyIdToPosition(characterPosition, getCurrentTimeInMilliseconds()),
+		);
 		if (!closestEnemy.exists) return { exists: false };
 
 		return {

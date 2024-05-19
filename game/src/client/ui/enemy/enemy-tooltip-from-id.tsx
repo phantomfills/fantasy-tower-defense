@@ -3,13 +3,16 @@ import { FollowMouse } from "../utils/follow-mouse";
 import { EnemyTooltip } from "./enemy-tooltip";
 import { useSelector } from "@rbxts/react-reflex";
 import { selectEnemyFocusDetails } from "client/store/enemy-focus";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 
 interface EnemyTooltipFromIdProps {
 	id: string;
 }
 
 export function EnemyTooltipFromId({ id }: EnemyTooltipFromIdProps) {
-	const enemyDetails = useSelector(selectEnemyFocusDetails(id));
+	const currentTimestamp = getCurrentTimeInMilliseconds();
+
+	const enemyDetails = useSelector(selectEnemyFocusDetails(id, currentTimestamp));
 	if (!enemyDetails.exists) return <></>;
 
 	return (

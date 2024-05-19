@@ -36,3 +36,17 @@ export function getPathLength(path: PathWaypoint[]) {
 		return total + distance;
 	}, 0);
 }
+
+export function getPathCompletionAlpha(
+	speed: number,
+	pathLength: number,
+	spawnTimestamp: number,
+	currentTimestamp: number,
+) {
+	const timestampSinceSpawn = currentTimestamp - spawnTimestamp;
+	const secondsSinceSpawn = timestampSinceSpawn / 1000;
+	const distanceTravelled = secondsSinceSpawn * speed;
+	const pathCompletionAlpha = distanceTravelled / pathLength;
+
+	return pathCompletionAlpha;
+}

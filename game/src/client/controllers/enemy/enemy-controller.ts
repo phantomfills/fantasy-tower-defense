@@ -1,14 +1,22 @@
 import { Controller, OnStart } from "@flamework/core";
 import Object from "@rbxts/object-utils";
+import { RunService } from "@rbxts/services";
 import { ClientEnemy, EnemyModel } from "client/modules/enemy/client-enemy";
 import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
 import { isThrowsBoulder } from "client/modules/enemy/shared-functionality/vfx/attack-animations/throw-boulder";
 import { Events } from "client/network";
 import { producer } from "client/store";
+import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
-import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import {
+	getCFrameFromPathCompletionAlpha,
+	getPathCompletionAlpha,
+	getPathLength,
+} from "shared/modules/utils/path-utils";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { selectEnemies } from "shared/store/enemy";
+import { selectMap } from "shared/store/map";
 import { selectTowerPosition } from "shared/store/tower";
 
 @Controller({})
@@ -79,8 +87,24 @@ export class EnemyController implements OnStart {
 			}
 		});
 
-		producer.subscribe(selectEnemies, (enemies, lastEnemies) => {
+		let lastEnemies = producer.getState(selectEnemies);
+
+		RunService.RenderStepped.Connect(() => {
+			const enemies = producer.getState(selectEnemies);
+
+			const map = producer.getState(selectMap);
+			const currentTimestamp = getCurrentTimeInMilliseconds();
+
 			for (const [id, enemy] of pairs(enemies)) {
+				const { speed } = describeEnemyFromType(enemy.enemyType);
+				const pathLength = getPathLength(map.path);
+				const pathCompletionAlpha = getPathCompletionAlpha(
+					speed,
+					pathLength,
+					enemy.spawnTimestamp,
+					currentTimestamp,
+				);
+
 				const enemyLastUpdate = possible<string>(
 					Object.keys(lastEnemies).find((lastEnemyId) => lastEnemyId === id),
 				);
@@ -88,7 +112,7 @@ export class EnemyController implements OnStart {
 					const clientEnemy = createClientEnemy(
 						enemy.enemyType,
 						id,
-						getCFrameFromPathCompletionAlpha(enemy.path, enemy.pathCompletionAlpha),
+						getCFrameFromPathCompletionAlpha(map.path, pathCompletionAlpha),
 					);
 					clientEnemy.start();
 					this.addEnemy(clientEnemy);
@@ -96,7 +120,7 @@ export class EnemyController implements OnStart {
 				const possibleClientEnemy = this.getClientEnemyFromId(id);
 				if (!possibleClientEnemy.exists) return;
 				const clientEnemy = possibleClientEnemy.value;
-				this.updateEnemyByAnimation(clientEnemy, enemy.path, enemy.pathCompletionAlpha);
+				this.updateEnemyByAnimation(clientEnemy, map.path, pathCompletionAlpha);
 			}
 			for (const [id, _] of pairs(lastEnemies)) {
 				const currentEnemyId = possible<string>(Object.keys(enemies).find((enemyId) => enemyId === id));
@@ -104,6 +128,8 @@ export class EnemyController implements OnStart {
 					this.destroyEnemyFromId(id);
 				}
 			}
+
+			lastEnemies = enemies;
 		});
 	}
 }

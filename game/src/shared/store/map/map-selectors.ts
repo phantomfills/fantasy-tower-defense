@@ -2,6 +2,10 @@ import { possible } from "shared/modules/utils/possible";
 import { SharedState } from "..";
 import { Workspace } from "@rbxts/services";
 
+export function selectMapState(state: SharedState) {
+	return state.map;
+}
+
 export function selectMap(state: SharedState) {
 	return state.map.map;
 }
