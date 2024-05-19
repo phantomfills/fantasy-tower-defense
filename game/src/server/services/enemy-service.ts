@@ -8,11 +8,7 @@ import { isAttackingEnemy } from "shared/modules/enemy/enemy-type";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
-import {
-	getCFrameFromPathCompletionAlpha,
-	getPathCompletionAlpha,
-	getPathLength,
-} from "shared/modules/utils/path-utils";
+import { getCFrameFromPathCompletionAlpha, getPathLength } from "shared/modules/utils/path-utils";
 import {
 	Enemy,
 	getEnemyId,
@@ -21,6 +17,7 @@ import {
 	selectEnemies,
 	selectEnemyFromId,
 	selectEnemyIsDead,
+	selectEnemyPathCompletionAlpha,
 } from "shared/store/enemy";
 import { selectMap } from "shared/store/map";
 import { selectClosestTowerIdToPosition } from "shared/store/tower";
@@ -29,13 +26,8 @@ function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
 	if (!isDead) return;
 
 	if (enemy.enemyType === "MULTIPLIER_DUMMY") {
-		const path = producer.getState(selectMap).path;
-		const pathLength = getPathLength(path);
-		const pathCompletionAlpha = getPathCompletionAlpha(
-			describeEnemyFromType("MULTIPLIER_DUMMY").speed,
-			pathLength,
-			enemy.spawnTimestamp,
-			getCurrentTimeInMilliseconds(),
+		const pathCompletionAlpha = producer.getState(
+			selectEnemyPathCompletionAlpha(id, getCurrentTimeInMilliseconds()),
 		);
 
 		const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", pathCompletionAlpha);
@@ -150,15 +142,9 @@ export class EnemyService implements OnStart, OnTick {
 				if (enemyRandom !== 0) return;
 
 				const path = producer.getState(selectMap).path;
-				const { speed } = describeEnemyFromType(enemy.enemyType);
-				const pathLength = getPathLength(path);
-				const pathCompletionAlpha = getPathCompletionAlpha(
-					speed,
-					pathLength,
-					enemy.spawnTimestamp,
-					getCurrentTimeInMilliseconds(),
+				const pathCompletionAlpha = producer.getState(
+					selectEnemyPathCompletionAlpha(enemyId, getCurrentTimeInMilliseconds()),
 				);
-
 				const possibleClosestTowerId = producer.getState(
 					selectClosestTowerIdToPosition(
 						getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha).Position,

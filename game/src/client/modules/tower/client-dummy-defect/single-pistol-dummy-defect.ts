@@ -45,9 +45,9 @@ export class SinglePistolDummyDefect extends ClientTower<DummyDefectPistolModel>
 		this.attackAnimationTrack = attack;
 
 		this.attackSounds = [
-			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.35, parent: model.humanoidRootPart }),
-			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.5, parent: model.humanoidRootPart }),
-			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.65, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 0.9, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.1, parent: model.humanoidRootPart }),
 		];
 	}
 

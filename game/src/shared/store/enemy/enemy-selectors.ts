@@ -182,9 +182,6 @@ export function selectFirstAttackableEnemyInTowerRange(
 		if (attackableEnemiesInTowerRange.isEmpty()) return { exists: false };
 
 		const enemyIdsByPathCompletionAlpha = attackableEnemiesInTowerRange.sort((previousEnemyId, currentEnemyId) => {
-			const previousEnemy = enemies[previousEnemyId];
-			const currentEnemy = enemies[currentEnemyId];
-
 			const previousEnemyPathCompletionAlpha = selectEnemyPathCompletionAlpha(
 				previousEnemyId,
 				currentTimestamp,

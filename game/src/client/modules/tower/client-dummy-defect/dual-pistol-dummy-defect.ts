@@ -55,9 +55,9 @@ export class DualPistolDummyDefect extends ClientTower<DummyDefectDualPistolMode
 		this.attackAnimationFlag = false;
 
 		this.attackSounds = [
-			createSound(sounds.pistol_fire, { volume: 0.2, speed: 0.8, parent: model.humanoidRootPart }),
-			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1, parent: model.humanoidRootPart }),
-			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.2, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.35, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.5, parent: model.humanoidRootPart }),
+			createSound(sounds.pistol_fire, { volume: 0.2, speed: 1.65, parent: model.humanoidRootPart }),
 		];
 	}
 

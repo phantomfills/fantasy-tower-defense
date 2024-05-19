@@ -9,13 +9,9 @@ import { producer } from "client/store";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
-import {
-	getCFrameFromPathCompletionAlpha,
-	getPathCompletionAlpha,
-	getPathLength,
-} from "shared/modules/utils/path-utils";
+import { getCFrameFromPathCompletionAlpha, getPathLength } from "shared/modules/utils/path-utils";
 import { Possible, possible } from "shared/modules/utils/possible";
-import { selectEnemies } from "shared/store/enemy";
+import { selectEnemies, selectEnemyPathCompletionAlpha } from "shared/store/enemy";
 import { selectMap } from "shared/store/map";
 import { selectTowerPosition } from "shared/store/tower";
 
@@ -96,14 +92,7 @@ export class EnemyController implements OnStart {
 			const currentTimestamp = getCurrentTimeInMilliseconds();
 
 			for (const [id, enemy] of pairs(enemies)) {
-				const { speed } = describeEnemyFromType(enemy.enemyType);
-				const pathLength = getPathLength(map.path);
-				const pathCompletionAlpha = getPathCompletionAlpha(
-					speed,
-					pathLength,
-					enemy.spawnTimestamp,
-					currentTimestamp,
-				);
+				const pathCompletionAlpha = producer.getState(selectEnemyPathCompletionAlpha(id, currentTimestamp));
 
 				const enemyLastUpdate = possible<string>(
 					Object.keys(lastEnemies).find((lastEnemyId) => lastEnemyId === id),

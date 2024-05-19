@@ -7,13 +7,9 @@ import { getEnemyDisplayName } from "shared/modules/enemy/enemy-type-to-display-
 import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { images } from "shared/assets";
-import { selectEnemyFromId } from "shared/store/enemy";
+import { selectEnemyFromId, selectEnemyPathCompletionAlpha } from "shared/store/enemy";
 import { useSelector } from "@rbxts/react-reflex";
-import {
-	getCFrameFromPathCompletionAlpha,
-	getPathCompletionAlpha,
-	getPathLength,
-} from "shared/modules/utils/path-utils";
+import { getCFrameFromPathCompletionAlpha, getPathLength } from "shared/modules/utils/path-utils";
 import { abbreviateNumber } from "client/modules/number/abbreviate-number";
 import { selectFocusEnemyId } from "client/store/enemy-focus";
 import { producer } from "client/store";
@@ -211,14 +207,8 @@ export function EnemyTooltipBillboard() {
 		return <></>;
 	}
 
-	const enemy = possibleEnemy.value;
-	const { speed } = describeEnemyFromType(enemy.enemyType);
-
-	const pathCompletionAlpha = getPathCompletionAlpha(
-		speed,
-		getPathLength(path),
-		enemy.spawnTimestamp,
-		getCurrentTimeInMilliseconds(),
+	const pathCompletionAlpha = producer.getState(
+		selectEnemyPathCompletionAlpha(possibleEnemyFocusId.value, getCurrentTimeInMilliseconds()),
 	);
 
 	const { enemyType, health } = possibleEnemy.value;
