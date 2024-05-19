@@ -67,18 +67,14 @@ function getEnemyIdsWhichHaveReachedPathEnd(): string[] {
 				return merged;
 			}, new Array<Pause>());
 
-		// Calculate the total time the enemy has spent pausing
 		const totalPauseTimeServed = mergedPauses
 			.map((pause) => {
 				const pauseEndTime = pause.startTime + pause.pauseFor;
 				if (currentTimeInMilliseconds < pause.startTime) {
-					// The pause hasn't started yet
 					return 0;
 				} else if (currentTimeInMilliseconds < pauseEndTime) {
-					// The pause is in progress
 					return currentTimeInMilliseconds - pause.startTime;
 				} else {
-					// The pause has finished
 					return pause.pauseFor;
 				}
 			})
