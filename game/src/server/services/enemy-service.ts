@@ -30,8 +30,10 @@ function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
 			selectEnemyPathCompletionAlpha(id, getCurrentTimeInMilliseconds()),
 		);
 
-		const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", pathCompletionAlpha);
-		producer.addEnemy(spawnedEnemy, createId());
+		for (const _ of $range(0, 1)) {
+			const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", pathCompletionAlpha);
+			producer.addEnemy(spawnedEnemy, createId());
+		}
 	}
 
 	producer.removeEnemy(id);
@@ -63,7 +65,7 @@ function getEnemyIdsWhichHaveReachedPathEnd(): string[] {
 					);
 				}
 				return merged;
-			}, [] as Pause[]);
+			}, new Array<Pause>());
 
 		// Calculate the total time the enemy has spent pausing
 		const totalPauseTimeServed = mergedPauses
