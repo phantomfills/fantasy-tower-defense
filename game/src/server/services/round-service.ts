@@ -404,18 +404,19 @@ export class RoundService implements OnStart {
 
 	private async spawnRound(round: Round): Promise<RoundResult> {
 		for (const group of round) {
-			for (let i = 0; i < group.count; i++) {
+			const { enemyType } = group;
+
+			for (const _ of $range(0, group.count - 1)) {
 				const gameOver = producer.getState(selectGameOver);
 				if (gameOver) return { type: "error", message: "Game over - cancelling round" };
 
-				const { enemyType } = group;
-
+				const id = createId();
 				if (isNonAttackingEnemyType(enemyType)) {
 					const enemy = createNonAttackingEnemy(enemyType);
-					producer.addEnemy(enemy, createId());
+					producer.addEnemy(enemy, id);
 				} else {
 					const enemy = createAttackingEnemy(enemyType);
-					producer.addEnemy(enemy, createId());
+					producer.addEnemy(enemy, id);
 				}
 
 				holdFor(group.enemySpawnInterval);
