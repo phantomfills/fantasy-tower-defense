@@ -33,7 +33,7 @@ function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
 		);
 
 		for (const _ of $range(0, 1)) {
-			const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", pathCompletionAlpha);
+			const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", 0, pathCompletionAlpha);
 			producer.addEnemy(spawnedEnemy, createId());
 		}
 	}
@@ -84,7 +84,7 @@ function getEnemyIdsWhichHaveReachedPathEnd(): string[] {
 
 		const adjustedMillisecondsSinceSpawn = millisecondsSinceSpawn - totalPauseTimeServed;
 
-		const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[0];
+		const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[enemy.path];
 		const pathLength = getPathLength(path);
 		const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
 
@@ -160,7 +160,7 @@ export class EnemyService implements OnStart, OnTick {
 				const enemyRandom = math.random(numberRange[0], numberRange[1]);
 				if (enemyRandom !== 0) return;
 
-				const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[0];
+				const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[enemy.path];
 				const pathCompletionAlpha = producer.getState(
 					selectEnemyPathCompletionAlpha(enemyId, getCurrentTimeInMilliseconds()),
 				);

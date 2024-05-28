@@ -22,6 +22,17 @@ const mapTypeToGameMapMap: Record<E_Maps, GameMap> = {
 				.sort((a, b) => (tonumber(a.Name) ?? 0) < (tonumber(b.Name) ?? 0)) as PathWaypoint[],
 		],
 	},
+	DOUBLE_LANE: {
+		template: ReplicatedStorage.assets.maps["tutorial-double-lane-test"],
+		paths: [
+			ReplicatedStorage.assets.maps["tutorial-double-lane-test"].path["0"]
+				.GetChildren()
+				.sort((a, b) => (tonumber(a.Name) ?? 0) < (tonumber(b.Name) ?? 0)) as PathWaypoint[],
+			ReplicatedStorage.assets.maps["tutorial-double-lane-test"].path["1"]
+				.GetChildren()
+				.sort((a, b) => (tonumber(a.Name) ?? 0) < (tonumber(b.Name) ?? 0)) as PathWaypoint[],
+		],
+	},
 };
 
 export function getGameMapFromMapType(mapType: E_Maps) {

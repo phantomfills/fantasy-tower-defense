@@ -3,7 +3,11 @@ import { Enemy } from "shared/store/enemy";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 
-export function createNonAttackingEnemy(enemyType: NonAttackingEnemyType, initialPathCompletionAlpha?: number): Enemy {
+export function createNonAttackingEnemy(
+	enemyType: NonAttackingEnemyType,
+	path: number,
+	initialPathCompletionAlpha?: number,
+): Enemy {
 	const enemyStats = describeEnemyFromType(enemyType);
 
 	const enemyTemplate: Enemy = {
@@ -13,6 +17,7 @@ export function createNonAttackingEnemy(enemyType: NonAttackingEnemyType, initia
 		initialPathCompletionAlpha,
 		pauses: [],
 		dead: false,
+		path,
 	};
 
 	switch (enemyType) {
@@ -52,7 +57,11 @@ export function createNonAttackingEnemy(enemyType: NonAttackingEnemyType, initia
 	}
 }
 
-export function createAttackingEnemy(enemyType: AttackingEnemyType, initialPathCompletionAlpha?: number): Enemy {
+export function createAttackingEnemy(
+	enemyType: AttackingEnemyType,
+	path: number,
+	initialPathCompletionAlpha?: number,
+): Enemy {
 	const enemyStats = describeEnemyFromType(enemyType);
 
 	const enemyTemplate: Enemy = {
@@ -62,6 +71,7 @@ export function createAttackingEnemy(enemyType: AttackingEnemyType, initialPathC
 		initialPathCompletionAlpha,
 		pauses: [],
 		dead: false,
+		path,
 	};
 
 	switch (enemyType) {

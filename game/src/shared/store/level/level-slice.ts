@@ -10,7 +10,7 @@ interface EnemyGroup {
 
 type Round = EnemyGroup[];
 
-export type E_Maps = "TUTORIAL";
+export type E_Maps = "TUTORIAL" | "DOUBLE_LANE";
 export type E_OneTimeObjective = "EAT_CAKE";
 export type E_ProgressiveObjective = "COMPLETE_ROUNDS";
 export type E_AllObjectives = E_OneTimeObjective | E_ProgressiveObjective;
@@ -223,7 +223,7 @@ const initialState: Level = {
 	],
 	lives: 1000,
 	startingMoney: 1000,
-	mapType: "TUTORIAL",
+	mapType: "DOUBLE_LANE",
 	gameOver: false,
 	objectives: ["COMPLETE_ROUNDS", "EAT_CAKE"],
 };

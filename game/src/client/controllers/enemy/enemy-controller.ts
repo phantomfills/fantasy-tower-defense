@@ -90,9 +90,9 @@ export class EnemyController implements OnStart {
 
 			const currentTimestamp = getCurrentTimeInMilliseconds();
 
-			const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[0];
-
 			for (const [id, enemy] of pairs(enemies)) {
+				const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[enemy.path];
+
 				const pathCompletionAlpha = producer.getState(selectEnemyPathCompletionAlpha(id, currentTimestamp));
 
 				const enemyLastUpdate = possible<string>(

@@ -44,8 +44,12 @@ export function selectEnemyIdsInTowerRange(towerId: string, currentTimestamp: nu
 				enemy: enemies,
 				level,
 			});
+
+			const enemy = enemies[enemyId];
+			if (!enemy) return false;
+
 			const enemyCFrame = getCFrameFromPathCompletionAlpha(
-				getGameMapFromMapType(level.mapType).paths[0],
+				getGameMapFromMapType(level.mapType).paths[enemy.path],
 				pathCompletionAlpha,
 			);
 			const enemyPosition = enemyCFrame.Position;
@@ -79,7 +83,7 @@ export function selectEnemyCFrameFromId(
 
 		const pathCompletionAlpha = selectEnemyPathCompletionAlpha(id, currentTimestamp)(state);
 		const cframe = getCFrameFromPathCompletionAlpha(
-			getGameMapFromMapType(state.level.mapType).paths[0],
+			getGameMapFromMapType(state.level.mapType).paths[possibleEnemy.value.path],
 			pathCompletionAlpha,
 		);
 		return { exists: true, value: cframe };
@@ -111,8 +115,14 @@ export function selectClosestEnemyIdToPosition(
 				currentTimestamp,
 			)(state);
 
+			const previousEnemy = state.enemy[previousEnemyId];
+			if (!previousEnemy) return false;
+
+			const currentEnemy = state.enemy[currentEnemyId];
+			if (!currentEnemy) return false;
+
 			const previousEnemyPosition = getCFrameFromPathCompletionAlpha(
-				getGameMapFromMapType(state.level.mapType).paths[0],
+				getGameMapFromMapType(state.level.mapType).paths[previousEnemy.path],
 				previousEnemyPathCompletionAlpha,
 			).Position;
 
@@ -121,7 +131,7 @@ export function selectClosestEnemyIdToPosition(
 				currentTimestamp,
 			)(state);
 			const currentEnemyPosition = getCFrameFromPathCompletionAlpha(
-				getGameMapFromMapType(state.level.mapType).paths[0],
+				getGameMapFromMapType(state.level.mapType).paths[currentEnemy.path],
 				currentEnemyPathCompletionAlpha,
 			).Position;
 
@@ -168,7 +178,7 @@ export function selectFirstAttackableEnemyInTowerRange(
 			});
 
 			const enemyCFrame = getCFrameFromPathCompletionAlpha(
-				getGameMapFromMapType(level.mapType).paths[0],
+				getGameMapFromMapType(level.mapType).paths[enemy.path],
 				enemyPathCompletionAlpha,
 			);
 			const enemyPosition = enemyCFrame.Position;
@@ -284,7 +294,7 @@ export function selectEnemyPathCompletionAlpha(
 
 		const adjustedMillisecondsSinceSpawn = millisecondsSinceSpawn - totalPauseTimeServed;
 
-		const path = getGameMapFromMapType(state.level.mapType).paths[0];
+		const path = getGameMapFromMapType(state.level.mapType).paths[enemy.path];
 		const pathLength = getPathLength(path);
 		const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
 
@@ -347,7 +357,7 @@ export function selectEnemyPathCompletionAlphas(
 
 			const adjustedMillisecondsSinceSpawn = millisecondsSinceSpawn - totalPauseTimeServed;
 
-			const path = getGameMapFromMapType(state.level.mapType).paths[0];
+			const path = getGameMapFromMapType(state.level.mapType).paths[enemy.path];
 			const pathLength = getPathLength(path);
 			const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
 

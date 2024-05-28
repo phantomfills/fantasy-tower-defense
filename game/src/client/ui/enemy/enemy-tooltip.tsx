@@ -197,7 +197,6 @@ function EnemyTooltipBillboardFrame({ position, enemyType, health }: EnemyToolti
 }
 
 export function EnemyTooltipBillboard() {
-	const path = getGameMapFromMapType(useSelector(selectMapType)).paths[0];
 	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
 	if (!possibleEnemyFocusId.exists) {
 		return <></>;
@@ -207,6 +206,10 @@ export function EnemyTooltipBillboard() {
 	if (!possibleEnemy.exists) {
 		return <></>;
 	}
+
+	const enemy = possibleEnemy.value;
+
+	const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[enemy.path];
 
 	const pathCompletionAlpha = producer.getState(
 		selectEnemyPathCompletionAlpha(possibleEnemyFocusId.value, getCurrentTimeInMilliseconds()),

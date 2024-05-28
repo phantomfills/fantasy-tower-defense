@@ -2,6 +2,7 @@ interface ReplicatedStorage extends Instance {
 	TS: Folder & {
 		modules: Folder & {
 			map: Folder & {
+				["map-type-to-game-map-map"]: ModuleScript;
 				["path-waypoint"]: ModuleScript;
 			};
 			utils: Folder & {
@@ -30,6 +31,7 @@ interface ReplicatedStorage extends Instance {
 			};
 			tower: Folder & {
 				["tower-type-to-display-name-map"]: ModuleScript;
+				["valid-placement-position"]: ModuleScript;
 				["tower-model"]: ModuleScript;
 				["tower-type-to-tower-stats-map"]: ModuleScript;
 				["tower-type"]: ModuleScript;
@@ -56,10 +58,6 @@ interface ReplicatedStorage extends Instance {
 		tests: Folder;
 		components: Folder;
 		store: ModuleScript & {
-			map: ModuleScript & {
-				["map-selectors"]: ModuleScript;
-				["map-slice"]: ModuleScript;
-			};
 			tower: ModuleScript & {
 				["tower-slice"]: ModuleScript;
 				["tower-selectors"]: ModuleScript;
@@ -584,6 +582,110 @@ interface ReplicatedStorage extends Instance {
 					};
 					["10"]: Part & {
 						waypointAttachment: Attachment;
+					};
+				};
+				placementArea: Folder & {
+					ground: Folder & {
+						baseplate: Part & {
+							Texture: Texture;
+						};
+					};
+				};
+				cake: MeshPart;
+				balloonDummy: Model & {
+					rightLeg: MeshPart;
+					rightArm: MeshPart;
+					head: MeshPart;
+					leftArm: MeshPart;
+					Balloon: MeshPart & {
+						StringPoint2: Attachment;
+						StringPoint1: Attachment & {
+							String: Beam;
+						};
+					};
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				spawns: Folder;
+				environment: Folder;
+				floatingPlatform: Part;
+			};
+			["tutorial-double-lane-test"]: Model & {
+				path: Folder & {
+					["1"]: Folder & {
+						["1"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["3"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["2"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["5"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["4"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["7"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["6"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["9"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["8"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["10"]: Part & {
+							waypointAttachment: Attachment;
+						};
+					};
+					["0"]: Folder & {
+						["1"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["3"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["2"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["5"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["4"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["7"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["6"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["9"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["8"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["10"]: Part & {
+							waypointAttachment: Attachment;
+						};
 					};
 				};
 				placementArea: Folder & {

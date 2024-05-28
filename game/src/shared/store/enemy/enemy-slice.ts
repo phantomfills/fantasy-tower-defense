@@ -12,6 +12,7 @@ type BaseEnemyProps = {
 	initialPathCompletionAlpha?: number;
 	pauses: Pause[];
 	dead: boolean;
+	path: number;
 };
 
 export type NonAttackingEnemy = BaseEnemyProps & {

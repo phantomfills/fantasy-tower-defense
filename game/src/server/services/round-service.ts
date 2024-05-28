@@ -412,10 +412,10 @@ export class RoundService implements OnStart {
 
 				const id = createId();
 				if (isNonAttackingEnemyType(enemyType)) {
-					const enemy = createNonAttackingEnemy(enemyType);
+					const enemy = createNonAttackingEnemy(enemyType, 1);
 					producer.addEnemy(enemy, id);
 				} else {
-					const enemy = createAttackingEnemy(enemyType);
+					const enemy = createAttackingEnemy(enemyType, 1);
 					producer.addEnemy(enemy, id);
 				}
 

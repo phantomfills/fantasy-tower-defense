@@ -17,7 +17,7 @@ export function selectEnemyFocusDetails(
 		const enemy = state.enemy[id];
 		if (!enemy) return { exists: false };
 
-		const path = getGameMapFromMapType(state.level.mapType).paths[0];
+		const path = getGameMapFromMapType(state.level.mapType).paths[enemy.path];
 
 		return {
 			exists: true,
