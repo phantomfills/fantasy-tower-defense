@@ -10,7 +10,7 @@ import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { selectDialogComplete } from "shared/store/dialog";
 import { selectNoEnemiesExist } from "shared/store/enemy";
-import { selectGameOver, selectMap } from "shared/store/map";
+import { selectGameOver } from "shared/store/level";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
 const ROUND_BONUS = 500;

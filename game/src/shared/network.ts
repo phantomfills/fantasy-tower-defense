@@ -2,6 +2,7 @@ import { Networking } from "@flamework/networking";
 import { TowerType } from "./modules/tower/tower-type";
 import { BroadcastAction } from "@rbxts/reflex";
 import { EnemyAttack, TowerAttack } from "./modules/attack";
+import { MapModel } from "./modules/map/map-type-to-game-map-map";
 
 /**
  * Stores the precision multiplier for syncing enemy positions to client.
@@ -38,7 +39,9 @@ interface ClientToServerEvents extends SharedEvents {
 
 interface ServerToClientFunctions {}
 
-interface ClientToServerFunctions {}
+interface ClientToServerFunctions {
+	getMap(): MapModel | undefined;
+}
 
 export const GlobalEvents = Networking.createEvent<ClientToServerEvents, ServerToClientEvents>();
 export const GlobalFunctions = Networking.createFunction<ClientToServerFunctions, ServerToClientFunctions>();

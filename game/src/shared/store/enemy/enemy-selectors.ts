@@ -9,7 +9,8 @@ import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { isAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { doTowerAndEnemyHaveStealth } from "shared/modules/attack/trait";
-import { selectMapState } from "../map";
+import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
+import { selectLevel } from "../level";
 
 export function selectNoEnemiesExist(state: SharedState) {
 	return Object.keys(state.enemy).size() === 0;
@@ -28,7 +29,7 @@ export function selectEnemies(state: SharedState) {
 }
 
 export function selectEnemyIdsInTowerRange(towerId: string, currentTimestamp: number) {
-	return createSelector([selectEnemies, selectTowers, selectMapState], (enemies, towers, map) => {
+	return createSelector([selectEnemies, selectTowers, selectLevel], (enemies, towers, level) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return [];
 
@@ -41,9 +42,12 @@ export function selectEnemyIdsInTowerRange(towerId: string, currentTimestamp: nu
 				currentTimestamp,
 			)({
 				enemy: enemies,
-				map: map,
+				level,
 			});
-			const enemyCFrame = getCFrameFromPathCompletionAlpha(map.map.path, pathCompletionAlpha);
+			const enemyCFrame = getCFrameFromPathCompletionAlpha(
+				getGameMapFromMapType(level.mapType).paths[0],
+				pathCompletionAlpha,
+			);
 			const enemyPosition = enemyCFrame.Position;
 
 			const distanceToEnemy = enemyPosition.sub(tower.cframe.Position).Magnitude;
@@ -74,7 +78,10 @@ export function selectEnemyCFrameFromId(
 		if (!possibleEnemy.exists) return { exists: false };
 
 		const pathCompletionAlpha = selectEnemyPathCompletionAlpha(id, currentTimestamp)(state);
-		const cframe = getCFrameFromPathCompletionAlpha(state.map.map.path, pathCompletionAlpha);
+		const cframe = getCFrameFromPathCompletionAlpha(
+			getGameMapFromMapType(state.level.mapType).paths[0],
+			pathCompletionAlpha,
+		);
 		return { exists: true, value: cframe };
 	};
 }
@@ -105,7 +112,7 @@ export function selectClosestEnemyIdToPosition(
 			)(state);
 
 			const previousEnemyPosition = getCFrameFromPathCompletionAlpha(
-				state.map.map.path,
+				getGameMapFromMapType(state.level.mapType).paths[0],
 				previousEnemyPathCompletionAlpha,
 			).Position;
 
@@ -114,7 +121,7 @@ export function selectClosestEnemyIdToPosition(
 				currentTimestamp,
 			)(state);
 			const currentEnemyPosition = getCFrameFromPathCompletionAlpha(
-				state.map.map.path,
+				getGameMapFromMapType(state.level.mapType).paths[0],
 				currentEnemyPathCompletionAlpha,
 			).Position;
 
@@ -141,7 +148,7 @@ export function selectFirstAttackableEnemyInTowerRange(
 	towerId: string,
 	currentTimestamp: number,
 ): (state: SharedState) => Possible<[string, Enemy]> {
-	return createSelector([selectEnemies, selectTowers, selectMapState], (enemies, towers, map) => {
+	return createSelector([selectEnemies, selectTowers, selectLevel], (enemies, towers, level) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return { exists: false };
 
@@ -157,10 +164,13 @@ export function selectFirstAttackableEnemyInTowerRange(
 				currentTimestamp,
 			)({
 				enemy: enemies,
-				map: map,
+				level,
 			});
 
-			const enemyCFrame = getCFrameFromPathCompletionAlpha(map.map.path, enemyPathCompletionAlpha);
+			const enemyCFrame = getCFrameFromPathCompletionAlpha(
+				getGameMapFromMapType(level.mapType).paths[0],
+				enemyPathCompletionAlpha,
+			);
 			const enemyPosition = enemyCFrame.Position;
 
 			const distanceToEnemy = enemyPosition.sub(tower.cframe.Position).Magnitude;
@@ -187,14 +197,14 @@ export function selectFirstAttackableEnemyInTowerRange(
 				currentTimestamp,
 			)({
 				enemy: enemies,
-				map: map,
+				level,
 			});
 			const currentEnemyPathCompletionAlpha = selectEnemyPathCompletionAlpha(
 				currentEnemyId,
 				currentTimestamp,
 			)({
 				enemy: enemies,
-				map: map,
+				level,
 			});
 
 			return currentEnemyPathCompletionAlpha < previousEnemyPathCompletionAlpha;
@@ -230,7 +240,7 @@ export function selectAttackingEnemyIds(state: SharedState) {
 export function selectEnemyPathCompletionAlpha(
 	id: string,
 	currentTimeInMilliseconds: number,
-): (state: Pick<SharedState, "enemy" | "map">) => number {
+): (state: Pick<SharedState, "enemy" | "level">) => number {
 	return (state) => {
 		const enemy = state.enemy[id];
 		const enemyStats = describeEnemyFromType(enemy.enemyType);
@@ -274,7 +284,7 @@ export function selectEnemyPathCompletionAlpha(
 
 		const adjustedMillisecondsSinceSpawn = millisecondsSinceSpawn - totalPauseTimeServed;
 
-		const path = state.map.map.path;
+		const path = getGameMapFromMapType(state.level.mapType).paths[0];
 		const pathLength = getPathLength(path);
 		const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
 
@@ -337,7 +347,7 @@ export function selectEnemyPathCompletionAlphas(
 
 			const adjustedMillisecondsSinceSpawn = millisecondsSinceSpawn - totalPauseTimeServed;
 
-			const path = state.map.map.path;
+			const path = getGameMapFromMapType(state.level.mapType).paths[0];
 			const pathLength = getPathLength(path);
 			const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
 

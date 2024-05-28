@@ -17,9 +17,9 @@ import { selectMoney } from "shared/store/money";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { attackEnemy } from "server/events";
-import { selectIsValidPlacementPosition } from "shared/store/map";
 import { selectPlayersCanPlaceTower, selectPlayersCanUpgradeTower } from "shared/store/dialog";
 import { calculateEffectiveTowerDamageIfEnemyIsReinforced } from "shared/modules/attack/trait";
+import { LevelService } from "./level-service";
 
 const MILLISECONDS_IN_SECOND = 1000;
 const HEAL_TICK = 2000;
@@ -52,12 +52,14 @@ function sellTower(id: string) {
 
 @Service({})
 export class TowerService implements OnStart, OnTick {
+	constructor(private levelService: LevelService) {}
+
 	onStart() {
 		Events.placeTower.connect((player, _type, cframe) => {
 			const playersCanPlaceTower = producer.getState(selectPlayersCanPlaceTower);
 			if (!playersCanPlaceTower) return;
 
-			const isValidPlacementPosition = producer.getState(selectIsValidPlacementPosition(cframe.Position));
+			const isValidPlacementPosition = this.levelService.isValidPlacementPosition(cframe.Position);
 			if (!isValidPlacementPosition) return;
 
 			const userId = tostring(player.UserId);

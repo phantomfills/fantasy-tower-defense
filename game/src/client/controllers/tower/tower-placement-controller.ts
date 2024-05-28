@@ -4,18 +4,19 @@ import { TowerModel } from "shared/modules/tower/tower-model";
 import { TowerType } from "shared/modules/tower/tower-type";
 import { UserInputService, Workspace, RunService, CollectionService, Debris } from "@rbxts/services";
 import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
-import { Events } from "client/network";
+import { Events, Functions } from "client/network";
 import { producer } from "client/store";
 import Maid from "@rbxts/maid";
 import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { tags } from "shared/modules/utils/tags";
-import { selectIsValidPlacementPosition } from "shared/store/map";
 import { RangeIndicator } from "client/modules/tower/range-indicator";
 import { removeShadows } from "client/modules/rig/remove-shadows";
 import { TowerActionController } from "./tower-action-controller";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
+import { MapModel } from "shared/modules/map/map-type-to-game-map-map";
+import { isValidPlacementPosition } from "shared/modules/tower/valid-placement-position";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 const EXIT_DOUBLE_TAP_THRESHOLD = 500;
@@ -32,6 +33,7 @@ export class TowerPlacementController implements OnStart {
 	}>;
 	private possibleRangeIndicator: Possible<RangeIndicator>;
 	private lastTapTime: number;
+	private gameMap: MapModel | undefined;
 
 	constructor(private towerActionController: TowerActionController) {
 		this.possibleTowerPlacement = {
@@ -174,12 +176,14 @@ export class TowerPlacementController implements OnStart {
 		if (!this.possibleRangeIndicator.exists) return;
 		const rangeIndicator = this.possibleRangeIndicator.value;
 
-		const isValidPlacementPosition = producer.getState(selectIsValidPlacementPosition(cframe.Position));
+		if (!this.gameMap) return;
+
+		const isValid = isValidPlacementPosition(this.gameMap, cframe.Position);
 
 		const enabled = rangeIndicator.getEnabled();
-		if (enabled === isValidPlacementPosition) return;
+		if (enabled === isValid) return;
 
-		rangeIndicator.setEnabled(isValidPlacementPosition);
+		rangeIndicator.setEnabled(isValid);
 	}
 
 	setTower(towerType: TowerType, towerPrefabModel: TowerModel) {
@@ -194,47 +198,53 @@ export class TowerPlacementController implements OnStart {
 		removeShadows(towerModel);
 		towerModel.Parent = Workspace;
 
-		const isValidPlacementPosition = producer.getState(
-			selectIsValidPlacementPosition(towerModel.humanoidRootPart.rootAttachment.WorldPosition),
-		);
+		Functions.getMap()
+			.then((map) => {
+				if (!map) return;
 
-		const rangeIndicator = new RangeIndicator(range, isValidPlacementPosition, towerModel);
-		this.possibleRangeIndicator = {
-			exists: true,
-			value: rangeIndicator,
-		};
+				this.gameMap = map;
 
-		producer.setTowerPlacement(towerType);
+				const isValid = isValidPlacementPosition(map, towerModel.humanoidRootPart.rootAttachment.WorldPosition);
 
-		const towerPlacementCFrame = possibleTowerPlacementCFrame.value;
+				const rangeIndicator = new RangeIndicator(range, isValid, towerModel);
+				this.possibleRangeIndicator = {
+					exists: true,
+					value: rangeIndicator,
+				};
 
-		const updateTowerPlacementConnection = RunService.RenderStepped.Connect(() =>
-			this.updateTowerPlacementCFrame(false),
-		);
+				producer.setTowerPlacement(towerType);
 
-		const maid = new Maid();
-		maid.GiveTask(() => {
-			producer.clearTowerPlacement();
-			updateTowerPlacementConnection.Disconnect();
-			towerModel.Destroy();
-		});
+				const towerPlacementCFrame = possibleTowerPlacementCFrame.value;
 
-		this.possibleTowerPlacement = {
-			exists: true,
-			value: {
-				model: towerModel,
-				cframe: towerPlacementCFrame,
-				rotation: 0,
-				type: towerType,
-				updatePlacementConnection: updateTowerPlacementConnection,
-				maid: maid,
-			},
-		};
+				const updateTowerPlacementConnection = RunService.RenderStepped.Connect(() =>
+					this.updateTowerPlacementCFrame(false),
+				);
 
-		this.updateTowerPlacementCFrame();
+				const maid = new Maid();
+				maid.GiveTask(() => {
+					producer.clearTowerPlacement();
+					updateTowerPlacementConnection.Disconnect();
+					towerModel.Destroy();
+				});
 
-		producer.clearTowerId();
-		this.towerActionController.disable();
+				this.possibleTowerPlacement = {
+					exists: true,
+					value: {
+						model: towerModel,
+						cframe: towerPlacementCFrame,
+						rotation: 0,
+						type: towerType,
+						updatePlacementConnection: updateTowerPlacementConnection,
+						maid: maid,
+					},
+				};
+
+				this.updateTowerPlacementCFrame();
+
+				producer.clearTowerId();
+				this.towerActionController.disable();
+			})
+			.catch(warn);
 	}
 
 	private clearTower() {
@@ -252,6 +262,8 @@ export class TowerPlacementController implements OnStart {
 	}
 
 	private placeTower() {
+		if (!this.gameMap) return;
+
 		const possibleTowerPlacement = this.possibleTowerPlacement;
 		if (!possibleTowerPlacement.exists) return;
 
@@ -260,13 +272,13 @@ export class TowerPlacementController implements OnStart {
 		const towerCFrame = towerPlacement.cframe;
 		const towerRotation = towerPlacement.rotation;
 
-		const isValidPlacementPosition = producer.getState(selectIsValidPlacementPosition(towerCFrame.Position));
-		if (isValidPlacementPosition) {
-			const placeSound = createSound(sounds.tower_place, { volume: 0.2 });
-			placeSound.Play();
+		const isValid = isValidPlacementPosition(this.gameMap, towerCFrame.Position);
+		if (!isValid) return;
 
-			Debris.AddItem(placeSound, 2);
-		}
+		const placeSound = createSound(sounds.tower_place, { volume: 0.2 });
+		placeSound.Play();
+
+		Debris.AddItem(placeSound, 2);
 
 		Events.placeTower.fire(towerType, towerCFrame.mul(CFrame.Angles(0, math.rad(towerRotation), 0)));
 

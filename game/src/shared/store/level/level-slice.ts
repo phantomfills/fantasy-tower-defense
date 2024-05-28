@@ -10,14 +10,19 @@ interface EnemyGroup {
 
 type Round = EnemyGroup[];
 
-type E_Map = "TUTORIAL";
+export type E_Maps = "TUTORIAL";
+export type E_OneTimeObjective = "EAT_CAKE";
+export type E_ProgressiveObjective = "COMPLETE_ROUNDS";
+export type E_AllObjectives = E_OneTimeObjective | E_ProgressiveObjective;
 
 interface Level {
 	name: string;
 	rounds: Round[];
-	map: E_Map;
+	mapType: E_Maps;
 	lives: number;
 	startingMoney: number;
+	gameOver: boolean;
+	objectives: E_AllObjectives[];
 }
 
 const initialState: Level = {
@@ -218,10 +223,17 @@ const initialState: Level = {
 	],
 	lives: 1000,
 	startingMoney: 1000,
-	map: "TUTORIAL",
+	mapType: "TUTORIAL",
+	gameOver: false,
+	objectives: ["COMPLETE_ROUNDS", "EAT_CAKE"],
 };
 
 export const levelSlice = createProducer(initialState, {
+	incrementLives: (state, lives: number) => ({
+		...state,
+		lives: state.lives + lives,
+	}),
+
 	deductLives: (state, lives: number) => ({
 		...state,
 		lives: math.max(state.lives - lives, 0),

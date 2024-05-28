@@ -3,7 +3,7 @@ import { Frame } from "../utils/frame";
 import { LifeCounter } from "./life-counter";
 import { CashCounter } from "./cash-counter";
 import { useSelector } from "@rbxts/react-reflex";
-import { selectLives } from "shared/store/map";
+import { selectLives } from "shared/store/level";
 import { Players } from "@rbxts/services";
 import { selectMoney } from "shared/store/money";
 

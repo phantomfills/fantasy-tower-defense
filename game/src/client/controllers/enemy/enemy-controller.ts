@@ -6,13 +6,13 @@ import { createClientEnemy } from "client/modules/enemy/client-enemy-factory";
 import { isThrowsBoulder } from "client/modules/enemy/shared-functionality/vfx/attack-animations/throw-boulder";
 import { Events } from "client/network";
 import { producer } from "client/store";
-import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
+import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 import { PathWaypoint } from "shared/modules/map/path-waypoint";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
-import { getCFrameFromPathCompletionAlpha, getPathLength } from "shared/modules/utils/path-utils";
+import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { selectEnemies, selectEnemyPathCompletionAlpha } from "shared/store/enemy";
-import { selectMap } from "shared/store/map";
+import { selectMapType } from "shared/store/level";
 import { selectTowerPosition } from "shared/store/tower";
 
 @Controller({})
@@ -88,8 +88,9 @@ export class EnemyController implements OnStart {
 		RunService.RenderStepped.Connect(() => {
 			const enemies = producer.getState(selectEnemies);
 
-			const map = producer.getState(selectMap);
 			const currentTimestamp = getCurrentTimeInMilliseconds();
+
+			const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[0];
 
 			for (const [id, enemy] of pairs(enemies)) {
 				const pathCompletionAlpha = producer.getState(selectEnemyPathCompletionAlpha(id, currentTimestamp));
@@ -101,7 +102,7 @@ export class EnemyController implements OnStart {
 					const clientEnemy = createClientEnemy(
 						enemy.enemyType,
 						id,
-						getCFrameFromPathCompletionAlpha(map.path, pathCompletionAlpha),
+						getCFrameFromPathCompletionAlpha(path, pathCompletionAlpha),
 					);
 					clientEnemy.start();
 					this.addEnemy(clientEnemy);
@@ -109,7 +110,7 @@ export class EnemyController implements OnStart {
 				const possibleClientEnemy = this.getClientEnemyFromId(id);
 				if (!possibleClientEnemy.exists) return;
 				const clientEnemy = possibleClientEnemy.value;
-				this.updateEnemyByAnimation(clientEnemy, map.path, pathCompletionAlpha);
+				this.updateEnemyByAnimation(clientEnemy, path, pathCompletionAlpha);
 			}
 			for (const [id, _] of pairs(lastEnemies)) {
 				const currentEnemyId = possible<string>(Object.keys(enemies).find((enemyId) => enemyId === id));

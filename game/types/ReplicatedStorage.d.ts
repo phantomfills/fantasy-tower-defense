@@ -20,8 +20,9 @@ interface ReplicatedStorage extends Instance {
 				["sellback-rate"]: ModuleScript;
 			};
 			enemy: Folder & {
-				["enemy-type-to-enemy-stats-map"]: ModuleScript;
+				["enemy-attack-to-config-map"]: ModuleScript;
 				["enemy-type-to-display-name-map"]: ModuleScript;
+				["enemy-type-to-enemy-stats-map"]: ModuleScript;
 				["enemy-type"]: ModuleScript;
 			};
 			sounds: Folder & {
@@ -47,7 +48,7 @@ interface ReplicatedStorage extends Instance {
 			};
 			attack: ModuleScript & {
 				["attack-factory"]: ModuleScript;
-				immunity: ModuleScript;
+				trait: ModuleScript;
 			};
 		};
 		assets: ModuleScript;
@@ -59,21 +60,25 @@ interface ReplicatedStorage extends Instance {
 				["map-selectors"]: ModuleScript;
 				["map-slice"]: ModuleScript;
 			};
+			tower: ModuleScript & {
+				["tower-slice"]: ModuleScript;
+				["tower-selectors"]: ModuleScript;
+			};
 			objective: ModuleScript & {
 				["objective-slice"]: ModuleScript;
 				["objective-selectors"]: ModuleScript;
 			};
-			tower: ModuleScript & {
-				["tower-slice"]: ModuleScript;
-				["tower-selectors"]: ModuleScript;
+			music: ModuleScript & {
+				["music-selectors"]: ModuleScript;
+				["music-slice"]: ModuleScript;
 			};
 			money: ModuleScript & {
 				["money-slice"]: ModuleScript;
 				["money-selectors"]: ModuleScript;
 			};
-			music: ModuleScript & {
-				["music-selectors"]: ModuleScript;
-				["music-slice"]: ModuleScript;
+			level: ModuleScript & {
+				["level-slice"]: ModuleScript;
+				["level-selectors"]: ModuleScript;
 			};
 			enemy: ModuleScript & {
 				["enemy-slice"]: ModuleScript;
@@ -86,6 +91,9 @@ interface ReplicatedStorage extends Instance {
 		};
 	};
 	assets: Folder & {
+		projectiles: Folder & {
+			boulder: MeshPart;
+		};
 		towers: Folder & {
 			dummy_defect: Folder & {
 				models: Folder & {
@@ -543,8 +551,78 @@ interface ReplicatedStorage extends Instance {
 				};
 			};
 		};
-		projectiles: Folder & {
-			boulder: MeshPart;
+		maps: Folder & {
+			tutorial: Model & {
+				track: Folder;
+				path: Folder & {
+					["1"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["3"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["2"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["5"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["4"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["7"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["6"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["9"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["8"]: Part & {
+						waypointAttachment: Attachment;
+					};
+					["10"]: Part & {
+						waypointAttachment: Attachment;
+					};
+				};
+				placementArea: Folder & {
+					ground: Folder & {
+						baseplate: Part & {
+							Texture: Texture;
+						};
+					};
+				};
+				cake: MeshPart;
+				balloonDummy: Model & {
+					rightLeg: MeshPart;
+					rightArm: MeshPart;
+					head: MeshPart;
+					leftArm: MeshPart;
+					Balloon: MeshPart & {
+						StringPoint2: Attachment;
+						StringPoint1: Attachment & {
+							String: Beam;
+						};
+					};
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						target: Decal;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				spawns: Folder;
+				environment: Folder;
+				floatingPlatform: Part;
+			};
 		};
 		enemies: Folder & {
 			models: Folder & {

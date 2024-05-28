@@ -36,6 +36,9 @@
 			},
 			"assets": {
 				"$className": "Folder",
+				"maps": {
+					"$path": "assets/maps"
+				},
 				"projectiles": {
 					"$className": "Folder",
 					"boulder": {
@@ -160,9 +163,6 @@
 			"$className": "Workspace",
 			"$properties": {
 				"FilteringEnabled": true
-			},
-			"gameMap": {
-				"$path": "assets/map.rbxm"
 			}
 		},
 		"HttpService": {

@@ -15,8 +15,9 @@ import { selectFocusEnemyId } from "client/store/enemy-focus";
 import { producer } from "client/store";
 import { Workspace } from "@rbxts/services";
 import { possible } from "shared/modules/utils/possible";
-import { selectMap } from "shared/store/map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import { selectMapType } from "shared/store/level";
+import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 
 interface EnemyTooltipProps {
 	enemyType: EnemyType;
@@ -196,7 +197,7 @@ function EnemyTooltipBillboardFrame({ position, enemyType, health }: EnemyToolti
 }
 
 export function EnemyTooltipBillboard() {
-	const path = useSelector(selectMap).path;
+	const path = getGameMapFromMapType(useSelector(selectMapType)).paths[0];
 	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
 	if (!possibleEnemyFocusId.exists) {
 		return <></>;

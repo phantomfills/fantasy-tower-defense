@@ -3,6 +3,7 @@ import { RootState } from "..";
 import { EnemyType } from "shared/modules/enemy/enemy-type";
 import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 import { selectEnemyPathCompletionAlpha } from "shared/store/enemy";
+import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 
 export function selectFocusEnemyId(state: RootState) {
 	return state.enemyFocus.possibleEnemyFocusId;
@@ -16,7 +17,7 @@ export function selectEnemyFocusDetails(
 		const enemy = state.enemy[id];
 		if (!enemy) return { exists: false };
 
-		const path = state.map.map.path;
+		const path = getGameMapFromMapType(state.level.mapType).paths[0];
 
 		return {
 			exists: true,

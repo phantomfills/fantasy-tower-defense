@@ -1,5 +1,5 @@
 import { createProducer } from "@rbxts/reflex";
-import { E_OneTimeObjective, E_ProgressiveObjective } from "../map";
+import { E_OneTimeObjective, E_ProgressiveObjective } from "../level";
 
 type UserOneTimeObjectiveCompletionStatus = {
 	[key in E_OneTimeObjective]: boolean;

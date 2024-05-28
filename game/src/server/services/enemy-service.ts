@@ -6,6 +6,7 @@ import { EnemyAttack } from "shared/modules/attack";
 import { describeEnemyAttackFromType } from "shared/modules/enemy/enemy-attack-to-config-map";
 import { isAttackingEnemy } from "shared/modules/enemy/enemy-type";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
+import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
 import { getCFrameFromPathCompletionAlpha, getPathLength } from "shared/modules/utils/path-utils";
@@ -16,10 +17,11 @@ import {
 	selectAttackingEnemyIds,
 	selectEnemies,
 	selectEnemyFromId,
+	selectEnemyHealth,
 	selectEnemyIsDead,
 	selectEnemyPathCompletionAlpha,
 } from "shared/store/enemy";
-import { selectMap } from "shared/store/map";
+import { selectMapType } from "shared/store/level";
 import { selectClosestTowerIdToPosition } from "shared/store/tower";
 
 function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
@@ -82,7 +84,7 @@ function getEnemyIdsWhichHaveReachedPathEnd(): string[] {
 
 		const adjustedMillisecondsSinceSpawn = millisecondsSinceSpawn - totalPauseTimeServed;
 
-		const path = producer.getState(selectMap).path;
+		const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[0];
 		const pathLength = getPathLength(path);
 		const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
 
@@ -105,6 +107,25 @@ export class EnemyService implements OnStart, OnTick {
 	private lastEnemyAttackCycle: number = getCurrentTimeInMilliseconds();
 
 	onStart() {
+		producer.observe(selectEnemies, getEnemyId, (_, id) => {
+			let enemyDied = false;
+			let enemyHealth = 0;
+
+			const unsubscribeEnemyIsDead = producer.subscribe(selectEnemyIsDead(id), (isDead) => {
+				enemyDied = isDead;
+			});
+
+			const unsubscribeEnemyHealth = producer.subscribe(selectEnemyHealth(id), (health) => {
+				enemyHealth = health.exists ? health.value : 0;
+			});
+
+			return () => {
+				producer.deductLives(enemyHealth);
+				unsubscribeEnemyIsDead();
+				unsubscribeEnemyHealth();
+			};
+		});
+
 		producer.observe(selectEnemies, getEnemyId, (enemy, id) => {
 			handleEnemyIsDead(enemy, id, producer.getState(selectEnemyIsDead(id)));
 
@@ -139,7 +160,7 @@ export class EnemyService implements OnStart, OnTick {
 				const enemyRandom = math.random(numberRange[0], numberRange[1]);
 				if (enemyRandom !== 0) return;
 
-				const path = producer.getState(selectMap).path;
+				const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[0];
 				const pathCompletionAlpha = producer.getState(
 					selectEnemyPathCompletionAlpha(enemyId, getCurrentTimeInMilliseconds()),
 				);

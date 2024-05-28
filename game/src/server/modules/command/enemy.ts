@@ -2,7 +2,6 @@ import { Command, Commander, CommanderType, CommandInteraction, Guard } from "@r
 import { EnemyType, isNonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { createAttackingEnemy, createNonAttackingEnemy } from "../enemy/enemy-factory";
 import { producer } from "server/store";
-import { selectMap } from "shared/store/map";
 import { createId } from "shared/modules/utils/id-utils";
 import { isAdmin } from "../../../shared/modules/command/admin-guard";
 import { GameType } from "../../../shared/modules/command/game-type";
@@ -29,9 +28,6 @@ class Enemy {
 	})
 	@Guard(isAdmin)
 	spawnEnemy(interaction: CommandInteraction, enemyType: EnemyType, count: number = 1) {
-		const map = producer.getState(selectMap);
-		const path = map.path;
-
 		(async () => {
 			for (const _ of $range(1, count)) {
 				if (isNonAttackingEnemyType(enemyType)) {
