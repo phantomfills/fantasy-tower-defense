@@ -4,13 +4,14 @@ import { createAttackingEnemy, createNonAttackingEnemy } from "server/modules/en
 import { Events } from "server/network";
 import { producer } from "server/store";
 import { EnemyType, isNonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
+import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 import { tracks } from "shared/modules/music/tracks";
 import { sounds } from "shared/modules/sounds/sounds";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { selectDialogComplete } from "shared/store/dialog";
 import { selectNoEnemiesExist } from "shared/store/enemy";
-import { selectGameOver } from "shared/store/level";
+import { selectGameOver, selectMapType } from "shared/store/level";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
 const ROUND_BONUS = 500;
@@ -403,6 +404,9 @@ export class RoundService implements OnStart {
 	}
 
 	private async spawnRound(round: Round): Promise<RoundResult> {
+		const numberOfPaths = getGameMapFromMapType(producer.getState(selectMapType)).paths.size();
+		let currentPath = 0;
+
 		for (const group of round) {
 			const { enemyType } = group;
 
@@ -412,12 +416,15 @@ export class RoundService implements OnStart {
 
 				const id = createId();
 				if (isNonAttackingEnemyType(enemyType)) {
-					const enemy = createNonAttackingEnemy(enemyType, 1);
+					const enemy = createNonAttackingEnemy(enemyType, currentPath);
 					producer.addEnemy(enemy, id);
 				} else {
-					const enemy = createAttackingEnemy(enemyType, 1);
+					const enemy = createAttackingEnemy(enemyType, currentPath);
 					producer.addEnemy(enemy, id);
 				}
+
+				currentPath++;
+				if (currentPath > numberOfPaths - 1) currentPath = 0;
 
 				holdFor(group.enemySpawnInterval);
 			}
