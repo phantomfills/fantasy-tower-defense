@@ -1,7 +1,7 @@
 export const tracks = {
-	trance_machine: "rbxassetid://1844770075",
-	cyber_trance: "rbxassetid://1838129273",
-	light_show: "rbxassetid://1838391039",
+	intro_music: "rbxassetid://1837256919",
+	questing_music: "rbxassetid://1842627030",
+	boss_music: "rbxassetid://1843075656",
 } as const;
 
 export function isTrack(track: string): track is keyof typeof tracks {

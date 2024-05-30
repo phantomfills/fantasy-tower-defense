@@ -295,7 +295,7 @@ export class RoundService implements OnStart {
 
 		holdFor(5_000);
 
-		producer.setTrackId(tracks.cyber_trance);
+		producer.setTrackId(tracks.intro_music);
 
 		this.setDialog("Are you ready to start the tutorial? Tick the box to continue!");
 		producer.setPlayersCanPlaceTower(true);
@@ -319,7 +319,7 @@ export class RoundService implements OnStart {
 
 			switch (roundNumber) {
 				case 1: {
-					producer.setTrackId(tracks.trance_machine);
+					producer.setTrackId(tracks.questing_music);
 					this.setDialog(
 						"You will gain money for each enemy you defeat. Use it to build more towers, or upgrade existing ones!",
 					);
@@ -360,7 +360,7 @@ export class RoundService implements OnStart {
 					break;
 				}
 				case 12: {
-					producer.setTrackId(tracks.light_show);
+					producer.setTrackId(tracks.boss_music);
 					this.setDialog(
 						"The Dummy Tank is here! It will throw huge boulders at your troops that can kill them! You earn 50% money back if your troop is killed. Place low level troops near to the tank to stop it from attacking your main damage dealers!",
 					);
