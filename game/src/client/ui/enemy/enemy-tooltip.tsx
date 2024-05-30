@@ -7,7 +7,7 @@ import { getEnemyDisplayName } from "shared/modules/enemy/enemy-type-to-display-
 import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { images } from "shared/assets";
-import { selectEnemyFromId, selectEnemyPathCompletionAlpha } from "shared/store/enemy";
+import { selectEnemyFromId, selectEnemyHealthScaleFactor, selectEnemyPathCompletionAlpha } from "shared/store/enemy";
 import { useSelector } from "@rbxts/react-reflex";
 import { getCFrameFromPathCompletionAlpha, getPathLength } from "shared/modules/utils/path-utils";
 import { abbreviateNumber } from "client/modules/number/abbreviate-number";
@@ -25,11 +25,14 @@ interface EnemyTooltipProps {
 }
 
 export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
+	const enemyHealthScaleFactor = useSelector(selectEnemyHealthScaleFactor);
+
 	const { maxHealth, traits } = describeEnemyFromType(enemyType);
-	const healthPercent = health / maxHealth;
+	const effectiveMaxHealth = maxHealth * enemyHealthScaleFactor;
+	const healthPercent = health / effectiveMaxHealth;
 
 	const abbreviatedHealth = abbreviateNumber(health);
-	const abbreviatedMaxHealth = abbreviateNumber(maxHealth);
+	const abbreviatedEffectiveMaxHealth = abbreviateNumber(effectiveMaxHealth);
 
 	const enemyDisplayName = getEnemyDisplayName(enemyType);
 
@@ -80,7 +83,7 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 					/>
 					<Label
 						size={new UDim2(0.88, 0, 1, 0)}
-						text={`${abbreviatedHealth} / ${abbreviatedMaxHealth}`}
+						text={`${abbreviatedHealth} / ${abbreviatedEffectiveMaxHealth}`}
 						font={fonts.inter.bold}
 						textColor={Color3.fromRGB(255, 255, 255)}
 						textAlignmentX={Enum.TextXAlignment.Left}

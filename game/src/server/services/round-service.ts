@@ -16,6 +16,7 @@ import { selectGameOver, selectMapType } from "shared/store/level";
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
 const ROUND_BONUS = 500;
 const ROUND_BONUS_MULTIPLIER = 1.2;
+const HEALTH_SCALE_FACTOR_INCREASE_PER_PLAYER = 0.75;
 
 function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number): number {
 	const additionalBonusMultiplier = roundBonusMultiplier - 1;
@@ -27,7 +28,7 @@ function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBo
 }
 
 function getEnemyHealthScaleFactor(playerCount: number): number {
-	return 1 + (playerCount - 1) * 0.5;
+	return 1 + (playerCount - 1) * HEALTH_SCALE_FACTOR_INCREASE_PER_PLAYER;
 }
 
 interface Group {
