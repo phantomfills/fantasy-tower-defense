@@ -13,7 +13,7 @@ import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-m
 import { selectLevel } from "../level";
 
 export function selectNoEnemiesExist(state: SharedState) {
-	return Object.keys(state.enemy).size() === 0;
+	return Object.keys(state.enemy.enemies).size() === 0;
 }
 
 export function selectEnemyIsDead(enemyId: string) {
