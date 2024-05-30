@@ -24,28 +24,32 @@ export function selectEnemyIsDead(enemyId: string) {
 	});
 }
 
-export function selectEnemies(state: SharedState) {
+export function selectEnemyState(state: SharedState) {
 	return state.enemy;
 }
 
+export function selectEnemies(state: SharedState): Record<string, Enemy | undefined> {
+	return state.enemy.enemies;
+}
+
 export function selectEnemyIdsInTowerRange(towerId: string, currentTimestamp: number) {
-	return createSelector([selectEnemies, selectTowers, selectLevel], (enemies, towers, level) => {
+	return createSelector([selectEnemyState, selectTowers, selectLevel], (enemyState, towers, level) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return [];
 
 		const tower = possibleTower.value;
 		const towerStats = describeTowerFromType(tower.towerType, tower.level);
 
-		const enemiesInTowerRange = Object.keys(enemies).filter((enemyId) => {
+		const enemiesInTowerRange = Object.keys(enemyState.enemies).filter((enemyId) => {
 			const pathCompletionAlpha = selectEnemyPathCompletionAlpha(
 				enemyId,
 				currentTimestamp,
 			)({
-				enemy: enemies,
+				enemy: enemyState,
 				level,
 			});
 
-			const enemy = enemies[enemyId];
+			const enemy = enemyState.enemies[enemyId];
 			if (!enemy) return false;
 
 			const enemyCFrame = getCFrameFromPathCompletionAlpha(
@@ -68,7 +72,7 @@ export function selectEnemyCount(state: SharedState) {
 
 export function selectEnemyFromId(id: string): (state: SharedState) => Possible<Enemy> {
 	return (state) => {
-		const possibleEnemy = possible<Enemy>(state.enemy[id]);
+		const possibleEnemy = possible<Enemy>(state.enemy.enemies[id]);
 		return possibleEnemy;
 	};
 }
@@ -102,12 +106,17 @@ export function selectClosestEnemyIdToPosition(
 	currentTimestamp: number,
 ): (state: SharedState) => Possible<[string, Enemy]> {
 	return (state) => {
-		const enemies = state.enemy;
+		const enemies = state.enemy.enemies;
 
 		const enemyIds = Object.keys(enemies);
 		if (enemyIds.size() === 0) return { exists: false };
 
-		const aliveEnemyIds = enemyIds.filter((enemyId) => !enemies[enemyId].dead);
+		const aliveEnemyIds = enemyIds.filter((enemyId) => {
+			const enemy = enemies[enemyId];
+			if (!enemy) return false;
+
+			return !enemy.dead;
+		});
 
 		const enemyIdsByDistanceToPosition = aliveEnemyIds.sort((previousEnemyId, currentEnemyId) => {
 			const previousEnemyPathCompletionAlpha = selectEnemyPathCompletionAlpha(
@@ -115,10 +124,10 @@ export function selectClosestEnemyIdToPosition(
 				currentTimestamp,
 			)(state);
 
-			const previousEnemy = state.enemy[previousEnemyId];
+			const previousEnemy = state.enemy.enemies[previousEnemyId];
 			if (!previousEnemy) return false;
 
-			const currentEnemy = state.enemy[currentEnemyId];
+			const currentEnemy = state.enemy.enemies[currentEnemyId];
 			if (!currentEnemy) return false;
 
 			const previousEnemyPosition = getCFrameFromPathCompletionAlpha(
@@ -141,7 +150,9 @@ export function selectClosestEnemyIdToPosition(
 			return previousEnemyDistanceToPosition < currentEnemyDistanceToPosition;
 		});
 		const closestEnemyId = enemyIdsByDistanceToPosition[0];
-		const closestEnemy = state.enemy[closestEnemyId];
+
+		const closestEnemy = state.enemy.enemies[closestEnemyId];
+		if (!closestEnemy) return { exists: false };
 
 		return { exists: true, value: [closestEnemyId, closestEnemy] };
 	};
@@ -158,22 +169,23 @@ export function selectFirstAttackableEnemyInTowerRange(
 	towerId: string,
 	currentTimestamp: number,
 ): (state: SharedState) => Possible<[string, Enemy]> {
-	return createSelector([selectEnemies, selectTowers, selectLevel], (enemies, towers, level) => {
+	return createSelector([selectEnemyState, selectTowers, selectLevel], (enemyState, towers, level) => {
 		const possibleTower = possible<Tower>(towers[towerId]);
 		if (!possibleTower.exists) return { exists: false };
 
 		const tower = possibleTower.value;
 		const towerStats = describeTowerFromType(tower.towerType, tower.level);
 
-		const enemiesInTowerRange = Object.keys(enemies).filter((enemyId) => {
-			const enemy = enemies[enemyId];
+		const enemiesInTowerRange = Object.keys(enemyState.enemies).filter((enemyId) => {
+			const enemy = enemyState.enemies[enemyId];
+			if (!enemy) return false;
 			if (enemy.dead) return false;
 
 			const enemyPathCompletionAlpha = selectEnemyPathCompletionAlpha(
 				enemyId,
 				currentTimestamp,
 			)({
-				enemy: enemies,
+				enemy: enemyState,
 				level,
 			});
 
@@ -189,7 +201,7 @@ export function selectFirstAttackableEnemyInTowerRange(
 		if (enemiesInTowerRange.isEmpty()) return { exists: false };
 
 		const attackableEnemiesInTowerRange = enemiesInTowerRange.filter((enemyId) => {
-			const possibleEnemy = possible<Enemy>(enemies[enemyId]);
+			const possibleEnemy = possible<Enemy>(enemyState.enemies[enemyId]);
 			if (!possibleEnemy.exists) return false;
 
 			const { enemyType } = possibleEnemy.value;
@@ -206,14 +218,14 @@ export function selectFirstAttackableEnemyInTowerRange(
 				previousEnemyId,
 				currentTimestamp,
 			)({
-				enemy: enemies,
+				enemy: enemyState,
 				level,
 			});
 			const currentEnemyPathCompletionAlpha = selectEnemyPathCompletionAlpha(
 				currentEnemyId,
 				currentTimestamp,
 			)({
-				enemy: enemies,
+				enemy: enemyState,
 				level,
 			});
 
@@ -221,7 +233,9 @@ export function selectFirstAttackableEnemyInTowerRange(
 		});
 
 		const firstEnemyId = enemyIdsByPathCompletionAlpha[0];
-		const firstEnemy = enemies[firstEnemyId];
+
+		const firstEnemy = enemyState.enemies[firstEnemyId];
+		if (!firstEnemy) return { exists: false };
 
 		return { exists: true, value: [firstEnemyId, firstEnemy] };
 	});
@@ -242,7 +256,8 @@ export function selectEnemyHealth(enemyId: string): (state: SharedState) => Poss
 export function selectAttackingEnemyIds(state: SharedState) {
 	const enemies = Object.keys(state.enemy);
 	return enemies.filter((enemyId) => {
-		const enemy = state.enemy[enemyId];
+		const enemy = state.enemy.enemies[enemyId];
+		if (!enemy) return false;
 		return isAttackingEnemyType(enemy.enemyType);
 	});
 }
@@ -252,7 +267,9 @@ export function selectEnemyPathCompletionAlpha(
 	currentTimeInMilliseconds: number,
 ): (state: Pick<SharedState, "enemy" | "level">) => number {
 	return (state) => {
-		const enemy = state.enemy[id];
+		const enemy = state.enemy.enemies[id];
+		if (!enemy) return 0;
+
 		const enemyStats = describeEnemyFromType(enemy.enemyType);
 
 		const millisecondsSinceSpawn = currentTimeInMilliseconds - enemy.spawnTimestamp;
@@ -315,7 +332,7 @@ export function selectEnemyPathCompletionAlphas(
 	return (state) => {
 		const enemyPathCompletionAlphas: Record<string, number> = {};
 
-		for (const [id, enemy] of pairs(state.enemy)) {
+		for (const [id, enemy] of pairs(state.enemy.enemies)) {
 			const enemyStats = describeEnemyFromType(enemy.enemyType);
 
 			const millisecondsSinceSpawn = currentTimeInMilliseconds - enemy.spawnTimestamp;

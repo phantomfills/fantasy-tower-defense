@@ -14,7 +14,7 @@ export function selectEnemyFocusDetails(
 	currentTimestamp: number,
 ): (state: RootState) => Possible<{ enemyType: EnemyType; health: number; position: Vector3 }> {
 	return (state: RootState) => {
-		const enemy = state.enemy[id];
+		const enemy = state.enemy.enemies[id];
 		if (!enemy) return { exists: false };
 
 		const path = getGameMapFromMapType(state.level.mapType).paths[enemy.path];

@@ -25,69 +25,85 @@ export type AttackingEnemy = BaseEnemyProps & {
 
 export type Enemy = NonAttackingEnemy | AttackingEnemy;
 
-export type EnemyState = Record<string, Enemy>;
+export type EnemyState = {
+	enemies: Record<string, Enemy | undefined>;
+};
 
-const initialState: EnemyState = {};
+const initialState: EnemyState = {
+	enemies: {},
+};
 
 export const enemySlice = createProducer(initialState, {
 	addEnemy: (state, enemyToAdd: Enemy, id: string) => ({ ...state, [id]: enemyToAdd }),
 
 	removeEnemy: (state, enemyIdToRemove: string) => {
-		const updatedState: EnemyState = {};
+		const enemies: Record<string, Enemy | undefined> = {};
 
-		for (const [id, enemy] of pairs(state)) {
+		for (const [id, enemy] of pairs(state.enemies)) {
 			if (id === enemyIdToRemove) continue;
 
-			updatedState[id] = enemy;
+			enemies[id] = enemy;
 		}
 
-		return updatedState;
+		return {
+			...state,
+			enemies,
+		};
 	},
 
 	dealDamageToEnemy: (state, enemyIdToDamage: string, damage: number) => {
-		const updatedState: EnemyState = {};
+		const enemies: Record<string, Enemy | undefined> = {};
 
-		for (const [id, enemy] of pairs(state)) {
+		for (const [id, enemy] of pairs(state.enemies)) {
 			if (id === enemyIdToDamage) {
 				const updatedEnemyHealth = enemy.health - damage;
 				if (updatedEnemyHealth <= 0) {
-					updatedState[id] = { ...enemy, health: 0, dead: true };
+					enemies[id] = { ...enemy, health: 0, dead: true };
 					continue;
 				}
 
-				updatedState[id] = { ...enemy, health: updatedEnemyHealth };
+				enemies[id] = { ...enemy, health: updatedEnemyHealth };
 				continue;
 			}
 
-			updatedState[id] = enemy;
+			enemies[id] = enemy;
 		}
 
-		return updatedState;
+		return {
+			...state,
+			enemies,
+		};
 	},
 
 	addPause: (state, enemyIdToPause: string, pause: Pause) => {
-		const updatedState: EnemyState = {};
+		const enemies: Record<string, Enemy | undefined> = {};
 
-		for (const [id, enemy] of pairs(state)) {
+		for (const [id, enemy] of pairs(state.enemies)) {
 			if (id === enemyIdToPause) {
 				const updatedPauses = [...enemy.pauses, pause];
-				updatedState[id] = { ...enemy, pauses: updatedPauses };
+				enemies[id] = { ...enemy, pauses: updatedPauses };
 				continue;
 			}
 
-			updatedState[id] = enemy;
+			enemies[id] = enemy;
 		}
 
-		return updatedState;
+		return {
+			...state,
+			enemies,
+		};
 	},
 
 	clearEnemies: (state) => {
-		const updatedState: EnemyState = {};
+		const enemies: Record<string, Enemy | undefined> = {};
 
-		for (const [id, enemy] of pairs(state)) {
-			updatedState[id] = { ...enemy, health: 0, dead: true };
+		for (const [id, enemy] of pairs(state.enemies)) {
+			enemies[id] = { ...enemy, health: 0, dead: true };
 		}
 
-		return updatedState;
+		return {
+			...state,
+			enemies,
+		};
 	},
 });
