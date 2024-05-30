@@ -391,3 +391,7 @@ export function selectEnemyPathCompletionAlphas(
 		return enemyPathCompletionAlphas;
 	};
 }
+
+export function selectEnemyHealthScaleFactor(state: SharedState) {
+	return state.enemy.enemyHealthScaleFactor;
+}

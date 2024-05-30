@@ -1,7 +1,8 @@
 import { AttackingEnemyType, NonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
-import { Enemy } from "shared/store/enemy";
+import { Enemy, selectEnemyHealthScaleFactor } from "shared/store/enemy";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import { producer } from "server/store";
 
 export function createNonAttackingEnemy(
 	enemyType: NonAttackingEnemyType,
@@ -10,9 +11,11 @@ export function createNonAttackingEnemy(
 ): Enemy {
 	const enemyStats = describeEnemyFromType(enemyType);
 
+	const healthScaleFactor = producer.getState(selectEnemyHealthScaleFactor);
+
 	const enemyTemplate: Enemy = {
 		enemyType: enemyType,
-		health: enemyStats.maxHealth,
+		health: enemyStats.maxHealth * healthScaleFactor,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),
 		initialPathCompletionAlpha,
 		pauses: [],
@@ -64,9 +67,11 @@ export function createAttackingEnemy(
 ): Enemy {
 	const enemyStats = describeEnemyFromType(enemyType);
 
+	const healthScaleFactor = producer.getState(selectEnemyHealthScaleFactor);
+
 	const enemyTemplate: Enemy = {
 		enemyType: enemyType,
-		health: enemyStats.maxHealth,
+		health: enemyStats.maxHealth * healthScaleFactor,
 		spawnTimestamp: getCurrentTimeInMilliseconds(),
 		initialPathCompletionAlpha,
 		pauses: [],

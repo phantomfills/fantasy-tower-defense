@@ -26,13 +26,8 @@ function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBo
 	return roundBonus;
 }
 
-function getRoundBonusForRoundWithPlayerCount(
-	round: number,
-	initialRoundBonus: number,
-	roundBonusMultiplier: number,
-	playerCount: number,
-) {
-	return math.floor(getRoundBonusForRound(round, initialRoundBonus, roundBonusMultiplier) / playerCount);
+function getEnemyHealthScaleFactor(playerCount: number): number {
+	return 1 + (playerCount - 1) * 0.5;
 }
 
 interface Group {
@@ -313,6 +308,9 @@ export class RoundService implements OnStart {
 			"Move nearer to enemies to see a tooltip with their stats! The tooltip will appear on the closest enemy to you!",
 		);
 
+		const playerCount = Players.GetPlayers().size();
+		producer.setEnemyHealthScaleFactor(getEnemyHealthScaleFactor(playerCount));
+
 		for (let roundIndex = 0; roundIndex < level.size(); roundIndex++) {
 			const round = level[roundIndex];
 			const roundNumber = roundIndex + 1;
@@ -367,14 +365,7 @@ export class RoundService implements OnStart {
 					break;
 				}
 			}
-
-			const playerCount = Players.GetPlayers().size();
-			const roundBonus = getRoundBonusForRoundWithPlayerCount(
-				roundNumber,
-				ROUND_BONUS,
-				ROUND_BONUS_MULTIPLIER,
-				playerCount,
-			);
+			const roundBonus = getRoundBonusForRound(roundNumber, ROUND_BONUS, ROUND_BONUS_MULTIPLIER);
 
 			let roundCompleted = false;
 
