@@ -27,14 +27,16 @@ export type Enemy = NonAttackingEnemy | AttackingEnemy;
 
 export type EnemyState = {
 	enemies: Record<string, Enemy | undefined>;
+	enemyHealthScaleFactor: number;
 };
 
 const initialState: EnemyState = {
 	enemies: {},
+	enemyHealthScaleFactor: 1,
 };
 
 export const enemySlice = createProducer(initialState, {
-	addEnemy: (state, enemyToAdd: Enemy, id: string) => ({ ...state, [id]: enemyToAdd }),
+	addEnemy: (state, enemyToAdd: Enemy, id: string) => ({ ...state, enemies: { ...state.enemies, [id]: enemyToAdd } }),
 
 	removeEnemy: (state, enemyIdToRemove: string) => {
 		const enemies: Record<string, Enemy | undefined> = {};
@@ -106,4 +108,9 @@ export const enemySlice = createProducer(initialState, {
 			enemies,
 		};
 	},
+
+	setEnemyHealthScaleFactor: (state, healthScaleFactor: number) => ({
+		...state,
+		enemyHealthScaleFactor: healthScaleFactor,
+	}),
 });
