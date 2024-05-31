@@ -18,6 +18,8 @@ import { possible } from "shared/modules/utils/possible";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { selectMapType } from "shared/store/level";
 import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
+import { selectEnemyDetailViewType } from "client/store/settings";
+import { FollowMouse } from "../utils/follow-mouse";
 
 interface EnemyTooltipProps {
 	enemyType: EnemyType;
@@ -37,7 +39,7 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 	const enemyDisplayName = getEnemyDisplayName(enemyType);
 
 	return (
-		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 0, 0, 0)} clipsDescendants={false}>
+		<Frame size={new UDim2(1, 0, 1, 0)} position={new UDim2(0, 10, 0, 10)} clipsDescendants={false}>
 			<Label
 				size={new UDim2(1, 0, 0.35, 0)}
 				text={enemyDisplayName}
@@ -184,7 +186,7 @@ interface EnemyTooltipBillboardFrameProps extends EnemyTooltipProps {
 	position: Vector3;
 }
 
-const ENEMY_TOOLTIP_BILLBOARD_RENDER_DISTANCE = 40;
+const ENEMY_TOOLTIP_BILLBOARD_RENDER_DISTANCE = 50;
 
 function EnemyTooltipBillboardFrame({ position, enemyType, health }: EnemyTooltipBillboardFrameProps) {
 	return (
@@ -200,6 +202,8 @@ function EnemyTooltipBillboardFrame({ position, enemyType, health }: EnemyToolti
 }
 
 export function EnemyTooltipBillboard() {
+	const enemyDetailViewType = useSelector(selectEnemyDetailViewType);
+
 	const possibleEnemyFocusId = useSelector(selectFocusEnemyId);
 	if (!possibleEnemyFocusId.exists) {
 		return <></>;
@@ -228,9 +232,18 @@ export function EnemyTooltipBillboard() {
 
 	const camera = possibleCamera.value;
 	const cameraPosition = camera.CFrame.Position;
-	if (position.sub(cameraPosition).Magnitude > ENEMY_TOOLTIP_BILLBOARD_RENDER_DISTANCE) {
+	if (
+		enemyDetailViewType === "CLOSEST" &&
+		position.sub(cameraPosition).Magnitude > ENEMY_TOOLTIP_BILLBOARD_RENDER_DISTANCE
+	) {
 		return <></>;
 	}
 
-	return <EnemyTooltipBillboardFrame position={position} enemyType={enemyType} health={health} />;
+	return enemyDetailViewType === "CLOSEST" ? (
+		<EnemyTooltipBillboardFrame position={position} enemyType={enemyType} health={health} />
+	) : (
+		<FollowMouse size={new UDim2(0, 150, 0, 60)}>
+			<EnemyTooltip health={health} enemyType={enemyType} />
+		</FollowMouse>
+	);
 }

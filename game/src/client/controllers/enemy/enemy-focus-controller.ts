@@ -6,8 +6,6 @@ import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-m
 import { Possible, possible } from "shared/modules/utils/possible";
 import { selectClosestEnemyIdToPosition } from "shared/store/enemy";
 
-const MAX_ENEMY_HOVER_DISTANCE = 100;
-
 const player = Players.LocalPlayer;
 
 @Controller({})
@@ -24,7 +22,7 @@ export class EnemyFocusController implements OnTick {
 		const mousePosition = UserInputService.GetMouseLocation();
 		const ray = camera.ViewportPointToRay(mousePosition.X, mousePosition.Y);
 		const origin = ray.Origin;
-		const direction = ray.Direction.mul(MAX_ENEMY_HOVER_DISTANCE);
+		const direction = ray.Direction.mul(1000);
 
 		const possibleRaycastResult = possible<RaycastResult>(Workspace.Raycast(origin, direction));
 		if (!possibleRaycastResult.exists)
