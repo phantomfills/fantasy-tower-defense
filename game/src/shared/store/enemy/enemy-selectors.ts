@@ -67,7 +67,7 @@ export function selectEnemyIdsInTowerRange(towerId: string, currentTimestamp: nu
 }
 
 export function selectEnemyCount(state: SharedState) {
-	return Object.keys(state.enemy).size();
+	return Object.keys(state.enemy.enemies).size();
 }
 
 export function selectEnemyFromId(id: string): (state: SharedState) => Possible<Enemy> {
@@ -254,7 +254,7 @@ export function selectEnemyHealth(enemyId: string): (state: SharedState) => Poss
 }
 
 export function selectAttackingEnemyIds(state: SharedState) {
-	const enemies = Object.keys(state.enemy);
+	const enemies = Object.keys(state.enemy.enemies);
 	return enemies.filter((enemyId) => {
 		const enemy = state.enemy.enemies[enemyId];
 		if (!enemy) return false;

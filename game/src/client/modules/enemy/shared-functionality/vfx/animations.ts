@@ -1,5 +1,5 @@
 export const animations = {
-	default_walk: "rbxassetid://16769024725",
+	default_walk: "rbxassetid://17681224474",
 	default_run: "rbxassetid://17426816754",
 	slow_walk: "rbxassetid://16779246486",
 	float: "rbxassetid://16775949590",

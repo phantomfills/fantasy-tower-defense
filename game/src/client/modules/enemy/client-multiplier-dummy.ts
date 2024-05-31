@@ -26,6 +26,7 @@ export class ClientMultiplierDummy extends ClientEnemy<EnemyModel> {
 			animator,
 		});
 		walkAnimation.Play();
+		walkAnimation.AdjustSpeed(1.5);
 
 		super.start();
 	}
