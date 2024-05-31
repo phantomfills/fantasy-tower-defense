@@ -15,9 +15,9 @@ export function MatchInfo() {
 	const possibleMoney = useSelector(selectMoney(userId));
 
 	return (
-		<Frame size={new UDim2(0.15, 0, 1, -46)} anchorPoint={new Vector2(1, 1)} position={new UDim2(1, 0, 1, 0)}>
+		<Frame size={new UDim2(0.12, 0, 1, -46)} anchorPoint={new Vector2(1, 1)} position={new UDim2(1, 0, 1, 0)}>
 			<uigridlayout
-				CellSize={new UDim2(1, 0, 0.075, 0)}
+				CellSize={new UDim2(1, 0, 0.055, 0)}
 				FillDirection={Enum.FillDirection.Vertical}
 				HorizontalAlignment={Enum.HorizontalAlignment.Right}
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}

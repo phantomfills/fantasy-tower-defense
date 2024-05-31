@@ -29,7 +29,7 @@ export function LifeCounter({ lives }: LifeCounterProps) {
 				font={fonts.inter.bold}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				text={formatNumberWithCommas(lives)}
-				textSize={rem(3)}
+				textSize={rem(2)}
 			/>
 		</CounterFrame>
 	);

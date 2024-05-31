@@ -21,7 +21,7 @@ export function Objectives() {
 	return (
 		<Frame size={new UDim2(0.2, 0, 0.5, 0)} position={new UDim2(0, 0, 0.25, 0)}>
 			<uigridlayout
-				CellSize={new UDim2(1, 0, 0, 20)}
+				CellSize={new UDim2(1, 0, 0.08, 0)}
 				FillDirection={Enum.FillDirection.Vertical}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 				CellPadding={new UDim2(0, 0, 0, 5)}

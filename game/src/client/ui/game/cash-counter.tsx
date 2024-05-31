@@ -17,7 +17,7 @@ export function CashCounter({ value }: CashCounterProps) {
 				value={value}
 				size={new UDim2(0.7, 0, 1, 0)}
 				position={new UDim2(0, 0, 0, 0)}
-				textSize={rem(3)}
+				textSize={rem(2)}
 			/>
 		</CounterFrame>
 	);

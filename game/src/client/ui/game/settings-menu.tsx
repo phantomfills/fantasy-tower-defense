@@ -73,6 +73,7 @@ export function DropdownButton<T extends string>({
 					text={optionText}
 					textColor={Color3.fromRGB(255, 255, 255)}
 					font={fonts.inter.bold}
+					zIndex={4}
 				>
 					<uistroke Thickness={2} Color={Color3.fromRGB(27, 27, 27)} />
 				</Label>
@@ -159,7 +160,7 @@ export function SettingsMenu() {
 			</Frame>
 			{menuOpen && (
 				<Frame
-					size={new UDim2(0.3, 0, 0.45, 0)}
+					size={new UDim2(0.3, 0, 0.5, 0)}
 					position={new UDim2(0.5, 0, 0.4, 0)}
 					anchorPoint={new Vector2(0.5, 0.5)}
 					backgroundTransparency={0.5}
