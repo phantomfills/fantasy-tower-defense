@@ -131,7 +131,7 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 						>
 							<uistroke Thickness={2} Color={Color3.fromRGB(27, 27, 27)} />
 						</Label>
-						<uicorner CornerRadius={new UDim(0, 5)} />
+						<uicorner CornerRadius={new UDim(0, 3)} />
 						<OneThickWhiteStroke />
 					</Frame>
 				)}
@@ -171,7 +171,7 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 						>
 							<uistroke Thickness={2} Color={Color3.fromRGB(27, 27, 27)} />
 						</Label>
-						<uicorner CornerRadius={new UDim(0, 5)} />
+						<uicorner CornerRadius={new UDim(0, 3)} />
 						<OneThickWhiteStroke />
 					</Frame>
 				)}

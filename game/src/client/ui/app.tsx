@@ -11,6 +11,7 @@ import { RangeIndicator } from "./tower/range-part";
 import { Objectives } from "./game/objectives";
 import { DamageIndicators } from "./enemy/enemy-damage-indicators";
 import { Frame } from "./utils/frame";
+import { SettingsMenu } from "./game/settings-menu";
 
 export function App() {
 	return (
@@ -27,6 +28,8 @@ export function App() {
 
 					<EnemyTooltipBillboard />
 					<DamageIndicators />
+
+					<SettingsMenu />
 
 					<Dialog />
 					<MatchInfo />

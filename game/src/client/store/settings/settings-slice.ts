@@ -1,9 +1,11 @@
 import { createProducer } from "@rbxts/reflex";
 
-type EnemyDetailView = "HOVER" | "CLOSEST";
+export const ENEMY_DETAIL_VIEW_TYPE = ["HOVER", "CLOSEST"] as const;
+
+export type EnemyDetailViewType = (typeof ENEMY_DETAIL_VIEW_TYPE)[number];
 
 interface Settings {
-	enemyDetailViewType: EnemyDetailView;
+	enemyDetailViewType: EnemyDetailViewType;
 }
 
 const initialState: Settings = {
@@ -11,7 +13,7 @@ const initialState: Settings = {
 };
 
 export const settingsSlice = createProducer(initialState, {
-	setEnemyDetailViewType: (state, enemyDetailViewType: EnemyDetailView) => ({
+	setEnemyDetailViewType: (state, enemyDetailViewType: EnemyDetailViewType) => ({
 		...state,
 		enemyDetailViewType,
 	}),
