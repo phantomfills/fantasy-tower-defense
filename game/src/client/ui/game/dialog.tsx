@@ -74,8 +74,8 @@ export function Dialog() {
 
 	return (
 		<Frame
-			size={new UDim2(0.35, 0, 0.18, 0)}
-			position={lerpBinding(dialogAppearTransition, new UDim2(0.5, 0, 1.2, 0), new UDim2(0.5, 0, 0.7, 0))}
+			size={new UDim2(0.28, 0, 0.14, 0)}
+			position={lerpBinding(dialogAppearTransition, new UDim2(0.5, 0, 1.2, 0), new UDim2(0.5, 0, 0.75, 0))}
 			backgroundTransparency={0.5}
 			backgroundColor={Color3.fromRGB(0, 0, 0)}
 			anchorPoint={new Vector2(0.5, 0.5)}
@@ -88,7 +88,7 @@ export function Dialog() {
 				position={new UDim2(0, 10, 0, 10)}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				textAlignmentY={Enum.TextYAlignment.Top}
-				textSize={rem(2)}
+				textSize={rem(1.5)}
 				font={fonts.inter.regular}
 				textColor={Color3.fromRGB(255, 255, 255)}
 				textWrapped={true}
@@ -98,13 +98,13 @@ export function Dialog() {
 				position={new UDim2(0, -5, 1, -30)}
 				font={fonts.inter.bold}
 				text={`(${numberTicked}/${totalTicksRequired})`}
-				textSize={rem(2)}
+				textSize={rem(1.5)}
 				textAlignmentX={Enum.TextXAlignment.Right}
 				textColor={Color3.fromRGB(255, 255, 255)}
 			/>
 			<Tick
-				size={new UDim2(0, 20, 0, 20)}
-				position={new UDim2(1, -30, 1, -30)}
+				size={new UDim2(0, 15, 0, 15)}
+				position={new UDim2(1, -25, 1, -25)}
 				onClick={() => Events.completeDialog.fire()}
 			/>
 		</Frame>

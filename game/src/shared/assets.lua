@@ -11,6 +11,7 @@ return {
 		pixel_heart = "rbxassetid://16726141065",
 		q_button = "rbxassetid://16726141133",
 		r_button = "rbxassetid://16726141209",
+		settings = "rbxassetid://17679736467",
 		shield = "rbxassetid://16781363004",
 		smoke = "rbxassetid://17426961906",
 		stripes = "rbxassetid://16726141326",

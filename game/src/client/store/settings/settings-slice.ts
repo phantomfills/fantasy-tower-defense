@@ -6,15 +6,22 @@ export type EnemyDetailViewType = (typeof ENEMY_DETAIL_VIEW_TYPE)[number];
 
 interface Settings {
 	enemyDetailViewType: EnemyDetailViewType;
+	menuOpen: boolean;
 }
 
 const initialState: Settings = {
 	enemyDetailViewType: "CLOSEST",
+	menuOpen: false,
 };
 
 export const settingsSlice = createProducer(initialState, {
 	setEnemyDetailViewType: (state, enemyDetailViewType: EnemyDetailViewType) => ({
 		...state,
 		enemyDetailViewType,
+	}),
+
+	toggleMenuOpen: (state) => ({
+		...state,
+		menuOpen: !state.menuOpen,
 	}),
 });

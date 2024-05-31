@@ -12,7 +12,7 @@ export function TowerLoadout() {
 	if (!playersCanPlaceTower || !towerLoadout) return <></>;
 
 	return (
-		<Frame position={new UDim2(0, 0, 0.8, 0)} size={new UDim2(1, 0, 0.2, 0)} zIndex={1}>
+		<Frame position={new UDim2(0, 0, 0.85, 0)} size={new UDim2(1, 0, 0.15, 0)} zIndex={1}>
 			<uigridlayout
 				CellSize={new UDim2(0.075, 0, 1, 0)}
 				CellPadding={new UDim2(0.025, 0, 0, 0)}

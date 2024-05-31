@@ -48,6 +48,11 @@ hash = "c92f63f817455c862957ff358dbd6422a25745fbab1a3bb7a9093d5cac8d3b87"
 id = 16726141209
 packable = false
 
+[inputs."assets/images/settings.png"]
+hash = "8a29b397dda7bdf96f4c5a036df4052e5335edb7332cb3759f8e0b55b7a54847"
+id = 17679736467
+packable = false
+
 [inputs."assets/images/shield.png"]
 hash = "13d3ac1dff3338ea04490fc6a7e9d1aea93e8af7c9ee60da2fd7b79a5a65f369"
 id = 16781363004

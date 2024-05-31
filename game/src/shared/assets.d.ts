@@ -15,6 +15,7 @@ interface Images {
 	white_square: string;
 	dummy_defect_icon: string;
 	smoke: string;
+	settings: string;
 }
 
 export declare const images: Images;
