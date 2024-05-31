@@ -3,7 +3,7 @@ import { Players, RunService } from "@rbxts/services";
 import { createAttackingEnemy, createNonAttackingEnemy } from "server/modules/enemy/enemy-factory";
 import { Events } from "server/network";
 import { producer } from "server/store";
-import { EnemyType, isNonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
+import { isNonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 import { tracks } from "shared/modules/music/tracks";
 import { sounds } from "shared/modules/sounds/sounds";
@@ -11,7 +11,7 @@ import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { selectDialogComplete } from "shared/store/dialog";
 import { selectNoEnemiesExist } from "shared/store/enemy";
-import { selectGameOver, selectMapType } from "shared/store/level";
+import { Round, selectGameOver, selectMapType, selectRounds } from "shared/store/level";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
 const ROUND_BONUS = 500;
@@ -30,212 +30,6 @@ function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBo
 function getEnemyHealthScaleFactor(playerCount: number): number {
 	return 1 + (playerCount - 1) * HEALTH_SCALE_FACTOR_INCREASE_PER_PLAYER;
 }
-
-interface Group {
-	enemyType: EnemyType;
-	count: number;
-	enemySpawnInterval: number;
-	delayToNextGroup: number;
-}
-
-type Round = Group[];
-
-type Level = Round[];
-
-const level: Level = [
-	[
-		{
-			enemyType: "TRAINING_DUMMY",
-			count: 3,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "TRAINING_DUMMY",
-			count: 5,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "TRAINING_DUMMY",
-			count: 4,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 1_000,
-		},
-		{
-			enemyType: "SPEEDSTER_DUMMY",
-			count: 2,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "TRAINING_DUMMY",
-			count: 5,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 1_000,
-		},
-		{
-			enemyType: "SPEEDSTER_DUMMY",
-			count: 4,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "ARMORED_DUMMY",
-			count: 7,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-		{
-			enemyType: "TRAINING_DUMMY",
-			count: 2,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 1_000,
-		},
-		{
-			enemyType: "SPEEDSTER_DUMMY",
-			count: 2,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "ARMORED_DUMMY",
-			count: 12,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "STEALTH_DUMMY",
-			count: 2,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 250,
-		},
-		{
-			enemyType: "SPEEDSTER_DUMMY",
-			count: 7,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "STEALTH_DUMMY",
-			count: 9,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "STEALTH_DUMMY",
-			count: 5,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-		{
-			enemyType: "MULTIPLIER_DUMMY",
-			count: 7,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "MULTIPLIER_DUMMY",
-			count: 16,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "TRAINING_DUMMY",
-			count: 20,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 1_000,
-		},
-		{
-			enemyType: "ARMORED_DUMMY",
-			count: 8,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 1_000,
-		},
-		{
-			enemyType: "SPEEDSTER_DUMMY",
-			count: 10,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 1_000,
-		},
-		{
-			enemyType: "STEALTH_DUMMY",
-			count: 7,
-			enemySpawnInterval: 500,
-			delayToNextGroup: 3_000,
-		},
-		{
-			enemyType: "GUARD_DUMMY",
-			count: 5,
-			enemySpawnInterval: 1_000,
-			delayToNextGroup: 0,
-		},
-	],
-	[
-		{
-			enemyType: "TRAINING_DUMMY",
-			count: 15,
-			enemySpawnInterval: 100,
-			delayToNextGroup: 250,
-		},
-		{
-			enemyType: "ARMORED_DUMMY",
-			count: 15,
-			enemySpawnInterval: 175,
-			delayToNextGroup: 250,
-		},
-		{
-			enemyType: "SPEEDSTER_DUMMY",
-			count: 15,
-			enemySpawnInterval: 50,
-			delayToNextGroup: 150,
-		},
-		{
-			enemyType: "STEALTH_DUMMY",
-			count: 15,
-			enemySpawnInterval: 125,
-			delayToNextGroup: 125,
-		},
-		{
-			enemyType: "MULTIPLIER_DUMMY",
-			count: 22,
-			enemySpawnInterval: 125,
-			delayToNextGroup: 75,
-		},
-		{
-			enemyType: "GUARD_DUMMY",
-			count: 5,
-			enemySpawnInterval: 350,
-			delayToNextGroup: 750,
-		},
-		{
-			enemyType: "DUMMY_TANK",
-			count: 1,
-			enemySpawnInterval: 0,
-			delayToNextGroup: 0,
-		},
-	],
-];
 
 type RoundResult =
 	| {
@@ -312,8 +106,10 @@ export class RoundService implements OnStart {
 		const playerCount = Players.GetPlayers().size();
 		producer.setEnemyHealthScaleFactor(getEnemyHealthScaleFactor(playerCount));
 
-		for (let roundIndex = 0; roundIndex < level.size(); roundIndex++) {
-			const round = level[roundIndex];
+		const rounds = producer.getState(selectRounds);
+
+		for (let roundIndex = 0; roundIndex < rounds.size(); roundIndex++) {
+			const round = rounds[roundIndex];
 			const roundNumber = roundIndex + 1;
 
 			switch (roundNumber) {

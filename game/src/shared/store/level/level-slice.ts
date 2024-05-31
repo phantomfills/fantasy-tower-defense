@@ -8,7 +8,7 @@ interface EnemyGroup {
 	delayToNextGroup: number;
 }
 
-type Round = EnemyGroup[];
+export type Round = EnemyGroup[];
 
 export type E_Maps = "TUTORIAL" | "DOUBLE_LANE";
 export type E_OneTimeObjective = "EAT_CAKE";
