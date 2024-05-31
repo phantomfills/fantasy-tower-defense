@@ -10,10 +10,19 @@ import {
 import { producer } from "client/store";
 import { useSelector } from "@rbxts/react-reflex";
 import { ENEMY_DETAIL_VIEW_TYPE_TO_DISPLAY_NAME_MAP } from "client/modules/game/enemy-detail-view-type-to-display-text-map";
-import { RunService } from "@rbxts/services";
+import { Debris, RunService } from "@rbxts/services";
 import { Label } from "../utils/label";
 import { fonts } from "../constants/fonts";
 import { images } from "shared/assets";
+import { createSound } from "client/modules/utils/sound";
+import { sounds } from "shared/modules/sounds/sounds";
+
+function playClickSound() {
+	const clickSound = createSound(sounds.click, { volume: 0.2 });
+	clickSound.Play();
+
+	Debris.AddItem(clickSound, 2);
+}
 
 interface DropdownButtonProps<T extends string> {
 	label: string;
@@ -51,8 +60,11 @@ export function DropdownButton<T extends string>({
 				<imagelabel
 					Size={new UDim2(1, 0, 1, 0)}
 					BackgroundTransparency={1}
+					ImageTransparency={0.9}
+					ImageColor3={Color3.fromRGB(27, 27, 27)}
 					Image={images.stripes}
-					ImageTransparency={0.5}
+					ScaleType={Enum.ScaleType.Crop}
+					ZIndex={3}
 				/>
 				<OneThickWhiteStroke />
 				<Label
@@ -70,6 +82,7 @@ export function DropdownButton<T extends string>({
 					Text=""
 					Event={{
 						MouseButton1Click: () => {
+							playClickSound();
 							setIsOpen(!isOpen);
 						},
 					}}
@@ -99,6 +112,7 @@ export function DropdownButton<T extends string>({
 								BackgroundTransparency={1}
 								Event={{
 									MouseButton1Click: () => {
+										playClickSound();
 										onOptionSelected(option);
 										setIsOpen(false);
 									},
@@ -131,7 +145,13 @@ export function SettingsMenu() {
 					Size={new UDim2(1, 0, 1, 0)}
 					BackgroundTransparency={1}
 					Text=""
-					Event={{ MouseButton1Click: () => producer.toggleMenuOpen() }}
+					Event={{
+						MouseButton1Click: () => {
+							producer.toggleMenuOpen();
+
+							playClickSound();
+						},
+					}}
 				/>
 				<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.settings} />
 				<uicorner CornerRadius={new UDim(0, 10)} />

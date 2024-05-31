@@ -19,7 +19,7 @@ export interface TowerSlotProps {
 }
 
 function runCallbackWithTowerSlotSound(callback: () => void) {
-	const towerSlotSound = createSound(sounds.tower_slot_click, { volume: 0.2 });
+	const towerSlotSound = createSound(sounds.click, { volume: 0.2 });
 	towerSlotSound.Play();
 
 	Debris.AddItem(towerSlotSound, 2);
