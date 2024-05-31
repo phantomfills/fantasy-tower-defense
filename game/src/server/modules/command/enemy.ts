@@ -6,6 +6,8 @@ import { createId } from "shared/modules/utils/id-utils";
 import { isAdmin } from "../../../shared/modules/command/admin-guard";
 import { GameType } from "../../../shared/modules/command/game-type";
 import { holdFor } from "shared/modules/utils/wait-util";
+import { selectMapType } from "shared/store/level";
+import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 
 @Commander()
 class Enemy {
@@ -28,14 +30,18 @@ class Enemy {
 	})
 	@Guard(isAdmin)
 	spawnEnemy(interaction: CommandInteraction, enemyType: EnemyType, count: number = 1) {
+		const numberOfPaths = getGameMapFromMapType(producer.getState(selectMapType)).paths.size();
+
 		(async () => {
-			for (const _ of $range(1, count)) {
-				if (isNonAttackingEnemyType(enemyType)) {
-					const enemy = createNonAttackingEnemy(enemyType, 0);
-					producer.addEnemy(enemy, createId());
-				} else {
-					const enemy = createAttackingEnemy(enemyType, 0);
-					producer.addEnemy(enemy, createId());
+			for (const _ of $range(0, count - 1)) {
+				for (const pathIndex of $range(0, numberOfPaths - 1)) {
+					if (isNonAttackingEnemyType(enemyType)) {
+						const enemy = createNonAttackingEnemy(enemyType, pathIndex);
+						producer.addEnemy(enemy, createId());
+					} else {
+						const enemy = createAttackingEnemy(enemyType, pathIndex);
+						producer.addEnemy(enemy, createId());
+					}
 				}
 
 				holdFor(200);
