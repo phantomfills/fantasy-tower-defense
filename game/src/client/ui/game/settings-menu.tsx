@@ -27,33 +27,6 @@ export function DropdownButton<T extends string>({
 	const [isOpen, setIsOpen] = useState(false);
 	const optionText = optionToDisplayTextMap[selectedOption];
 
-	// return (
-	// 	<Frame Size={new UDim2(1, 0, 0, 30)}>
-	// 		<textbutton
-	// 			Size={UDim2.fromScale(1, 1)}
-	// 			Text={optionText}
-	// 			Event={{
-	// 				MouseButton1Click: () => {
-	// 					setIsOpen(!isOpen);
-	// 				},
-	// 			}}
-	// 		/>
-	// 		{isOpen &&
-	// 			options.map((option, index) => (
-	// 				<textbutton
-	// 					Size={new UDim2(1, 0, 0, 30)}
-	// 					Position={new UDim2(0, 0, 0, 30 * (index + 1))}
-	// 					Text={optionToDisplayTextMap[option]}
-	// 					Event={{
-	// 						MouseButton1Click: () => {
-	// 							onOptionSelected(option);
-	// 							setIsOpen(false);
-	// 						},
-	// 					}}
-	// 				/>
-	// 			))}
-	// 	</frame>
-	// );
 	return (
 		<Frame size={new UDim2(1, 0, 0, 30)}>
 			<Label
