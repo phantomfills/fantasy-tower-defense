@@ -9,7 +9,7 @@ import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-
 import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { createId } from "shared/modules/utils/id-utils";
-import { getCFrameFromPathCompletionAlpha, getPathLength } from "shared/modules/utils/path-utils";
+import { getCFrameFromPathCompletionAlpha } from "shared/modules/utils/path-utils";
 import {
 	Enemy,
 	getEnemyId,
@@ -33,7 +33,7 @@ function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
 		);
 
 		for (const _ of $range(0, 1)) {
-			const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", 0, pathCompletionAlpha);
+			const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", enemy.path, pathCompletionAlpha);
 			producer.addEnemy(spawnedEnemy, createId());
 		}
 	}
@@ -46,55 +46,8 @@ function getEnemyIdsWhichHaveReachedPathEnd(): string[] {
 	const currentTimeInMilliseconds = getCurrentTimeInMilliseconds();
 
 	const enemies = producer.getState(selectEnemies);
-	for (const [id, enemy] of pairs(enemies)) {
-		const enemyStats = describeEnemyFromType(enemy.enemyType);
-
-		const millisecondsSinceSpawn = currentTimeInMilliseconds - enemy.spawnTimestamp;
-
-		// Merge overlapping pauses
-		const mergedPauses = enemy.pauses
-			.sort((a, b) => a.startTime < b.startTime)
-			.reduce((merged, pause) => {
-				if (
-					merged.size() === 0 ||
-					merged[merged.size() - 1].startTime + merged[merged.size() - 1].pauseFor < pause.startTime
-				) {
-					merged.push(pause);
-				} else {
-					merged[merged.size() - 1].pauseFor = math.max(
-						merged[merged.size() - 1].pauseFor,
-						pause.startTime + pause.pauseFor - merged[merged.size() - 1].startTime,
-					);
-				}
-				return merged;
-			}, new Array<Pause>());
-
-		const totalPauseTimeServed = mergedPauses
-			.map((pause) => {
-				const pauseEndTime = pause.startTime + pause.pauseFor;
-				if (currentTimeInMilliseconds < pause.startTime) {
-					return 0;
-				} else if (currentTimeInMilliseconds < pauseEndTime) {
-					return currentTimeInMilliseconds - pause.startTime;
-				} else {
-					return pause.pauseFor;
-				}
-			})
-			.reduce((total, pauseTimeServed) => total + pauseTimeServed, 0);
-
-		const adjustedMillisecondsSinceSpawn = millisecondsSinceSpawn - totalPauseTimeServed;
-
-		const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[enemy.path];
-		const pathLength = getPathLength(path);
-		const totalMillisecondsToCompletePath = (pathLength / enemyStats.speed) * 1000;
-
-		const initialPathCompletionAlpha = enemy.initialPathCompletionAlpha ?? 0;
-		const pathCompletionAlpha = math.clamp(
-			adjustedMillisecondsSinceSpawn / totalMillisecondsToCompletePath + initialPathCompletionAlpha,
-			0,
-			1,
-		);
-
+	for (const [id, _] of pairs(enemies)) {
+		const pathCompletionAlpha = producer.getState(selectEnemyPathCompletionAlpha(id, currentTimeInMilliseconds));
 		if (pathCompletionAlpha < 1) continue;
 		enemyIds.push(id);
 	}
