@@ -4,7 +4,7 @@ import { UserInputService, Workspace } from "@rbxts/services";
 import { Possible, possible } from "shared/modules/utils/possible";
 import { GenericClientTower } from "client/modules/tower/client-tower";
 import { producer } from "client/store";
-import { selectPlayersCanUpgradeTower } from "shared/store/dialog";
+import { selectPlayersCanPlaceTowers } from "shared/store/level";
 
 const MAX_TOWER_HOVER_DISTANCE = 100;
 
@@ -94,7 +94,7 @@ export class TowerActionController implements OnStart, OnTick {
 
 	onStart() {
 		UserInputService.InputBegan.Connect((input) => {
-			const playersCanUpgradeTower = producer.getState(selectPlayersCanUpgradeTower);
+			const playersCanUpgradeTower = producer.getState(selectPlayersCanPlaceTowers);
 			if (!playersCanUpgradeTower) return;
 
 			if (!this.enabled) return;

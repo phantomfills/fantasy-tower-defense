@@ -1,15 +1,15 @@
 import React from "@rbxts/react";
 import { Frame } from "../utils/frame";
 import { useSelector } from "@rbxts/react-reflex";
-import { selectPlayersCanPlaceTower } from "shared/store/dialog";
+import { selectPlayersCanPlaceTowers } from "shared/store/level";
 import { selectTowerLoadout } from "client/store/tower-loadout";
 import { TowerSlot } from "./tower-slot";
 
 export function TowerLoadout() {
-	const playersCanPlaceTower = useSelector(selectPlayersCanPlaceTower);
+	const playersCanPlaceTowers = useSelector(selectPlayersCanPlaceTowers);
 	const towerLoadout = useSelector(selectTowerLoadout);
 
-	if (!playersCanPlaceTower || !towerLoadout) return <></>;
+	if (!playersCanPlaceTowers || !towerLoadout) return <></>;
 
 	return (
 		<Frame position={new UDim2(0, 0, 0.85, 0)} size={new UDim2(1, 0, 0.15, 0)} zIndex={1}>

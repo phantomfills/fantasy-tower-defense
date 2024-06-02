@@ -17,7 +17,7 @@ import { Players } from "@rbxts/services";
 import { selectPossibleTowerId } from "client/store/tower-action-menu/tower-action-selectors";
 import { producer } from "client/store";
 import { Events } from "client/network";
-import { selectPlayersCanUpgradeTower } from "shared/store/dialog";
+import { selectPlayersCanUpgradeTowers } from "shared/store/level";
 import { getFormattedValue } from "shared/modules/utils/get-formatted-value";
 
 const player = Players.LocalPlayer;
@@ -26,8 +26,8 @@ const userId = tostring(player.UserId);
 export function TowerActionMenu() {
 	const possibleMoney = useSelector(selectMoney(userId));
 	const possibleTowerFocusId = useSelector(selectPossibleTowerId);
-	const playersCanUpgradeTower = useSelector(selectPlayersCanUpgradeTower);
-	if (!possibleMoney.exists || !possibleTowerFocusId.exists || !playersCanUpgradeTower) return <></>;
+	const playersCanUpgradeTowers = useSelector(selectPlayersCanUpgradeTowers);
+	if (!possibleMoney.exists || !possibleTowerFocusId.exists || !playersCanUpgradeTowers) return <></>;
 
 	const money = possibleMoney.value;
 	const towerId = possibleTowerFocusId.value;

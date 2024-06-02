@@ -1,67 +1,22 @@
 import { createProducer } from "@rbxts/reflex";
-
-interface PlayerDialogCompletionState {
-	[userId: string]: boolean;
-}
+import { Dialog } from "../level";
 
 interface DialogState {
-	dialog: Dialog;
-	dialogComplete: PlayerDialogCompletionState;
-	playersCanPlaceTower: boolean;
-	playersCanUpgradeTower: boolean;
+	currentDialog: Dialog | undefined;
 }
 
-type Dialog =
-	| {
-			open: true;
-			text: string;
-	  }
-	| {
-			open: false;
-	  };
-
 const initialState: DialogState = {
-	dialog: {
-		open: false,
-	},
-	dialogComplete: {},
-	playersCanPlaceTower: false,
-	playersCanUpgradeTower: false,
+	currentDialog: undefined,
 };
 
 export const dialogSlice = createProducer(initialState, {
-	setDialog: (state, text: string, dialogComplete: PlayerDialogCompletionState) => ({
+	setDialog: (state, dialog: Dialog) => ({
 		...state,
-		dialog: {
-			open: true,
-			text,
-		},
-		dialogComplete,
+		currentDialog: dialog,
 	}),
 
 	clearDialog: (state) => ({
 		...state,
-		dialog: {
-			open: false,
-		},
-		dialogComplete: {},
-	}),
-
-	completeDialogForPlayer: (state, userId: string) => ({
-		...state,
-		dialogComplete: {
-			...state.dialogComplete,
-			[userId]: true,
-		},
-	}),
-
-	setPlayersCanPlaceTower: (state, canPlaceTower: boolean) => ({
-		...state,
-		playersCanPlaceTower: canPlaceTower,
-	}),
-
-	setPlayersCanUpgradeTower: (state, canUpgradeTower: boolean) => ({
-		...state,
-		playersCanUpgradeTower: canUpgradeTower,
+		currentDialog: undefined,
 	}),
 });

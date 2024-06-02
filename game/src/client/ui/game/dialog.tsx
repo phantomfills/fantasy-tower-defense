@@ -10,13 +10,7 @@ import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
 import { Debris } from "@rbxts/services";
 import { useSelector } from "@rbxts/react-reflex";
-import {
-	selectDialogComplete,
-	selectDialogText,
-	selectNumberOfPlayersWhoCompletedDialog,
-	selectTotalNumberOfPlayersWhoMustCompleteDialog,
-} from "shared/store/dialog";
-import { Events } from "client/network";
+import { selectDialogText } from "shared/store/dialog";
 
 interface TickProps {
 	size: UDim2;
@@ -46,16 +40,13 @@ function Tick({ size, position, onClick }: TickProps) {
 }
 
 export function Dialog() {
-	const possibleText = useSelector(selectDialogText);
-	const dialogComplete = useSelector(selectDialogComplete);
-	const numberTicked = useSelector(selectNumberOfPlayersWhoCompletedDialog);
-	const totalTicksRequired = useSelector(selectTotalNumberOfPlayersWhoMustCompleteDialog);
+	const text = useSelector(selectDialogText);
 
 	const rem = useRem();
 	const [dialogAppearTransition, setDialogAppearTransition] = useMotor(0);
 
 	useEffect(() => {
-		if (dialogComplete) {
+		if (text === undefined) {
 			setDialogAppearTransition(new Spring(0, { dampingRatio: 0.6, frequency: 3 }));
 			return;
 		}
@@ -66,11 +57,9 @@ export function Dialog() {
 		Debris.AddItem(dialogSound, 2);
 
 		setDialogAppearTransition(new Spring(1, { dampingRatio: 0.6, frequency: 3 }));
-	}, [dialogComplete]);
+	}, [text]);
 
-	if (!possibleText.exists) return <></>;
-
-	const text = possibleText.value;
+	if (text === undefined) return <></>;
 
 	return (
 		<Frame
@@ -92,20 +81,6 @@ export function Dialog() {
 				font={fonts.inter.regular}
 				textColor={Color3.fromRGB(255, 255, 255)}
 				textWrapped={true}
-			/>
-			<Label
-				size={new UDim2(1, -30, 0, 20)}
-				position={new UDim2(0, -5, 1, -30)}
-				font={fonts.inter.bold}
-				text={`(${numberTicked}/${totalTicksRequired})`}
-				textSize={rem(1.5)}
-				textAlignmentX={Enum.TextXAlignment.Right}
-				textColor={Color3.fromRGB(255, 255, 255)}
-			/>
-			<Tick
-				size={new UDim2(0, 15, 0, 15)}
-				position={new UDim2(1, -25, 1, -25)}
-				onClick={() => Events.completeDialog.fire()}
 			/>
 		</Frame>
 	);

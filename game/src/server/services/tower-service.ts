@@ -17,7 +17,7 @@ import { selectMoney } from "shared/store/money";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { attackEnemy } from "server/events";
-import { selectPlayersCanPlaceTower, selectPlayersCanUpgradeTower } from "shared/store/dialog";
+import { selectPlayersCanPlaceTowers, selectPlayersCanUpgradeTowers } from "shared/store/level";
 import { calculateEffectiveTowerDamageIfEnemyIsReinforced } from "shared/modules/attack/trait";
 import { LevelService } from "./level-service";
 
@@ -56,8 +56,8 @@ export class TowerService implements OnStart, OnTick {
 
 	onStart() {
 		Events.placeTower.connect((player, _type, cframe) => {
-			const playersCanPlaceTower = producer.getState(selectPlayersCanPlaceTower);
-			if (!playersCanPlaceTower) return;
+			const playersCanPlaceTowers = producer.getState(selectPlayersCanPlaceTowers);
+			if (!playersCanPlaceTowers) return;
 
 			const isValidPlacementPosition = this.levelService.isValidPlacementPosition(cframe.Position);
 			if (!isValidPlacementPosition) return;
@@ -75,8 +75,8 @@ export class TowerService implements OnStart, OnTick {
 		});
 
 		Events.upgradeTower.connect((player, id) => {
-			const playersCanUpgradeTower = producer.getState(selectPlayersCanUpgradeTower);
-			if (!playersCanUpgradeTower) return;
+			const playersCanUpgradeTowers = producer.getState(selectPlayersCanUpgradeTowers);
+			if (!playersCanUpgradeTowers) return;
 
 			const userId = tostring(player.UserId);
 

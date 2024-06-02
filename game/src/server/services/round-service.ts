@@ -1,15 +1,12 @@
 import { Service, OnStart } from "@flamework/core";
 import { Players, RunService } from "@rbxts/services";
 import { createAttackingEnemy, createNonAttackingEnemy } from "server/modules/enemy/enemy-factory";
-import { Events } from "server/network";
 import { producer } from "server/store";
 import { isNonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 import { tracks } from "shared/modules/music/tracks";
-import { sounds } from "shared/modules/sounds/sounds";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
-import { selectDialogComplete } from "shared/store/dialog";
 import { selectNoEnemiesExist } from "shared/store/enemy";
 import { Round, selectGameOver, selectMapType, selectRounds } from "shared/store/level";
 
@@ -42,37 +39,6 @@ type RoundResult =
 
 @Service({})
 export class RoundService implements OnStart {
-	private setDialog(message: string) {
-		const playerDialogCompletionState: Record<string, boolean> = {};
-
-		Players.GetPlayers().forEach((player) => {
-			const userId = tostring(player.UserId);
-			playerDialogCompletionState[userId] = false;
-		});
-
-		producer.setDialog(message, playerDialogCompletionState);
-
-		let stopYielding = false;
-
-		const dialogComplete = producer.getState(selectDialogComplete);
-		if (dialogComplete) {
-			stopYielding = true;
-		}
-
-		const unsubscribe = producer.subscribe(selectDialogComplete, (dialogComplete) => {
-			if (!dialogComplete) return;
-			stopYielding = true;
-		});
-
-		while (!stopYielding) {
-			RunService.Heartbeat.Wait();
-		}
-
-		holdFor(1_000);
-
-		unsubscribe();
-	}
-
 	onStart() {
 		producer.subscribe(selectGameOver, (gameOver) => {
 			if (!gameOver) return;
@@ -87,21 +53,21 @@ export class RoundService implements OnStart {
 
 		producer.setTrackId(tracks.intro_music);
 
-		this.setDialog("Are you ready to start the tutorial? Tick the box to continue!");
-		producer.setPlayersCanPlaceTower(true);
-		this.setDialog(
-			"Click on the tower button at the bottom, and move the Defect to a location where its circle reaches the path and it is blue, then click again to place it!",
-		);
-		producer.setPlayersCanUpgradeTower(true);
-		this.setDialog(
-			"Click on a tower to view its stats. If you have enough money, click on the upgrade button to upgrade it!",
-		);
-		this.setDialog(
-			"If you need to sell a tower, click on the sell button on the tower's stats panel! You do only get 50% of the money back, though!",
-		);
-		this.setDialog(
-			"Move nearer to enemies to see a tooltip with their stats! The tooltip will appear on the closest enemy to you!",
-		);
+		// this.setDialog("Are you ready to start the tutorial? Tick the box to continue!");
+		// producer.setPlayersCanPlaceTower(true);
+		// this.setDialog(
+		// 	"Click on the tower button at the bottom, and move the Defect to a location where its circle reaches the path and it is blue, then click again to place it!",
+		// );
+		// producer.setPlayersCanUpgradeTower(true);
+		// this.setDialog(
+		// 	"Click on a tower to view its stats. If you have enough money, click on the upgrade button to upgrade it!",
+		// );
+		// this.setDialog(
+		// 	"If you need to sell a tower, click on the sell button on the tower's stats panel! You do only get 50% of the money back, though!",
+		// );
+		// this.setDialog(
+		// 	"Move nearer to enemies to see a tooltip with their stats! The tooltip will appear on the closest enemy to you!",
+		// );
 
 		const playerCount = Players.GetPlayers().size();
 		producer.setEnemyHealthScaleFactor(getEnemyHealthScaleFactor(playerCount));
@@ -112,56 +78,10 @@ export class RoundService implements OnStart {
 			const round = rounds[roundIndex];
 			const roundNumber = roundIndex + 1;
 
-			switch (roundNumber) {
-				case 1: {
-					producer.setTrackId(tracks.questing_music);
-					this.setDialog(
-						"You will gain money for each enemy you defeat. Use it to build more towers, or upgrade existing ones!",
-					);
-					break;
-				}
-				case 3: {
-					this.setDialog("Quicker dummies are approaching, be prepared!");
-					break;
-				}
-				case 5: {
-					this.setDialog(
-						"Armored dummies are on the way; they're really strong, so upgrading or placing more Defects is essential.",
-					);
-					break;
-				}
-				case 6: {
-					this.setDialog(
-						"Stealth dummies are coming in a few rounds! They are invisible to towers without the 'stealth' trait! Defect gains this trait with its level 2 upgrade!",
-					);
-					break;
-				}
-				case 9: {
-					this.setDialog(
-						"Multipliers are approaching! They will turn into Divided Dummies when they are killed! We need lots of firepower to take them down. Stay vigilant!",
-					);
-					break;
-				}
-				case 10: {
-					this.setDialog(
-						"Loud thuds in the distance? I don't like what I'm hearing... Reinforced enemies coming in a few rounds. Make sure your Defects are level 3 or higher, or they will not deal any damage!",
-					);
-					break;
-				}
-				case 11: {
-					this.setDialog(
-						"Guard dummies have been spotted! Are they protecting something? We need to take them down!",
-					);
-					break;
-				}
-				case 12: {
-					producer.setTrackId(tracks.boss_music);
-					this.setDialog(
-						"The Dummy Tank is here! It will throw huge boulders at your troops that can kill them! You earn 50% money back if your troop is killed. Place low level troops near to the tank to stop it from attacking your main damage dealers!",
-					);
-					break;
-				}
-			}
+			round.levelDialogs.forEach(({ dialog }) => {
+				producer.setDialog(dialog);
+			});
+
 			const roundBonus = getRoundBonusForRound(roundNumber, ROUND_BONUS, ROUND_BONUS_MULTIPLIER);
 
 			let roundCompleted = false;
@@ -182,12 +102,12 @@ export class RoundService implements OnStart {
 
 			producer.addProgressToObjectiveForAllPlayers("COMPLETE_ROUNDS", 1);
 
-			if (roundNumber === 12) {
-				producer.clearTrackId();
+			// if (roundNumber === 12) {
+			// 	producer.clearTrackId();
 
-				Events.playSound.broadcast(sounds.victory);
-				this.setDialog("You have completed the tutorial! Congratulations!");
-			}
+			// 	Events.playSound.broadcast(sounds.victory);
+			// 	this.setDialog("You have completed the tutorial! Congratulations!");
+			// }
 		}
 	}
 
@@ -195,7 +115,7 @@ export class RoundService implements OnStart {
 		const numberOfPaths = getGameMapFromMapType(producer.getState(selectMapType)).paths.size();
 		let currentPath = 0;
 
-		for (const group of round) {
+		for (const group of round.enemyGroups) {
 			const { enemyType } = group;
 
 			for (const _ of $range(0, group.count - 1)) {

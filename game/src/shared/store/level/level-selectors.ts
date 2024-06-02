@@ -9,3 +9,7 @@ export const selectMapType = (state: SharedState) => state.level.mapType;
 export const selectGameOver = (state: SharedState) => state.level.gameOver;
 
 export const selectRounds = (state: SharedState) => state.level.rounds;
+
+export const selectPlayersCanPlaceTowers = (state: SharedState) => state.level.playersCanPlaceTowers;
+
+export const selectPlayersCanUpgradeTowers = (state: SharedState) => state.level.playersCanUpgradeTowers;
