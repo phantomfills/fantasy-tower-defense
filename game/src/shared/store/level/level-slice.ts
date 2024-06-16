@@ -10,7 +10,7 @@ interface EnemyGroup {
 
 export type Round = {
 	enemyGroups: EnemyGroup[];
-	levelDialogs: LevelDialog[];
+	dialogs: Dialog[];
 };
 
 export type E_Maps = "TUTORIAL" | "DOUBLE_LANE";
@@ -31,11 +31,6 @@ interface CallbackDialog {
 }
 
 export type Dialog = AutoDisappearDialog | CallbackDialog;
-
-type LevelDialog = {
-	roundNumber: number;
-	dialog: Dialog;
-};
 
 interface Level {
 	name: string;
@@ -61,14 +56,16 @@ const initialState: Level = {
 					delayToNextGroup: 0,
 				},
 			],
-			levelDialogs: [
+			dialogs: [
 				{
-					dialog: {
-						dialogType: "AUTO_DISAPPEAR",
-						text: "Welcome to the tutorial! Click on the dummy to attack it.",
-						disappearTimestamp: 5000,
-					},
-					roundNumber: 1,
+					dialogType: "AUTO_DISAPPEAR",
+					text: "Welcome to the tutorial! Click on the dummy to attack it.",
+					disappearTimestamp: 5000,
+				},
+				{
+					dialogType: "AUTO_DISAPPEAR",
+					text: "Other text",
+					disappearTimestamp: 5000,
 				},
 			],
 		},

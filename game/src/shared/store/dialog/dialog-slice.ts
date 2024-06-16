@@ -2,21 +2,21 @@ import { createProducer } from "@rbxts/reflex";
 import { Dialog } from "../level";
 
 interface DialogState {
-	currentDialog: Dialog | undefined;
+	currentDialogs: Dialog[];
 }
 
 const initialState: DialogState = {
-	currentDialog: undefined,
+	currentDialogs: [],
 };
 
 export const dialogSlice = createProducer(initialState, {
-	setDialog: (state, dialog: Dialog) => ({
+	setDialogs: (state, dialogs: Dialog[]) => ({
 		...state,
-		currentDialog: dialog,
+		currentDialogs: dialogs,
 	}),
 
-	clearDialog: (state) => ({
+	clearDialogs: (state) => ({
 		...state,
-		currentDialog: undefined,
+		currentDialogs: [],
 	}),
 });

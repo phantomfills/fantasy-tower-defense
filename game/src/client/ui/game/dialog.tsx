@@ -5,9 +5,10 @@ import { useRem } from "../hooks/use-rem";
 import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { useSelector } from "@rbxts/react-reflex";
-import { selectDialog } from "shared/store/dialog";
+import { selectDialogs } from "shared/store/dialog";
 import { Dialog } from "shared/store/level";
 import { setTimeout } from "@rbxts/set-timeout";
+import { holdFor, holdForPromise } from "shared/modules/utils/wait-util";
 
 // export function Dialog() {
 // 	const text = useSelector(selectDialogText);
@@ -95,25 +96,59 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 export function Dialog() {
 	const [dialogText, setDialogText] = useState<string | undefined>(undefined);
 	const [dialogVisible, setDialogVisible] = useState<boolean>(false);
-	const dialog = useSelector(selectDialog);
-
-	print(dialogVisible);
+	const dialogs = useSelector(selectDialogs);
 
 	useEffect(() => {
-		setDialogText(dialog?.text);
-		setDialogVisible(dialog !== undefined);
+		// setDialogText(dialog?.text);
+		// setDialogVisible(dialog !== undefined);
 
-		if (!dialog) return;
-		if (dialog.dialogType !== "AUTO_DISAPPEAR") return;
+		// if (!dialog) return;
+		// if (dialog.dialogType !== "AUTO_DISAPPEAR") return;
 
-		const cancelTimeout = setTimeout(() => {
-			setDialogVisible(false);
-		}, dialog.disappearTimestamp / 1000);
+		// const cancelTimeout = setTimeout(() => {
+		// 	setDialogVisible(false);
+		// }, dialog.disappearTimestamp / 1000);
+
+		let cancelTimeout = () => {};
+
+		for (let index = 0; index < dialogs.size(); index++) {
+			const dialog = dialogs[index];
+
+			print(dialog);
+
+			cancelTimeout();
+
+			setDialogText(dialog.text);
+			setDialogVisible(true);
+
+			print("Dialog visible:", dialogVisible);
+
+			print("Dialog text:", dialog.text);
+			print("Dialog type:", dialog.dialogType);
+
+			if (dialog.dialogType !== "AUTO_DISAPPEAR") {
+				throw "Dialog type not supported.";
+			}
+
+			const nextDialogPromise = holdForPromise(dialog.disappearTimestamp).then(() => {
+				if (index >= dialogs.size() - 1) {
+					print("finish");
+					setDialogVisible(false);
+					return;
+				}
+			});
+
+			cancelTimeout = () => {
+				nextDialogPromise.cancel();
+			};
+
+			nextDialogPromise.await();
+		}
 
 		return () => {
 			cancelTimeout();
 		};
-	}, [dialog]);
+	}, [dialogs]);
 
 	return dialogVisible ? <DialogFrame dialogTextProps={{ text: dialogText }} /> : <></>;
 }

@@ -78,9 +78,7 @@ export class RoundService implements OnStart {
 			const round = rounds[roundIndex];
 			const roundNumber = roundIndex + 1;
 
-			round.levelDialogs.forEach(({ dialog }) => {
-				producer.setDialog(dialog);
-			});
+			producer.setDialogs(round.dialogs);
 
 			const roundBonus = getRoundBonusForRound(roundNumber, ROUND_BONUS, ROUND_BONUS_MULTIPLIER);
 
