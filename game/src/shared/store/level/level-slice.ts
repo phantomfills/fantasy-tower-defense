@@ -69,6 +69,28 @@ const initialState: Level = {
 				},
 			],
 		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "TRAINING_DUMMY",
+					count: 5,
+					enemySpawnInterval: 1000,
+					delayToNextGroup: 0,
+				},
+			],
+			dialogs: [
+				{
+					dialogType: "AUTO_DISAPPEAR",
+					text: "Yes, you can do it!",
+					disappearTimestamp: 5000,
+				},
+				{
+					dialogType: "AUTO_DISAPPEAR",
+					text: "Hello",
+					disappearTimestamp: 5000,
+				},
+			],
+		},
 	],
 	lives: 1000,
 	startingMoney: 1000,

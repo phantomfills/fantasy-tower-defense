@@ -7,7 +7,7 @@ import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { useSelector } from "@rbxts/react-reflex";
 import { selectDialogs } from "shared/store/dialog";
 import { Dialog } from "shared/store/level";
-import { setTimeout } from "@rbxts/set-timeout";
+import { setInterval, setTimeout } from "@rbxts/set-timeout";
 import { holdFor, holdForPromise } from "shared/modules/utils/wait-util";
 
 // export function Dialog() {
@@ -86,6 +86,16 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 					PaddingRight={new UDim(0, 10)}
 				/>
 				<uicorner CornerRadius={new UDim(0, 3)} />
+				<Frame size={new UDim2(0, 50, 0, 50)} position={new UDim2(1, -25, 1, -25)} backgroundTransparency={0}>
+					<uicorner CornerRadius={new UDim(0.5, 0)} />
+					<Label
+						size={new UDim2(0.5, 0, 0.5, 0)}
+						position={new UDim2(0.25, 0, 0.25, 0)}
+						text={tostring(dialogTextProps.countdownTime)}
+						font={fonts.inter.bold}
+						textColor={Color3.fromRGB(255, 255, 255)}
+					/>
+				</Frame>
 				<OneThickWhiteStroke />
 				<DialogText {...dialogTextProps} />
 			</Frame>
@@ -96,11 +106,16 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 export function Dialog() {
 	const [dialogText, setDialogText] = useState<string | undefined>(undefined);
 	const [dialogVisible, setDialogVisible] = useState<boolean>(false);
+	const [dialogCountdown, setDialogCountdown] = useState<number>(0);
 	const dialogs = useSelector(selectDialogs);
 
 	useEffect(() => {
-		print(`Dialog visible: ${dialogVisible}`);
-	}, [dialogVisible]);
+		if (dialogCountdown <= 1) return;
+
+		setTimeout(() => {
+			setDialogCountdown(dialogCountdown - 1);
+		}, 1);
+	}, [dialogCountdown]);
 
 	useEffect(() => {
 		let cancelTimeout = () => {};
@@ -117,6 +132,8 @@ export function Dialog() {
 				if (dialog.dialogType !== "AUTO_DISAPPEAR") {
 					throw "Dialog type not supported.";
 				}
+
+				setDialogCountdown(math.floor(dialog.disappearTimestamp / 1000));
 
 				const nextDialogPromise = holdForPromise(dialog.disappearTimestamp).then(() => {
 					if (index >= dialogs.size() - 1) {
@@ -138,11 +155,16 @@ export function Dialog() {
 		};
 	}, [dialogs]);
 
-	return dialogVisible ? <DialogFrame dialogTextProps={{ text: dialogText }} /> : <></>;
+	return dialogVisible ? (
+		<DialogFrame dialogTextProps={{ text: dialogText, countdownTime: dialogCountdown }} />
+	) : (
+		<></>
+	);
 }
 
 interface DialogTextProps {
 	text: string | undefined;
+	countdownTime: number | undefined;
 }
 
 export function DialogText({ text }: DialogTextProps) {
