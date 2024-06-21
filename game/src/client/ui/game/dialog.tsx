@@ -99,51 +99,39 @@ export function Dialog() {
 	const dialogs = useSelector(selectDialogs);
 
 	useEffect(() => {
-		// setDialogText(dialog?.text);
-		// setDialogVisible(dialog !== undefined);
+		print(`Dialog visible: ${dialogVisible}`);
+	}, [dialogVisible]);
 
-		// if (!dialog) return;
-		// if (dialog.dialogType !== "AUTO_DISAPPEAR") return;
-
-		// const cancelTimeout = setTimeout(() => {
-		// 	setDialogVisible(false);
-		// }, dialog.disappearTimestamp / 1000);
-
+	useEffect(() => {
 		let cancelTimeout = () => {};
 
-		for (let index = 0; index < dialogs.size(); index++) {
-			const dialog = dialogs[index];
+		(async () => {
+			for (let index = 0; index < dialogs.size(); index++) {
+				const dialog = dialogs[index];
 
-			print(dialog);
+				cancelTimeout();
 
-			cancelTimeout();
+				setDialogVisible(true);
+				setDialogText(dialog.text);
 
-			setDialogText(dialog.text);
-			setDialogVisible(true);
-
-			print("Dialog visible:", dialogVisible);
-
-			print("Dialog text:", dialog.text);
-			print("Dialog type:", dialog.dialogType);
-
-			if (dialog.dialogType !== "AUTO_DISAPPEAR") {
-				throw "Dialog type not supported.";
-			}
-
-			const nextDialogPromise = holdForPromise(dialog.disappearTimestamp).then(() => {
-				if (index >= dialogs.size() - 1) {
-					print("finish");
-					setDialogVisible(false);
-					return;
+				if (dialog.dialogType !== "AUTO_DISAPPEAR") {
+					throw "Dialog type not supported.";
 				}
-			});
 
-			cancelTimeout = () => {
-				nextDialogPromise.cancel();
-			};
+				const nextDialogPromise = holdForPromise(dialog.disappearTimestamp).then(() => {
+					if (index >= dialogs.size() - 1) {
+						setDialogVisible(false);
+						return;
+					}
+				});
 
-			nextDialogPromise.await();
-		}
+				cancelTimeout = () => {
+					nextDialogPromise.cancel();
+				};
+
+				nextDialogPromise.await();
+			}
+		})();
 
 		return () => {
 			cancelTimeout();
