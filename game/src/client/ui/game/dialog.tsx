@@ -73,7 +73,7 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 			<OneThickWhiteStroke />
 			<uicorner CornerRadius={new UDim(0, 3)} />
 			<Frame
-				size={new UDim2(1, -50, 1, -50)}
+				size={new UDim2(1, -25, 1, -25)}
 				position={new UDim2(0.5, 0, 0.5, 0)}
 				anchorPoint={new Vector2(0.5, 0.5)}
 				backgroundTransparency={0}
@@ -86,11 +86,17 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 					PaddingRight={new UDim(0, 10)}
 				/>
 				<uicorner CornerRadius={new UDim(0, 3)} />
-				<Frame size={new UDim2(0, 50, 0, 50)} position={new UDim2(1, -25, 1, -25)} backgroundTransparency={0}>
+				<Frame
+					size={new UDim2(0, 30, 0, 30)}
+					position={new UDim2(1, -15, 1, -15)}
+					backgroundTransparency={0}
+					backgroundColor={Color3.fromRGB(0, 217, 255)}
+				>
 					<uicorner CornerRadius={new UDim(0.5, 0)} />
+					<uistroke Color={Color3.fromRGB(255, 255, 255)} Thickness={3} />
 					<Label
-						size={new UDim2(0.5, 0, 0.5, 0)}
-						position={new UDim2(0.25, 0, 0.25, 0)}
+						size={new UDim2(0.75, 0, 0.75, 0)}
+						position={new UDim2(0.125, 0, 0.125, 0)}
 						text={tostring(dialogTextProps.countdownTime)}
 						font={fonts.inter.bold}
 						textColor={Color3.fromRGB(255, 255, 255)}
