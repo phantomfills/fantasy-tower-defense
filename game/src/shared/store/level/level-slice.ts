@@ -97,8 +97,8 @@ const initialState: Level = {
 	mapType: "DOUBLE_LANE",
 	gameOver: false,
 	objectives: ["COMPLETE_ROUNDS", "EAT_CAKE"],
-	playersCanPlaceTowers: false,
-	playersCanUpgradeTowers: false,
+	playersCanPlaceTowers: true,
+	playersCanUpgradeTowers: true,
 };
 
 export const levelSlice = createProducer(initialState, {
