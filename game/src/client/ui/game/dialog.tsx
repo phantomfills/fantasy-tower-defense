@@ -7,55 +7,8 @@ import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { useSelector } from "@rbxts/react-reflex";
 import { selectDialogs } from "shared/store/dialog";
 import { Dialog } from "shared/store/level";
-import { setInterval, setTimeout } from "@rbxts/set-timeout";
-import { holdFor, holdForPromise } from "shared/modules/utils/wait-util";
-
-// export function Dialog() {
-// 	const text = useSelector(selectDialogText);
-
-// 	const rem = useRem();
-// 	const [dialogAppearTransition, setDialogAppearTransition] = useMotor(0);
-
-// 	useEffect(() => {
-// 		if (text === undefined) {
-// 			setDialogAppearTransition(new Spring(0, { dampingRatio: 0.6, frequency: 3 }));
-// 			return;
-// 		}
-
-// 		const dialogSound = createSound(sounds.dialog_appear, { volume: 0.2 });
-// 		dialogSound.Play();
-
-// 		Debris.AddItem(dialogSound, 2);
-
-// 		setDialogAppearTransition(new Spring(1, { dampingRatio: 0.6, frequency: 3 }));
-// 	}, [text]);
-
-// 	if (text === undefined) return <></>;
-
-// 	return (
-// 		<Frame
-// 			size={new UDim2(0.28, 0, 0.14, 0)}
-// 			position={lerpBinding(dialogAppearTransition, new UDim2(0.5, 0, 1.2, 0), new UDim2(0.5, 0, 0.75, 0))}
-// 			backgroundTransparency={0.5}
-// 			backgroundColor={Color3.fromRGB(0, 0, 0)}
-// 			anchorPoint={new Vector2(0.5, 0.5)}
-// 		>
-// 			<OneThickWhiteStroke />
-// 			<uicorner CornerRadius={new UDim(0, 3)} />
-// 			<Label
-// 				text={text}
-// 				size={new UDim2(1, -20, 1, -20)}
-// 				position={new UDim2(0, 10, 0, 10)}
-// 				textAlignmentX={Enum.TextXAlignment.Left}
-// 				textAlignmentY={Enum.TextYAlignment.Top}
-// 				textSize={rem(1.5)}
-// 				font={fonts.inter.regular}
-// 				textColor={Color3.fromRGB(255, 255, 255)}
-// 				textWrapped={true}
-// 			/>
-// 		</Frame>
-// 	);
-// }
+import { setTimeout } from "@rbxts/set-timeout";
+import { holdForPromise } from "shared/modules/utils/wait-util";
 
 interface DialogFrameProps {
 	dialogTextProps: DialogTextProps;
