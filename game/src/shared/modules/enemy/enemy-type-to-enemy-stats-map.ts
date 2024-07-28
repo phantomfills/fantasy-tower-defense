@@ -21,14 +21,14 @@ const enemyTypeToStatsMap: Record<EnemyType, EnemyStats> = {
 	SPEEDSTER_DUMMY: {
 		maxHealth: 20,
 		speed: 5.5,
-		money: 35,
+		money: 25,
 		traits: [],
 		attacks: [],
 	},
 	ARMORED_DUMMY: {
-		maxHealth: 65,
+		maxHealth: 300,
 		speed: 2.5,
-		money: 55,
+		money: 200,
 		traits: [],
 		attacks: [],
 	},

@@ -44,6 +44,22 @@ interface Level {
 	playersCanUpgradeTowers: boolean;
 }
 
+const delaysToNextGroup = {
+	none: 0,
+	relaxed: 1_000,
+	tense: 3_000,
+};
+
+const enemySpawnIntervals = {
+	relaxed: 1_000,
+	horde: 500,
+} as const;
+
+const dialogTimestamps = {
+	conversation: 10_000,
+	information: 15_000,
+} as const;
+
 const initialState: Level = {
 	name: "Tutorial",
 	rounds: [
@@ -51,21 +67,21 @@ const initialState: Level = {
 			enemyGroups: [
 				{
 					enemyType: "TRAINING_DUMMY",
-					count: 5,
-					enemySpawnInterval: 1000,
-					delayToNextGroup: 0,
+					count: 3,
+					enemySpawnInterval: enemySpawnIntervals.relaxed,
+					delayToNextGroup: delaysToNextGroup.none,
 				},
 			],
 			dialogs: [
 				{
 					dialogType: "AUTO_DISAPPEAR",
-					text: "Welcome to the tutorial! Click on the dummy to attack it.",
-					disappearTimestamp: 5000,
+					text: "Welcome to the tutorial!",
+					disappearTimestamp: dialogTimestamps.conversation,
 				},
 				{
 					dialogType: "AUTO_DISAPPEAR",
-					text: "Other text",
-					disappearTimestamp: 5000,
+					text: "You can place towers by tapping on the buttons at the bottom of the screen and then moving them anywhere on the map and double tapping.",
+					disappearTimestamp: dialogTimestamps.information,
 				},
 			],
 		},
@@ -74,26 +90,166 @@ const initialState: Level = {
 				{
 					enemyType: "TRAINING_DUMMY",
 					count: 5,
-					enemySpawnInterval: 1000,
-					delayToNextGroup: 0,
+					enemySpawnInterval: enemySpawnIntervals.relaxed,
+					delayToNextGroup: delaysToNextGroup.none,
+				},
+			],
+			dialogs: [],
+		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "TRAINING_DUMMY",
+					count: 8,
+					enemySpawnInterval: enemySpawnIntervals.horde,
+					delayToNextGroup: delaysToNextGroup.none,
 				},
 			],
 			dialogs: [
 				{
 					dialogType: "AUTO_DISAPPEAR",
-					text: "Yes, you can do it!",
-					disappearTimestamp: 5000,
+					text: "Seems we've got a horde of training dummies coming in!",
+					disappearTimestamp: dialogTimestamps.conversation,
 				},
 				{
 					dialogType: "AUTO_DISAPPEAR",
-					text: "Hello",
-					disappearTimestamp: 5000,
+					text: "Click on your tower and click the upgrade button to try and take them out faster!",
+					disappearTimestamp: dialogTimestamps.information,
 				},
 			],
 		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "TRAINING_DUMMY",
+					count: 15,
+					enemySpawnInterval: enemySpawnIntervals.horde,
+					delayToNextGroup: delaysToNextGroup.none,
+				},
+			],
+			dialogs: [],
+		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "TRAINING_DUMMY",
+					count: 8,
+					enemySpawnInterval: enemySpawnIntervals.relaxed,
+					delayToNextGroup: delaysToNextGroup.tense,
+				},
+				{
+					enemyType: "SPEEDSTER_DUMMY",
+					count: 4,
+					enemySpawnInterval: enemySpawnIntervals.relaxed,
+					delayToNextGroup: delaysToNextGroup.none,
+				},
+			],
+			dialogs: [
+				{
+					dialogType: "AUTO_DISAPPEAR",
+					text: "Speedster dummies incoming! They are faster than the training dummies!",
+					disappearTimestamp: dialogTimestamps.conversation,
+				},
+				{
+					dialogType: "AUTO_DISAPPEAR",
+					text: "Use your money to upgrade your towers or place more towers to deal with them!",
+					disappearTimestamp: dialogTimestamps.conversation,
+				},
+			],
+		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "TRAINING_DUMMY",
+					count: 10,
+					enemySpawnInterval: enemySpawnIntervals.relaxed,
+					delayToNextGroup: delaysToNextGroup.relaxed,
+				},
+				{
+					enemyType: "SPEEDSTER_DUMMY",
+					count: 7,
+					enemySpawnInterval: enemySpawnIntervals.relaxed,
+					delayToNextGroup: delaysToNextGroup.none,
+				},
+			],
+			dialogs: [],
+		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "SPEEDSTER_DUMMY",
+					count: 20,
+					enemySpawnInterval: enemySpawnIntervals.horde,
+					delayToNextGroup: delaysToNextGroup.none,
+				},
+			],
+			dialogs: [],
+		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "TRAINING_DUMMY",
+					count: 15,
+					enemySpawnInterval: enemySpawnIntervals.horde,
+					delayToNextGroup: delaysToNextGroup.tense,
+				},
+				{
+					enemyType: "SPEEDSTER_DUMMY",
+					count: 15,
+					enemySpawnInterval: enemySpawnIntervals.horde,
+					delayToNextGroup: delaysToNextGroup.none,
+				},
+			],
+			dialogs: [],
+		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "SPEEDSTER_DUMMY",
+					count: 40,
+					enemySpawnInterval: enemySpawnIntervals.horde,
+					delayToNextGroup: delaysToNextGroup.none,
+				},
+			],
+			dialogs: [
+				{
+					dialogType: "AUTO_DISAPPEAR",
+					text: "We've got a MASSIVE horde of speedster dummies coming in!",
+					disappearTimestamp: dialogTimestamps.conversation,
+				},
+				{
+					dialogType: "AUTO_DISAPPEAR",
+					text: "The next round is gonna be a hard one. Good luck!",
+					disappearTimestamp: dialogTimestamps.conversation,
+				},
+			],
+		},
+		{
+			enemyGroups: [
+				{
+					enemyType: "ARMORED_DUMMY",
+					count: 1,
+					enemySpawnInterval: enemySpawnIntervals.relaxed,
+					delayToNextGroup: delaysToNextGroup.tense,
+				},
+				{
+					enemyType: "TRAINING_DUMMY",
+					count: 10,
+					enemySpawnInterval: enemySpawnIntervals.horde,
+					delayToNextGroup: delaysToNextGroup.tense,
+				},
+				{
+					enemyType: "SPEEDSTER_DUMMY",
+					count: 10,
+					enemySpawnInterval: enemySpawnIntervals.horde,
+					delayToNextGroup: delaysToNextGroup.none,
+				},
+			],
+			dialogs: [],
+		},
 	],
-	lives: 1000,
-	startingMoney: 1000,
+	lives: 1_000,
+	startingMoney: 1_000,
 	mapType: "DOUBLE_LANE",
 	gameOver: false,
 	objectives: ["COMPLETE_ROUNDS", "EAT_CAKE"],
