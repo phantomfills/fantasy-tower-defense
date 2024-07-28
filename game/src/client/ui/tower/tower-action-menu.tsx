@@ -36,7 +36,18 @@ export function TowerActionMenu() {
 	if (!possibleTower.exists) return <></>;
 
 	const tower = possibleTower.value;
-	const { towerType, level, health } = tower;
+	const { towerType, level, health, owner } = tower;
+
+	const ownerId = tonumber(owner);
+	if (ownerId === undefined) return <></>;
+
+	const ownerPlayer = Players.GetPlayerByUserId(ownerId);
+	if (ownerPlayer === undefined) return <></>;
+
+	const ownTower = owner === userId;
+
+	const ownerName = ownerPlayer.Name;
+
 	const towerDisplayName = getTowerDisplayNameFromType(towerType);
 
 	const towerUpgradeCost = getTowerUpgradeCost(towerType, level + 1);
@@ -54,6 +65,7 @@ export function TowerActionMenu() {
 
 	return (
 		<TowerActionMenuFrame
+			owner={ownerName}
 			name={towerDisplayName}
 			money={money}
 			level={level}
@@ -80,6 +92,7 @@ export function TowerActionMenu() {
 			traits={traits}
 			health={formattedHealth}
 			maxHealth={maxHealth}
+			ownTower={ownTower}
 		/>
 	);
 }
