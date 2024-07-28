@@ -3,11 +3,11 @@ import { Players } from "@rbxts/services";
 import { producer } from "server/store";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
 import { getEnemyId, selectEnemies, selectEnemyIsDead } from "shared/store/enemy";
+import { selectStartingMoney } from "shared/store/level";
 
-const STARTING_CASH = 800;
-
-function initializeMoney(userId: string, amount: number) {
-	producer.initializeMoney(userId, amount);
+function initializeMoney(userId: string) {
+	const startingMoney = producer.getState(selectStartingMoney);
+	producer.initializeMoney(userId, startingMoney);
 }
 
 @Service({})
@@ -29,11 +29,11 @@ export class MoneyService implements OnStart {
 		});
 
 		Players.GetPlayers().forEach((player) => {
-			initializeMoney(tostring(player.UserId), STARTING_CASH);
+			initializeMoney(tostring(player.UserId));
 		});
 
 		Players.PlayerAdded.Connect((player) => {
-			initializeMoney(tostring(player.UserId), STARTING_CASH);
+			initializeMoney(tostring(player.UserId));
 		});
 	}
 }

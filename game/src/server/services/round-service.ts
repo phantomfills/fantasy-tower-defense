@@ -11,9 +11,9 @@ import { selectNoEnemiesExist } from "shared/store/enemy";
 import { Round, selectGameOver, selectMapType, selectRounds } from "shared/store/level";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
-const ROUND_BONUS = 500;
-const ROUND_BONUS_MULTIPLIER = 1.2;
-const HEALTH_SCALE_FACTOR_INCREASE_PER_PLAYER = 0.75;
+const ROUND_BONUS = 100;
+const ROUND_BONUS_MULTIPLIER = 1.5;
+const HEALTH_SCALE_FACTOR_INCREASE_PER_PLAYER = 0.5;
 
 function getRoundBonusForRound(round: number, initialRoundBonus: number, roundBonusMultiplier: number): number {
 	const additionalBonusMultiplier = roundBonusMultiplier - 1;
@@ -78,7 +78,7 @@ export class RoundService implements OnStart {
 			const round = rounds[roundIndex];
 			const roundNumber = roundIndex + 1;
 
-			producer.setDialogs(round.dialogs);
+			if (round.dialogs.size() > 0) producer.setDialogs(round.dialogs);
 
 			const roundBonus = getRoundBonusForRound(roundNumber, ROUND_BONUS, ROUND_BONUS_MULTIPLIER);
 
