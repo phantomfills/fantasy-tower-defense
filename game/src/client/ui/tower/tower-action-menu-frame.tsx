@@ -17,13 +17,13 @@ interface TowerActionButtonProps {
 	position: UDim2;
 	color: Color3;
 	autoButtonColor?: boolean;
-	keybind: KeyCode;
+	keybind: KeyCode | undefined;
 	action: () => void;
 }
 
 function TowerActionButton({ name, size, position, color, autoButtonColor, keybind, action }: TowerActionButtonProps) {
 	const rem = useRem();
-	const keyDown = useKeyPress([keybind]);
+	const keyDown = keybind && useKeyPress([keybind]);
 
 	useEffect(() => {
 		if (!keyDown) return;
@@ -43,7 +43,7 @@ function TowerActionButton({ name, size, position, color, autoButtonColor, keybi
 			<Label
 				size={new UDim2(1, 0, 1, 0)}
 				textSize={rem(1.5)}
-				text={`(${keybind}) ${name}`}
+				text={`${keybind ? `(${keybind})` : "🔐"} ${name}`}
 				font={fonts.inter.bold}
 				backgroundTransparency={1}
 				textColor={Color3.fromRGB(255, 255, 255)}
@@ -67,6 +67,7 @@ interface Action {
 }
 
 interface TowerActionMenuFrameProps {
+	owner: string;
 	name: string;
 	money: number;
 	upgradeTitle: string;
@@ -81,9 +82,11 @@ interface TowerActionMenuFrameProps {
 	};
 	health: number;
 	maxHealth: number;
+	ownTower: boolean;
 }
 
 export function TowerActionMenuFrame({
+	owner,
 	name,
 	level,
 	actions,
@@ -95,8 +98,10 @@ export function TowerActionMenuFrame({
 	traits,
 	health,
 	maxHealth,
+	ownTower,
 }: TowerActionMenuFrameProps) {
 	const enoughMoney = money >= upgradeCost;
+	const canPerformActions = enoughMoney && ownTower;
 
 	const rem = useRem();
 
@@ -126,8 +131,16 @@ export function TowerActionMenuFrame({
 			<OneThickWhiteStroke />
 			<Label
 				size={new UDim2(1, 0, 0.15, 0)}
-				position={new UDim2(0, 0, 0.025, 0)}
-				textSize={rem(2.25)}
+				position={new UDim2(0, 0, 0, 0)}
+				textSize={rem(1.5)}
+				font={fonts.inter.bold}
+				text={`${owner}'s`}
+				textColor={new Color3(255, 255, 255)}
+			/>
+			<Label
+				size={new UDim2(1, 0, 0.175, 0)}
+				position={new UDim2(0, 0, 0.035, 0)}
+				textSize={rem(1.75)}
 				font={fonts.inter.bold}
 				text={`${name} Lv. ${level}`}
 				textColor={new Color3(255, 255, 255)}
@@ -135,10 +148,10 @@ export function TowerActionMenuFrame({
 			<TowerActionButton
 				size={new UDim2(1, -30, 0.1, 0)}
 				position={new UDim2(0, 15, 0.275, -10)}
-				color={enoughMoney ? Color3.fromRGB(5, 227, 97) : Color3.fromRGB(227, 0, 0)}
-				name={actions.upgrade.name}
+				color={canPerformActions ? Color3.fromRGB(5, 227, 97) : Color3.fromRGB(227, 0, 0)}
+				name={ownTower ? actions.upgrade.name : "Not your tower!"}
 				action={() => {
-					const actionSound = enoughMoney ? sounds.buy_upgrade : sounds.error;
+					const actionSound = canPerformActions ? sounds.buy_upgrade : sounds.error;
 
 					const sound = createSound(actionSound, { volume: 0.2 });
 					sound.Play();
@@ -147,14 +160,14 @@ export function TowerActionMenuFrame({
 
 					if (enoughMoney) actions.upgrade.call();
 				}}
-				keybind={"E"}
-				autoButtonColor={enoughMoney}
+				keybind={ownTower ? "E" : undefined}
+				autoButtonColor={true}
 			/>
 			<TowerActionButton
 				size={new UDim2(1, -30, 0.1, 0)}
 				position={new UDim2(0, 15, 0.85, 0)}
 				color={Color3.fromRGB(227, 0, 0)}
-				name={actions.sell.name}
+				name={ownTower ? actions.sell.name : "Not your tower!"}
 				action={() => {
 					const sellSound = createSound(sounds.sell_tower, { volume: 0.2 });
 					sellSound.Play();
@@ -163,7 +176,7 @@ export function TowerActionMenuFrame({
 
 					actions.sell.call();
 				}}
-				keybind={"Backspace"}
+				keybind={ownTower ? "Backspace" : undefined}
 				autoButtonColor={true}
 			/>
 			<Label
