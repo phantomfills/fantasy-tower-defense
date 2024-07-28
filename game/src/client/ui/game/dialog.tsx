@@ -7,8 +7,9 @@ import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { useSelector } from "@rbxts/react-reflex";
 import { selectDialogs } from "shared/store/dialog";
 import { Dialog } from "shared/store/level";
-import { setTimeout } from "@rbxts/set-timeout";
+import { setInterval } from "@rbxts/set-timeout";
 import { holdForPromise } from "shared/modules/utils/wait-util";
+import Object from "@rbxts/object-utils";
 
 interface DialogFrameProps {
 	dialogTextProps: DialogTextProps;
@@ -66,22 +67,14 @@ export function Dialog() {
 	const [dialogText, setDialogText] = useState<string | undefined>(undefined);
 	const [dialogVisible, setDialogVisible] = useState<boolean>(false);
 	const [dialogCountdown, setDialogCountdown] = useState<number>(0);
-	const dialogs = useSelector(selectDialogs);
-
-	useEffect(() => {
-		if (dialogCountdown <= 1) return;
-
-		setTimeout(() => {
-			setDialogCountdown(dialogCountdown - 1);
-		}, 1);
-	}, [dialogCountdown]);
+	const dialogs = useSelector(selectDialogs, Object.deepEquals);
 
 	useEffect(() => {
 		let cancelTimeout = () => {};
 
 		(async () => {
-			for (let index = 0; index < dialogs.size(); index++) {
-				const dialog = dialogs[index];
+			for (let dialogIndex = 0; dialogIndex < dialogs.size(); dialogIndex++) {
+				const dialog = dialogs[dialogIndex];
 
 				cancelTimeout();
 
@@ -92,10 +85,22 @@ export function Dialog() {
 					throw "Dialog type not supported.";
 				}
 
-				setDialogCountdown(math.floor(dialog.disappearTimestamp / 1000));
+				let currentDialogCountdown = math.floor(dialog.disappearTimestamp / 1000);
+				setDialogCountdown(currentDialogCountdown);
+
+				const disconnect = setInterval(() => {
+					currentDialogCountdown -= 1;
+
+					print(currentDialogCountdown);
+					setDialogCountdown(currentDialogCountdown);
+
+					if (currentDialogCountdown <= 1) {
+						disconnect();
+					}
+				}, 1);
 
 				const nextDialogPromise = holdForPromise(dialog.disappearTimestamp).then(() => {
-					if (index >= dialogs.size() - 1) {
+					if (dialogIndex >= dialogs.size() - 1) {
 						setDialogVisible(false);
 						return;
 					}
@@ -103,6 +108,7 @@ export function Dialog() {
 
 				cancelTimeout = () => {
 					nextDialogPromise.cancel();
+					disconnect();
 				};
 
 				nextDialogPromise.await();
