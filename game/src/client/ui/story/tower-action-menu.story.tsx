@@ -5,6 +5,7 @@ import { createRoot } from "@rbxts/react-roblox";
 export = (target: Frame) => {
 	const towerActionMenu = (
 		<TowerActionMenuFrame
+			owner="PhantomFills"
 			name="Dummy Defect"
 			money={5000}
 			level={1}
@@ -31,6 +32,7 @@ export = (target: Frame) => {
 			upgradeCost={2000}
 			health={100}
 			maxHealth={100}
+			ownTower={true}
 		/>
 	);
 
