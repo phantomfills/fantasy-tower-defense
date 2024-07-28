@@ -91,7 +91,6 @@ export function Dialog() {
 				const disconnect = setInterval(() => {
 					currentDialogCountdown -= 1;
 
-					print(currentDialogCountdown);
 					setDialogCountdown(currentDialogCountdown);
 
 					if (currentDialogCountdown <= 1) {
