@@ -250,7 +250,7 @@ const initialState: Level = {
 	],
 	lives: 1_000,
 	startingMoney: 500,
-	mapType: "DOUBLE_LANE",
+	mapType: "TUTORIAL",
 	gameOver: false,
 	objectives: ["COMPLETE_ROUNDS", "EAT_CAKE"],
 	playersCanPlaceTowers: true,
