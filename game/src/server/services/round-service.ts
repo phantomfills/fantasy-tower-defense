@@ -53,22 +53,6 @@ export class RoundService implements OnStart {
 
 		producer.setTrackId(tracks.intro_music);
 
-		// this.setDialog("Are you ready to start the tutorial? Tick the box to continue!");
-		// producer.setPlayersCanPlaceTower(true);
-		// this.setDialog(
-		// 	"Click on the tower button at the bottom, and move the Defect to a location where its circle reaches the path and it is blue, then click again to place it!",
-		// );
-		// producer.setPlayersCanUpgradeTower(true);
-		// this.setDialog(
-		// 	"Click on a tower to view its stats. If you have enough money, click on the upgrade button to upgrade it!",
-		// );
-		// this.setDialog(
-		// 	"If you need to sell a tower, click on the sell button on the tower's stats panel! You do only get 50% of the money back, though!",
-		// );
-		// this.setDialog(
-		// 	"Move nearer to enemies to see a tooltip with their stats! The tooltip will appear on the closest enemy to you!",
-		// );
-
 		const playerCount = Players.GetPlayers().size();
 		producer.setEnemyHealthScaleFactor(getEnemyHealthScaleFactor(playerCount));
 
