@@ -1,12 +1,7 @@
 import React, { useState } from "@rbxts/react";
 import { Frame } from "../utils/frame";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
-import {
-	ENEMY_DETAIL_VIEW_TYPE,
-	EnemyDetailViewType,
-	selectEnemyDetailViewType,
-	selectMenuOpen,
-} from "client/store/settings";
+import { ENEMY_DETAIL_VIEW_TYPE, EnemyDetailViewType, selectEnemyDetailViewType } from "client/store/settings";
 import { producer } from "client/store";
 import { useSelector } from "@rbxts/react-reflex";
 import { ENEMY_DETAIL_VIEW_TYPE_TO_DISPLAY_NAME_MAP } from "client/modules/game/enemy-detail-view-type-to-display-text-map";
@@ -128,8 +123,34 @@ export function DropdownButton<T extends string>({
 	);
 }
 
+export function SettingsButton() {
+	return (
+		<Frame
+			size={new UDim2(0, 30, 0, 30)}
+			position={new UDim2(0, 0, 1, -30)}
+			backgroundTransparency={0.5}
+			backgroundColor={Color3.fromRGB(0, 0, 0)}
+		>
+			<textbutton
+				Size={new UDim2(1, 0, 1, 0)}
+				BackgroundTransparency={1}
+				Text=""
+				Event={{
+					MouseButton1Click: () => {
+						producer.setPage("SETTINGS");
+
+						playClickSound();
+					},
+				}}
+			/>
+			<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.settings} />
+			<uicorner CornerRadius={new UDim(0, 10)} />
+			<OneThickWhiteStroke />
+		</Frame>
+	);
+}
+
 export function SettingsMenu() {
-	const menuOpen = useSelector(selectMenuOpen);
 	const enemyDetailViewType: EnemyDetailViewType = RunService.IsRunning()
 		? useSelector(selectEnemyDetailViewType)
 		: "CLOSEST";
@@ -137,53 +158,48 @@ export function SettingsMenu() {
 	return (
 		<>
 			<Frame
-				size={new UDim2(0, 30, 0, 30)}
-				position={new UDim2(0, 0, 1, -30)}
+				size={new UDim2(0.3, 0, 0.5, 0)}
+				position={new UDim2(0.5, 0, 0.4, 0)}
+				anchorPoint={new Vector2(0.5, 0.5)}
 				backgroundTransparency={0.5}
 				backgroundColor={Color3.fromRGB(0, 0, 0)}
 			>
-				<textbutton
-					Size={new UDim2(1, 0, 1, 0)}
-					BackgroundTransparency={1}
-					Text=""
-					Event={{
-						MouseButton1Click: () => {
-							producer.toggleMenuOpen();
-
-							playClickSound();
-						},
-					}}
-				/>
-				<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.settings} />
-				<uicorner CornerRadius={new UDim(0, 10)} />
 				<OneThickWhiteStroke />
-			</Frame>
-			{menuOpen && (
-				<Frame
-					size={new UDim2(0.3, 0, 0.5, 0)}
-					position={new UDim2(0.5, 0, 0.4, 0)}
-					anchorPoint={new Vector2(0.5, 0.5)}
-					backgroundTransparency={0.5}
-					backgroundColor={Color3.fromRGB(0, 0, 0)}
-				>
-					<OneThickWhiteStroke />
-					<uicorner CornerRadius={new UDim(0, 3)} />
-					<uilistlayout FillDirection={Enum.FillDirection.Vertical} Padding={new UDim(0, 5)} />
-					<uipadding
-						PaddingTop={new UDim(0, 10)}
-						PaddingLeft={new UDim(0, 10)}
-						PaddingRight={new UDim(0, 10)}
-					/>
+				<uicorner CornerRadius={new UDim(0, 3)} />
+				<uilistlayout FillDirection={Enum.FillDirection.Vertical} Padding={new UDim(0, 5)} />
+				<uipadding PaddingTop={new UDim(0, 10)} PaddingLeft={new UDim(0, 10)} PaddingRight={new UDim(0, 10)} />
 
-					<DropdownButton
-						label="Enemy Tooltip View"
-						options={[...ENEMY_DETAIL_VIEW_TYPE]}
-						selectedOption={enemyDetailViewType}
-						optionToDisplayTextMap={ENEMY_DETAIL_VIEW_TYPE_TO_DISPLAY_NAME_MAP}
-						onOptionSelected={(option) => producer.setEnemyDetailViewType(option)}
-					/>
-				</Frame>
-			)}
+				<DropdownButton
+					label="Enemy Tooltip View"
+					options={[...ENEMY_DETAIL_VIEW_TYPE]}
+					selectedOption={enemyDetailViewType}
+					optionToDisplayTextMap={ENEMY_DETAIL_VIEW_TYPE_TO_DISPLAY_NAME_MAP}
+					onOptionSelected={(option) => producer.setEnemyDetailViewType(option)}
+				/>
+			</Frame>
+			<textbutton
+				Position={new UDim2(0.35, 0, 0.7, 0)}
+				Size={new UDim2(0.3, 0, 0, 30)}
+				BackgroundTransparency={0}
+				BackgroundColor3={Color3.fromRGB(255, 0, 0)}
+				Text=""
+				Event={{
+					MouseButton1Click: () => {
+						producer.setPage("GAME");
+
+						playClickSound();
+					},
+				}}
+			>
+				<uicorner CornerRadius={new UDim(0, 10)} />
+				<Label
+					size={new UDim2(1, 0, 1, 0)}
+					text="Back"
+					font={fonts.inter.bold}
+					textColor={Color3.fromRGB(255, 255, 255)}
+				/>
+				<OneThickWhiteStroke />
+			</textbutton>
 		</>
 	);
 }

@@ -8,6 +8,7 @@ import { enemyFocusSlice } from "./enemy-focus";
 import { towerActionSlice } from "./tower-action-menu";
 import { damageIndicatorSlice } from "./damage-indicator";
 import { settingsSlice } from "./settings";
+import { pageSlice } from "./page";
 
 export type RootState = InferState<typeof producer>;
 
@@ -18,6 +19,7 @@ export const producer = combineProducers({
 	towerAction: towerActionSlice,
 	damageIndicator: damageIndicatorSlice,
 	settings: settingsSlice,
+	page: pageSlice,
 });
 
 export function RootProvider(props: React.PropsWithChildren) {

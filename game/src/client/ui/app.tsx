@@ -11,7 +11,8 @@ import { RangeIndicator } from "./tower/range-part";
 import { Objectives } from "./game/objectives";
 import { DamageIndicators } from "./enemy/enemy-damage-indicators";
 import { Frame } from "./utils/frame";
-import { SettingsMenu } from "./game/settings-menu";
+import { SettingsButton, SettingsMenu } from "./game/settings-menu";
+import { Page } from "./utils/page";
 
 export function App() {
 	return (
@@ -19,21 +20,27 @@ export function App() {
 			<Music />
 			<Panel>
 				<Frame size={new UDim2(1, -10, 1, -10)} position={new UDim2(0, 5, 0, 5)}>
-					<TowerLoadout />
+					<Page page="GAME">
+						<TowerLoadout />
 
-					<TowerPlacementMessage />
+						<TowerPlacementMessage />
 
-					<TowerActionMenu />
-					<RangeIndicator />
+						<TowerActionMenu />
+						<RangeIndicator />
 
-					<EnemyTooltipBillboard />
-					<DamageIndicators />
+						<EnemyTooltipBillboard />
+						<DamageIndicators />
 
-					<SettingsMenu />
+						<SettingsButton />
 
-					<Dialog />
-					<MatchInfo />
-					<Objectives />
+						<Dialog />
+						<MatchInfo />
+						<Objectives />
+					</Page>
+
+					<Page page="SETTINGS">
+						<SettingsMenu />
+					</Page>
 				</Frame>
 			</Panel>
 		</>
