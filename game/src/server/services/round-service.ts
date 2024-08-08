@@ -11,7 +11,7 @@ import { selectNoEnemiesExist } from "shared/store/enemy";
 import { Round, selectGameOver, selectMapType, selectRounds } from "shared/store/level";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
-const ROUND_BONUS = 100;
+const ROUND_BONUS = 200;
 const ROUND_BONUS_MULTIPLIER = 1.5;
 const HEALTH_SCALE_FACTOR_INCREASE_PER_PLAYER = 0.5;
 
