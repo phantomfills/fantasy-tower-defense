@@ -16,6 +16,7 @@ interface Images {
 	dummy_defect_icon: string;
 	smoke: string;
 	settings: string;
+	objectives: string;
 }
 
 export declare const images: Images;

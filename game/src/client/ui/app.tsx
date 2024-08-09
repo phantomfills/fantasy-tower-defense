@@ -8,7 +8,7 @@ import { Music } from "./music/music";
 import { Dialog } from "./game/dialog";
 import { EnemyTooltipBillboard } from "./enemy/enemy-tooltip";
 import { RangeIndicator } from "./tower/range-part";
-import { Objectives } from "./game/objectives";
+import { Objectives, ObjectivesButton } from "./game/objectives";
 import { DamageIndicators } from "./enemy/enemy-damage-indicators";
 import { Frame } from "./utils/frame";
 import { SettingsButton, SettingsMenu } from "./game/settings-menu";
@@ -32,14 +32,18 @@ export function App() {
 						<DamageIndicators />
 
 						<SettingsButton />
+						<ObjectivesButton />
 
 						<Dialog />
 						<MatchInfo />
-						<Objectives />
 					</Page>
 
 					<Page page="SETTINGS">
 						<SettingsMenu />
+					</Page>
+
+					<Page page="OBJECTIVES">
+						<Objectives />
 					</Page>
 				</Frame>
 			</Panel>

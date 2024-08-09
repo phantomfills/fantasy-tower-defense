@@ -159,7 +159,7 @@ export function SettingsMenu() {
 		<>
 			<Frame
 				size={new UDim2(0.3, 0, 0.5, 0)}
-				position={new UDim2(0.5, 0, 0.4, 0)}
+				position={new UDim2(0.5, 0, 0.5, 0)}
 				anchorPoint={new Vector2(0.5, 0.5)}
 				backgroundTransparency={0.5}
 				backgroundColor={Color3.fromRGB(0, 0, 0)}
@@ -178,7 +178,7 @@ export function SettingsMenu() {
 				/>
 			</Frame>
 			<textbutton
-				Position={new UDim2(0.35, 0, 0.7, 0)}
+				Position={new UDim2(0.35, 0, 0.7, 40)}
 				Size={new UDim2(0.3, 0, 0, 30)}
 				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(255, 0, 0)}

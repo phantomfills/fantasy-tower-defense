@@ -1,30 +1,50 @@
 import React from "@rbxts/react";
-import { useSelector } from "@rbxts/react-reflex";
-import { Players } from "@rbxts/services";
-import { selectPlayerObjectives } from "shared/store/objective";
 import { Frame } from "../utils/frame";
-import Object from "@rbxts/object-utils";
 import { Label } from "../utils/label";
 import { fonts } from "../constants/fonts";
-import { objectiveTypeToNameMap } from "shared/modules/game/objective-type-to-name-map";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
+import { producer } from "client/store";
+import { ObjectiveCards } from "./objective-cards";
+import { images } from "shared/assets";
 
-const player = Players.LocalPlayer;
-const userId = tostring(player.UserId);
+export function ObjectivesButton() {
+	return (
+		<Frame
+			size={new UDim2(0, 30, 0, 30)}
+			position={new UDim2(0, 0, 1, -65)}
+			backgroundTransparency={0.5}
+			backgroundColor={Color3.fromRGB(0, 0, 0)}
+		>
+			<textbutton
+				Size={new UDim2(1, 0, 1, 0)}
+				BackgroundTransparency={1}
+				Text=""
+				Event={{
+					MouseButton1Click: () => {
+						producer.setPage("OBJECTIVES");
+					},
+				}}
+			/>
+			<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.objectives} />
+			<uicorner CornerRadius={new UDim(0, 10)} />
+			<OneThickWhiteStroke />
+		</Frame>
+	);
+}
 
 export function Objectives() {
-	const possibleObjectives = useSelector(selectPlayerObjectives(userId));
-	if (!possibleObjectives.exists) return <></>;
-
-	const objectives = possibleObjectives.value;
-
 	return (
-		<Frame size={new UDim2(0.2, 0, 0.5, 0)} position={new UDim2(0, 0, 0.25, 0)}>
-			<uigridlayout
-				CellSize={new UDim2(1, 0, 0.08, 0)}
+		<Frame
+			size={new UDim2(0.5, 0, 0.5, 0)}
+			position={new UDim2(0.5, 0, 0.5, 0)}
+			anchorPoint={new Vector2(0.5, 0.5)}
+		>
+			<uilistlayout
 				FillDirection={Enum.FillDirection.Vertical}
+				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
-				CellPadding={new UDim2(0, 0, 0, 5)}
+				Padding={new UDim(0, 5)}
+				SortOrder={Enum.SortOrder.LayoutOrder}
 			/>
 			<Label
 				text="Objectives"
@@ -32,35 +52,36 @@ export function Objectives() {
 				font={fonts.inter.bold}
 				backgroundColor={Color3.fromRGB(0, 0, 0)}
 				backgroundTransparency={0.5}
+				size={new UDim2(1, 0, 0.08, 0)}
+				layoutOrder={0}
 			>
 				<OneThickWhiteStroke />
 				<uicorner CornerRadius={new UDim(0, 3)} />
 			</Label>
-			{Object.keys(objectives).map((objective) => {
-				const objectiveStatus = objectives[objective];
 
-				const objectiveProgressText = typeIs(objectiveStatus, "boolean")
-					? objectiveStatus
-						? "Completed"
-						: "Incomplete"
-					: `(${objectiveStatus.progress}/${objectiveStatus.maxProgress})`;
-				const objectiveText = `${objectiveTypeToNameMap[objective]}: ${objectiveProgressText}`;
+			<ObjectiveCards />
 
-				return (
-					<Frame key={objective} backgroundColor={Color3.fromRGB(0, 0, 0)} backgroundTransparency={0.85}>
-						<uipadding PaddingLeft={new UDim(0, 5)} />
-						<Label
-							text={objectiveText}
-							size={new UDim2(1, 0, 1, 0)}
-							font={fonts.inter.regular}
-							textAlignmentX={Enum.TextXAlignment.Left}
-							textColor={Color3.fromRGB(255, 255, 255)}
-						/>
-						<uicorner CornerRadius={new UDim(0, 3)} />
-						<OneThickWhiteStroke />
-					</Frame>
-				);
-			})}
+			<textbutton
+				Size={new UDim2(0.3, 0, 0, 30)}
+				BackgroundTransparency={0}
+				BackgroundColor3={Color3.fromRGB(255, 0, 0)}
+				LayoutOrder={2}
+				Text=""
+				Event={{
+					MouseButton1Click: () => {
+						producer.setPage("GAME");
+					},
+				}}
+			>
+				<uicorner CornerRadius={new UDim(0, 10)} />
+				<Label
+					size={new UDim2(1, 0, 1, 0)}
+					text="Back"
+					font={fonts.inter.bold}
+					textColor={Color3.fromRGB(255, 255, 255)}
+				/>
+				<OneThickWhiteStroke />
+			</textbutton>
 		</Frame>
 	);
 }

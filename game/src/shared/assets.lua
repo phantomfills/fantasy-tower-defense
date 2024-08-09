@@ -8,6 +8,7 @@ return {
 		heart = "rbxassetid://16726140716",
 		heart_glow = "rbxassetid://16726140894",
 		left_mouse_button = "rbxassetid://16726140962",
+		objectives = "rbxassetid://18871984749",
 		pixel_heart = "rbxassetid://16726141065",
 		q_button = "rbxassetid://16726141133",
 		r_button = "rbxassetid://16726141209",

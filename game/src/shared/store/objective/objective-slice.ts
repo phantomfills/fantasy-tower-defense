@@ -2,11 +2,15 @@ import { createProducer } from "@rbxts/reflex";
 import { E_OneTimeObjective, E_ProgressiveObjective } from "../level";
 
 type UserOneTimeObjectiveCompletionStatus = {
-	[key in E_OneTimeObjective]: boolean;
+	[key in E_OneTimeObjective]: {
+		_type: "ONE_TIME";
+		value: boolean;
+	};
 };
 
 type UserProgressiveObjectiveCompletionStatus = {
 	[key in E_ProgressiveObjective]: {
+		_type: "PROGRESSIVE";
 		progress: number;
 		maxProgress: number;
 	};
@@ -23,10 +27,14 @@ const initialState: ObjectiveState = {};
 
 const uncompletedObjectives: UserObjectiveCompletionStatus = {
 	COMPLETE_ROUNDS: {
+		_type: "PROGRESSIVE",
 		progress: 0,
-		maxProgress: 12,
+		maxProgress: 10,
 	},
-	EAT_CAKE: false,
+	EAT_CAKE: {
+		_type: "ONE_TIME",
+		value: false,
+	},
 };
 
 export const objectiveSlice = createProducer(initialState, {
@@ -36,14 +44,20 @@ export const objectiveSlice = createProducer(initialState, {
 		...state,
 		[userId]: {
 			...state[userId],
-			[objective]: true,
+			[objective]: {
+				_type: "ONE_TIME",
+				value: true,
+			},
 		},
 	}),
 
 	completeObjectiveForAllPlayers: (state, objective: E_OneTimeObjective) => {
 		const newState = { ...state };
 		for (const [userId] of pairs(newState)) {
-			newState[userId][objective] = true;
+			newState[userId][objective] = {
+				_type: "ONE_TIME",
+				value: true,
+			};
 		}
 		return newState;
 	},

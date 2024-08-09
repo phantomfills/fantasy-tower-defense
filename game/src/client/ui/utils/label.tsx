@@ -13,6 +13,8 @@ interface LabelProps extends React.PropsWithChildren {
 	zIndex?: number;
 	textSize?: number;
 	textWrapped?: boolean;
+	layoutOrder?: number;
+	autoSize?: "X" | "Y" | "XY";
 }
 
 export function Label({
@@ -29,6 +31,8 @@ export function Label({
 	textAlignmentY,
 	textSize,
 	textWrapped,
+	layoutOrder,
+	autoSize,
 }: LabelProps) {
 	return (
 		<textlabel
@@ -45,6 +49,8 @@ export function Label({
 			TextYAlignment={textAlignmentY}
 			TextSize={textSize}
 			TextWrapped={textWrapped}
+			LayoutOrder={layoutOrder}
+			AutomaticSize={autoSize}
 			BorderSizePixel={0}
 		>
 			{children}

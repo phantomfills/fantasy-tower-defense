@@ -33,6 +33,11 @@ hash = "24855a01e5c3db143a76b369340ccfee423d83c95021501d2d7d5f51e6f0b945"
 id = 16726140962
 packable = false
 
+[inputs."assets/images/objectives.png"]
+hash = "6b5b6ac8d98a14a2d27fa40214408c12cbafb20b8f7094117b5201be76441cc1"
+id = 18871984749
+packable = false
+
 [inputs."assets/images/pixel_heart.png"]
 hash = "1b6c3bd05d6d69c57648f39ce36d5522821e0acdf6f87c2c7bbe954320c426f8"
 id = 16726141065
