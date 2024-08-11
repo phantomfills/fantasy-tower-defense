@@ -15,7 +15,7 @@ export type Round = {
 
 export type E_Maps = "TUTORIAL" | "DOUBLE_LANE";
 export type E_OneTimeObjective = "EAT_CAKE";
-export type E_ProgressiveObjective = "COMPLETE_ROUNDS";
+export type E_ProgressiveObjective = "COMPLETE_10_ROUNDS";
 export type E_AllObjectives = E_OneTimeObjective | E_ProgressiveObjective;
 
 interface AutoDisappearDialog {
@@ -252,7 +252,7 @@ const initialState: Level = {
 	startingMoney: 1_000,
 	mapType: "TUTORIAL",
 	gameOver: false,
-	objectives: ["COMPLETE_ROUNDS", "EAT_CAKE"],
+	objectives: ["COMPLETE_10_ROUNDS", "EAT_CAKE"],
 	playersCanPlaceTowers: true,
 	playersCanUpgradeTowers: true,
 };

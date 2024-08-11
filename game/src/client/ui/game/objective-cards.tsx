@@ -7,10 +7,10 @@ import { ObjectiveCard } from "./objective-card";
 
 export function ObjectiveCards() {
 	const possibleObjectives = useSelector(selectLocalObjectives);
-	const objectives: UserObjectiveCompletionStatus = possibleObjectives.exists
+	const objectives: Partial<UserObjectiveCompletionStatus> = possibleObjectives.exists
 		? possibleObjectives.value
 		: {
-				COMPLETE_ROUNDS: {
+				COMPLETE_10_ROUNDS: {
 					_type: "PROGRESSIVE",
 					progress: 3,
 					maxProgress: 5,
@@ -23,6 +23,7 @@ export function ObjectiveCards() {
 
 	return Object.keys(objectives).map((objective) => {
 		const objectiveStatus = objectives[objective];
+		if (!objectiveStatus) return undefined;
 
 		const objectiveType = objectiveStatus._type;
 		const objectiveName = objectiveTypeToNameMap[objective];

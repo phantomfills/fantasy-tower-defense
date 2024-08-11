@@ -1,3 +1,5 @@
+// TODO: Make dialog state external to component so that dialog will not reset when switching pages
+// TODO: Why is local objective selectors running so often?
 // TODO: Give troops placement boxes
 // TODO: Change Dummy Defect smoke praticles to ascend instead of descending
 // TODO: Change dummies -> zombies

@@ -82,7 +82,7 @@ export class RoundService implements OnStart {
 
 			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
 
-			producer.addProgressToObjectiveForAllPlayers("COMPLETE_ROUNDS", 1);
+			producer.addProgressToObjectiveForAllPlayers("COMPLETE_10_ROUNDS", 1);
 
 			// if (roundNumber === 12) {
 			// 	producer.clearTrackId();

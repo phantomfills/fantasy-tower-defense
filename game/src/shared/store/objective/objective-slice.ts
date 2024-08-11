@@ -26,7 +26,7 @@ interface ObjectiveState {
 const initialState: ObjectiveState = {};
 
 const uncompletedObjectives: UserObjectiveCompletionStatus = {
-	COMPLETE_ROUNDS: {
+	COMPLETE_10_ROUNDS: {
 		_type: "PROGRESSIVE",
 		progress: 0,
 		maxProgress: 10,
