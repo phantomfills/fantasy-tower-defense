@@ -1,6 +1,8 @@
 import { createProducer } from "@rbxts/reflex";
 
-export type E_Pages = "GAME" | "SETTINGS" | "OBJECTIVES";
+const PAGES = ["GAME", "SETTINGS", "OBJECTIVES"] as const;
+
+export type E_Pages = (typeof PAGES)[number];
 
 interface PageState {
 	currentPage: E_Pages;
