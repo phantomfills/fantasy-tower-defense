@@ -1,13 +1,11 @@
-// TODO: add "tick" component to dialog
-// TODO: create tutorial-action-slice on server
-// TODO: "tick" should only be enabled when action has been completed. sometimes certain dialog will come without any actions so tick will be clickable anyway
-
-const TutorialActions = [
-	"PlACE_TOWER",
-	"KILL_ENEMY",
-	"UPGRADE_TOWER",
-	"KILL_STEALTH_ENEMY",
-	"KILL_REINFORCED_ENEMY",
-] as const;
-
-type TutorialAction = (typeof TutorialActions)[number];
+// TODO: Give troops placement boxes
+// TODO: Change Dummy Defect smoke praticles to ascend instead of descending
+// TODO: Change dummies -> zombies
+// TODO: Change Dummy Defect -> Pistoleer
+// TODO: Make Ranger Tower -> Better DPS and range than Pistoleer, but slow firerate
+// TODO: Make farmer tower -> see details below
+/**
+ * Make Farmer Tower -> Makes money periodically ($50 every 45s -> $110 every 8s)
+ * Farmer tower summons collectible gold coins on a plot of land that have to be picked up by the player to claim
+ * Collectible drops despawn after 15s however lifetime will increase with levels (maybe 60s at max?)
+ */

@@ -6,6 +6,9 @@ import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { producer } from "client/store";
 import { ObjectiveCards } from "./objective-cards";
 import { images } from "shared/assets";
+import { Overlay } from "./overlay";
+import { style } from "client/constants/style";
+import { Blur } from "./blur";
 
 export function ObjectivesButton() {
 	return (
@@ -13,7 +16,7 @@ export function ObjectivesButton() {
 			size={new UDim2(0, 30, 0, 30)}
 			position={new UDim2(0, 0, 1, -65)}
 			backgroundTransparency={0.5}
-			backgroundColor={Color3.fromRGB(0, 0, 0)}
+			backgroundColor={style.overlay}
 		>
 			<textbutton
 				Size={new UDim2(1, 0, 1, 0)}
@@ -34,54 +37,58 @@ export function ObjectivesButton() {
 
 export function Objectives() {
 	return (
-		<Frame
-			size={new UDim2(0.5, 0, 0.5, 0)}
-			position={new UDim2(0.5, 0, 0.5, 0)}
-			anchorPoint={new Vector2(0.5, 0.5)}
-		>
-			<uilistlayout
-				FillDirection={Enum.FillDirection.Vertical}
-				HorizontalAlignment={Enum.HorizontalAlignment.Center}
-				VerticalAlignment={Enum.VerticalAlignment.Center}
-				Padding={new UDim(0, 5)}
-				SortOrder={Enum.SortOrder.LayoutOrder}
-			/>
-			<Label
-				text="Objectives"
-				textColor={Color3.fromRGB(255, 255, 255)}
-				font={fonts.inter.bold}
-				backgroundColor={Color3.fromRGB(0, 0, 0)}
-				backgroundTransparency={0.5}
-				size={new UDim2(1, 0, 0.08, 0)}
-				layoutOrder={0}
-			>
-				<OneThickWhiteStroke />
-				<uicorner CornerRadius={new UDim(0, 3)} />
-			</Label>
+		<>
+			<Overlay />
+			<Blur />
 
-			<ObjectiveCards />
-
-			<textbutton
-				Size={new UDim2(0.3, 0, 0, 30)}
-				BackgroundTransparency={0}
-				BackgroundColor3={Color3.fromRGB(255, 0, 0)}
-				LayoutOrder={2}
-				Text=""
-				Event={{
-					MouseButton1Click: () => {
-						producer.setPage("GAME");
-					},
-				}}
+			<Frame
+				size={new UDim2(0.5, 0, 0.5, 0)}
+				position={new UDim2(0.5, 0, 0.5, 0)}
+				anchorPoint={new Vector2(0.5, 0.5)}
+				backgroundTransparency={1}
 			>
-				<uicorner CornerRadius={new UDim(0, 10)} />
-				<Label
-					size={new UDim2(1, 0, 1, 0)}
-					text="Back"
-					font={fonts.inter.bold}
-					textColor={Color3.fromRGB(255, 255, 255)}
+				<uilistlayout
+					FillDirection={Enum.FillDirection.Vertical}
+					HorizontalAlignment={Enum.HorizontalAlignment.Center}
+					VerticalAlignment={Enum.VerticalAlignment.Center}
+					Padding={new UDim(0, 15)}
+					SortOrder={Enum.SortOrder.LayoutOrder}
 				/>
-				<OneThickWhiteStroke />
-			</textbutton>
-		</Frame>
+
+				<Label
+					text="<u>Objectives</u> 📜"
+					textColor={style.text}
+					font={fonts.inter.bold}
+					backgroundTransparency={1}
+					size={new UDim2(1, 0, 0.12, 0)}
+					richText={true}
+					layoutOrder={0}
+				/>
+
+				<ObjectiveCards />
+
+				<textbutton
+					Size={new UDim2(0.3, 0, 0, 30)}
+					BackgroundTransparency={0}
+					BackgroundColor3={style.red}
+					LayoutOrder={2}
+					Text=""
+					Event={{
+						MouseButton1Click: () => {
+							producer.setPage("GAME");
+						},
+					}}
+				>
+					<uicorner CornerRadius={new UDim(0, 10)} />
+					<Label
+						size={new UDim2(1, 0, 1, 0)}
+						text="Back"
+						font={fonts.inter.bold}
+						textColor={Color3.fromRGB(255, 255, 255)}
+					/>
+					<OneThickWhiteStroke />
+				</textbutton>
+			</Frame>
+		</>
 	);
 }

@@ -25,21 +25,14 @@ export function ObjectiveCards() {
 		const objectiveStatus = objectives[objective];
 
 		const objectiveType = objectiveStatus._type;
-
-		const objectiveProgressText =
-			objectiveType === "ONE_TIME"
-				? objectiveStatus
-					? "Completed"
-					: "Incomplete"
-				: `(${objectiveStatus.progress}/${objectiveStatus.maxProgress})`;
-		const objectiveText = `${objectiveTypeToNameMap[objective]}: ${objectiveProgressText}`;
+		const objectiveName = objectiveTypeToNameMap[objective];
 
 		return objectiveType === "ONE_TIME" ? (
-			<ObjectiveCard _type="ONE_TIME" text={objectiveText} />
+			<ObjectiveCard _type="ONE_TIME" text={objectiveName} completed={objectiveStatus.value} />
 		) : (
 			<ObjectiveCard
 				_type="PROGRESSIVE"
-				text={objectiveText}
+				text={objectiveName}
 				progress={objectiveStatus.progress}
 				maxProgress={objectiveStatus.maxProgress}
 			/>

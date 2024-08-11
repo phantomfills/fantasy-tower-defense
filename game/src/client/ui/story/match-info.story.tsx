@@ -1,15 +1,13 @@
 import React from "@rbxts/react";
 import { MatchInfo } from "../game/match-info";
-import { LifeCounter } from "../game/life-counter";
 import { createRoot } from "@rbxts/react-roblox";
-import { CashCounter } from "../game/cash-counter";
+import { RootProvider } from "client/store";
 
 export = (target: Frame) => {
 	const matchInfo = (
-		<MatchInfo>
-			<LifeCounter lives={1000} />
-			<CashCounter value={1000} />
-		</MatchInfo>
+		<RootProvider>
+			<MatchInfo />
+		</RootProvider>
 	);
 
 	const root = createRoot(target);

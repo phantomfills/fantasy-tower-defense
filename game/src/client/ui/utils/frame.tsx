@@ -1,40 +1,42 @@
-import React from "@rbxts/react";
+import React, { forwardRef, Ref } from "@rbxts/react";
 
-interface FrameProps extends React.PropsWithChildren {
+export interface FrameProps<T extends Instance = Frame> extends React.PropsWithChildren {
+	ref?: React.Ref<T>;
+	event?: React.InstanceEvent<T>;
+	change?: React.InstanceChangeEvent<T>;
 	size?: UDim2 | React.Binding<UDim2>;
 	position?: UDim2 | React.Binding<UDim2>;
-	anchorPoint?: Vector2;
-	backgroundTransparency?: number;
-	backgroundColor?: Color3 | React.Binding<Color3>;
+	anchorPoint?: Vector2 | React.Binding<Vector2>;
 	rotation?: number | React.Binding<number>;
-	zIndex?: number;
-	clipsDescendants?: boolean;
+	backgroundColor?: Color3 | React.Binding<Color3>;
+	backgroundTransparency?: number | React.Binding<number>;
+	clipsDescendants?: boolean | React.Binding<boolean>;
+	visible?: boolean | React.Binding<boolean>;
+	zIndex?: number | React.Binding<number>;
+	layoutOrder?: number | React.Binding<number>;
+	cornerRadius?: UDim | React.Binding<UDim>;
 }
 
-export function Frame({
-	size,
-	position,
-	children,
-	anchorPoint,
-	backgroundTransparency,
-	backgroundColor,
-	rotation,
-	zIndex,
-	clipsDescendants,
-}: FrameProps) {
+export const Frame = forwardRef((props: FrameProps, ref: Ref<Frame>) => {
 	return (
 		<frame
-			Size={size}
-			Position={position}
-			BackgroundTransparency={backgroundTransparency !== undefined ? backgroundTransparency : 1}
-			BackgroundColor3={backgroundColor}
-			AnchorPoint={anchorPoint}
+			ref={ref}
+			Size={props.size}
+			Position={props.position}
+			AnchorPoint={props.anchorPoint}
+			Rotation={props.rotation}
+			BackgroundColor3={props.backgroundColor}
+			BackgroundTransparency={props.backgroundTransparency}
+			ClipsDescendants={props.clipsDescendants}
+			Visible={props.visible}
+			ZIndex={props.zIndex}
+			LayoutOrder={props.layoutOrder}
 			BorderSizePixel={0}
-			Rotation={rotation}
-			ZIndex={zIndex}
-			ClipsDescendants={clipsDescendants}
+			Event={props.event}
+			Change={props.change}
 		>
-			{children}
+			{props.children}
+			{props.cornerRadius && <uicorner CornerRadius={props.cornerRadius} />}
 		</frame>
 	);
-}
+});

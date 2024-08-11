@@ -10,6 +10,8 @@ import { Dialog } from "shared/store/level";
 import { setInterval } from "@rbxts/set-timeout";
 import { holdForPromise } from "shared/modules/utils/wait-util";
 import Object from "@rbxts/object-utils";
+import { selectDialogVisibilityType } from "client/store/settings";
+import { style } from "client/constants/style";
 
 interface DialogFrameProps {
 	dialogTextProps: DialogTextProps;
@@ -20,8 +22,7 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 		<Frame
 			size={new UDim2(0.3, 0, 0.25, 0)}
 			position={new UDim2(0.5, 0, 0.625, 0)}
-			backgroundTransparency={0}
-			backgroundColor={Color3.fromRGB(0, 163, 255)}
+			backgroundColor={style.background}
 			anchorPoint={new Vector2(0.5, 0.5)}
 		>
 			<OneThickWhiteStroke />
@@ -30,8 +31,7 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 				size={new UDim2(1, -25, 1, -25)}
 				position={new UDim2(0.5, 0, 0.5, 0)}
 				anchorPoint={new Vector2(0.5, 0.5)}
-				backgroundTransparency={0}
-				backgroundColor={Color3.fromRGB(32, 32, 32)}
+				backgroundColor={style.overlay}
 			>
 				<uipadding
 					PaddingTop={new UDim(0, 10)}
@@ -44,16 +44,16 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 					size={new UDim2(0, 30, 0, 30)}
 					position={new UDim2(1, -15, 1, -15)}
 					backgroundTransparency={0}
-					backgroundColor={Color3.fromRGB(0, 217, 255)}
+					backgroundColor={style.background}
 				>
 					<uicorner CornerRadius={new UDim(0.5, 0)} />
-					<uistroke Color={Color3.fromRGB(255, 255, 255)} Thickness={3} />
+					<uistroke Color={style.outline} Thickness={3} />
 					<Label
 						size={new UDim2(0.75, 0, 0.75, 0)}
 						position={new UDim2(0.125, 0, 0.125, 0)}
 						text={tostring(dialogTextProps.countdownTime)}
 						font={fonts.inter.bold}
-						textColor={Color3.fromRGB(255, 255, 255)}
+						textColor={style.text}
 					/>
 				</Frame>
 				<OneThickWhiteStroke />
@@ -64,10 +64,13 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 }
 
 export function Dialog() {
+	const dialogVisibilityType = useSelector(selectDialogVisibilityType);
 	const [dialogText, setDialogText] = useState<string | undefined>(undefined);
 	const [dialogVisible, setDialogVisible] = useState<boolean>(false);
 	const [dialogCountdown, setDialogCountdown] = useState<number>(0);
 	const dialogs = useSelector(selectDialogs, Object.deepEquals);
+
+	if (dialogVisibilityType === "NO") return <></>;
 
 	useEffect(() => {
 		let cancelTimeout = () => {};
@@ -140,7 +143,7 @@ export function DialogText({ text }: DialogTextProps) {
 			text={text}
 			font={fonts.inter.regular}
 			textSize={rem(2)}
-			textColor={Color3.fromRGB(255, 255, 255)}
+			textColor={style.text}
 			textAlignmentX={Enum.TextXAlignment.Left}
 			textAlignmentY={Enum.TextYAlignment.Top}
 			textWrapped={true}

@@ -1,9 +1,9 @@
 import React from "@rbxts/react";
-import { Frame } from "../utils/frame";
 import { useSelector } from "@rbxts/react-reflex";
 import { selectPlayersCanPlaceTowers } from "shared/store/level";
 import { selectTowerLoadout } from "client/store/tower-loadout";
 import { TowerSlot } from "./tower-slot";
+import { Group } from "../utils/group";
 
 export function TowerLoadout() {
 	const playersCanPlaceTowers = useSelector(selectPlayersCanPlaceTowers);
@@ -12,7 +12,7 @@ export function TowerLoadout() {
 	if (!playersCanPlaceTowers || !towerLoadout) return <></>;
 
 	return (
-		<Frame position={new UDim2(0, 0, 0.85, 0)} size={new UDim2(1, 0, 0.15, 0)} zIndex={1}>
+		<Group position={new UDim2(0, 0, 0.85, 0)} size={new UDim2(1, 0, 0.15, 0)} zIndex={1}>
 			<uigridlayout
 				CellSize={new UDim2(0.075, 0, 1, 0)}
 				CellPadding={new UDim2(0.025, 0, 0, 0)}
@@ -28,6 +28,6 @@ export function TowerLoadout() {
 					key={`tower-slot-${index}`}
 				/>
 			))}
-		</Frame>
+		</Group>
 	);
 }

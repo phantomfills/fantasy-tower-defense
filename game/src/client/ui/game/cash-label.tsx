@@ -4,6 +4,8 @@ import { fonts } from "../constants/fonts";
 import { Frame } from "../utils/frame";
 import { Label } from "../utils/label";
 import { formatNumberWithCommas } from "client/modules/number/format-number-with-commas";
+import { Group } from "../utils/group";
+import { style } from "client/constants/style";
 
 export interface CashLabelProps {
 	value: number;
@@ -15,11 +17,12 @@ export interface CashLabelProps {
 
 export function CashLabel({ value, size, position, zIndex, textSize }: CashLabelProps) {
 	return (
-		<Frame size={size} position={position}>
+		<Group size={size} position={position}>
 			<imagelabel
 				Image={images.cash}
 				Size={new UDim2(0.35, 0, 1, 0)}
-				Position={new UDim2(0.05, 0, 0, 0)}
+				Position={new UDim2(0.05, 0, 0.5, 0)}
+				AnchorPoint={new Vector2(0, 0.5)}
 				BackgroundTransparency={1}
 				ZIndex={zIndex}
 			>
@@ -28,13 +31,13 @@ export function CashLabel({ value, size, position, zIndex, textSize }: CashLabel
 			<Label
 				size={new UDim2(0.55, 0, 0.8, 0)}
 				position={new UDim2(0.45, 0, 0.1, 0)}
-				textColor={Color3.fromRGB(255, 255, 255)}
+				textColor={style.text}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				font={fonts.inter.bold}
 				text={formatNumberWithCommas(value)}
 				textSize={textSize}
 				zIndex={zIndex}
 			/>
-		</Frame>
+		</Group>
 	);
 }

@@ -10,6 +10,8 @@ import { KeyCode, useKeyPress } from "@rbxts/pretty-react-hooks";
 import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
 import { Debris } from "@rbxts/services";
+import { Group } from "../utils/group";
+import { style } from "client/constants/style";
 
 interface TowerActionButtonProps {
 	name: string;
@@ -46,7 +48,7 @@ function TowerActionButton({ name, size, position, color, autoButtonColor, keybi
 				text={`${keybind ? `(${keybind})` : "🔐"} ${name}`}
 				font={fonts.inter.bold}
 				backgroundTransparency={1}
-				textColor={Color3.fromRGB(255, 255, 255)}
+				textColor={style.text}
 			/>
 			<OneThickWhiteStroke />
 			<imagelabel
@@ -110,7 +112,7 @@ export function TowerActionMenuFrame({
 			size={new UDim2(0.15, 0, 0.5, 0)}
 			position={new UDim2(0.85, 0, 0.25, 0)}
 			backgroundTransparency={0.5}
-			backgroundColor={new Color3(0, 0, 0)}
+			backgroundColor={style.background}
 		>
 			<imagebutton
 				Size={new UDim2(0, 15, 0, 15)}
@@ -125,7 +127,7 @@ export function TowerActionMenuFrame({
 				position={new UDim2(0, 0, -0.1, 0)}
 				textSize={rem(2.25)}
 				font={fonts.inter.bold}
-				textColor={new Color3(255, 255, 255)}
+				textColor={style.text}
 			/>
 			<uicorner CornerRadius={new UDim(0, 3)} />
 			<OneThickWhiteStroke />
@@ -135,7 +137,7 @@ export function TowerActionMenuFrame({
 				textSize={rem(1.5)}
 				font={fonts.inter.bold}
 				text={`${owner}'s`}
-				textColor={new Color3(255, 255, 255)}
+				textColor={style.text}
 			/>
 			<Label
 				size={new UDim2(1, 0, 0.175, 0)}
@@ -143,12 +145,12 @@ export function TowerActionMenuFrame({
 				textSize={rem(1.75)}
 				font={fonts.inter.bold}
 				text={`${name} Lv. ${level}`}
-				textColor={new Color3(255, 255, 255)}
+				textColor={style.text}
 			/>
 			<TowerActionButton
 				size={new UDim2(1, -30, 0.1, 0)}
 				position={new UDim2(0, 15, 0.275, -10)}
-				color={canPerformActions ? Color3.fromRGB(5, 227, 97) : Color3.fromRGB(227, 0, 0)}
+				color={canPerformActions ? style.overlay : style.background}
 				name={ownTower ? actions.upgrade.name : "Not your tower!"}
 				action={() => {
 					const actionSound = canPerformActions ? sounds.buy_upgrade : sounds.error;
@@ -166,7 +168,7 @@ export function TowerActionMenuFrame({
 			<TowerActionButton
 				size={new UDim2(1, -30, 0.1, 0)}
 				position={new UDim2(0, 15, 0.85, 0)}
-				color={Color3.fromRGB(227, 0, 0)}
+				color={style.red}
 				name={ownTower ? actions.sell.name : "Not your tower!"}
 				action={() => {
 					const sellSound = createSound(sounds.sell_tower, { volume: 0.2 });
@@ -184,14 +186,14 @@ export function TowerActionMenuFrame({
 				position={new UDim2(0, 15, 0.15, -5)}
 				font={fonts.inter.bold}
 				text={upgradeTitle}
-				textColor={new Color3(255, 255, 255)}
+				textColor={style.text}
 				textSize={rem(1.75)}
 			/>
 			<Frame
 				size={new UDim2(1, -30, 0.45, 0)}
 				position={new UDim2(0, 15, 0.375, 0)}
 				backgroundTransparency={0.8}
-				backgroundColor={new Color3(0, 0, 0)}
+				backgroundColor={style.background}
 			>
 				<OneThickWhiteStroke />
 				<uicorner CornerRadius={new UDim(0, 3)} />
@@ -205,20 +207,20 @@ export function TowerActionMenuFrame({
 					textSize={rem(1.5)}
 					font={fonts.inter.regular}
 					text={upgradeDescription}
-					textColor={new Color3(255, 255, 255)}
+					textColor={style.text}
 					textAlignmentX={Enum.TextXAlignment.Left}
 					textAlignmentY={Enum.TextYAlignment.Top}
 					textWrapped={true}
 				/>
 			</Frame>
-			<Frame size={new UDim2(0, 50, 0, 50)} position={new UDim2(0, -55, 0, 0)}>
+			<Group size={new UDim2(0, 50, 0, 50)} position={new UDim2(0, -55, 0, 0)}>
 				<uigridlayout
 					CellSize={new UDim2(1, 0, 1, 0)}
 					CellPadding={new UDim2(0, 5, 0, 5)}
 					FillDirection={Enum.FillDirection.Horizontal}
 				/>
 				{traits.includes("STEALTH") ? (
-					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
+					<Frame backgroundTransparency={0.5} backgroundColor={style.background}>
 						<OneThickWhiteStroke />
 						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.eye} />
 						<uicorner CornerRadius={new UDim(0, 3)} />
@@ -227,7 +229,7 @@ export function TowerActionMenuFrame({
 					<></>
 				)}
 				{traits.includes("REINFORCED") ? (
-					<Frame backgroundTransparency={0.5} backgroundColor={new Color3(0, 0, 0)}>
+					<Frame backgroundTransparency={0.5} backgroundColor={style.background}>
 						<OneThickWhiteStroke />
 						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.shield} />
 						<uicorner CornerRadius={new UDim(0, 3)} />
@@ -235,7 +237,7 @@ export function TowerActionMenuFrame({
 				) : (
 					<></>
 				)}
-			</Frame>
+			</Group>
 		</Frame>
 	);
 }

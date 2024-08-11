@@ -35,7 +35,6 @@
     "@flamework/networking": "^1.2.1",
     "@rbxts/beacon": "^2.1.1",
     "@rbxts/catppuccin": "^1.0.2",
-    "@rbxts/commander": "^0.3.3-dev.d243745",
     "@rbxts/maid": "^1.1.0",
     "@rbxts/object-utils": "^1.0.4",
     "@rbxts/pretty-react-hooks": "^0.4.2",

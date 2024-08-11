@@ -10,6 +10,8 @@ import { useRem } from "../hooks/use-rem";
 import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
 import { Debris } from "@rbxts/services";
+import { Group } from "../utils/group";
+import { style } from "client/constants/style";
 
 export interface TowerSlotProps {
 	number: number;
@@ -63,15 +65,15 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 	}, [clicking]);
 
 	return (
-		<Frame>
+		<Group>
 			<uilistlayout
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 			/>
 			<textbutton
 				Size={lerpBinding(buttonSizeTransition, new UDim2(1, 0, 1, 0), new UDim2(0.8, 0, 0.8, 0))}
-				BackgroundColor3={new Color3(0.1, 0.1, 0.1)}
-				BackgroundTransparency={0.2}
+				BackgroundColor3={style.background}
+				BackgroundTransparency={0.4}
 				AnchorPoint={new Vector2(0.5, 0.5)}
 				Text=""
 				AutoButtonColor={false}
@@ -108,26 +110,23 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 				<Frame
 					size={new UDim2(0.4, 0, 0.4, 0)}
 					backgroundTransparency={0}
-					backgroundColor={lerpBinding(buttonHoverTransition, new Color3(0, 0.58, 1), new Color3(0, 0.75, 1))}
+					backgroundColor={lerpBinding(buttonHoverTransition, style.background, style.blue)}
 					position={new UDim2(-0.125, 0, -0.125, 0)}
 					rotation={lerpBinding(buttonHoverTransition, -10, 10)}
 				>
-					<uistroke
-						Color={Color3.fromRGB(255, 255, 255)}
-						Thickness={lerpBinding(buttonHoverTransition, 2, 4)}
-					/>
+					<uistroke Color={style.outline} Thickness={lerpBinding(buttonHoverTransition, 1, 4)} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<Label
 						text={tostring(number)}
 						textSize={rem(3)}
 						font={fonts.inter.bold}
-						textColor={Color3.fromRGB(255, 255, 255)}
+						textColor={style.text}
 						textAlignmentX={Enum.TextXAlignment.Center}
 						backgroundTransparency={1}
 						size={new UDim2(1, 0, 1, 0)}
 					/>
 				</Frame>
 			</textbutton>
-		</Frame>
+		</Group>
 	);
 }

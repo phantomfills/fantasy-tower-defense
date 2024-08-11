@@ -10,17 +10,17 @@ import { EnemyTooltipBillboard } from "./enemy/enemy-tooltip";
 import { RangeIndicator } from "./tower/range-part";
 import { Objectives, ObjectivesButton } from "./game/objectives";
 import { DamageIndicators } from "./enemy/enemy-damage-indicators";
-import { Frame } from "./utils/frame";
 import { SettingsButton, SettingsMenu } from "./game/settings-menu";
 import { Page } from "./utils/page";
+import { Group } from "./utils/group";
 
 export function App() {
 	return (
 		<>
 			<Music />
 			<Panel>
-				<Frame size={new UDim2(1, -10, 1, -10)} position={new UDim2(0, 5, 0, 5)}>
-					<Page page="GAME">
+				<Page page="GAME">
+					<Group size={new UDim2(1, -10, 1, -10)} position={UDim2.fromOffset(5, 5)}>
 						<TowerLoadout />
 
 						<TowerPlacementMessage />
@@ -36,16 +36,16 @@ export function App() {
 
 						<Dialog />
 						<MatchInfo />
-					</Page>
+					</Group>
+				</Page>
 
-					<Page page="SETTINGS">
-						<SettingsMenu />
-					</Page>
+				<Page page="SETTINGS">
+					<SettingsMenu />
+				</Page>
 
-					<Page page="OBJECTIVES">
-						<Objectives />
-					</Page>
-				</Frame>
+				<Page page="OBJECTIVES">
+					<Objectives />
+				</Page>
 			</Panel>
 		</>
 	);

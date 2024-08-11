@@ -5,6 +5,7 @@ import { Label } from "../utils/label";
 import { CounterFrame } from "./counter-frame";
 import { useRem } from "../hooks/use-rem";
 import { formatNumberWithCommas } from "client/modules/number/format-number-with-commas";
+import { style } from "client/constants/style";
 
 interface LifeCounterProps {
 	lives: number;
@@ -25,7 +26,7 @@ export function LifeCounter({ lives }: LifeCounterProps) {
 			<Label
 				size={new UDim2(0.65, 0, 0.8, 0)}
 				position={new UDim2(0.32, 0, 0.1, 0)}
-				textColor={Color3.fromRGB(255, 255, 255)}
+				textColor={style.text}
 				font={fonts.inter.bold}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				text={formatNumberWithCommas(lives)}
