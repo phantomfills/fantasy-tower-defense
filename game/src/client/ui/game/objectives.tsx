@@ -35,38 +35,48 @@ export function ObjectivesButton() {
 	);
 }
 
-export function Objectives() {
+interface ObjectiveProps extends React.PropsWithChildren {}
+
+export function Objectives({ children }: ObjectiveProps) {
+	return (
+		<Frame
+			size={new UDim2(0.5, 0, 0.5, 0)}
+			position={new UDim2(0.5, 0, 0.5, 0)}
+			anchorPoint={new Vector2(0.5, 0.5)}
+			backgroundTransparency={1}
+		>
+			<uilistlayout
+				FillDirection={Enum.FillDirection.Vertical}
+				HorizontalAlignment={Enum.HorizontalAlignment.Center}
+				VerticalAlignment={Enum.VerticalAlignment.Center}
+				Padding={new UDim(0, 15)}
+				SortOrder={Enum.SortOrder.LayoutOrder}
+			/>
+
+			<Label
+				text="<u>Objectives</u> 📜"
+				textColor={style.text}
+				font={fonts.inter.bold}
+				backgroundTransparency={1}
+				size={new UDim2(1, 0, 0.12, 0)}
+				richText={true}
+				layoutOrder={0}
+			/>
+
+			<ObjectiveCards />
+
+			{children}
+		</Frame>
+	);
+}
+
+export function ObjectivesPage() {
 	return (
 		<>
 			<Overlay />
 			<Blur />
 
-			<Frame
-				size={new UDim2(0.5, 0, 0.5, 0)}
-				position={new UDim2(0.5, 0, 0.5, 0)}
-				anchorPoint={new Vector2(0.5, 0.5)}
-				backgroundTransparency={1}
-			>
-				<uilistlayout
-					FillDirection={Enum.FillDirection.Vertical}
-					HorizontalAlignment={Enum.HorizontalAlignment.Center}
-					VerticalAlignment={Enum.VerticalAlignment.Center}
-					Padding={new UDim(0, 15)}
-					SortOrder={Enum.SortOrder.LayoutOrder}
-				/>
-
-				<Label
-					text="<u>Objectives</u> 📜"
-					textColor={style.text}
-					font={fonts.inter.bold}
-					backgroundTransparency={1}
-					size={new UDim2(1, 0, 0.12, 0)}
-					richText={true}
-					layoutOrder={0}
-				/>
-
-				<ObjectiveCards />
-
+			<Objectives>
 				<textbutton
 					Size={new UDim2(0.3, 0, 0, 30)}
 					BackgroundTransparency={0}
@@ -88,7 +98,7 @@ export function Objectives() {
 					/>
 					<OneThickWhiteStroke />
 				</textbutton>
-			</Frame>
+			</Objectives>
 		</>
 	);
 }

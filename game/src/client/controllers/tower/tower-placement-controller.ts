@@ -202,6 +202,8 @@ export class TowerPlacementController implements OnStart {
 			.then((map) => {
 				if (!map) return;
 
+				producer.setPage("PLACING");
+
 				this.gameMap = map;
 
 				const isValid = isValidPlacementPosition(map, towerModel.humanoidRootPart.rootAttachment.WorldPosition);
@@ -251,6 +253,8 @@ export class TowerPlacementController implements OnStart {
 		const possibleTowerPlacement = this.possibleTowerPlacement;
 		if (!possibleTowerPlacement.exists) return;
 
+		producer.setPage("GAME");
+
 		const towerPlacement = possibleTowerPlacement.value;
 		towerPlacement.maid.Destroy();
 
@@ -263,6 +267,8 @@ export class TowerPlacementController implements OnStart {
 
 	private placeTower() {
 		if (!this.gameMap) return;
+
+		producer.setPage("GAME");
 
 		const possibleTowerPlacement = this.possibleTowerPlacement;
 		if (!possibleTowerPlacement.exists) return;

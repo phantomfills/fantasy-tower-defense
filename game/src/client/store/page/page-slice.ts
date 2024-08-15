@@ -1,6 +1,6 @@
 import { createProducer } from "@rbxts/reflex";
 
-const PAGES = ["GAME", "SETTINGS", "OBJECTIVES"] as const;
+const PAGES = ["GAME", "PLACING", "SETTINGS", "OBJECTIVES", "WELCOME"] as const;
 
 export type E_Pages = (typeof PAGES)[number];
 
@@ -9,7 +9,7 @@ interface PageState {
 }
 
 const initialState: PageState = {
-	currentPage: "GAME",
+	currentPage: "WELCOME",
 };
 
 export const pageSlice = createProducer(initialState, {
