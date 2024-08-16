@@ -100,24 +100,26 @@ export class RoundService implements OnStart {
 		for (const group of round.enemyGroups) {
 			const { enemyType } = group;
 
-			for (const _ of $range(0, group.count - 1)) {
-				const gameOver = producer.getState(selectGameOver);
-				if (gameOver) return { type: "error", message: "Game over - cancelling round" };
+			(async () => {
+				for (const _ of $range(0, group.count - 1)) {
+					const gameOver = producer.getState(selectGameOver);
+					if (gameOver) return { type: "error", message: "Game over - cancelling round" };
 
-				const id = createId();
-				if (isNonAttackingEnemyType(enemyType)) {
-					const enemy = createNonAttackingEnemy(enemyType, currentPath);
-					producer.addEnemy(enemy, id);
-				} else {
-					const enemy = createAttackingEnemy(enemyType, currentPath);
-					producer.addEnemy(enemy, id);
+					const id = createId();
+					if (isNonAttackingEnemyType(enemyType)) {
+						const enemy = createNonAttackingEnemy(enemyType, currentPath);
+						producer.addEnemy(enemy, id);
+					} else {
+						const enemy = createAttackingEnemy(enemyType, currentPath);
+						producer.addEnemy(enemy, id);
+					}
+
+					currentPath++;
+					if (currentPath > numberOfPaths - 1) currentPath = 0;
+
+					holdFor(group.enemySpawnInterval);
 				}
-
-				currentPath++;
-				if (currentPath > numberOfPaths - 1) currentPath = 0;
-
-				holdFor(group.enemySpawnInterval);
-			}
+			})();
 
 			holdFor(group.delayToNextGroup);
 		}

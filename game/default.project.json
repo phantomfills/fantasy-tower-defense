@@ -46,46 +46,7 @@
 					}
 				},
 				"enemies": {
-					"$className": "Folder",
-					"models": {
-						"$className": "Folder",
-						"trainingDummy": {
-							"$path": "assets/training-dummy.rbxm"
-						},
-						"armoredDummy": {
-							"$path": "assets/armored-dummy.rbxm"
-						},
-						"speedsterDummy": {
-							"$path": "assets/speedster-dummy.rbxm"
-						},
-						"stealthDummy": {
-							"$path": "assets/stealth-dummy.rbxm"
-						},
-						"dummyTank": {
-							"$path": "assets/dummy-tank.rbxm"
-						},
-						"guardDummy": {
-							"$path": "assets/guard-dummy.rbxm"
-						},
-						"multiplierDummy": {
-							"$path": "assets/multiplier-dummy.rbxm"
-						},
-						"dividedDummy": {
-							"$path": "assets/divided-dummy.rbxm"
-						},
-						"korblox_deathspeaker": {
-							"$path": "assets/korblox-deathspeaker.rbxm"
-						},
-						"circuit_breaker": {
-							"$path": "assets/circuit-breaker.rbxm"
-						},
-						"impostor": {
-							"$path": "assets/impostor.rbxm"
-						},
-						"critical_sports_car": {
-							"$path": "assets/critical_sports_car.rbxm"
-						}
-					}
+					"$path": "assets/enemies"
 				},
 				"towers": {
 					"$className": "Folder",

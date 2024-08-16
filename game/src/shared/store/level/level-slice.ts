@@ -66,8 +66,8 @@ const initialState: Level = {
 		{
 			enemyGroups: [
 				{
-					enemyType: "TRAINING_DUMMY",
-					count: 3,
+					enemyType: "ZOMBIE",
+					count: 6,
 					enemySpawnInterval: enemySpawnIntervals.relaxed,
 					delayToNextGroup: delaysToNextGroup.none,
 				},
@@ -88,164 +88,30 @@ const initialState: Level = {
 		{
 			enemyGroups: [
 				{
-					enemyType: "TRAINING_DUMMY",
-					count: 5,
-					enemySpawnInterval: enemySpawnIntervals.relaxed,
-					delayToNextGroup: delaysToNextGroup.none,
-				},
-			],
-			dialogs: [],
-		},
-		{
-			enemyGroups: [
-				{
-					enemyType: "TRAINING_DUMMY",
-					count: 8,
-					enemySpawnInterval: enemySpawnIntervals.horde,
-					delayToNextGroup: delaysToNextGroup.none,
-				},
-			],
-			dialogs: [
-				{
-					dialogType: "AUTO_DISAPPEAR",
-					text: "Seems we've got a horde of training dummies coming in!",
-					disappearTimestamp: dialogTimestamps.conversation,
-				},
-				{
-					dialogType: "AUTO_DISAPPEAR",
-					text: "Click on your tower and click the upgrade button to try and take them out faster!",
-					disappearTimestamp: dialogTimestamps.information,
-				},
-			],
-		},
-		{
-			enemyGroups: [
-				{
-					enemyType: "TRAINING_DUMMY",
-					count: 15,
-					enemySpawnInterval: enemySpawnIntervals.horde,
-					delayToNextGroup: delaysToNextGroup.none,
-				},
-			],
-			dialogs: [],
-		},
-		{
-			enemyGroups: [
-				{
-					enemyType: "TRAINING_DUMMY",
-					count: 8,
-					enemySpawnInterval: enemySpawnIntervals.relaxed,
-					delayToNextGroup: delaysToNextGroup.tense,
-				},
-				{
-					enemyType: "SPEEDSTER_DUMMY",
-					count: 4,
-					enemySpawnInterval: enemySpawnIntervals.relaxed,
-					delayToNextGroup: delaysToNextGroup.none,
-				},
-			],
-			dialogs: [
-				{
-					dialogType: "AUTO_DISAPPEAR",
-					text: "Speedster dummies incoming! They are faster than the training dummies!",
-					disappearTimestamp: dialogTimestamps.conversation,
-				},
-				{
-					dialogType: "AUTO_DISAPPEAR",
-					text: "Use your money to upgrade your towers or place more towers to deal with them!",
-					disappearTimestamp: dialogTimestamps.conversation,
-				},
-			],
-		},
-		{
-			enemyGroups: [
-				{
-					enemyType: "TRAINING_DUMMY",
-					count: 10,
+					enemyType: "ZOMBIE",
+					count: 12,
 					enemySpawnInterval: enemySpawnIntervals.relaxed,
 					delayToNextGroup: delaysToNextGroup.relaxed,
 				},
 				{
-					enemyType: "SPEEDSTER_DUMMY",
-					count: 7,
+					enemyType: "ZOMBIE_SWORDER",
+					count: 3,
 					enemySpawnInterval: enemySpawnIntervals.relaxed,
-					delayToNextGroup: delaysToNextGroup.none,
-				},
-			],
-			dialogs: [],
-		},
-		{
-			enemyGroups: [
-				{
-					enemyType: "SPEEDSTER_DUMMY",
-					count: 20,
-					enemySpawnInterval: enemySpawnIntervals.horde,
-					delayToNextGroup: delaysToNextGroup.none,
-				},
-			],
-			dialogs: [],
-		},
-		{
-			enemyGroups: [
-				{
-					enemyType: "TRAINING_DUMMY",
-					count: 15,
-					enemySpawnInterval: enemySpawnIntervals.horde,
-					delayToNextGroup: delaysToNextGroup.tense,
-				},
-				{
-					enemyType: "SPEEDSTER_DUMMY",
-					count: 15,
-					enemySpawnInterval: enemySpawnIntervals.horde,
-					delayToNextGroup: delaysToNextGroup.none,
-				},
-			],
-			dialogs: [],
-		},
-		{
-			enemyGroups: [
-				{
-					enemyType: "SPEEDSTER_DUMMY",
-					count: 40,
-					enemySpawnInterval: enemySpawnIntervals.horde,
 					delayToNextGroup: delaysToNextGroup.none,
 				},
 			],
 			dialogs: [
 				{
 					dialogType: "AUTO_DISAPPEAR",
-					text: "We've got a MASSIVE horde of speedster dummies coming in!",
+					text: "Zombie Sworders incoming!",
 					disappearTimestamp: dialogTimestamps.conversation,
 				},
 				{
 					dialogType: "AUTO_DISAPPEAR",
-					text: "The next round is gonna be a hard one. Good luck!",
-					disappearTimestamp: dialogTimestamps.conversation,
+					text: "They will slash at your towers and deal damage to them.",
+					disappearTimestamp: dialogTimestamps.information,
 				},
 			],
-		},
-		{
-			enemyGroups: [
-				{
-					enemyType: "ARMORED_DUMMY",
-					count: 1,
-					enemySpawnInterval: enemySpawnIntervals.relaxed,
-					delayToNextGroup: delaysToNextGroup.tense,
-				},
-				{
-					enemyType: "TRAINING_DUMMY",
-					count: 10,
-					enemySpawnInterval: enemySpawnIntervals.horde,
-					delayToNextGroup: delaysToNextGroup.tense,
-				},
-				{
-					enemyType: "SPEEDSTER_DUMMY",
-					count: 10,
-					enemySpawnInterval: enemySpawnIntervals.horde,
-					delayToNextGroup: delaysToNextGroup.none,
-				},
-			],
-			dialogs: [],
 		},
 	],
 	lives: 1_000,

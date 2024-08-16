@@ -23,41 +23,7 @@ export function createNonAttackingEnemy(
 		path,
 	};
 
-	switch (enemyType) {
-		case "TRAINING_DUMMY": {
-			return enemyTemplate;
-		}
-		case "ARMORED_DUMMY": {
-			return enemyTemplate;
-		}
-		case "SPEEDSTER_DUMMY": {
-			return enemyTemplate;
-		}
-		case "STEALTH_DUMMY": {
-			return enemyTemplate;
-		}
-		case "MULTIPLIER_DUMMY": {
-			return enemyTemplate;
-		}
-		case "DIVIDED_DUMMY": {
-			return enemyTemplate;
-		}
-		case "GUARD_DUMMY": {
-			return enemyTemplate;
-		}
-		case "IMPOSTOR": {
-			return enemyTemplate;
-		}
-		case "CRITICAL_SPORTS_CAR": {
-			return enemyTemplate;
-		}
-		case "KORBLOX_DEATHSPEAKER": {
-			return enemyTemplate;
-		}
-		case "CIRCUIT_BREAKER": {
-			return enemyTemplate;
-		}
-	}
+	return enemyTemplate;
 }
 
 export function createAttackingEnemy(
@@ -79,9 +45,5 @@ export function createAttackingEnemy(
 		path,
 	};
 
-	switch (enemyType) {
-		case "DUMMY_TANK": {
-			return enemyTemplate;
-		}
-	}
+	return enemyTemplate;
 }

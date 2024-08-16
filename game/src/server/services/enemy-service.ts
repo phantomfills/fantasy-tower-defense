@@ -27,16 +27,7 @@ import { selectClosestTowerIdToPosition } from "shared/store/tower";
 function handleEnemyIsDead(enemy: Enemy, id: string, isDead: boolean) {
 	if (!isDead) return;
 
-	if (enemy.enemyType === "MULTIPLIER_DUMMY") {
-		const pathCompletionAlpha = producer.getState(
-			selectEnemyPathCompletionAlpha(id, getCurrentTimeInMilliseconds()),
-		);
-
-		for (const _ of $range(0, 1)) {
-			const spawnedEnemy = createNonAttackingEnemy("DIVIDED_DUMMY", enemy.path, pathCompletionAlpha);
-			producer.addEnemy(spawnedEnemy, createId());
-		}
-	}
+	// TODO: Add functionality to handle special enemy deaths (such as spawning children)
 
 	producer.removeEnemy(id);
 }

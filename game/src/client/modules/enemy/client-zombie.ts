@@ -1,15 +1,15 @@
-import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { Workspace } from "@rbxts/services";
-import { createAnimationTrack } from "../animation-utils";
+import { ClientEnemy, EnemyModel } from "./client-enemy";
 import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
-import { createBasicDummyDeathEffects } from "./shared-functionality/dummy-utils";
+import { createAnimationTrack } from "../animation-utils";
 import { animations } from "./shared-functionality/vfx/animations";
 
-export class ClientCircuitBreaker extends ClientEnemy<EnemyModel> {
+export class ClientZombie extends ClientEnemy<EnemyModel> {
 	constructor(id: string, cframe: CFrame) {
-		const circuitBreakerModel = getEnemyModelFromType("CIRCUIT_BREAKER");
-		circuitBreakerModel.Parent = Workspace;
-		super(circuitBreakerModel, id, cframe);
+		const model = getEnemyModelFromType("ZOMBIE");
+		model.Parent = Workspace;
+
+		super(model, id, cframe);
 	}
 
 	start() {
@@ -20,19 +20,12 @@ export class ClientCircuitBreaker extends ClientEnemy<EnemyModel> {
 		animator.Parent = animationController;
 
 		const walkAnimation = createAnimationTrack({
-			id: animations.default_run,
+			id: animations.default_walk,
 			parent: animator,
 			animator,
 		});
 		walkAnimation.Play();
 
 		super.start();
-	}
-
-	destroy() {
-		const position = this.getModel().humanoidRootPart.Position;
-		createBasicDummyDeathEffects(position);
-
-		super.destroy();
 	}
 }

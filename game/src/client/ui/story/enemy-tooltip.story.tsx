@@ -8,7 +8,7 @@ export = (target: Frame) => {
 	const enemyTooltip = (
 		<RootProvider>
 			<Group position={new UDim2(0.5, 0, 0.5, 0)} size={new UDim2(0, 175, 0, 75)}>
-				<EnemyTooltip enemyType="GUARD_DUMMY" health={160} />
+				<EnemyTooltip enemyType="ZOMBIE" health={80} />
 			</Group>
 		</RootProvider>
 	);
