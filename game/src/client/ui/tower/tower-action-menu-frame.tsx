@@ -150,7 +150,7 @@ export function TowerActionMenuFrame({
 			<TowerActionButton
 				size={new UDim2(1, -30, 0.1, 0)}
 				position={new UDim2(0, 15, 0.275, -10)}
-				color={canPerformActions ? style.overlay : style.background}
+				color={canPerformActions ? style.green : style.red}
 				name={ownTower ? actions.upgrade.name : "Not your tower!"}
 				action={() => {
 					const actionSound = canPerformActions ? sounds.buy_upgrade : sounds.error;
