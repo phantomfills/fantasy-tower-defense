@@ -110,7 +110,7 @@ export function TowerActionMenuFrame({
 	return (
 		<Frame
 			size={new UDim2(0.15, 0, 0.5, 0)}
-			position={new UDim2(0.85, 0, 0.25, 0)}
+			position={new UDim2(0, 0, 0.25, 0)}
 			backgroundTransparency={0.5}
 			backgroundColor={style.background}
 		>
