@@ -1,6 +1,6 @@
 import { Service, OnStart } from "@flamework/core";
 import { Workspace } from "@rbxts/services";
-import { Functions } from "server/network";
+import { Events, Functions } from "server/network";
 import { producer } from "server/store";
 import { getGameMapFromMapType, MapModel } from "shared/modules/map/map-type-to-game-map-map";
 import { isValidPlacementPosition } from "shared/modules/tower/valid-placement-position";
@@ -18,6 +18,10 @@ export class LevelService implements OnStart {
 	onStart() {
 		Functions.getMap.setCallback(() => {
 			return this.gameMap;
+		});
+
+		Events.startLevel.connect(() => {
+			producer.start();
 		});
 
 		this.updateMap(producer.getState(selectMapType));

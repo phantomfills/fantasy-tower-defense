@@ -34,6 +34,7 @@ interface ClientToServerEvents extends SharedEvents {
 	placeTower(towerType: TowerType, cframe: CFrame): void;
 	upgradeTower(id: string): void;
 	sellTower(id: string): void;
+	startLevel(): void;
 }
 
 interface ServerToClientFunctions {}

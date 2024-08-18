@@ -42,6 +42,7 @@ interface Level {
 	objectives: E_AllObjectives[];
 	playersCanPlaceTowers: boolean;
 	playersCanUpgradeTowers: boolean;
+	started: boolean;
 }
 
 const delaysToNextGroup = {
@@ -121,6 +122,7 @@ const initialState: Level = {
 	objectives: ["COMPLETE_10_ROUNDS", "EAT_CAKE"],
 	playersCanPlaceTowers: true,
 	playersCanUpgradeTowers: true,
+	started: false,
 };
 
 export const levelSlice = createProducer(initialState, {
@@ -142,5 +144,10 @@ export const levelSlice = createProducer(initialState, {
 	setPlayersCanUpgradeTowers: (state, canUpgradeTowers: boolean) => ({
 		...state,
 		playersCanUpgradeTowers: canUpgradeTowers,
+	}),
+
+	start: (state) => ({
+		...state,
+		started: true,
 	}),
 });

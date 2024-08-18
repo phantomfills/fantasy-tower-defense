@@ -17,3 +17,5 @@ export const selectPlayersCanUpgradeTowers = (state: SharedState) => state.level
 export const selectStartingMoney = (state: SharedState) => state.level.startingMoney;
 
 export const selectLevelObjectives = (state: SharedState) => state.level.objectives;
+
+export const selectLevelStarted = (state: SharedState) => state.level.started;

@@ -12,6 +12,7 @@ import { producer } from "client/store";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { Overlay } from "../game/overlay";
 import { Blur } from "../game/blur";
+import { Events } from "client/network";
 
 export function OpeningObjectives() {
 	const levelObjectives = useSelector(selectLevelObjectives);
@@ -31,6 +32,7 @@ export function OpeningObjectives() {
 					Event={{
 						MouseButton1Click: () => {
 							producer.setPage("GAME");
+							Events.startLevel.fire();
 						},
 					}}
 				>

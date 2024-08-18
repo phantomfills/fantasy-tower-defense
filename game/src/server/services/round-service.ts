@@ -8,7 +8,7 @@ import { tracks } from "shared/modules/music/tracks";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
 import { selectNoEnemiesExist } from "shared/store/enemy";
-import { Round, selectGameOver, selectMapType, selectRounds } from "shared/store/level";
+import { Round, selectGameOver, selectLevelStarted, selectMapType, selectRounds } from "shared/store/level";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
 const ROUND_BONUS = 200;
@@ -49,6 +49,8 @@ export class RoundService implements OnStart {
 			RunService.Heartbeat.Wait();
 		}
 
+		producer.wait(selectLevelStarted).catch(warn).await();
+
 		holdFor(5_000);
 
 		producer.setTrackId(tracks.intro_music);
@@ -83,13 +85,6 @@ export class RoundService implements OnStart {
 			holdFor(INTERVAL_BETWEEN_ROUNDS_MILLISECONDS);
 
 			producer.addProgressToObjectiveForAllPlayers("COMPLETE_10_ROUNDS", 1);
-
-			// if (roundNumber === 12) {
-			// 	producer.clearTrackId();
-
-			// 	Events.playSound.broadcast(sounds.victory);
-			// 	this.setDialog("You have completed the tutorial! Congratulations!");
-			// }
 		}
 	}
 
