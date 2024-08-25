@@ -72,7 +72,7 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 			/>
 			<textbutton
 				Size={lerpBinding(buttonSizeTransition, new UDim2(1, 0, 1, 0), new UDim2(0.8, 0, 0.8, 0))}
-				BackgroundColor3={style.background}
+				BackgroundColor3={style.black}
 				BackgroundTransparency={0.4}
 				AnchorPoint={new Vector2(0.5, 0.5)}
 				Text=""
@@ -110,17 +110,17 @@ export function TowerSlot({ number, callback, icon, cost }: TowerSlotProps) {
 				<Frame
 					size={new UDim2(0.4, 0, 0.4, 0)}
 					backgroundTransparency={0}
-					backgroundColor={lerpBinding(buttonHoverTransition, style.background, style.blue)}
+					backgroundColor={lerpBinding(buttonHoverTransition, style.blue, style.light_blue)}
 					position={new UDim2(-0.125, 0, -0.125, 0)}
 					rotation={lerpBinding(buttonHoverTransition, -10, 10)}
 				>
-					<uistroke Color={style.outline} Thickness={lerpBinding(buttonHoverTransition, 1, 4)} />
+					<uistroke Color={style.white} Thickness={lerpBinding(buttonHoverTransition, 1, 4)} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<Label
 						text={tostring(number)}
 						textSize={rem(3)}
 						font={fonts.inter.bold}
-						textColor={style.text}
+						textColor={style.white}
 						textAlignmentX={Enum.TextXAlignment.Center}
 						backgroundTransparency={1}
 						size={new UDim2(1, 0, 1, 0)}

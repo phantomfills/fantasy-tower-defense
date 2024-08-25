@@ -54,7 +54,7 @@ export function ObjectiveCard(props: ObjectiveCardProps) {
 				size={new UDim2(1, 0, 0.65, 0)}
 				font={fonts.inter.regular}
 				textAlignmentX={Enum.TextXAlignment.Center}
-				textColor={style.text}
+				textColor={style.white}
 			/>
 
 			{_type === "ONE_TIME" && (

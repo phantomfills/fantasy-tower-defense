@@ -11,7 +11,7 @@ export function CounterFrame({ children }: CounterFrameProps) {
 			size={new UDim2(1, 0, 1, 0)}
 			position={new UDim2(0.5, 0, 0.5, 0)}
 			anchorPoint={new Vector2(0.5, 0.5)}
-			backgroundColor={style.background}
+			backgroundColor={style.black}
 			backgroundTransparency={0.5}
 		>
 			<OneThickWhiteStroke />

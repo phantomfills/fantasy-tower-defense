@@ -55,20 +55,20 @@ export function DropdownButton<T extends string>({
 				size={new UDim2(0.7, 0, 1, 0)}
 				text={label}
 				font={fonts.inter.regular}
-				textColor={style.text}
+				textColor={style.white}
 				textAlignmentX={Enum.TextXAlignment.Left}
 			/>
 			<Frame
 				size={new UDim2(0.3, 0, 1, 0)}
 				position={new UDim2(0.7, 0, 0, 0)}
 				backgroundTransparency={0}
-				backgroundColor={style.background}
+				backgroundColor={style.black}
 			>
 				<imagelabel
 					Size={new UDim2(1, 0, 1, 0)}
 					BackgroundTransparency={1}
 					ImageTransparency={0.8}
-					ImageColor3={style.overlay}
+					ImageColor3={style.black}
 					Image={images.stripes}
 					ScaleType={Enum.ScaleType.Crop}
 					ZIndex={3}
@@ -78,7 +78,7 @@ export function DropdownButton<T extends string>({
 					size={new UDim2(1, 0, 1, 0)}
 					backgroundTransparency={1}
 					text={optionText}
-					textColor={style.text}
+					textColor={style.white}
 					font={fonts.inter.bold}
 					zIndex={4}
 				/>
@@ -98,7 +98,7 @@ export function DropdownButton<T extends string>({
 						<Frame
 							size={new UDim2(1, 0, 0, 30)}
 							position={new UDim2(1 * (index + 1), 5 * (index + 1), 0, 0)}
-							backgroundColor={style.overlay}
+							backgroundColor={style.light_blue}
 							backgroundTransparency={0.5}
 							zIndex={10}
 						>
@@ -106,7 +106,7 @@ export function DropdownButton<T extends string>({
 								size={new UDim2(1, 0, 1, 0)}
 								backgroundTransparency={1}
 								text={optionToDisplayTextMap[option]}
-								textColor={style.text}
+								textColor={style.white}
 								font={fonts.inter.bold}
 								zIndex={10}
 							/>
@@ -137,7 +137,7 @@ export function SettingsButton() {
 			size={new UDim2(0, 30, 0, 30)}
 			position={new UDim2(0, 0, 1, -30)}
 			backgroundTransparency={0.5}
-			backgroundColor={style.overlay}
+			backgroundColor={style.black}
 		>
 			<textbutton
 				Size={new UDim2(1, 0, 1, 0)}
@@ -182,7 +182,7 @@ export function SettingsMenu() {
 
 				<Label
 					text="<u>Settings</u> ⚙"
-					textColor={style.text}
+					textColor={style.white}
 					font={fonts.inter.bold}
 					backgroundTransparency={1}
 					size={new UDim2(1, 0, 0.12, 0)}
@@ -220,7 +220,7 @@ export function SettingsMenu() {
 					}}
 				>
 					<uicorner CornerRadius={new UDim(0, 10)} />
-					<Label size={new UDim2(1, 0, 1, 0)} text="Back" font={fonts.inter.bold} textColor={style.text} />
+					<Label size={new UDim2(1, 0, 1, 0)} text="Back" font={fonts.inter.bold} textColor={style.white} />
 					<OneThickWhiteStroke />
 				</textbutton>
 			</Group>

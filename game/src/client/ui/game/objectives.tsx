@@ -16,7 +16,7 @@ export function ObjectivesButton() {
 			size={new UDim2(0, 30, 0, 30)}
 			position={new UDim2(0, 0, 1, -65)}
 			backgroundTransparency={0.5}
-			backgroundColor={style.overlay}
+			backgroundColor={style.black}
 		>
 			<textbutton
 				Size={new UDim2(1, 0, 1, 0)}
@@ -55,7 +55,7 @@ export function Objectives({ children }: ObjectiveProps) {
 
 			<Label
 				text="<u>Objectives</u> 📜"
-				textColor={style.text}
+				textColor={style.white}
 				font={fonts.inter.bold}
 				backgroundTransparency={1}
 				size={new UDim2(1, 0, 0.12, 0)}

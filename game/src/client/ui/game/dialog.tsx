@@ -22,7 +22,7 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 		<Frame
 			size={new UDim2(0.3, 0, 0.25, 0)}
 			position={new UDim2(0.5, 0, 0.625, 0)}
-			backgroundColor={style.background}
+			backgroundColor={style.black}
 			anchorPoint={new Vector2(0.5, 0.5)}
 		>
 			<OneThickWhiteStroke />
@@ -31,7 +31,7 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 				size={new UDim2(1, -25, 1, -25)}
 				position={new UDim2(0.5, 0, 0.5, 0)}
 				anchorPoint={new Vector2(0.5, 0.5)}
-				backgroundColor={style.overlay}
+				backgroundColor={style.light_blue}
 			>
 				<uipadding
 					PaddingTop={new UDim(0, 10)}
@@ -44,16 +44,16 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 					size={new UDim2(0, 30, 0, 30)}
 					position={new UDim2(1, -15, 1, -15)}
 					backgroundTransparency={0}
-					backgroundColor={style.background}
+					backgroundColor={style.black}
 				>
 					<uicorner CornerRadius={new UDim(0.5, 0)} />
-					<uistroke Color={style.outline} Thickness={3} />
+					<OneThickWhiteStroke />
 					<Label
 						size={new UDim2(0.75, 0, 0.75, 0)}
 						position={new UDim2(0.125, 0, 0.125, 0)}
 						text={tostring(dialogTextProps.countdownTime)}
 						font={fonts.inter.bold}
-						textColor={style.text}
+						textColor={style.white}
 					/>
 				</Frame>
 				<OneThickWhiteStroke />
@@ -143,7 +143,7 @@ export function DialogText({ text }: DialogTextProps) {
 			text={text}
 			font={fonts.inter.regular}
 			textSize={rem(2)}
-			textColor={style.text}
+			textColor={style.white}
 			textAlignmentX={Enum.TextXAlignment.Left}
 			textAlignmentY={Enum.TextYAlignment.Top}
 			textWrapped={true}

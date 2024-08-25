@@ -14,7 +14,7 @@ export function Overlay() {
 	return (
 		<Frame
 			size={new UDim2(1, 0, 1, 0)}
-			backgroundColor={style.overlay}
+			backgroundColor={style.blue}
 			backgroundTransparency={lerpBinding(showTransition, 1, 0.4)}
 			zIndex={0}
 		/>

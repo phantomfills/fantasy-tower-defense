@@ -25,9 +25,9 @@ export function TowerPlacementMessage() {
 				text={`Placing ${getTowerDisplayNameFromType(possibleTowerPlacement.value.towerType)}`}
 				size={new UDim2(1, 0, 0.3, 0)}
 				font={fonts.inter.bold}
-				textColor={style.text}
+				textColor={style.white}
 				textSize={rem(2)}
-				backgroundColor={style.background}
+				backgroundColor={style.black}
 				backgroundTransparency={0.6}
 			>
 				<OneThickWhiteStroke />
@@ -37,9 +37,9 @@ export function TowerPlacementMessage() {
 				text="Press R to rotate."
 				size={new UDim2(1, 0, 0.3, 0)}
 				font={fonts.inter.bold}
-				textColor={style.text}
+				textColor={style.white}
 				textSize={rem(2)}
-				backgroundColor={style.background}
+				backgroundColor={style.black}
 				backgroundTransparency={0.6}
 			>
 				<OneThickWhiteStroke />
@@ -50,9 +50,9 @@ export function TowerPlacementMessage() {
 				size={new UDim2(1, 0, 0.3, 0)}
 				position={new UDim2(0, 0, 0, 0)}
 				font={fonts.inter.bold}
-				textColor={style.text}
+				textColor={style.white}
 				textSize={rem(2)}
-				backgroundColor={style.background}
+				backgroundColor={style.black}
 				backgroundTransparency={0.6}
 			>
 				<OneThickWhiteStroke />
@@ -63,9 +63,9 @@ export function TowerPlacementMessage() {
 				size={new UDim2(1, 0, 0.3, 0)}
 				position={new UDim2(0, 0, 0, 0)}
 				font={fonts.inter.bold}
-				textColor={style.text}
+				textColor={style.white}
 				textSize={rem(2)}
-				backgroundColor={style.background}
+				backgroundColor={style.black}
 				backgroundTransparency={0.6}
 			>
 				<OneThickWhiteStroke />

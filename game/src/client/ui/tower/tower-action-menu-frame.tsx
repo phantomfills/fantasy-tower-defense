@@ -48,7 +48,7 @@ function TowerActionButton({ name, size, position, color, autoButtonColor, keybi
 				text={`${keybind ? `(${keybind})` : "🔐"} ${name}`}
 				font={fonts.inter.bold}
 				backgroundTransparency={1}
-				textColor={style.text}
+				textColor={style.white}
 			/>
 			<OneThickWhiteStroke />
 			<imagelabel
@@ -112,7 +112,7 @@ export function TowerActionMenuFrame({
 			size={new UDim2(0.15, 0, 0.5, 0)}
 			position={new UDim2(0, 0, 0.25, 0)}
 			backgroundTransparency={0.5}
-			backgroundColor={style.background}
+			backgroundColor={style.black}
 		>
 			<imagebutton
 				Size={new UDim2(0, 15, 0, 15)}
@@ -127,7 +127,7 @@ export function TowerActionMenuFrame({
 				position={new UDim2(0, 0, -0.1, 0)}
 				textSize={rem(2.25)}
 				font={fonts.inter.bold}
-				textColor={style.text}
+				textColor={style.white}
 			/>
 			<uicorner CornerRadius={new UDim(0, 3)} />
 			<OneThickWhiteStroke />
@@ -137,7 +137,7 @@ export function TowerActionMenuFrame({
 				textSize={rem(1.5)}
 				font={fonts.inter.bold}
 				text={`${owner}'s`}
-				textColor={style.text}
+				textColor={style.white}
 			/>
 			<Label
 				size={new UDim2(1, 0, 0.175, 0)}
@@ -145,7 +145,7 @@ export function TowerActionMenuFrame({
 				textSize={rem(1.75)}
 				font={fonts.inter.bold}
 				text={`${name} Lv. ${level}`}
-				textColor={style.text}
+				textColor={style.white}
 			/>
 			<TowerActionButton
 				size={new UDim2(1, -30, 0.1, 0)}
@@ -186,14 +186,14 @@ export function TowerActionMenuFrame({
 				position={new UDim2(0, 15, 0.15, -5)}
 				font={fonts.inter.bold}
 				text={upgradeTitle}
-				textColor={style.text}
+				textColor={style.white}
 				textSize={rem(1.75)}
 			/>
 			<Frame
 				size={new UDim2(1, -30, 0.45, 0)}
 				position={new UDim2(0, 15, 0.375, 0)}
 				backgroundTransparency={0.8}
-				backgroundColor={style.background}
+				backgroundColor={style.black}
 			>
 				<OneThickWhiteStroke />
 				<uicorner CornerRadius={new UDim(0, 3)} />
@@ -207,7 +207,7 @@ export function TowerActionMenuFrame({
 					textSize={rem(1.5)}
 					font={fonts.inter.regular}
 					text={upgradeDescription}
-					textColor={style.text}
+					textColor={style.white}
 					textAlignmentX={Enum.TextXAlignment.Left}
 					textAlignmentY={Enum.TextYAlignment.Top}
 					textWrapped={true}
@@ -220,7 +220,7 @@ export function TowerActionMenuFrame({
 					FillDirection={Enum.FillDirection.Horizontal}
 				/>
 				{traits.includes("STEALTH") ? (
-					<Frame backgroundTransparency={0.5} backgroundColor={style.background}>
+					<Frame backgroundTransparency={0.5} backgroundColor={style.black}>
 						<OneThickWhiteStroke />
 						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.eye} />
 						<uicorner CornerRadius={new UDim(0, 3)} />
@@ -229,7 +229,7 @@ export function TowerActionMenuFrame({
 					<></>
 				)}
 				{traits.includes("REINFORCED") ? (
-					<Frame backgroundTransparency={0.5} backgroundColor={style.background}>
+					<Frame backgroundTransparency={0.5} backgroundColor={style.black}>
 						<OneThickWhiteStroke />
 						<imagelabel Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1} Image={images.shield} />
 						<uicorner CornerRadius={new UDim(0, 3)} />

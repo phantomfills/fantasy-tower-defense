@@ -46,24 +46,20 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 				size={new UDim2(1, 0, 0.35, 0)}
 				text={enemyDisplayName}
 				font={fonts.inter.bold}
-				textColor={style.text}
+				textColor={style.white}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				textAlignmentY={Enum.TextYAlignment.Center}
 				zIndex={4}
 			>
-				<uistroke Thickness={2} Color={style.outline} />
+				<uistroke Thickness={2} Color={style.black} />
 			</Label>
-			<Frame
-				size={new UDim2(1, -10, 0.3, 0)}
-				position={new UDim2(0, 10, 0.3, 0)}
-				backgroundColor={style.background}
-			>
+			<Frame size={new UDim2(1, -10, 0.3, 0)} position={new UDim2(0, 10, 0.3, 0)} backgroundColor={style.black}>
 				<OneThickWhiteStroke />
 				<imagelabel
 					Size={new UDim2(1, 0, 1, 0)}
 					BackgroundTransparency={1}
 					ImageTransparency={0.9}
-					ImageColor3={style.background}
+					ImageColor3={style.black}
 					Image={images.stripes}
 					ScaleType={Enum.ScaleType.Crop}
 					ZIndex={3}
@@ -85,7 +81,7 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 						size={new UDim2(0.88, 0, 1, 0)}
 						text={`${abbreviatedHealth} / ${abbreviatedEffectiveMaxHealth}`}
 						font={fonts.inter.bold}
-						textColor={style.text}
+						textColor={style.white}
 						textAlignmentX={Enum.TextXAlignment.Left}
 						zIndex={4}
 					/>
@@ -97,14 +93,14 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 					<Frame
 						size={new UDim2(0.5, 0, 1, 0)}
 						position={new UDim2(0, 0, 1, 5)}
-						backgroundColor={style.background}
+						backgroundColor={style.black}
 						backgroundTransparency={0.5}
 					>
 						<imagelabel
 							Size={new UDim2(1, 0, 1, 0)}
 							BackgroundTransparency={1}
 							ImageTransparency={0.9}
-							ImageColor3={style.background}
+							ImageColor3={style.black}
 							Image={images.stripes}
 							ScaleType={Enum.ScaleType.Crop}
 							ZIndex={3}
@@ -122,7 +118,7 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 							position={new UDim2(0.4, 0, 0, 0)}
 							text={"Stealth"}
 							font={fonts.inter.bold}
-							textColor={style.text}
+							textColor={style.white}
 							textAlignmentX={Enum.TextXAlignment.Center}
 							textAlignmentY={Enum.TextYAlignment.Center}
 						/>
@@ -134,14 +130,14 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 					<Frame
 						size={new UDim2(0.65, 0, 1, 0)}
 						position={new UDim2(0, 0, 1, 5)}
-						backgroundColor={style.background}
+						backgroundColor={style.black}
 						backgroundTransparency={0.5}
 					>
 						<imagelabel
 							Size={new UDim2(1, 0, 1, 0)}
 							BackgroundTransparency={1}
 							ImageTransparency={0.9}
-							ImageColor3={style.background}
+							ImageColor3={style.black}
 							Image={images.stripes}
 							ScaleType={Enum.ScaleType.Crop}
 							ZIndex={3}
@@ -159,7 +155,7 @@ export function EnemyTooltip({ enemyType, health }: EnemyTooltipProps) {
 							position={new UDim2(0.35, 0, 0, 0)}
 							text={"Reinforced"}
 							font={fonts.inter.bold}
-							textColor={style.text}
+							textColor={style.white}
 							textAlignmentX={Enum.TextXAlignment.Center}
 							textAlignmentY={Enum.TextYAlignment.Center}
 						/>

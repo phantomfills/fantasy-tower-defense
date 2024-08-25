@@ -6,5 +6,5 @@ interface OneThickWhiteStrokeProps {
 }
 
 export function OneThickWhiteStroke({ applyStrokeMode = Enum.ApplyStrokeMode.Border }: OneThickWhiteStrokeProps) {
-	return <uistroke Thickness={1} Color={style.outline} ApplyStrokeMode={applyStrokeMode} />;
+	return <uistroke Thickness={1} Color={style.white} ApplyStrokeMode={applyStrokeMode} />;
 }

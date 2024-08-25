@@ -31,7 +31,7 @@ export function CashLabel({ value, size, position, zIndex, textSize }: CashLabel
 			<Label
 				size={new UDim2(0.55, 0, 0.8, 0)}
 				position={new UDim2(0.45, 0, 0.1, 0)}
-				textColor={style.text}
+				textColor={style.white}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				font={fonts.inter.bold}
 				text={formatNumberWithCommas(value)}

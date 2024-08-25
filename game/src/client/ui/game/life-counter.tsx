@@ -26,7 +26,7 @@ export function LifeCounter({ lives }: LifeCounterProps) {
 			<Label
 				size={new UDim2(0.65, 0, 0.8, 0)}
 				position={new UDim2(0.32, 0, 0.1, 0)}
-				textColor={style.text}
+				textColor={style.white}
 				font={fonts.inter.bold}
 				textAlignmentX={Enum.TextXAlignment.Left}
 				text={formatNumberWithCommas(lives)}
