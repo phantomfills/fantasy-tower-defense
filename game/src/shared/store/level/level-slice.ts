@@ -116,7 +116,7 @@ const initialState: Level = {
 		},
 	],
 	lives: 1_000,
-	startingMoney: 1_000,
+	startingMoney: 100_000,
 	mapType: "TUTORIAL",
 	gameOver: false,
 	objectives: ["COMPLETE_10_ROUNDS", "EAT_CAKE"],

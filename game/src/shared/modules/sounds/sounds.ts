@@ -12,5 +12,6 @@ export const sounds = {
 	error: "rbxassetid://852135845",
 	dummy_pop: "rbxassetid://9113263444",
 	pistol_fire: "rbxassetid://2641656639",
+	shotgun_fire: "rbxassetid://134188543",
 	scream: "rbxassetid://5567523008",
 } as const;

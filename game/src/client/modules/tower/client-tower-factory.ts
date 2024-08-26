@@ -16,6 +16,14 @@ import {
 	ClientDummyDefect4,
 	ClientDummyDefect5,
 } from "./client-dummy-defect";
+import {
+	ClientOfficer0,
+	ClientOfficer1,
+	ClientOfficer2,
+	ClientOfficer3,
+	ClientOfficer4,
+	ClientOfficer5,
+} from "./client-officer";
 
 export function createClientTower(towerType: TowerType, level: number, id: string, cframe: CFrame): GenericClientTower {
 	switch (towerType) {
@@ -48,6 +56,24 @@ export function createClientTower(towerType: TowerType, level: number, id: strin
 				return new ClientArcher4(id, cframe);
 			} else {
 				return new ClientArcher5(id, cframe);
+			}
+		}
+
+		case "OFFICER": {
+			if (level === 0) {
+				return new ClientOfficer0(id, cframe);
+			} else if (level === 1) {
+				return new ClientOfficer1(id, cframe);
+				print(cframe);
+			} else if (level === 2) {
+				return new ClientOfficer2(id, cframe);
+				print(cframe);
+			} else if (level === 3) {
+				return new ClientOfficer3(id, cframe);
+			} else if (level === 4) {
+				return new ClientOfficer4(id, cframe);
+			} else {
+				return new ClientOfficer5(id, cframe);
 			}
 		}
 	}

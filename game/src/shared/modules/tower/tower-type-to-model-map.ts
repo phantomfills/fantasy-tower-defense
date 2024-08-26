@@ -6,6 +6,7 @@ import { DeepReadonly } from "@rbxts/reflex";
 const assets = ReplicatedStorage.assets;
 const dummyDefectModels = assets.towers.dummy_defect.models;
 const archerModels = assets.towers.archer.models;
+const officerModels = assets.towers.officer;
 
 const towerTypeToModelsMap = {
 	DUMMY_DEFECT: [
@@ -23,6 +24,14 @@ const towerTypeToModelsMap = {
 		archerModels.level_3,
 		archerModels.level_4,
 		archerModels.level_5,
+	],
+	OFFICER: [
+		officerModels.level_0,
+		officerModels.level_1,
+		officerModels.level_2,
+		officerModels.level_3,
+		officerModels.level_4,
+		officerModels.level_5,
 	],
 } as const satisfies DeepReadonly<Record<TowerType, TowerModel[]>>;
 

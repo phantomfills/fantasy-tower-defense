@@ -13,9 +13,9 @@ export class TowerLoadoutController implements OnStart {
 	onStart() {
 		producer.addTowerSlot({
 			number: 1,
-			cost: getPlacementCostForTower("ARCHER"),
+			cost: getPlacementCostForTower("OFFICER"),
 			icon: images.archer,
-			callback: this.getTowerClickHandlerForTowerType("ARCHER"),
+			callback: this.getTowerClickHandlerForTowerType("OFFICER"),
 		});
 	}
 

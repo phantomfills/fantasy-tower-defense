@@ -91,210 +91,6 @@ interface ReplicatedStorage extends Instance {
 			boulder: MeshPart;
 		};
 		towers: Folder & {
-			dummy_defect: Folder & {
-				models: Folder & {
-					level_4: Model & {
-						rightArm: MeshPart & {
-							pistol: Part & {
-								Mesh: SpecialMesh;
-								tipAttachment: Attachment;
-							};
-							["rightArm 🡪 pistol"]: Weld;
-						};
-						head: MeshPart & {
-							["head 🡪 cap"]: Weld;
-							cap: Part & {
-								Mesh: SpecialMesh;
-							};
-							face: Decal;
-							shades: MeshPart;
-							["head 🡪 shades"]: Weld;
-						};
-						leftArm: MeshPart & {
-							["leftArm 🡪 pistol"]: Weld;
-							pistol: Part & {
-								Mesh: SpecialMesh;
-								tipAttachment: Attachment;
-							};
-						};
-						rightLeg: MeshPart;
-						torso: MeshPart & {
-							["Left Shoulder"]: Motor6D;
-							["Right Shoulder"]: Motor6D;
-							Neck: Motor6D;
-							["Right Hip"]: Motor6D;
-							["Left Hip"]: Motor6D;
-						};
-						humanoidRootPart: Part & {
-							rootAttachment: Attachment;
-							RootJoint: Motor6D;
-						};
-						leftLeg: MeshPart;
-					};
-					level_5: Model & {
-						rightArm: MeshPart & {
-							pistol: Part & {
-								Mesh: SpecialMesh;
-								tipAttachment: Attachment;
-							};
-							["rightArm 🡪 pistol"]: Weld;
-						};
-						head: MeshPart & {
-							["head 🡪 cap"]: Weld;
-							cap: Part & {
-								Mesh: SpecialMesh;
-							};
-							["head 🡪 bandana"]: Weld;
-							bandana: Part & {
-								Mesh: SpecialMesh;
-							};
-							face: Decal;
-							shades: MeshPart;
-							["head 🡪 shades"]: Weld;
-						};
-						leftArm: MeshPart & {
-							["leftArm 🡪 pistol"]: Weld;
-							pistol: Part & {
-								Mesh: SpecialMesh;
-								tipAttachment: Attachment;
-							};
-						};
-						rightLeg: MeshPart;
-						torso: MeshPart & {
-							["Left Shoulder"]: Motor6D;
-							["Right Shoulder"]: Motor6D;
-							Neck: Motor6D;
-							["Right Hip"]: Motor6D;
-							["Left Hip"]: Motor6D;
-						};
-						humanoidRootPart: Part & {
-							rootAttachment: Attachment;
-							RootJoint: Motor6D;
-						};
-						leftLeg: MeshPart;
-					};
-					level_3: Model & {
-						rightArm: MeshPart & {
-							pistol: Part & {
-								Mesh: SpecialMesh;
-								tipAttachment: Attachment;
-							};
-							["rightArm 🡪 pistol"]: Weld;
-						};
-						head: MeshPart & {
-							["head 🡪 cap"]: Weld;
-							cap: Part & {
-								Mesh: SpecialMesh;
-							};
-							face: Decal;
-							shades: MeshPart;
-							["head 🡪 shades"]: Weld;
-						};
-						leftArm: MeshPart;
-						rightLeg: MeshPart;
-						torso: MeshPart & {
-							["Left Shoulder"]: Motor6D;
-							["Right Shoulder"]: Motor6D;
-							Neck: Motor6D;
-							["Right Hip"]: Motor6D;
-							["Left Hip"]: Motor6D;
-						};
-						humanoidRootPart: Part & {
-							rootAttachment: Attachment;
-							RootJoint: Motor6D;
-						};
-						leftLeg: MeshPart;
-					};
-					level_0: Model & {
-						rightArm: MeshPart & {
-							pistol: Part & {
-								Mesh: SpecialMesh;
-								tipAttachment: Attachment;
-							};
-							["rightArm 🡪 pistol"]: Weld;
-						};
-						head: MeshPart & {
-							face: Decal;
-						};
-						leftArm: MeshPart;
-						rightLeg: MeshPart;
-						torso: MeshPart & {
-							["Left Shoulder"]: Motor6D;
-							["Right Shoulder"]: Motor6D;
-							Neck: Motor6D;
-							["Right Hip"]: Motor6D;
-							["Left Hip"]: Motor6D;
-						};
-						humanoidRootPart: Part & {
-							rootAttachment: Attachment;
-							RootJoint: Motor6D;
-						};
-						leftLeg: MeshPart;
-					};
-					level_1: Model & {
-						rightArm: MeshPart & {
-							pistol: Part & {
-								Mesh: SpecialMesh;
-								tipAttachment: Attachment;
-							};
-							["rightArm 🡪 pistol"]: Weld;
-						};
-						head: MeshPart & {
-							face: Decal;
-							cap: Part & {
-								Mesh: SpecialMesh;
-							};
-							["head 🡪 cap"]: Weld;
-						};
-						leftArm: MeshPart;
-						rightLeg: MeshPart;
-						torso: MeshPart & {
-							["Left Shoulder"]: Motor6D;
-							["Right Shoulder"]: Motor6D;
-							Neck: Motor6D;
-							["Right Hip"]: Motor6D;
-							["Left Hip"]: Motor6D;
-						};
-						humanoidRootPart: Part & {
-							rootAttachment: Attachment;
-							RootJoint: Motor6D;
-						};
-						leftLeg: MeshPart;
-					};
-					level_2: Model & {
-						rightArm: MeshPart & {
-							pistol: Part & {
-								Mesh: SpecialMesh;
-								tipAttachment: Attachment;
-							};
-							["rightArm 🡪 pistol"]: Weld;
-						};
-						head: MeshPart & {
-							["head 🡪 cap"]: Weld;
-							cap: Part & {
-								Mesh: SpecialMesh;
-							};
-							face: Decal;
-							shades: MeshPart;
-							["head 🡪 shades"]: Weld;
-						};
-						leftArm: MeshPart;
-						rightLeg: MeshPart;
-						torso: MeshPart & {
-							["Left Shoulder"]: Motor6D;
-							["Right Shoulder"]: Motor6D;
-							Neck: Motor6D;
-							["Right Hip"]: Motor6D;
-							["Left Hip"]: Motor6D;
-						};
-						humanoidRootPart: Part & {
-							rootAttachment: Attachment;
-							RootJoint: Motor6D;
-						};
-						leftLeg: MeshPart;
-					};
-				};
-			};
 			archer: Folder & {
 				models: Folder & {
 					level_4: Model & {
@@ -544,6 +340,532 @@ interface ReplicatedStorage extends Instance {
 						};
 						leftLeg: MeshPart;
 					};
+				};
+			};
+			dummy_defect: Folder & {
+				models: Folder & {
+					level_4: Model & {
+						rightArm: MeshPart & {
+							pistol: Part & {
+								Mesh: SpecialMesh;
+								tipAttachment: Attachment;
+							};
+							["rightArm 🡪 pistol"]: Weld;
+						};
+						head: MeshPart & {
+							["head 🡪 cap"]: Weld;
+							cap: Part & {
+								Mesh: SpecialMesh;
+							};
+							face: Decal;
+							shades: MeshPart;
+							["head 🡪 shades"]: Weld;
+						};
+						leftArm: MeshPart & {
+							["leftArm 🡪 pistol"]: Weld;
+							pistol: Part & {
+								Mesh: SpecialMesh;
+								tipAttachment: Attachment;
+							};
+						};
+						rightLeg: MeshPart;
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_5: Model & {
+						rightArm: MeshPart & {
+							pistol: Part & {
+								Mesh: SpecialMesh;
+								tipAttachment: Attachment;
+							};
+							["rightArm 🡪 pistol"]: Weld;
+						};
+						head: MeshPart & {
+							["head 🡪 cap"]: Weld;
+							cap: Part & {
+								Mesh: SpecialMesh;
+							};
+							["head 🡪 bandana"]: Weld;
+							bandana: Part & {
+								Mesh: SpecialMesh;
+							};
+							face: Decal;
+							shades: MeshPart;
+							["head 🡪 shades"]: Weld;
+						};
+						leftArm: MeshPart & {
+							["leftArm 🡪 pistol"]: Weld;
+							pistol: Part & {
+								Mesh: SpecialMesh;
+								tipAttachment: Attachment;
+							};
+						};
+						rightLeg: MeshPart;
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_3: Model & {
+						rightArm: MeshPart & {
+							pistol: Part & {
+								Mesh: SpecialMesh;
+								tipAttachment: Attachment;
+							};
+							["rightArm 🡪 pistol"]: Weld;
+						};
+						head: MeshPart & {
+							["head 🡪 cap"]: Weld;
+							cap: Part & {
+								Mesh: SpecialMesh;
+							};
+							face: Decal;
+							shades: MeshPart;
+							["head 🡪 shades"]: Weld;
+						};
+						leftArm: MeshPart;
+						rightLeg: MeshPart;
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_0: Model & {
+						rightArm: MeshPart & {
+							pistol: Part & {
+								Mesh: SpecialMesh;
+								tipAttachment: Attachment;
+							};
+							["rightArm 🡪 pistol"]: Weld;
+						};
+						head: MeshPart & {
+							face: Decal;
+						};
+						leftArm: MeshPart;
+						rightLeg: MeshPart;
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_1: Model & {
+						rightArm: MeshPart & {
+							pistol: Part & {
+								Mesh: SpecialMesh;
+								tipAttachment: Attachment;
+							};
+							["rightArm 🡪 pistol"]: Weld;
+						};
+						head: MeshPart & {
+							face: Decal;
+							cap: Part & {
+								Mesh: SpecialMesh;
+							};
+							["head 🡪 cap"]: Weld;
+						};
+						leftArm: MeshPart;
+						rightLeg: MeshPart;
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+					level_2: Model & {
+						rightArm: MeshPart & {
+							pistol: Part & {
+								Mesh: SpecialMesh;
+								tipAttachment: Attachment;
+							};
+							["rightArm 🡪 pistol"]: Weld;
+						};
+						head: MeshPart & {
+							["head 🡪 cap"]: Weld;
+							cap: Part & {
+								Mesh: SpecialMesh;
+							};
+							face: Decal;
+							shades: MeshPart;
+							["head 🡪 shades"]: Weld;
+						};
+						leftArm: MeshPart;
+						rightLeg: MeshPart;
+						torso: MeshPart & {
+							["Left Shoulder"]: Motor6D;
+							["Right Shoulder"]: Motor6D;
+							Neck: Motor6D;
+							["Right Hip"]: Motor6D;
+							["Left Hip"]: Motor6D;
+						};
+						humanoidRootPart: Part & {
+							rootAttachment: Attachment;
+							RootJoint: Motor6D;
+						};
+						leftLeg: MeshPart;
+					};
+				};
+			};
+			officer: Folder & {
+				level_4: Model & {
+					head: Part & {
+						face: Decal;
+						Mesh: SpecialMesh;
+						hat: Weld;
+					};
+					rightArm: MeshPart & {
+						gun: Motor6D;
+					};
+					appearance: Folder & {
+						leftSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						hat: Part & {
+							Mesh: SpecialMesh;
+						};
+						rightSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						rightShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftGlove: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						rightGlove: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						gun: Part & {
+							SpecialMesh: SpecialMesh;
+							tipAttachment: Attachment;
+						};
+						belt: Part & {
+							SpecialMesh: SpecialMesh;
+						};
+					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						vest: Weld;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						belt: Weld;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				level_5: Model & {
+					head: Part & {
+						helmet: Weld;
+						face: Decal;
+						Mesh: SpecialMesh;
+					};
+					rightArm: MeshPart & {
+						gun: Motor6D;
+					};
+					appearance: Folder & {
+						leftSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						helmet: Part & {
+							Mesh: SpecialMesh;
+						};
+						rightSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						rightShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftGlove: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						rightGlove: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						gun: Part & {
+							SpecialMesh: SpecialMesh;
+							tipAttachment: Attachment;
+						};
+						belt: Part & {
+							SpecialMesh: SpecialMesh;
+						};
+					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						vest: Weld;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						belt: Weld;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				level_3: Model & {
+					head: Part & {
+						face: Decal;
+						Mesh: SpecialMesh;
+						hat: Weld;
+					};
+					rightArm: MeshPart & {
+						gun: Motor6D;
+					};
+					appearance: Folder & {
+						leftSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						hat: Part & {
+							Mesh: SpecialMesh;
+						};
+						rightSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						rightShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftGlove: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						rightGlove: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						gun: Part & {
+							SpecialMesh: SpecialMesh;
+							tipAttachment: Attachment;
+						};
+						badge: Part & {
+							Mesh: SpecialMesh;
+						};
+						belt: Part & {
+							SpecialMesh: SpecialMesh;
+						};
+					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						badge: Weld;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						belt: Weld;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				level_0: Model & {
+					head: Part & {
+						Mesh: SpecialMesh;
+						face: Decal;
+					};
+					rightArm: MeshPart & {
+						gun: Motor6D;
+					};
+					appearance: Folder & {
+						rightShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						gun: Part & {
+							SpecialMesh: SpecialMesh;
+							tipAttachment: Attachment;
+						};
+						belt: Part & {
+							SpecialMesh: SpecialMesh;
+						};
+						rightSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						belt: Weld;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				level_1: Model & {
+					head: Part & {
+						face: Decal;
+						Mesh: SpecialMesh;
+						hat: Weld;
+					};
+					rightArm: MeshPart & {
+						gun: Motor6D;
+					};
+					appearance: Folder & {
+						rightShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						hat: Part & {
+							Mesh: SpecialMesh;
+						};
+						gun: Part & {
+							SpecialMesh: SpecialMesh;
+							tipAttachment: Attachment;
+						};
+						belt: Part & {
+							SpecialMesh: SpecialMesh;
+						};
+						rightSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						belt: Weld;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
+				};
+				level_2: Model & {
+					head: Part & {
+						face: Decal;
+						Mesh: SpecialMesh;
+						hat: Weld;
+					};
+					rightArm: MeshPart & {
+						gun: Motor6D;
+					};
+					appearance: Folder & {
+						leftSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						hat: Part & {
+							Mesh: SpecialMesh;
+						};
+						rightSleeve: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						rightShoe: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						leftGlove: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						rightGlove: MeshPart & {
+							WeldConstraint: WeldConstraint;
+						};
+						gun: Part & {
+							SpecialMesh: SpecialMesh;
+							tipAttachment: Attachment;
+						};
+						belt: Part & {
+							SpecialMesh: SpecialMesh;
+						};
+					};
+					leftArm: MeshPart;
+					rightLeg: MeshPart;
+					torso: MeshPart & {
+						["Left Shoulder"]: Motor6D;
+						["Right Shoulder"]: Motor6D;
+						Neck: Motor6D;
+						["Right Hip"]: Motor6D;
+						belt: Weld;
+						["Left Hip"]: Motor6D;
+					};
+					humanoidRootPart: Part & {
+						rootAttachment: Attachment;
+						RootJoint: Motor6D;
+					};
+					leftLeg: MeshPart;
 				};
 			};
 		};

@@ -33,5 +33,10 @@ export function createTower(
 				...towerTemplate,
 			};
 		}
+		case "OFFICER": {
+			return {
+				...towerTemplate,
+			};
+		}
 	}
 }
