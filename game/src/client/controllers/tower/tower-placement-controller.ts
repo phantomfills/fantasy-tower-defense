@@ -268,8 +268,6 @@ export class TowerPlacementController implements OnStart {
 	private placeTower() {
 		if (!this.gameMap) return;
 
-		producer.setPage("GAME");
-
 		const possibleTowerPlacement = this.possibleTowerPlacement;
 		if (!possibleTowerPlacement.exists) return;
 
@@ -280,6 +278,8 @@ export class TowerPlacementController implements OnStart {
 
 		const isValid = isValidPlacementPosition(this.gameMap, towerCFrame.Position);
 		if (!isValid) return;
+
+		producer.setPage("GAME");
 
 		const placeSound = createSound(sounds.tower_place, { volume: 0.2 });
 		placeSound.Play();
