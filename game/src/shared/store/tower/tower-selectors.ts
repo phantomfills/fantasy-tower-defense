@@ -3,6 +3,7 @@ import { SharedState } from "..";
 import { Tower } from "./tower-slice";
 import { createSelector } from "@rbxts/reflex";
 import Object from "@rbxts/object-utils";
+import { getTowerObstructionRadius } from "shared/modules/tower/tower-type-to-tower-stats-map";
 
 export function selectTowers(state: SharedState) {
 	return state.tower.towers;
@@ -56,3 +57,34 @@ export function selectTowerPosition(id: string): (state: SharedState) => Possibl
 		return tower ? { exists: true, value: tower.cframe.Position } : { exists: false };
 	});
 }
+
+export const selectDoesTowerObstructionBoxCollideWithAnother = (
+	position: Vector3,
+	obstructionRadius: number,
+): ((state: SharedState) => boolean) => {
+	return createSelector(selectTowers, (towers) => {
+		const towerIds = Object.keys(towers);
+
+		if (towerIds.isEmpty()) return false;
+
+		let doesTowerObstructionBoxCollideWithAnother = false;
+
+		for (const towerId of towerIds) {
+			const tower = towers[towerId];
+			if (!tower) continue;
+
+			const towerObstructionRadius = getTowerObstructionRadius(tower.towerType);
+			const maxDistance = obstructionRadius + towerObstructionRadius;
+
+			const towerPosition = tower.cframe.Position;
+			const distance = position.sub(towerPosition).Magnitude;
+
+			if (distance < maxDistance) {
+				doesTowerObstructionBoxCollideWithAnother = true;
+				break;
+			}
+		}
+
+		return doesTowerObstructionBoxCollideWithAnother;
+	});
+};

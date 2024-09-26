@@ -13,11 +13,13 @@ interface TowerLevel {
 }
 
 interface TowerStats {
+	obstructionRadius: number;
 	levels: TowerLevel[];
 }
 
 const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 	DUMMY_DEFECT: {
+		obstructionRadius: 1,
 		levels: [
 			{
 				damage: 1,
@@ -82,6 +84,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 		],
 	},
 	ARCHER: {
+		obstructionRadius: 1.5,
 		levels: [
 			{
 				damage: 70,
@@ -148,6 +151,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 		],
 	},
 	OFFICER: {
+		obstructionRadius: 0.5,
 		levels: [
 			{
 				cost: 600,
@@ -265,3 +269,7 @@ export function getUpgradeCost(_type: TowerType, level: number): number | undefi
 export function getPlacementCostForTower(_type: TowerType): number {
 	return towerTypeToStatsMap[_type].levels[0].cost;
 }
+
+export const getTowerObstructionRadius = (_type: TowerType): number => {
+	return towerTypeToStatsMap[_type].obstructionRadius;
+};

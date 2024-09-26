@@ -2,7 +2,11 @@ import { OnStart, OnTick, Service } from "@flamework/core";
 import { Events } from "server/network";
 import { createTower } from "server/modules/tower/tower-factory";
 import { producer } from "server/store";
-import { selectPossibleTowerFromId, selectTowers } from "shared/store/tower";
+import {
+	selectDoesTowerObstructionBoxCollideWithAnother,
+	selectPossibleTowerFromId,
+	selectTowers,
+} from "shared/store/tower";
 import { selectEnemies, selectEnemyCFrameFromId, selectFirstAttackableEnemyInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
 import { createBasicTowerAttack } from "shared/modules/attack";
@@ -10,6 +14,7 @@ import {
 	describeTowerFromType,
 	getSellPriceForTower,
 	getTowerMaxLevelFromType,
+	getTowerObstructionRadius,
 } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import Object from "@rbxts/object-utils";
@@ -61,6 +66,12 @@ export class TowerService implements OnStart, OnTick {
 
 			const isValidPlacementPosition = this.levelService.isValidPlacementPosition(cframe.Position);
 			if (!isValidPlacementPosition) return;
+
+			const doesTowerObstructionBoxCollideWithAnother = producer.getState(
+				selectDoesTowerObstructionBoxCollideWithAnother(cframe.Position, getTowerObstructionRadius(_type)),
+			);
+			print(doesTowerObstructionBoxCollideWithAnother);
+			if (doesTowerObstructionBoxCollideWithAnother) return;
 
 			const userId = tostring(player.UserId);
 
