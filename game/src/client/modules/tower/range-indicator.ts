@@ -1,14 +1,17 @@
 import { TowerModel } from "shared/modules/tower/tower-model";
-import { createRangeModel } from "./range-model";
+import { createObstructionBox, createRangeModel } from "./range-model";
 
 export class RangeIndicator {
 	private radius: number;
+	private obstructionRadius: number;
 	private enabled: boolean;
 	private rangeModel: Model;
+	private obstructionBox: Model;
 	private readonly parent: TowerModel;
 
-	constructor(radius: number, enabled: boolean = true, parent: TowerModel) {
+	constructor(radius: number, obstructionRadius: number, enabled: boolean = true, parent: TowerModel) {
 		this.radius = radius;
+		this.obstructionRadius = obstructionRadius;
 		this.enabled = enabled;
 		this.parent = parent;
 
@@ -17,8 +20,14 @@ export class RangeIndicator {
 			parent.humanoidRootPart.rootAttachment.WorldPosition,
 			this.enabled,
 		);
+		const obstructionBox = createObstructionBox(
+			this.obstructionRadius,
+			parent.humanoidRootPart.rootAttachment.WorldPosition,
+		);
 		rangeModel.Parent = this.parent;
+		obstructionBox.Parent = this.parent;
 		this.rangeModel = rangeModel;
+		this.obstructionBox = obstructionBox;
 	}
 
 	setEnabled(enabled: boolean) {

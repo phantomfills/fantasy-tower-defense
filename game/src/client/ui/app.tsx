@@ -14,6 +14,7 @@ import { SettingsButton, SettingsMenu } from "./game/settings-menu";
 import { Page } from "./utils/page";
 import { Group } from "./utils/group";
 import { OpeningObjectives } from "./welcome/opening-objectives";
+import { ObstructionBoxes } from "./tower/obstruction-box";
 
 export function App() {
 	return (
@@ -40,6 +41,7 @@ export function App() {
 
 				<Page page="PLACING">
 					<TowerPlacementMessage />
+					<ObstructionBoxes />
 				</Page>
 
 				<Page page="SETTINGS">

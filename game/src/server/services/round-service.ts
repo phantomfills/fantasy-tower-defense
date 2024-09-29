@@ -86,6 +86,13 @@ export class RoundService implements OnStart {
 
 			producer.addProgressToObjectiveForAllPlayers("COMPLETE_10_ROUNDS", 1);
 		}
+
+		for (;;) {
+			const enemy = createNonAttackingEnemy("ZOMBIE_SWORDER", 0);
+			producer.addEnemy(enemy, createId());
+
+			task.wait(0.2);
+		}
 	}
 
 	private async spawnRound(round: Round): Promise<RoundResult> {

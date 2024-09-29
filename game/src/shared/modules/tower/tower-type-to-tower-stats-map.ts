@@ -19,7 +19,7 @@ interface TowerStats {
 
 const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 	DUMMY_DEFECT: {
-		obstructionRadius: 1,
+		obstructionRadius: 1.5,
 		levels: [
 			{
 				damage: 1,
@@ -84,7 +84,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 		],
 	},
 	ARCHER: {
-		obstructionRadius: 1.5,
+		obstructionRadius: 2,
 		levels: [
 			{
 				damage: 70,
@@ -151,7 +151,7 @@ const towerTypeToStatsMap: Record<TowerType, TowerStats> = {
 		],
 	},
 	OFFICER: {
-		obstructionRadius: 0.5,
+		obstructionRadius: 1,
 		levels: [
 			{
 				cost: 600,

@@ -7,7 +7,7 @@ import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-c
 import { Events, Functions } from "client/network";
 import { producer } from "client/store";
 import Maid from "@rbxts/maid";
-import { describeTowerFromType } from "shared/modules/tower/tower-type-to-tower-stats-map";
+import { describeTowerFromType, getTowerObstructionRadius } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { tags } from "shared/modules/utils/tags";
 import { RangeIndicator } from "client/modules/tower/range-indicator";
 import { removeShadows } from "client/modules/rig/remove-shadows";
@@ -17,9 +17,17 @@ import { createSound } from "client/modules/utils/sound";
 import { sounds } from "shared/modules/sounds/sounds";
 import { MapModel } from "shared/modules/map/map-type-to-game-map-map";
 import { isValidPlacementPosition } from "shared/modules/tower/valid-placement-position";
+import { selectDoesTowerObstructionBoxCollideWithAnother } from "shared/store/tower";
 
 const TOWER_PLACEMENT_DISTANCE = 1000;
 const EXIT_DOUBLE_TAP_THRESHOLD = 500;
+
+const canPlaceAtPosition = (map: MapModel, position: Vector3, obstructionBox: number) => {
+	return (
+		isValidPlacementPosition(map, position) &&
+		!producer.getState(selectDoesTowerObstructionBoxCollideWithAnother(position, obstructionBox))
+	);
+};
 
 @Controller({})
 export class TowerPlacementController implements OnStart {
@@ -178,7 +186,11 @@ export class TowerPlacementController implements OnStart {
 
 		if (!this.gameMap) return;
 
-		const isValid = isValidPlacementPosition(this.gameMap, cframe.Position);
+		const isValid = canPlaceAtPosition(
+			this.gameMap,
+			cframe.Position,
+			getTowerObstructionRadius(possibleTowerPlacement.value.type),
+		);
 
 		const enabled = rangeIndicator.getEnabled();
 		if (enabled === isValid) return;
@@ -206,9 +218,18 @@ export class TowerPlacementController implements OnStart {
 
 				this.gameMap = map;
 
-				const isValid = isValidPlacementPosition(map, towerModel.humanoidRootPart.rootAttachment.WorldPosition);
+				const isValid = canPlaceAtPosition(
+					map,
+					towerModel.humanoidRootPart.rootAttachment.WorldPosition,
+					getTowerObstructionRadius(towerType),
+				);
 
-				const rangeIndicator = new RangeIndicator(range, isValid, towerModel);
+				const rangeIndicator = new RangeIndicator(
+					range,
+					getTowerObstructionRadius(towerType),
+					isValid,
+					towerModel,
+				);
 				this.possibleRangeIndicator = {
 					exists: true,
 					value: rangeIndicator,
@@ -276,7 +297,7 @@ export class TowerPlacementController implements OnStart {
 		const towerCFrame = towerPlacement.cframe;
 		const towerRotation = towerPlacement.rotation;
 
-		const isValid = isValidPlacementPosition(this.gameMap, towerCFrame.Position);
+		const isValid = canPlaceAtPosition(this.gameMap, towerCFrame.Position, getTowerObstructionRadius(towerType));
 		if (!isValid) return;
 
 		producer.setPage("GAME");

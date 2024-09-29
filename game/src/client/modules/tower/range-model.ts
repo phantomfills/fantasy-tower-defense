@@ -1,3 +1,21 @@
+export function createObstructionBox(range: number, position: Vector3): Model {
+	const obstructionBoxModel = new Instance("Model");
+
+	const obstructionBox = new Instance("Part");
+	obstructionBox.Shape = Enum.PartType.Cylinder;
+	obstructionBox.Material = Enum.Material.SmoothPlastic;
+	obstructionBox.Size = new Vector3(0.15, range * 2, range * 2);
+	obstructionBox.Transparency = 0.5;
+	obstructionBox.Anchored = true;
+	obstructionBox.CanCollide = false;
+	obstructionBox.Color = Color3.fromRGB(255, 255, 255);
+	obstructionBox.CFrame = new CFrame(position).mul(CFrame.Angles(0, 0, math.rad(90)));
+	obstructionBox.CastShadow = false;
+	obstructionBox.Parent = obstructionBoxModel;
+
+	return obstructionBoxModel;
+}
+
 export function createRangeModel(range: number, position: Vector3, enabled: boolean = true): Model {
 	const rangeIndicatorModel = new Instance("Model");
 
