@@ -11,25 +11,22 @@ interface ObstructionBoxProps {
 	obstructionRadius: number;
 }
 
-function ObstructionBox({ position, obstructionRadius }: ObstructionBoxProps) {
+const ObstructionBox = ({ position, obstructionRadius }: ObstructionBoxProps) => {
 	return (
-		<model>
-			<humanoid />
-			<part
-				Shape={Enum.PartType.Cylinder}
-				Size={new Vector3(0.12, obstructionRadius * 2, obstructionRadius * 2)}
-				Anchored={true}
-				CanCollide={false}
-				Color={Color3.fromRGB(255, 0, 0)}
-				CFrame={new CFrame(position).mul(CFrame.Angles(0, 0, math.rad(90)))}
-				CastShadow={false}
-				Material={Enum.Material.SmoothPlastic}
-			/>
-		</model>
+		<part
+			Shape={Enum.PartType.Cylinder}
+			Size={new Vector3(0.12, obstructionRadius * 2, obstructionRadius * 2)}
+			Anchored={true}
+			CanCollide={false}
+			Color={Color3.fromRGB(255, 0, 0)}
+			CFrame={new CFrame(position).mul(CFrame.Angles(0, 0, math.rad(90)))}
+			CastShadow={false}
+			Material={Enum.Material.SmoothPlastic}
+		/>
 	);
-}
+};
 
-export function ObstructionBoxes() {
+export const ObstructionBoxes = () => {
 	const towers = useSelector(selectTowers);
 
 	const towerIds = Object.keys(towers);
