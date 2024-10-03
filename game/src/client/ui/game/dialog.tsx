@@ -5,13 +5,14 @@ import { useRem } from "../hooks/use-rem";
 import { fonts } from "../constants/fonts";
 import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { useSelector } from "@rbxts/react-reflex";
-import { selectDialogs } from "shared/store/dialog";
+import { selectDialogs, selectOwnDialogIndex } from "shared/store/dialog";
 import { Dialog } from "shared/store/level";
 import { setInterval } from "@rbxts/set-timeout";
 import { holdForPromise } from "shared/modules/utils/wait-util";
 import Object from "@rbxts/object-utils";
 import { selectDialogVisibilityType } from "client/store/settings";
 import { style } from "client/constants/style";
+import { Events } from "client/network";
 
 interface DialogFrameProps {
 	dialogTextProps: DialogTextProps;
@@ -69,6 +70,7 @@ export function Dialog() {
 	const [dialogVisible, setDialogVisible] = useState<boolean>(false);
 	const [dialogCountdown, setDialogCountdown] = useState<number>(0);
 	const dialogs = useSelector(selectDialogs, Object.deepEquals);
+	const currentDialogIndex = useSelector(selectOwnDialogIndex);
 
 	if (dialogVisibilityType === "NO") return <></>;
 
@@ -76,8 +78,11 @@ export function Dialog() {
 		let cancelTimeout = () => {};
 
 		(async () => {
-			for (let dialogIndex = 0; dialogIndex < dialogs.size(); dialogIndex++) {
+			for (let dialogIndex = currentDialogIndex; dialogIndex < dialogs.size(); dialogIndex++) {
 				const dialog = dialogs[dialogIndex];
+
+				print("I'm tryna fire the event!");
+				Events.incrementDialogIndex.fire();
 
 				cancelTimeout();
 
@@ -108,12 +113,17 @@ export function Dialog() {
 					}
 				});
 
+				let dismounted = false;
+
 				cancelTimeout = () => {
+					dismounted = true;
 					nextDialogPromise.cancel();
 					disconnect();
 				};
 
 				nextDialogPromise.await();
+
+				if (dismounted) break;
 			}
 		})();
 

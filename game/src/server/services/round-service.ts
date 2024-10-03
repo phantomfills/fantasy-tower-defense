@@ -65,6 +65,11 @@ export class RoundService implements OnStart {
 			const roundNumber = roundIndex + 1;
 
 			if (round.dialogs.size() > 0) producer.setDialogs(round.dialogs);
+			holdFor(
+				round.dialogs.reduce((accumulator, dialog) => {
+					return accumulator + (dialog.dialogType === "AUTO_DISAPPEAR" ? dialog.disappearTimestamp : 0);
+				}, 0),
+			);
 
 			const roundBonus = getRoundBonusForRound(roundNumber, ROUND_BONUS, ROUND_BONUS_MULTIPLIER);
 
