@@ -70,7 +70,6 @@ export class TowerService implements OnStart, OnTick {
 			const doesTowerObstructionBoxCollideWithAnother = producer.getState(
 				selectDoesTowerObstructionBoxCollideWithAnother(cframe.Position, getTowerObstructionRadius(_type)),
 			);
-			print(doesTowerObstructionBoxCollideWithAnother);
 			if (doesTowerObstructionBoxCollideWithAnother) return;
 
 			const userId = tostring(player.UserId);

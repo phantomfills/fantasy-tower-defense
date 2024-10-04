@@ -80,8 +80,7 @@ export function Dialog() {
 		(async () => {
 			for (let dialogIndex = currentDialogIndex; dialogIndex < dialogs.size(); dialogIndex++) {
 				const dialog = dialogs[dialogIndex];
-
-				print("I'm tryna fire the event!");
+				
 				Events.incrementDialogIndex.fire();
 
 				cancelTimeout();
