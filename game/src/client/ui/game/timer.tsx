@@ -1,19 +1,18 @@
-import React from "@rbxts/react";
+import React, { useBinding } from "@rbxts/react";
 import { style } from "client/constants/style";
 import { fonts } from "../constants/fonts";
 import { Label } from "../utils/label";
-import { OneThickWhiteStroke } from "../utils/one-thick-white-stroke";
 import { Frame } from "../utils/frame";
 
 interface TimerProps {
 	time?: number;
-	alpha: React.Binding<number>;
+	alpha: number | React.Binding<number>;
 	size: UDim2;
 	position: UDim2;
 }
 
 export function Timer({ time, alpha, size, position }: TimerProps) {
-	const rotationDegrees = alpha.map((a) => a * 360);
+	const rotationDegrees = typeIs(alpha, "number") ? useBinding<number>(alpha * 360)[0] : alpha.map((a) => a * 360);
 
 	return (
 		<Frame size={size} position={position} backgroundTransparency={1}>

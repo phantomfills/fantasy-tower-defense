@@ -14,12 +14,11 @@ import { selectDialogVisibilityType } from "client/store/settings";
 import { style } from "client/constants/style";
 import { Events } from "client/network";
 import { Timer } from "./timer";
-import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
 import { useTimer } from "@rbxts/pretty-react-hooks";
 
 interface DialogFrameProps {
 	time: number;
-	alpha: React.Binding<number>;
+	alpha: number | React.Binding<number>;
 	text: string | undefined;
 }
 
