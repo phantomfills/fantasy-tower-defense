@@ -13,17 +13,22 @@ import Object from "@rbxts/object-utils";
 import { selectDialogVisibilityType } from "client/store/settings";
 import { style } from "client/constants/style";
 import { Events } from "client/network";
+import { Timer } from "./timer";
+import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
+import { useTimer } from "@rbxts/pretty-react-hooks";
 
 interface DialogFrameProps {
-	dialogTextProps: DialogTextProps;
+	time: number;
+	alpha: React.Binding<number>;
+	text: string | undefined;
 }
 
-export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
+export function DialogFrame({ text, time, alpha }: DialogFrameProps) {
 	return (
 		<Frame
 			size={new UDim2(0.3, 0, 0.25, 0)}
 			position={new UDim2(0.5, 0, 0.625, 0)}
-			backgroundColor={style.black}
+			backgroundColor={style.light_blue}
 			anchorPoint={new Vector2(0.5, 0.5)}
 		>
 			<OneThickWhiteStroke />
@@ -32,7 +37,7 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 				size={new UDim2(1, -25, 1, -25)}
 				position={new UDim2(0.5, 0, 0.5, 0)}
 				anchorPoint={new Vector2(0.5, 0.5)}
-				backgroundColor={style.light_blue}
+				backgroundColor={style.black}
 			>
 				<uipadding
 					PaddingTop={new UDim(0, 10)}
@@ -41,24 +46,10 @@ export function DialogFrame({ dialogTextProps }: DialogFrameProps) {
 					PaddingRight={new UDim(0, 10)}
 				/>
 				<uicorner CornerRadius={new UDim(0, 3)} />
-				<Frame
-					size={new UDim2(0, 30, 0, 30)}
-					position={new UDim2(1, -15, 1, -15)}
-					backgroundTransparency={0}
-					backgroundColor={style.black}
-				>
-					<uicorner CornerRadius={new UDim(0.5, 0)} />
-					<OneThickWhiteStroke />
-					<Label
-						size={new UDim2(0.75, 0, 0.75, 0)}
-						position={new UDim2(0.125, 0, 0.125, 0)}
-						text={tostring(dialogTextProps.countdownTime)}
-						font={fonts.inter.bold}
-						textColor={style.white}
-					/>
-				</Frame>
+
+				<Timer time={time} alpha={alpha} size={new UDim2(0, 30, 0, 30)} position={new UDim2(1, -15, 1, -15)} />
 				<OneThickWhiteStroke />
-				<DialogText {...dialogTextProps} />
+				<DialogText text={text} />
 			</Frame>
 		</Frame>
 	);
@@ -69,8 +60,10 @@ export function Dialog() {
 	const [dialogText, setDialogText] = useState<string | undefined>(undefined);
 	const [dialogVisible, setDialogVisible] = useState<boolean>(false);
 	const [dialogCountdown, setDialogCountdown] = useState<number>(0);
+	const [dialogTotalTime, setDialogTotalTime] = useState<number>(0);
 	const dialogs = useSelector(selectDialogs, Object.deepEquals);
 	const currentDialogIndex = useSelector(selectOwnDialogIndex);
+	const timer = useTimer();
 
 	if (dialogVisibilityType === "NO") return <></>;
 
@@ -80,7 +73,7 @@ export function Dialog() {
 		(async () => {
 			for (let dialogIndex = currentDialogIndex; dialogIndex < dialogs.size(); dialogIndex++) {
 				const dialog = dialogs[dialogIndex];
-				
+
 				Events.incrementDialogIndex.fire();
 
 				cancelTimeout();
@@ -94,6 +87,9 @@ export function Dialog() {
 
 				let currentDialogCountdown = math.floor(dialog.disappearTimestamp / 1000);
 				setDialogCountdown(currentDialogCountdown);
+				setDialogTotalTime(dialog.disappearTimestamp / 1000);
+				timer.reset();
+				timer.start();
 
 				const disconnect = setInterval(() => {
 					currentDialogCountdown -= 1;
@@ -132,7 +128,11 @@ export function Dialog() {
 	}, [dialogs]);
 
 	return dialogVisible ? (
-		<DialogFrame dialogTextProps={{ text: dialogText, countdownTime: dialogCountdown }} />
+		<DialogFrame
+			text={dialogText}
+			time={dialogCountdown}
+			alpha={timer.value.map((value) => 1 - (value * 1000) / (dialogTotalTime * 1000))}
+		/>
 	) : (
 		<></>
 	);
@@ -140,7 +140,6 @@ export function Dialog() {
 
 interface DialogTextProps {
 	text: string | undefined;
-	countdownTime: number | undefined;
 }
 
 export function DialogText({ text }: DialogTextProps) {

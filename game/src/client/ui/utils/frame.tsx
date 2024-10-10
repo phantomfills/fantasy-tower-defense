@@ -15,6 +15,7 @@ export interface FrameProps<T extends Instance = Frame> extends React.PropsWithC
 	zIndex?: number | React.Binding<number>;
 	layoutOrder?: number | React.Binding<number>;
 	cornerRadius?: UDim | React.Binding<UDim>;
+	sizeConstraint?: Enum.SizeConstraint;
 }
 
 export const Frame = forwardRef((props: FrameProps, ref: Ref<Frame>) => {
@@ -34,6 +35,7 @@ export const Frame = forwardRef((props: FrameProps, ref: Ref<Frame>) => {
 			BorderSizePixel={0}
 			Event={props.event}
 			Change={props.change}
+			SizeConstraint={props.sizeConstraint}
 		>
 			{props.children}
 			{props.cornerRadius && <uicorner CornerRadius={props.cornerRadius} />}
