@@ -36,6 +36,7 @@
     "@rbxts/beacon": "^2.1.1",
     "@rbxts/catppuccin": "^1.0.2",
     "@rbxts/maid": "^1.1.0",
+    "@rbxts/matter": "^0.8.5",
     "@rbxts/object-utils": "^1.0.4",
     "@rbxts/pretty-react-hooks": "^0.4.2",
     "@rbxts/react": "^0.3.6",

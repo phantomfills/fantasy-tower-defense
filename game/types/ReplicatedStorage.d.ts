@@ -820,29 +820,23 @@ interface ReplicatedStorage extends Instance {
 					};
 					rightArm: MeshPart & {
 						gun: Motor6D;
+						rightSleeve: Weld;
+						rightGlove: Weld;
 					};
 					appearance: Folder & {
-						leftSleeve: MeshPart & {
-							WeldConstraint: WeldConstraint;
-						};
+						leftSleeve: MeshPart;
 						hat: Part & {
 							Mesh: SpecialMesh;
 						};
-						rightSleeve: MeshPart & {
-							WeldConstraint: WeldConstraint;
-						};
+						rightSleeve: MeshPart;
 						leftShoe: MeshPart & {
 							WeldConstraint: WeldConstraint;
 						};
-						rightShoe: MeshPart & {
-							WeldConstraint: WeldConstraint;
-						};
+						rightShoe: MeshPart;
 						leftGlove: MeshPart & {
 							WeldConstraint: WeldConstraint;
 						};
-						rightGlove: MeshPart & {
-							WeldConstraint: WeldConstraint;
-						};
+						rightGlove: MeshPart;
 						gun: Part & {
 							SpecialMesh: SpecialMesh;
 							tipAttachment: Attachment;
@@ -851,8 +845,13 @@ interface ReplicatedStorage extends Instance {
 							SpecialMesh: SpecialMesh;
 						};
 					};
-					leftArm: MeshPart;
-					rightLeg: MeshPart;
+					leftArm: MeshPart & {
+						leftGlove: Weld;
+						leftSleeve: Weld;
+					};
+					rightLeg: MeshPart & {
+						rightShoe: Weld;
+					};
 					torso: MeshPart & {
 						["Left Shoulder"]: Motor6D;
 						["Right Shoulder"]: Motor6D;
@@ -865,11 +864,77 @@ interface ReplicatedStorage extends Instance {
 						rootAttachment: Attachment;
 						RootJoint: Motor6D;
 					};
-					leftLeg: MeshPart;
+					leftLeg: MeshPart & {
+						leftShoe: Weld;
+					};
 				};
 			};
 		};
 		maps: Folder & {
+			wacky_weather: Model & {
+				track: Folder;
+				placementArea: Folder & {
+					ground: Folder & {
+						snowPart: Part;
+					};
+				};
+				environment: Folder & {
+					terrain: Folder;
+					objects: Folder;
+				};
+				paths: Folder & {
+					["0"]: Folder & {
+						["1"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["3"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["2"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["5"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["4"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["7"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["6"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["14"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["8"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["16"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["9"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["13"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["12"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["11"]: Part & {
+							waypointAttachment: Attachment;
+						};
+						["10"]: Part & {
+							waypointAttachment: Attachment;
+						};
+					};
+				};
+				spawns: Folder;
+				ground: Folder;
+				cake: MeshPart;
+			};
 			tutorial: Model & {
 				track: Folder;
 				path: Folder & {

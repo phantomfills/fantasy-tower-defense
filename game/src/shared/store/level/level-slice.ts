@@ -13,7 +13,7 @@ export type Round = {
 	dialogs: Dialog[];
 };
 
-export type E_Maps = "TUTORIAL" | "DOUBLE_LANE";
+export type E_Maps = "TUTORIAL" | "DOUBLE_LANE" | "WACKY_WEATHER";
 export type E_OneTimeObjective = "EAT_CAKE";
 export type E_ProgressiveObjective = "COMPLETE_10_ROUNDS";
 export type E_AllObjectives = E_OneTimeObjective | E_ProgressiveObjective;
@@ -62,7 +62,7 @@ const dialogTimestamps = {
 } as const;
 
 const initialState: Level = {
-	name: "Tutorial",
+	name: "Wacky Weather",
 	rounds: [
 		{
 			enemyGroups: [
@@ -117,7 +117,7 @@ const initialState: Level = {
 	],
 	lives: 1_000,
 	startingMoney: 100_000,
-	mapType: "TUTORIAL",
+	mapType: "WACKY_WEATHER",
 	gameOver: false,
 	objectives: ["COMPLETE_10_ROUNDS", "EAT_CAKE"],
 	playersCanPlaceTowers: true,

@@ -32,6 +32,55 @@ export function selectEnemies(state: SharedState): Record<string, Enemy | undefi
 	return state.enemy.enemies;
 }
 
+export function selectEnemyIdsInRange(position: Vector3, range: number, currentTimestamp: number) {
+	return createSelector([selectEnemyState, selectLevel], (enemyState, level) => {
+		const enemiesInRange = Object.keys(enemyState.enemies).filter((enemyId) => {
+			const pathCompletionAlpha = selectEnemyPathCompletionAlpha(
+				enemyId,
+				currentTimestamp,
+			)({
+				enemy: enemyState,
+				level,
+			});
+
+			const enemy = enemyState.enemies[enemyId];
+			if (!enemy) return false;
+
+			const enemyCFrame = getCFrameFromPathCompletionAlpha(
+				getGameMapFromMapType(level.mapType).paths[enemy.path],
+				pathCompletionAlpha,
+			);
+
+			const enemyPosition = enemyCFrame.Position;
+
+			const distanceToEnemy = enemyPosition.sub(position).Magnitude;
+			return distanceToEnemy <= range;
+		});
+
+		const enemiesInRangeByDistanceTravelled = enemiesInRange.sort((previousEnemyId, currentEnemyId) => {
+			const previousEnemyPathCompletionAlpha = selectEnemyPathCompletionAlpha(
+				previousEnemyId,
+				currentTimestamp,
+			)({
+				enemy: enemyState,
+				level,
+			});
+
+			const currentEnemyPathCompletionAlpha = selectEnemyPathCompletionAlpha(
+				currentEnemyId,
+				currentTimestamp,
+			)({
+				enemy: enemyState,
+				level,
+			});
+
+			return currentEnemyPathCompletionAlpha < previousEnemyPathCompletionAlpha;
+		});
+
+		return enemiesInRangeByDistanceTravelled;
+	});
+}
+
 export function selectEnemyIdsInTowerRange(towerId: string, currentTimestamp: number) {
 	return createSelector([selectEnemyState, selectTowers, selectLevel], (enemyState, towers, level) => {
 		const possibleTower = possible<Tower>(towers[towerId]);

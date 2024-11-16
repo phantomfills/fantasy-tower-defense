@@ -9,3 +9,9 @@
  */
 // TODO: Selective placement system
 // TODO: Make a multi-place game and add a lobby
+
+// VERSION 1.0.0:
+// TODO: Make 12 maps and include 3 maps which have 2/3 paths
+// TODO: Make 3 different modes, so that each mode is an extension of the previous mode with harder rules
+// TODO: 3 medals for each map: Bronze, Silver, Gold for Easy, Medium, Hard
+// TODO: Make doctor tower -> heals nearby towers

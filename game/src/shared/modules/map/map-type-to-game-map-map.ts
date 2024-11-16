@@ -33,6 +33,14 @@ const mapTypeToGameMapMap: Record<E_Maps, GameMap> = {
 				.sort((a, b) => (tonumber(a.Name) ?? 0) < (tonumber(b.Name) ?? 0)) as PathWaypoint[],
 		],
 	},
+	WACKY_WEATHER: {
+		template: ReplicatedStorage.assets.maps.wacky_weather,
+		paths: [
+			ReplicatedStorage.assets.maps.wacky_weather.paths["0"]
+				.GetChildren()
+				.sort((a, b) => (tonumber(a.Name) ?? 0) < (tonumber(b.Name) ?? 0)) as PathWaypoint[],
+		],
+	},
 };
 
 export function getGameMapFromMapType(mapType: E_Maps) {
