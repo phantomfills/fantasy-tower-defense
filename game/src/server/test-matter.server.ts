@@ -6,6 +6,9 @@ import { producer } from "./store";
 import { attackEnemy } from "./events";
 import { createBasicTowerAttack } from "shared/modules/attack";
 import { createId } from "shared/modules/utils/id-utils";
+import { modelComponent } from "shared/components/model";
+import { enemyComponent } from "shared/components/enemy";
+import { createEnemyModel, enemiesProgressThroughPath } from "./systems/enemy";
 
 const world = new World();
 const loop = new Loop(world);
@@ -28,6 +31,8 @@ const helicopterLoops = () => {
 				position: updatedPosition,
 			}),
 		);
+
+		model.model;
 
 		const currentTimestamp = getCurrentTimeInMilliseconds();
 		if (currentTimestamp - lastAttackTimestamp > firerate * 1000) {
@@ -60,7 +65,7 @@ const helicopterLoops = () => {
 	}
 };
 
-loop.scheduleSystem(helicopterLoops);
+loop.scheduleSystems([helicopterLoops, enemiesProgressThroughPath, createEnemyModel]);
 
 loop.begin({
 	default: RunService.Heartbeat,
@@ -75,10 +80,6 @@ const helicopterComponent = component<{
 	range: number;
 	damage: number;
 	lastAttackTimestamp: number;
-}>();
-
-const modelComponent = component<{
-	model: Model;
 }>();
 
 const helicopterModel = new Instance("Model");
@@ -104,3 +105,15 @@ const helicopter = world.spawn(
 		model: helicopterModel,
 	}),
 );
+
+const zombie = world.spawn(
+	enemyComponent({
+		enemyType: "ZOMBIE",
+		health: 100,
+		path: 0,
+		pathProgress: 0,
+		speed: 0,
+	}),
+);
+
+print("hi!");
