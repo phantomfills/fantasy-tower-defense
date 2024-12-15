@@ -57,8 +57,8 @@ const enemySpawnIntervals = {
 } as const;
 
 const dialogTimestamps = {
-	conversation: 10_000,
-	information: 15_000,
+	conversation: 2_000,
+	information: 5_000,
 } as const;
 
 const initialState: Level = {

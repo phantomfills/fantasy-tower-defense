@@ -1,7 +1,6 @@
 import { Networking } from "@flamework/networking";
 import { TowerType } from "./modules/tower/tower-type";
 import { BroadcastAction } from "@rbxts/reflex";
-import { EnemyAttack, TowerAttack } from "./modules/attack";
 import { MapModel } from "./modules/map/map-type-to-game-map-map";
 
 /**
@@ -25,8 +24,6 @@ interface SharedEvents {
 }
 
 interface ServerToClientEvents extends SharedEvents {
-	towerAttack: Networking.Unreliable<(attack: TowerAttack) => void>;
-	enemyAttack: Networking.Unreliable<(attack: EnemyAttack) => void>;
 	playSound(soundId: string): void;
 }
 

@@ -13,11 +13,8 @@ export function getCFrameFromPathCompletionAlpha(path: PathWaypoint[], pathCompl
 
 		if (totalDistance >= pathLengthCompletion) {
 			const alpha = (pathLengthCompletion - (totalDistance - distance)) / distance;
-			const position = waypoint.CFrame.Lerp(nextWaypoint.CFrame, alpha).Position;
-			const rotation = waypoint.CFrame.Rotation.Lerp(
-				nextWaypoint.CFrame.Rotation,
-				math.min(alpha * 10, 1),
-			).Rotation;
+			const position = waypoint.GetPivot().Lerp(nextWaypoint.GetPivot(), alpha).Position;
+			const rotation = nextWaypoint.GetPivot().Rotation;
 			return new CFrame(position).mul(rotation);
 		}
 	}

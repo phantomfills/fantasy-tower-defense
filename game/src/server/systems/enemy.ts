@@ -4,44 +4,120 @@ import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-m
 import { producer } from "server/store";
 import { selectMapType } from "shared/store/level";
 import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
-import { enemyComponent } from "shared/components/enemy";
-import { modelComponent } from "shared/components/model";
+import { enemyComponent, enemyModelComponent } from "shared/components/enemy";
 import { Workspace } from "@rbxts/services";
+import { getEnemyModelFromType } from "shared/constants/enemy";
+import { snapToCFrameWithAttachmentOffset } from "shared/modules/utils/snap-to-cframe";
+import { healthComponent, pathFollowerComponent, traitsComponent } from "shared/components/util";
 
-export const enemiesProgressThroughPath = (world: World) => {
-	for (const [id, enemy, model] of world.query(enemyComponent, modelComponent)) {
-		const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[enemy.path];
+const enemiesProgressThroughPath = (world: World) => {
+	for (const [id, model, pathFollower] of world.query(enemyModelComponent, pathFollowerComponent, enemyComponent)) {
+		const path = getGameMapFromMapType(producer.getState(selectMapType)).paths[pathFollower.index];
 		const pathLength = getPathLength(path);
-		const enemyStats = describeEnemyFromType(enemy.enemyType);
 
-		const progressIncrement = (enemyStats.speed / pathLength) * useDeltaTime();
-		const newProgress = math.clamp(enemy.pathProgress + progressIncrement, 0, 1);
+		const progressIncrement = (pathFollower.speed / pathLength) * useDeltaTime() * pathFollower.speed;
+		const newProgress = math.clamp(pathFollower.progressionAlpha + progressIncrement, 0, 1);
 
 		const newCFrame = getCFrameFromPathCompletionAlpha(path, newProgress);
-		model.model.PivotTo(newCFrame);
+		snapToCFrameWithAttachmentOffset(model.model, model.model.humanoidRootPart.rootAttachment, newCFrame);
 
-		world.insert(id, enemy.patch({ pathProgress: newProgress }));
+		world.insert(id, pathFollower.patch({ progressionAlpha: newProgress, cframe: newCFrame }));
 	}
 };
 
-export const createEnemyModel = (world: World) => {
-	for (const [id] of world.query(enemyComponent).without(modelComponent)) {
-		const model = new Instance("Model");
+const createEnemyModels = (world: World) => {
+	for (const [id, enemy] of world.query(enemyComponent).without(enemyModelComponent)) {
+		const model = getEnemyModelFromType(enemy.enemyType);
 		model.Parent = Workspace;
-		model.Name = "Zombie";
-
-		const part = new Instance("Part");
-		part.Size = new Vector3(1, 1, 1);
-		part.Anchored = true;
-		part.CanCollide = false;
-		part.Position = new Vector3(0, 0, 0);
-		part.Parent = model;
 
 		world.insert(
 			id,
-			modelComponent({
+			enemyModelComponent({
 				model,
 			}),
 		);
 	}
 };
+
+const createEnemyHealth = (world: World) => {
+	for (const [id, enemy] of world.query(enemyComponent).without(healthComponent)) {
+		const health = describeEnemyFromType(enemy.enemyType).maxHealth;
+
+		world.insert(
+			id,
+			healthComponent({
+				value: health,
+				max: health,
+			}),
+		);
+	}
+};
+
+const createEnemyPathFollower = (world: World) => {
+	for (const [id, enemy] of world.query(enemyComponent).without(pathFollowerComponent)) {
+		const speed = describeEnemyFromType(enemy.enemyType).speed;
+
+		world.insert(
+			id,
+			pathFollowerComponent({
+				index: 0,
+				progressionAlpha: 0,
+				cframe: new CFrame(0, -1000, 0),
+				speed,
+			}),
+		);
+	}
+};
+
+const createEnemyTraits = (world: World) => {
+	for (const [id, enemy] of world.query(enemyComponent).without(traitsComponent)) {
+		const traits = describeEnemyFromType(enemy.enemyType).traits;
+
+		world.insert(
+			id,
+			traitsComponent({
+				traits,
+			}),
+		);
+	}
+};
+
+const enemiesDespawn = (world: World) => {
+	for (const [id, pathFollower, health, model] of world.query(
+		pathFollowerComponent,
+		healthComponent,
+		enemyModelComponent,
+		enemyComponent,
+	)) {
+		if (pathFollower.progressionAlpha < 1) continue;
+
+		producer.deductLives(health.value);
+
+		model.model.Destroy();
+
+		world.despawn(id);
+	}
+};
+
+const enemiesDie = (world: World) => {
+	for (const [id, enemy, health, model] of world.query(enemyComponent, healthComponent, enemyModelComponent)) {
+		if (health.value > 0) continue;
+
+		const { money } = describeEnemyFromType(enemy.enemyType);
+		producer.awardBonusToAll(money);
+
+		model.model.Destroy();
+
+		world.despawn(id);
+	}
+};
+
+export const enemySystems = [
+	enemiesProgressThroughPath,
+	createEnemyModels,
+	createEnemyHealth,
+	createEnemyTraits,
+	createEnemyPathFollower,
+	enemiesDespawn,
+	enemiesDie,
+];

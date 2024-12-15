@@ -1,13 +1,13 @@
 import { Service, OnStart } from "@flamework/core";
 import { Players, RunService } from "@rbxts/services";
-import { createAttackingEnemy, createNonAttackingEnemy } from "server/modules/enemy/enemy-factory";
 import { producer } from "server/store";
+import { world } from "server/world";
+import { enemyComponent } from "shared/components/enemy";
 import { isNonAttackingEnemyType } from "shared/modules/enemy/enemy-type";
 import { getGameMapFromMapType } from "shared/modules/map/map-type-to-game-map-map";
 import { tracks } from "shared/modules/music/tracks";
 import { createId } from "shared/modules/utils/id-utils";
 import { holdFor } from "shared/modules/utils/wait-util";
-import { selectNoEnemiesExist } from "shared/store/enemy";
 import { Round, selectGameOver, selectLevelStarted, selectMapType, selectRounds } from "shared/store/level";
 
 const INTERVAL_BETWEEN_ROUNDS_MILLISECONDS = 1_000;
@@ -42,7 +42,9 @@ export class RoundService implements OnStart {
 	onStart() {
 		producer.subscribe(selectGameOver, (gameOver) => {
 			if (!gameOver) return;
-			producer.clearEnemies();
+			for (const [id] of world.query(enemyComponent)) {
+				world.despawn(id);
+			}
 		});
 
 		while (Players.GetPlayers().size() === 0) {
@@ -51,12 +53,9 @@ export class RoundService implements OnStart {
 
 		producer.wait(selectLevelStarted).catch(warn).await();
 
-		holdFor(5_000);
+		holdFor(10);
 
 		producer.setTrackId(tracks.intro_music);
-
-		const playerCount = Players.GetPlayers().size();
-		producer.setEnemyHealthScaleFactor(getEnemyHealthScaleFactor(playerCount));
 
 		const rounds = producer.getState(selectRounds);
 
@@ -91,13 +90,6 @@ export class RoundService implements OnStart {
 
 			producer.addProgressToObjectiveForAllPlayers("COMPLETE_10_ROUNDS", 1);
 		}
-
-		for (;;) {
-			const enemy = createNonAttackingEnemy("ZOMBIE_SWORDER", 0);
-			producer.addEnemy(enemy, createId());
-
-			task.wait(0.2);
-		}
 	}
 
 	private async spawnRound(round: Round): Promise<RoundResult> {
@@ -112,14 +104,11 @@ export class RoundService implements OnStart {
 					const gameOver = producer.getState(selectGameOver);
 					if (gameOver) return { type: "error", message: "Game over - cancelling round" };
 
-					const id = createId();
-					if (isNonAttackingEnemyType(enemyType)) {
-						const enemy = createNonAttackingEnemy(enemyType, currentPath);
-						producer.addEnemy(enemy, id);
-					} else {
-						const enemy = createAttackingEnemy(enemyType, currentPath);
-						producer.addEnemy(enemy, id);
-					}
+					world.spawn(
+						enemyComponent({
+							enemyType: enemyType,
+						}),
+					);
 
 					currentPath++;
 					if (currentPath > numberOfPaths - 1) currentPath = 0;
@@ -136,7 +125,7 @@ export class RoundService implements OnStart {
 		while (!roundEnded) {
 			RunService.Heartbeat.Wait();
 
-			roundEnded = producer.getState(selectNoEnemiesExist);
+			roundEnded = world.query(enemyComponent).snapshot().isEmpty();
 		}
 
 		return { type: "success" };

@@ -1,6 +1,7 @@
 import { Workspace } from "@rbxts/services";
-import { ClientEnemy, EnemyModel } from "./client-enemy";
-import { getEnemyModelFromType } from "./shared-functionality/enemy-type-to-model-map";
+import { ClientEnemy } from "./client-enemy";
+import { EnemyModel } from "shared/constants/enemy";
+import { getEnemyModelFromType } from "shared/constants/enemy";
 import { createAnimationTrack } from "../animation-utils";
 import { animations } from "./shared-functionality/vfx/animations";
 

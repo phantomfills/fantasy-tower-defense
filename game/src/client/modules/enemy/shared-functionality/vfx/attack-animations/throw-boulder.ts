@@ -1,5 +1,5 @@
 import { Debris, ReplicatedStorage, TweenService, Workspace } from "@rbxts/services";
-import { EnemyModel } from "client/modules/enemy/client-enemy";
+import { EnemyModel } from "shared/constants/enemy";
 import { tags } from "shared/modules/utils/tags";
 import { holdFor } from "shared/modules/utils/wait-util";
 

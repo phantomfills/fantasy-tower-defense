@@ -1,7 +1,12 @@
 import { EnemyType } from "shared/modules/enemy/enemy-type";
-import { EnemyModel } from "../client-enemy";
 import { ReplicatedStorage } from "@rbxts/services";
 import { DeepReadonly } from "@rbxts/reflex";
+
+export interface EnemyModel extends Model {
+	humanoidRootPart: BasePart & {
+		rootAttachment: Attachment;
+	};
+}
 
 const enemyModels = ReplicatedStorage.assets.enemies;
 

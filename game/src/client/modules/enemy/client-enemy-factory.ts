@@ -1,5 +1,6 @@
 import { EnemyType } from "shared/modules/enemy/enemy-type";
-import { ClientEnemy, EnemyModel } from "./client-enemy";
+import { ClientEnemy } from "./client-enemy";
+import { EnemyModel } from "shared/constants/enemy";
 import { ClientZombie } from "./client-zombie";
 import { ClientZombieSworder } from "./client-zombie-sworder";
 

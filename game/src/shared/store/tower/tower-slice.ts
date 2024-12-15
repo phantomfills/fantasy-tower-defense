@@ -37,7 +37,7 @@ export const towerSlice = createProducer(initialState, {
 		return { ...state, towers: { ...state.towers, [id]: undefined } };
 	},
 
-	setLastAtackTimestamp: (state, id: string, timestamp: number) => {
+	setLastAttackTimestamp: (state, id: string, timestamp: number) => {
 		const possibleTower = possible<Tower>(state.towers[id]);
 		if (!possibleTower.exists) throw `Tower with id ${id} does not exist`;
 

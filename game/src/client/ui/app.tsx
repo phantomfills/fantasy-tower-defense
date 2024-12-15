@@ -6,10 +6,8 @@ import { MatchInfo } from "./game/match-info";
 import { TowerActionMenu } from "./tower/tower-action-menu";
 import { Music } from "./music/music";
 import { Dialog } from "./game/dialog";
-import { EnemyTooltipBillboard } from "./enemy/enemy-tooltip";
 import { RangeIndicator } from "./tower/range-part";
 import { ObjectivesPage, ObjectivesButton } from "./game/objectives";
-import { DamageIndicators } from "./enemy/enemy-damage-indicators";
 import { SettingsButton, SettingsMenu } from "./game/settings-menu";
 import { Page } from "./utils/page";
 import { Group } from "./utils/group";
@@ -27,9 +25,6 @@ export function App() {
 
 						<TowerActionMenu />
 						<RangeIndicator />
-
-						<EnemyTooltipBillboard />
-						<DamageIndicators />
 
 						<SettingsButton />
 						<ObjectivesButton />

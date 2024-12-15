@@ -4,7 +4,6 @@ import { towerLoadoutSlice } from "./tower-loadout";
 import { ReflexProvider } from "@rbxts/react-reflex";
 import { Events } from "client/network";
 import { slices } from "shared/store";
-import { enemyFocusSlice } from "./enemy-focus";
 import { towerActionSlice } from "./tower-action-menu";
 import { damageIndicatorSlice } from "./damage-indicator";
 import { settingsSlice } from "./settings";
@@ -15,7 +14,6 @@ export type RootState = InferState<typeof producer>;
 export const producer = combineProducers({
 	...slices,
 	towerLoadout: towerLoadoutSlice,
-	enemyFocus: enemyFocusSlice,
 	towerAction: towerActionSlice,
 	damageIndicator: damageIndicatorSlice,
 	settings: settingsSlice,

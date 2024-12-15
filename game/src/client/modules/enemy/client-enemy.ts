@@ -4,17 +4,12 @@ import { CollectionService, RunService, Workspace } from "@rbxts/services";
 import { possible } from "shared/modules/utils/possible";
 import { tags } from "shared/modules/utils/tags";
 import { removeShadows } from "../rig/remove-shadows";
+import { EnemyModel } from "shared/constants/enemy";
 
 const ENEMY_ON_SCREEN_BUFFER_PIXELS = 50;
 
 const MINIMUM_CLIENT_ENEMY_POSITION_OFFSET = -1;
 const MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET = 1;
-
-export interface EnemyModel extends Model {
-	humanoidRootPart: BasePart & {
-		rootAttachment: Attachment;
-	};
-}
 
 function getRandomOffset(random: Random): number {
 	return random.NextNumber(MINIMUM_CLIENT_ENEMY_POSITION_OFFSET, MAXIMUM_CLIENT_ENEMY_POSITION_OFFSET);

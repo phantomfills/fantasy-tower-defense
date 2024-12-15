@@ -64,10 +64,8 @@ export function createClientTower(towerType: TowerType, level: number, id: strin
 				return new ClientOfficer0(id, cframe);
 			} else if (level === 1) {
 				return new ClientOfficer1(id, cframe);
-				print(cframe);
 			} else if (level === 2) {
 				return new ClientOfficer2(id, cframe);
-				print(cframe);
 			} else if (level === 3) {
 				return new ClientOfficer3(id, cframe);
 			} else if (level === 4) {

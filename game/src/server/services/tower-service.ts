@@ -7,9 +7,7 @@ import {
 	selectPossibleTowerFromId,
 	selectTowers,
 } from "shared/store/tower";
-import { selectEnemies, selectEnemyCFrameFromId, selectFirstAttackableEnemyInTowerRange } from "shared/store/enemy";
 import { createId } from "shared/modules/utils/id-utils";
-import { createBasicTowerAttack } from "shared/modules/attack";
 import {
 	describeTowerFromType,
 	getSellPriceForTower,
@@ -17,32 +15,32 @@ import {
 	getTowerObstructionRadius,
 } from "shared/modules/tower/tower-type-to-tower-stats-map";
 import { getCurrentTimeInMilliseconds } from "shared/modules/utils/get-time-in-ms";
-import Object from "@rbxts/object-utils";
 import { selectMoney } from "shared/store/money";
 import { SELLBACK_RATE } from "shared/modules/money/sellback-rate";
-import { describeEnemyFromType } from "shared/modules/enemy/enemy-type-to-enemy-stats-map";
-import { attackEnemy } from "server/events";
 import { selectPlayersCanPlaceTowers, selectPlayersCanUpgradeTowers } from "shared/store/level";
-import { calculateEffectiveTowerDamageIfEnemyIsReinforced } from "shared/modules/attack/trait";
+import { calculateEffectiveTowerDamageIfEnemyIsReinforced, E_Trait } from "shared/modules/attack/trait";
 import { LevelService } from "./level-service";
+import { world } from "server/world";
+import { enemyComponent } from "shared/components/enemy";
+import { healthComponent, pathFollowerComponent, traitsComponent } from "shared/components/util";
 
 const MILLISECONDS_IN_SECOND = 1000;
 const HEAL_TICK = 2000;
 const HEAL_RATE_PER_TICK = 0.01;
 
-function userHasMoney(userId: string, amount: number): boolean {
+const userHasMoney = (userId: string, amount: number): boolean => {
 	const possibleUserMoney = producer.getState(selectMoney(userId));
 	if (!possibleUserMoney.exists) return false;
 
 	const userMoney = possibleUserMoney.value;
 	return userMoney >= amount;
-}
+};
 
-function deductMoneyFromUser(userId: string, amount: number) {
+const deductMoneyFromUser = (userId: string, amount: number) => {
 	producer.removeMoney(userId, amount);
-}
+};
 
-function sellTower(id: string) {
+const sellTower = (id: string) => {
 	const possibleTower = producer.getState(selectPossibleTowerFromId(id));
 	if (!possibleTower.exists) return;
 
@@ -53,7 +51,7 @@ function sellTower(id: string) {
 	producer.addMoney(owner, sellPrice);
 
 	producer.destroyTower(id);
-}
+};
 
 @Service({})
 export class TowerService implements OnStart, OnTick {
@@ -121,13 +119,15 @@ export class TowerService implements OnStart, OnTick {
 	onTick() {
 		const towers = producer.getState(selectTowers);
 
-		for (const [id, { lastAttackTimestamp, lastHealTimestamp, towerType, level, health }] of pairs(towers)) {
+		for (const [id, { lastAttackTimestamp, lastHealTimestamp, towerType, level, health, cframe }] of pairs(
+			towers,
+		)) {
 			if (health <= 0) {
 				sellTower(id);
 				continue;
 			}
 
-			const { cooldown, damage, traits, maxHealth } = describeTowerFromType(towerType, level);
+			const { cooldown, damage, traits, maxHealth, range } = describeTowerFromType(towerType, level);
 			const cooldownMilliseconds = cooldown * MILLISECONDS_IN_SECOND;
 
 			const currentTimestamp = getCurrentTimeInMilliseconds();
@@ -139,40 +139,55 @@ export class TowerService implements OnStart, OnTick {
 
 			if (currentTimestamp - lastAttackTimestamp < cooldownMilliseconds) continue;
 
-			const enemies = producer.getState(selectEnemies);
-			if (Object.keys(enemies).isEmpty()) continue;
+			const enemiesInRange = [];
 
-			const possibleFirstEnemyInRangeId = producer.getState(
-				selectFirstAttackableEnemyInTowerRange(id, getCurrentTimeInMilliseconds()),
+			for (const [id, enemy, pathFollower, health, traits] of world.query(
+				enemyComponent,
+				pathFollowerComponent,
+				healthComponent,
+				traitsComponent,
+			)) {
+				const enemyX = pathFollower.cframe.X;
+				const enemyZ = pathFollower.cframe.Z;
+				const enemyPosition = new Vector2(enemyX, enemyZ);
+
+				const towerX = cframe.X;
+				const towerZ = cframe.Z;
+				const towerPosition = new Vector2(towerX, towerZ);
+
+				const distance = enemyPosition.sub(towerPosition).Magnitude;
+				if (distance > range) continue;
+
+				enemiesInRange.push({
+					id,
+					enemy,
+					pathFollower,
+					health,
+					traits,
+				});
+			}
+
+			if (enemiesInRange.isEmpty()) continue;
+
+			const enemiesSortedByPathProgression = enemiesInRange.sort((entityA, entityB) => {
+				return entityA.pathFollower.progressionAlpha < entityB.pathFollower.progressionAlpha;
+			});
+
+			const firstEnemy = enemiesSortedByPathProgression[0];
+
+			const firstEnemyId = firstEnemy.id;
+			const firstEnemyHealth = firstEnemy.health;
+			const firstEnemyTraits = firstEnemy.traits.traits;
+
+			const effectiveDamage = calculateEffectiveTowerDamageIfEnemyIsReinforced(damage, firstEnemyTraits, traits);
+			world.insert(
+				firstEnemyId,
+				firstEnemyHealth.patch({
+					value: math.max(firstEnemyHealth.value - effectiveDamage, 0),
+				}),
 			);
-			if (!possibleFirstEnemyInRangeId.exists) continue;
 
-			const [firstEnemyInRangeId, firstEnemyInRange] = possibleFirstEnemyInRangeId.value;
-
-			const enemyTraits = describeEnemyFromType(firstEnemyInRange.enemyType).traits;
-
-			const effectiveDamage = calculateEffectiveTowerDamageIfEnemyIsReinforced(damage, enemyTraits, traits);
-
-			const possibleEnemyCFrame = producer.getState(
-				selectEnemyCFrameFromId(firstEnemyInRangeId, getCurrentTimeInMilliseconds()),
-			);
-			if (!possibleEnemyCFrame.exists) continue;
-
-			producer.setLastAtackTimestamp(id, currentTimestamp);
-
-			const enemyCFrame = possibleEnemyCFrame.value;
-			const enemyPosition = enemyCFrame.Position;
-
-			const attackId = createId();
-
-			const attack = createBasicTowerAttack(
-				attackId,
-				firstEnemyInRangeId,
-				enemyPosition,
-				id,
-				math.min(effectiveDamage, firstEnemyInRange.health),
-			);
-			attackEnemy.Fire(attack);
+			producer.setLastAttackTimestamp(id, currentTimestamp);
 		}
 	}
 }
