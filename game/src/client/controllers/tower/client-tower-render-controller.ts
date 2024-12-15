@@ -4,6 +4,7 @@ import { Possible, possible } from "shared/modules/utils/possible";
 import { Controller, OnStart } from "@flamework/core";
 import { producer } from "client/store";
 import { Tower, getPossibleTowerLevelFromId, selectTowers } from "shared/store/tower";
+import { Events } from "client/network";
 
 function getTowerId(_: Tower, id: string) {
 	return id;
@@ -50,6 +51,14 @@ export class ClientTowerRenderController implements OnStart {
 	}
 
 	onStart() {
+		Events.towerAttack.connect((towerId, enemyPosition) => {
+			const possibleClientTower = this.getClientTowerFromId(towerId);
+			if (!possibleClientTower.exists) return;
+
+			const clientTower = possibleClientTower.value;
+			clientTower.attack(enemyPosition);
+		});
+
 		producer.observe(selectTowers, getTowerId, ({ towerType, level, cframe }, id) => {
 			const clientTower = createClientTower(towerType, level, id, cframe);
 			this.addTower(clientTower);

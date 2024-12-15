@@ -170,12 +170,13 @@ export class TowerService implements OnStart, OnTick {
 			if (enemiesInRange.isEmpty()) continue;
 
 			const enemiesSortedByPathProgression = enemiesInRange.sort((entityA, entityB) => {
-				return entityA.pathFollower.progressionAlpha < entityB.pathFollower.progressionAlpha;
+				return entityA.pathFollower.progressionAlpha > entityB.pathFollower.progressionAlpha;
 			});
 
 			const firstEnemy = enemiesSortedByPathProgression[0];
 
 			const firstEnemyId = firstEnemy.id;
+			const firstEnemyPathFollower = firstEnemy.pathFollower;
 			const firstEnemyHealth = firstEnemy.health;
 			const firstEnemyTraits = firstEnemy.traits.traits;
 
@@ -186,6 +187,8 @@ export class TowerService implements OnStart, OnTick {
 					value: math.max(firstEnemyHealth.value - effectiveDamage, 0),
 				}),
 			);
+
+			Events.towerAttack.broadcast(id, firstEnemyPathFollower.cframe.Position);
 
 			producer.setLastAttackTimestamp(id, currentTimestamp);
 		}
