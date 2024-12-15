@@ -24,7 +24,7 @@ interface SharedEvents {
 }
 
 interface ServerToClientEvents extends SharedEvents {
-	towerAttack(towerId: string, position: Vector3): void;
+	towerAttack: Networking.Unreliable<(towerId: string, position: Vector3) => void>;
 
 	playSound(soundId: string): void;
 }
