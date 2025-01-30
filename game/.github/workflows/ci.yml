@@ -1,0 +1,34 @@
+name: CI
+
+on:
+    pull_request:
+        branches: [main, staging]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
+            - name: Install Aftman
+              uses: ok-nick/setup-aftman@v0.3.0
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Compile TypeScript
+              run: |
+                  cd places/game && npx rbxtsc
+                  cd ../lobby && npx rbxtsc
+                  cd ../..
+
+            - name: Build Game
+              run: |
+                  npm run build:game
+                  npm run build:lobby
