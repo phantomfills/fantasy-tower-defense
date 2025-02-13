@@ -1,0 +1,45 @@
+name: CD
+
+on:
+    push:
+        branches: [staging]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
+            - name: Install Aftman
+              uses: ok-nick/setup-aftman@v0.3.0
+
+            - name: Install Aftman Tools
+              run: aftman install
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Compile TypeScript
+              run: |
+                  cd places/game && npx rbxtsc
+                  cd ../lobby && npx rbxtsc
+                  cd ../..
+
+            - name: Build Game
+              run: |
+                  npm run build:game
+                  npm run build:lobby
+
+            - name: Deploy to Roblox
+              run: |
+                  # Publish lobby place
+                  rbxcloud experience publish --filename lobby.rbxl --place-id 83552070051981 --universe-id 7036225369 --version-type published --api-key ${{ secrets.API_KEY }}
+
+                  # Publish game place
+                  rbxcloud experience publish --filename game.rbxl --place-id 75209133349262 --universe-id 7036225369 --version-type published --api-key ${{ secrets.API_KEY }}
