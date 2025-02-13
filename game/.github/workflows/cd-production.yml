@@ -27,19 +27,12 @@ jobs:
 
             - name: Compile TypeScript
               run: |
-                  cd places/game && npx rbxtsc
-                  cd ../lobby && npx rbxtsc
-                  cd ../..
+                  npx rbxtsc
 
             - name: Build Game
               run: |
-                  npm run build:game
-                  npm run build:lobby
+                  npm run build-rbx
 
             - name: Deploy to Roblox
               run: |
-                  # Publish lobby place
-                  rbxcloud experience publish --filename lobby.rbxl --place-id 115043277181447 --universe-id 6976242658 --version-type published --api-key ${{ secrets.API_KEY }}
-
-                  # Publish game place
-                  rbxcloud experience publish --filename game.rbxl --place-id 132254523526030 --universe-id 6976242658 --version-type published --api-key ${{ secrets.API_KEY }}
+                  rbxcloud experience publish --filename build.rbxl --place-id 139607691043259 --universe-id 7169691620 --version-type published --api-key ${{ secrets.API_KEY }}
