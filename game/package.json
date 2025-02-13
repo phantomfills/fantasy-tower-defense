@@ -8,6 +8,7 @@
     "watch": "rbxtsc -w",
     "build-rbx": "rojo build -o build.rbxl",
     "serve-rbx": "rojo serve",
+    "start": "concurrently \"npm run watch\" \"npm run build-rbx\" \"npm run serve-rbx\"",
     "test": "jest"
   },
   "keywords": [],
@@ -52,6 +53,7 @@
     "@rbxts/t": "^3.1.1",
     "@rbxts/testez": "^0.4.2-ts.0",
     "@rbxts/trove": "^1.3.0",
+    "concurrently": "^9.1.2",
     "io-serve": "^1.1.2"
   }
 }
